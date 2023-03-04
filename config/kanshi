@@ -1,0 +1,12 @@
+profile all {
+  output "Dell Inc. DELL U2718QM MYPFK89J15HL" mode 3840x2160@60Hz position 0,0 scale 2.000000
+  output "Unknown GX259F 0x00000000" mode 1920x1080@360.001Hz position 1920,0 scale 1.000000
+}
+
+profile game {
+  output "Unknown GX259F 0x00000000" mode 1920x1080@360.001Hz position 0,0 scale 1.000000
+}
+
+profile main {
+  output "Dell Inc. DELL U2718QM MYPFK89J15HL" mode 3840x2160@60Hz position 0,0 scale 2.000000
+}

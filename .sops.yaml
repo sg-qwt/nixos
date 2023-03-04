@@ -1,0 +1,12 @@
+keys:
+  - &main C10D73542F9717B761424E7D77EEFB04BFD81826
+  - &ge age1fehak2xwxm6gsckqadtexrvpjr77zj86ap73fzyl4jjx5nnq3dkqz3qq59
+  - &zheng age1a6zgnkyal7jaduz35ml9ua09w3w2utj9wzpkcm47msv3t8l8s54qe7tyql
+creation_rules:
+  - path_regex: secrets/.*
+    key_groups:
+    - age:
+      - *ge
+      - *zheng
+      pgp:
+      - *main
