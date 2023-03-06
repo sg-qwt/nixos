@@ -3,10 +3,20 @@ keys:
   - &ge age1fehak2xwxm6gsckqadtexrvpjr77zj86ap73fzyl4jjx5nnq3dkqz3qq59
   - &zheng age1a6zgnkyal7jaduz35ml9ua09w3w2utj9wzpkcm47msv3t8l8s54qe7tyql
 creation_rules:
-  - path_regex: secrets/.*
+  - path_regex: secrets/secrets\.yaml$
     key_groups:
     - age:
       - *ge
       - *zheng
       pgp:
       - *main
+  - path_regex: secrets/vault\.org$
+    key_groups:
+    - pgp:
+      - *main
+  - path_regex: secrets/clash\.yaml\.bin$
+    key_groups:
+    - pgp:
+      - *main
+      age:
+      - *ge
