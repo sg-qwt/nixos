@@ -36,7 +36,6 @@
   myos.spacemacs.enable = true;
   myos.alacritty.enable = true;
   myos.shell.enable = true;
-  myos.password-store.enable = true;
   myos.git.enable = true;
   myos.ssh = {
     enable = true;
