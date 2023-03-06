@@ -24,7 +24,8 @@ in
         # networking.proxy.default = "http://127.0.0.1:7890";
 
         sops.secrets.clash = {
-          sopsFile = ../secrets/secrets.yaml;
+          sopsFile = ../secrets/clash.yaml.bin;
+          format = "binary";
           owner = config.users.users.clash.name;
           group = config.users.users.clash.group;
           restartUnits = [ "clash.service" ];
