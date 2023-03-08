@@ -14,6 +14,10 @@ creation_rules:
     key_groups:
     - pgp:
       - *main
+  - path_regex: tf\.env$
+    key_groups:
+    - pgp:
+      - *main
   - path_regex: secrets/clash\.yaml\.bin$
     key_groups:
     - pgp:
