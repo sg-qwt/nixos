@@ -67,6 +67,7 @@ This function should only modify configuration layer settings."
                      '(info eww dired quickrun))
      ;; (multiple-cursors :variables multiple-cursors-backend 'evil-mc)
      nixos
+     terraform
      )
 
    ;; List of additional packages that will be installed without being
