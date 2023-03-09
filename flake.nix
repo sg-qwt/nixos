@@ -23,6 +23,11 @@
       url = "github:nix-community/nix-doom-emacs/b65e204ce9d20b376acc38ec205d08007eccdaef";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    
+    doomemacs = {
+      url = "github:doomemacs/doomemacs";
+      flake = false;
+    };
 
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay/6f5b9e6e9b04a750edfa9e706173635186e2c7ea";
