@@ -5,11 +5,6 @@
 { config, pkgs, ... }:
 
 {
-  sops = {
-    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-    gnupg.sshKeyPaths = [ ];
-  };
-
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelPatches = [ ];
 
@@ -24,6 +19,7 @@
   services.pcscd.enable = true;
 
   myos.common.enable = true;
+  myos.desktop.enable = true;
   myos.users.enable = true;
   # myos.sway.enable = true;
   myos.fcitx.enable = true;
@@ -33,14 +29,11 @@
 
   myos.tmux.enable = true;
   myos.gaming.enable = true;
-  myos.spacemacs.enable = true;
+  myos.doom-emacs.enable = true;
   myos.alacritty.enable = true;
   myos.shell.enable = true;
   myos.git.enable = true;
-  myos.ssh = {
-    enable = true;
-    openssh.enable = true;
-  };
+  myos.ssh.enable = true;
   myos.gnupg.enable = true;
   myos.desktop-apps.enable = true;
   myos.clojure-dev.enable = true;

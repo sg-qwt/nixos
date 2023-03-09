@@ -3,38 +3,11 @@ helpers.mkModule config lib
   "common"
   "NixOS commons"
 {
-  nix = {
-    package = pkgs.nixVersions.stable;
+  system.stateVersion = "22.05";
 
-    registry.nixpkgs.flake = inputs.nixpkgs;
-    registry.myos.flake = self;
-
-    extraOptions = "experimental-features = nix-command flakes";
-
-    settings = {
-      nix-path = [ "nixpkgs=${inputs.nixpkgs}" ];
-
-      substituters = [
-        "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-        "https://mirrors.bfsu.edu.cn/nix-channels/store"
-        "https://nix-community.cachix.org"
-        "https://jovian-nixos-zhaofengli.cachix.org"
-      ];
-
-      trusted-public-keys = [
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        "jovian-nixos-zhaofengli.cachix.org-1:JL2uhBo5bJnVxLfMUjkxmoQsp9K2OFWQiZUnlnjX9x4="
-      ];
-
-      auto-optimise-store = true;
-      trusted-users = [ "@wheel" "deployment" ];
-    };
-
-    gc = {
-      automatic = true;
-      options = "--delete-older-than 14d";
-      dates = "weekly";
-    };
+  sops = {
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    gnupg.sshKeyPaths = [ ];
   };
 
   time.timeZone = "Asia/Shanghai";
@@ -53,36 +26,80 @@ helpers.mkModule config lib
     ];
   };
 
-  fonts = {
-    fontDir.enable = true;
-    fontconfig.enable = true;
+  nix = {
+    package = pkgs.nixVersions.stable;
 
-    fonts = with pkgs; [
-      noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
-      source-han-mono
-      source-han-sans
-      source-han-serif
-      wqy_microhei
-      wqy_zenhei
-      liberation_ttf
+    registry.nixpkgs.flake = inputs.nixpkgs;
+    registry.myos.flake = self;
+
+    extraOptions = "experimental-features = nix-command flakes";
+
+    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+    settings = {
+
+      substituters = [
+        "https://nix-community.cachix.org"
+      ];
+
+      trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
+
+      auto-optimise-store = true;
+      trusted-users = [ "@wheel" ];
+    };
+
+    gc = {
+      automatic = true;
+      options = "--delete-older-than 14d";
+      dates = "weekly";
+    };
+  };
+
+  users.groups.deployment = {};
+  users.users.deployment = {
+    isSystemUser = true;
+    openssh.authorizedKeys.keyFiles = [
+      ../resources/keys/ssh-me.pub
     ];
+    group = "deployment";
+    shell = pkgs.bash;
+  };
 
-    # enableDefaultFonts = true;
-    # fontconfig.defaultFonts = {
-    #   emoji = [ "Noto Color Emoji" ];
-    #   monospace = [ "Source Han Mono" ];
-    #   # sansSerif = [ "Noto Sans CJK SC" ];
-    #   sansSerif = [
-    #     "Noto Sans CJK JP"
-    #     "Noto Sans CJK KR"
-    #     "Noto Sans CJK HK"
-    #     "Noto Sans CJK SC"
-    #     "Noto Sans CJK TC"
-    #   ];
-    #   serif = [ "Source Han Serif" ];
-    # };
+  # https://github.com/cole-h/nixos-config/blob/colmena/modules/config/deploy.nix
+  security.sudo.extraRules = [
+    {
+      users = [ "deployment" ];
+      commands = [
+        {
+          command = "/nix/store/*/bin/switch-to-configuration";
+          options = [ "NOPASSWD" ];
+        }
+        {
+          command = "/run/current-system/sw/bin/nix-env";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
 
+  services.openssh = {
+    enable = true;
+    settings = {
+      kbdInteractiveAuthentication = false;
+      passwordAuthentication = false;
+      permitRootLogin = lib.mkForce "no";
+    };
+    hostKeys = [
+      {
+        bits = 4096;
+        path = "/etc/ssh/ssh_host_rsa_key";
+        type = "rsa";
+      }
+      {
+        path = "/etc/ssh/ssh_host_ed25519_key";
+        type = "ed25519";
+      }
+    ];
   };
 }

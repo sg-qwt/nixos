@@ -11,7 +11,7 @@ helpers.mkModule config lib
 
   services.emacs = {
     enable = true;
-    package = pkgs.emacsPgtkNativeComp;
+    package = pkgs.emacs;
     defaultEditor = true;
   };
 
