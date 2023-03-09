@@ -12,7 +12,7 @@ data "azurerm_storage_account" "persist" {
 }
 
 data "azurerm_storage_blob" "image_vhd" {
-  name                   = "nixos.vhd"
+  name                   = "nixosbase1678353239.vhd"
   storage_account_name   = data.azurerm_storage_account.persist.name
   storage_container_name = "vhds"
 }
@@ -138,6 +138,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
 
   boot_diagnostics {
-    storage_account_uri = data.azurerm_storage_account.persist.primary_blob_endpoint
+    storage_account_uri = null
   }
 }
