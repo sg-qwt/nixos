@@ -3,7 +3,7 @@
 
   inputs = {
 
-    nixpkgs.url = "github:sg-qwt/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -69,6 +69,14 @@
         ];
       };
 
+      makeAzureBase = (nixpkgs.lib.nixosSystem {
+	      inherit system;
+        specialArgs = { inherit pkgs; };
+        modules = [
+          (import ./hosts/azure)
+        ];
+      }).config.system.build.azureImage;
+
       mkOS = name: {
         ${name} = nixpkgs.lib.nixosSystem {
           inherit system;
@@ -97,6 +105,7 @@
         hello-custom = pkgs.my.hello-custom;
         proton-ge = pkgs.my.proton-ge;
         ryujinx = pkgs.my.ryujinx;
+        azure-image = makeAzureBase;
       };
 
       nixosConfigurations =
