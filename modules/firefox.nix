@@ -4,24 +4,16 @@ helpers.mkModule config lib "firefox" "firefox" {
 
     programs.firefox = {
       enable = true;
-      extensions = with config.nur.repos.rycee.firefox-addons; [
-        ublock-origin
-        protondb-for-steam
-        steam-database
-        metamask
-        (buildFirefoxXpiAddon {
-          pname = "notion-web-clipper";
-          version = "0.3.2";
-          addonId = "{4b547b2c-e114-4344-9b70-09b2fe0785f3}";
-          url = "https://addons.mozilla.org/firefox/downloads/file/3768048/notion_web_clipper-0.3.2-fx.xpi";
-          sha256 = "sha256-O8Y//3t10EwVdQkv9P7j48SH8LXktvUak3SzGETfrMA=";
-          meta = {};
-        })
-      ];
       profiles = {
         windranger = {
           isDefault = true;
-
+          extensions = with config.nur.repos.rycee.firefox-addons; [
+            ublock-origin
+            protondb-for-steam
+            steam-database
+            metamask
+            notion-web-clipper
+          ];
           settings = {
             "browser.aboutwelcome.enabled" = false;
             "browser.discovery.enabled" = false;

@@ -26,16 +26,6 @@ in
 
     users.mutableUsers = false;
 
-    users.groups.deployment = {};
-    users.users.deployment = {
-      isSystemUser = true;
-      openssh.authorizedKeys.keyFiles = [
-        ../resources/keys/ssh-me.pub
-      ];
-      group = "deployment";
-      shell = pkgs.bash;
-    };
-
     users.users."${cfg.mainUser}" = {
       isNormalUser = true;
       description = "me";
@@ -46,23 +36,6 @@ in
       ];
     };
 
-    # https://github.com/cole-h/nixos-config/blob/colmena/modules/config/deploy.nix
-    security.sudo.extraRules = [
-      {
-        users = [ "deployment" ];
-        commands = [
-          {
-            command = "/nix/store/*/bin/switch-to-configuration";
-            options = [ "NOPASSWD" ];
-          }
-          {
-            command = "/run/current-system/sw/bin/nix-env";
-            options = [ "NOPASSWD" ];
-          }
-        ];
-      }
-    ];
-
     sops.secrets.me-password = {
       sopsFile = ../secrets/secrets.yaml;
       neededForUsers = true;
@@ -71,6 +44,5 @@ in
     home-manager.users."${cfg.mainUser}" = {
       home.stateVersion = "22.11";
     };
-
   };
 }
