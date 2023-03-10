@@ -5,11 +5,6 @@
 { config, lib, pkgs, ... }:
 
 {
-  sops = {
-    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-    gnupg.sshKeyPaths = [ ];
-  };
-
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -20,6 +15,7 @@
   services.pcscd.enable = true;
 
   myos.common.enable = true;
+  myos.desktop.enable = true;
   myos.users = {
     enable = true;
     extraGroups = [ "input" ];
@@ -27,7 +23,6 @@
   myos.shell.enable = true;
   myos.git.enable = true;
   myos.gnupg.enable = true;
-  myos.ssh.enable = true;
 
   # services.xserver = {
   #   enable = true;
@@ -134,13 +129,9 @@
   environment.systemPackages = with pkgs; [
     steamdeck-firmware
     onboard
-    my.ryujinx
   ];
 
   programs.steam = {
     enable = true;
   };
-
-  system.stateVersion = "22.11"; # Did you read the comment?
-
 }
