@@ -56,9 +56,8 @@
   outputs = { self, ... }@inputs:
     with inputs;
     let
-      # hard-coded system here, sorry I'm lazy
       system = "x86_64-linux";
-
+      rootPath = ./.;
       helpers = import ./helpers.nix;
 
       pkgs = import nixpkgs {
@@ -76,7 +75,7 @@
 
       makeAzureBase = (nixpkgs.lib.nixosSystem {
 	      inherit system;
-        specialArgs = { inherit pkgs; };
+        specialArgs = { inherit pkgs rootPath; };
         modules = [
           (import ./hosts/azure)
         ];
@@ -86,8 +85,7 @@
         ${name} = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit pkgs home-manager helpers self inputs;
-            rootPath = ./.;
+            inherit pkgs home-manager helpers self inputs rootPath;
           };
           modules = [
             nur.nixosModules.nur
