@@ -1,7 +1,5 @@
-{ config, pkgs, lib, helpers, ... }:
-helpers.mkModule config lib
-  "tmux"
-  "tmux"
+s@{ config, pkgs, lib, helpers, ... }:
+helpers.mkProfile s "tmux"
 {
   environment = {
     systemPackages = with pkgs; [

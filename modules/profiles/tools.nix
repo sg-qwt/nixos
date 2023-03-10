@@ -1,7 +1,5 @@
-{ config, pkgs, lib, helpers, ... }:
-helpers.mkModule config lib
-  "tools"
-  "tools"
+s@{ config, pkgs, lib, helpers, ... }:
+helpers.mkProfile s "tools"
 {
   home-manager.users."${config.myos.users.mainUser}" = {
     home.packages = with pkgs; [

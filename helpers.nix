@@ -1,8 +1,8 @@
 {
-  module-list =
+  profile-list =
     (map
-      (mname: (./modules + "/${mname}"))
-      (builtins.attrNames (builtins.readDir ./modules)));
+      (mname: (./modules/profiles + "/${mname}"))
+      (builtins.attrNames (builtins.readDir ./modules/profiles)));
 
   default-overlays =
     inputs: final: prev:
@@ -18,13 +18,13 @@
             (builtins.attrNames (builtins.readDir ./packages))));
     };
 
-  mkModule = config: lib: mname: desc: body:
+  mkProfile = s: pname:  body:
     {
-      options.myos."${mname}" = {
-        enable = lib.mkEnableOption desc;
+      options.myos."${pname}" = {
+        enable = s.lib.mkEnableOption pname;
       };
 
-      config = lib.mkIf config.myos."${mname}".enable body;
+      config = lib.mkIf s.config.myos."${pname}".enable body;
     };
 
 }

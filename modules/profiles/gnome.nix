@@ -1,7 +1,5 @@
-{ config, pkgs, lib, helpers, ... }:
-helpers.mkModule config lib
-  "gnome"
-  "gnome"
+s@{ config, pkgs, lib, helpers, ... }:
+helpers.mkProfile s "gnome"
   (
     let ibus-enabled = config.myos.ibus.enable; in {
 

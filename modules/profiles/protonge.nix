@@ -1,7 +1,5 @@
-{ config, pkgs, lib, helpers, ... }:
-helpers.mkModule config lib
-  "protonge"
-  "proton-ge"
+s@{ config, pkgs, lib, helpers, ... }:
+helpers.mkProfile s "protonge"
 {
   environment = {
     systemPackages = with pkgs; [my.proton-ge];

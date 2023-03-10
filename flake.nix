@@ -91,7 +91,7 @@
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
             { networking.hostName = name; }
-            { imports = helpers.module-list; }
+            { imports = helpers.profile-list; }
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
@@ -118,6 +118,7 @@
           [
             (mkOS "ge")
             (mkOS "zheng")
+            (mkOS "dui")
           ];
 
     };

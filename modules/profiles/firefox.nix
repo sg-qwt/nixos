@@ -1,5 +1,5 @@
-{ config, pkgs, lib, helpers, ... }:
-helpers.mkModule config lib "firefox" "firefox" {
+s@{ config, pkgs, lib, helpers, ... }:
+helpers.mkProfile s "firefox" {
   home-manager.users."${config.myos.users.mainUser}" = {
 
     programs.firefox = {

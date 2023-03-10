@@ -1,7 +1,5 @@
-{ config, pkgs, lib, helpers, ... }:
-helpers.mkModule config lib
-  "gaming"
-  "Steam and other stuff"
+s@{ config, pkgs, lib, helpers, ... }:
+helpers.mkProfile s "gaming"
 {
   programs.steam = {
     enable = true;

@@ -1,7 +1,5 @@
-{ config, pkgs, lib, helpers, ... }:
-helpers.mkModule config lib
-  "clojure-dev"
-  "clojure dev tools"
+s@{ config, pkgs, lib, helpers, ... }:
+helpers.mkProfile s "clojure-dev"
 {
   home-manager.users."${config.myos.users.mainUser}" = {
     home.packages = with pkgs; [

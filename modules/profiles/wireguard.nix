@@ -1,5 +1,5 @@
-{ config, pkgs, lib, helpers, ... }:
-helpers.mkModule config lib "wireguard" "wireguard" {
+s@{ config, pkgs, lib, helpers, ... }:
+helpers.mkProfile s "wireguard" {
   # get gateway
   # $(${pkgs.iproute2}/bin/ip -o -4 route show to default | ${pkgs.gawk}/bin/awk '{print $3}' | ${pkgs.coreutils}/bin/head -n 1)
   networking.wg-quick.interfaces = {

@@ -1,7 +1,5 @@
-{ config, pkgs, lib, helpers, inputs, ... }:
-helpers.mkModule config lib
-  "doom-emacs"
-  "doom-emacs"
+s@{ config, pkgs, lib, helpers, inputs, ... }:
+helpers.mkProfile s "doom-emacs"
   {
     services.emacs = {
         enable = true;
