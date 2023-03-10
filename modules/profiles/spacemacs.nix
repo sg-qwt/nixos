@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, inputs, ... }:
+s@{ config, pkgs, lib, helpers, inputs, rootPath, ... }:
 helpers.mkProfile s "spacemacs"
 {
   fonts.fonts = with pkgs; [
@@ -21,7 +21,7 @@ helpers.mkProfile s "spacemacs"
       };
 
       ".spacemacs.d/init.el" = {
-        source = ../config/spacemacs.d/init.el;
+        source = (rootPath + "/config/spacemacs.d/init.el");
       };
     };
 

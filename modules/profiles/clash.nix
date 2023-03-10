@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, rootPath, ... }:
 
 with lib;
 
@@ -24,7 +24,7 @@ in
         # networking.proxy.default = "http://127.0.0.1:7890";
 
         sops.secrets.clash = {
-          sopsFile = ../secrets/clash.yaml.bin;
+          sopsFile = rootPath + "/secrets/clash.yaml.bin";
           format = "binary";
           owner = config.users.users.clash.name;
           group = config.users.users.clash.group;
@@ -52,7 +52,6 @@ in
         };
         users.groups.clash = { };
 
-        # "L+ '${cfg.stateDir}/config.yaml' - - - - ${../config/clash.yaml}"
         systemd.tmpfiles.rules = [
           "d '${cfg.stateDir}' 0750 clash clash - -"
           "L+ '${cfg.stateDir}/config.yaml' - - - - ${config.sops.secrets.clash.path}"

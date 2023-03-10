@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, home-manager, helpers, ... }:
+s@{ config, pkgs, lib, home-manager, helpers, rootPath, ... }:
 helpers.mkProfile s "sway"
 {
   programs.sway = {
@@ -58,19 +58,19 @@ helpers.mkProfile s "sway"
   };
 
   home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
-    xdg.configFile."sway/config".text = (import ../config/sway.nix { inherit config; });
+    xdg.configFile."sway/config".text = (import (rootPath + "/config/sway.nix") { inherit config rootPath; });
 
-    xdg.configFile."waybar/config".source = ../config/waybar/waybar.json;
-    xdg.configFile."waybar/style.css".source = ../config/waybar/style.css;
+    xdg.configFile."waybar/config".source = (rootPath + "/config/waybar/waybar.json");
+    xdg.configFile."waybar/style.css".source = (rootPath + "/config/waybar/style.css");
 
-    xdg.configFile."kanshi/config".source = ../config/kanshi;
+    xdg.configFile."kanshi/config".source = (rootPath + "/config/kanshi");
 
     home.packages = with pkgs; [
       (writeShellScriptBin "switch-emacs"
-        (import ../config/scripts/switch-emacs.nix { }))
+        (import (rootPath + "/config/scripts/switch-emacs.nix") { }))
 
       (writeShellScriptBin "switch-terminal"
-        (import ../config/scripts/switch-terminal.nix { }))
+        (import (rootPath + "/config/scripts/switch-terminal.nix") { }))
 
     ];
   };

@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, ... }:
+s@{ config, pkgs, lib, helpers, rootPath, ... }:
 helpers.mkProfile s "tmux"
 {
   environment = {
@@ -8,7 +8,7 @@ helpers.mkProfile s "tmux"
   };
 
   home-manager.users."${config.myos.users.mainUser}" = {
-    xdg.configFile."tmux/tmux.conf".source = ../config/tmux.conf;
+    xdg.configFile."tmux/tmux.conf".source = (rootPath + "/config/tmux.conf");
   };
 
 }

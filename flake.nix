@@ -85,7 +85,10 @@
       mkOS = name: {
         ${name} = nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit pkgs home-manager helpers self inputs; };
+          specialArgs = {
+            inherit pkgs home-manager helpers self inputs;
+            rootPath = ./.;
+          };
           modules = [
             nur.nixosModules.nur
             home-manager.nixosModules.home-manager

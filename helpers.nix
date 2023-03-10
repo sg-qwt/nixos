@@ -24,7 +24,7 @@
         enable = s.lib.mkEnableOption pname;
       };
 
-      config = lib.mkIf s.config.myos."${pname}".enable body;
+      config = s.lib.mkIf s.config.myos."${pname}".enable body;
     };
 
 }

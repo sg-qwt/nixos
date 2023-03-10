@@ -1,4 +1,7 @@
-{ config }:
+{ config, rootPath }:
+let
+  wallpaper = rootPath + "/resources/wallpapers/wr.jpg";
+in
 ''
   ### Variables
   set $mod Mod4
@@ -20,7 +23,7 @@
   # output "Dell Inc. DELL U2718QM MYPFK89J15HL" mode 3840x2160@60Hz scale 2 pos 0 0
   # output "Unknown GX259F 0x00000000" mode 1920x1080@360.001Hz pos 1920 0
 
-  output * bg ${../resources/wallpapers/wr.jpg} fill
+  output * bg ${wallpapaer} fill
 
   seat seat0 xcursor_theme ${config.home.pointerCursor.name} ${toString config.home.pointerCursor.size}
 

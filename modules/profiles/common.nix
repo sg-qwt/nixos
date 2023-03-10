@@ -1,10 +1,11 @@
 s@{ config, pkgs, lib, helpers, inputs, self, ... }:
-helpers.mkProfile s "common"
 {
   imports = [
     ../../modules/mixins/deploy.nix
   ];
-
+} //
+helpers.mkProfile s "common"
+{
   sops = {
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     gnupg.sshKeyPaths = [ ];

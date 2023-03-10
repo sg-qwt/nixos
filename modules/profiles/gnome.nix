@@ -1,7 +1,9 @@
-s@{ config, pkgs, lib, helpers, ... }:
+s@{ config, pkgs, lib, helpers, rootPath, ... }:
 helpers.mkProfile s "gnome"
   (
-    let ibus-enabled = config.myos.ibus.enable; in {
+    let ibus-enabled = config.myos.ibus.enable;
+        wallpaper = rootPath + "/resources/wallpapers/wr.jpg";
+    in {
 
       services.xserver = {
         enable = true;
@@ -100,13 +102,13 @@ helpers.mkProfile s "gnome"
           };
 
           "org/gnome/desktop/background" = {
-            picture-uri = "file://${../resources/wallpapers/wr.jpg}";
+            picture-uri = "file://${wallpaper}";
             picture-options = "zoom";
           };
 
 
           "org/gnome/desktop/screensaver" = {
-            picture-uri = "file://${../resources/wallpapers/wr.jpg}";
+            picture-uri = "file://${wallpaper}";
             picture-options = "zoom";
           };
 

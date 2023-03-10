@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, inputs, ... }:
+s@{ config, pkgs, lib, helpers, inputs, rootPath, ... }:
 helpers.mkProfile s "doom-emacs"
   {
     services.emacs = {
@@ -17,7 +17,7 @@ helpers.mkProfile s "doom-emacs"
       };
 
       ".config/doom" = {
-        source = ../config/doom-emacs;
+        source = (rootPath + "/config/doom-emacs");
       };
     };
       home = {
