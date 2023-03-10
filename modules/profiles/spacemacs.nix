@@ -1,7 +1,5 @@
-{ config, pkgs, lib, helpers, inputs, ... }:
-helpers.mkModule config lib
-  "spacemacs"
-  "spacemacs"
+s@{ config, pkgs, lib, helpers, inputs, ... }:
+helpers.mkProfile s "spacemacs"
 {
   fonts.fonts = with pkgs; [
     source-code-pro

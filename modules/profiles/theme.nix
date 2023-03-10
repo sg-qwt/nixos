@@ -1,7 +1,5 @@
-{ config, pkgs, lib, helpers, ... }:
-helpers.mkModule config lib
-  "theme"
-  "gtk theme and cursor theme"
+s@{ config, pkgs, lib, helpers, ... }:
+helpers.mkProfile s "theme"
 {
   home-manager.users."${config.myos.users.mainUser}" = rec {
     # home.pointerCursor = {

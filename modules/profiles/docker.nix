@@ -1,5 +1,5 @@
-{ config, pkgs, lib, helpers, inputs, self, ... }:
-helpers.mkModule config lib "docker" "docker" {
+s@{ config, pkgs, lib, helpers, inputs, self, ... }:
+helpers.mkProfile s "docker" {
   virtualisation.docker.enable = true;
 
   virtualisation.oci-containers = {

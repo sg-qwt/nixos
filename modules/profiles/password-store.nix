@@ -1,7 +1,5 @@
-{ config, pkgs, lib, helpers, ... }:
-helpers.mkModule config lib
-  "password-store"
-  "pass"
+s@{ config, pkgs, lib, helpers, ... }:
+helpers.mkProfile s "password-store"
 {
   home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
 

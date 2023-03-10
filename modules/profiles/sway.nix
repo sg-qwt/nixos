@@ -1,7 +1,5 @@
-{ config, pkgs, lib, home-manager, helpers, ... }:
-helpers.mkModule config lib
-  "sway"
-  "swaywm"
+s@{ config, pkgs, lib, home-manager, helpers, ... }:
+helpers.mkProfile s "sway"
 {
   programs.sway = {
     enable = true;

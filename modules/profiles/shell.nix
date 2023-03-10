@@ -1,7 +1,5 @@
-{ config, pkgs, lib, helpers, ... }:
-helpers.mkModule config lib
-  "shell"
-  "bash"
+s@{ config, pkgs, lib, helpers, ... }:
+helpers.mkProfile s "shell"
 {
   environment = {
     systemPackages = with pkgs; [

@@ -1,7 +1,5 @@
-{ config, pkgs, lib, helpers, ... }:
-helpers.mkModule config lib
-  "wayland"
-  "Wayland hacks"
+s@{ config, pkgs, lib, helpers, ... }:
+helpers.mkProfile s "wayland"
 {
   environment = {
     sessionVariables = {

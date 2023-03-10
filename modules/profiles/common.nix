@@ -1,9 +1,9 @@
-{ config, pkgs, lib, helpers, inputs, self, ... }:
-helpers.mkModule config lib
-  "common"
-  "NixOS commons"
+s@{ config, pkgs, lib, helpers, inputs, self, ... }:
+helpers.mkProfile s "common"
 {
-  system.stateVersion = "22.05";
+  imports = [
+    ../../modules/mixins/deploy.nix
+  ];
 
   sops = {
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
@@ -46,7 +46,6 @@ helpers.mkModule config lib
       ];
 
       auto-optimise-store = true;
-      trusted-users = [ "@wheel" ];
     };
 
     gc = {
@@ -55,33 +54,6 @@ helpers.mkModule config lib
       dates = "weekly";
     };
   };
-
-  users.groups.deployment = {};
-  users.users.deployment = {
-    isSystemUser = true;
-    openssh.authorizedKeys.keyFiles = [
-      ../resources/keys/ssh-me.pub
-    ];
-    group = "deployment";
-    shell = pkgs.bash;
-  };
-
-  # https://github.com/cole-h/nixos-config/blob/colmena/modules/config/deploy.nix
-  security.sudo.extraRules = [
-    {
-      users = [ "deployment" ];
-      commands = [
-        {
-          command = "/nix/store/*/bin/switch-to-configuration";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "/run/current-system/sw/bin/nix-env";
-          options = [ "NOPASSWD" ];
-        }
-      ];
-    }
-  ];
 
   services.openssh = {
     enable = true;

@@ -1,7 +1,5 @@
-{ config, pkgs, lib, helpers, inputs, self, ... }:
-helpers.mkModule config lib
-  "desktop"
-  "desktop specific"
+s@{ config, pkgs, lib, helpers, inputs, self, ... }:
+helpers.mkProfile s "desktop"
 {
   nix.settings = {
     substituters = lib.mkBefore [

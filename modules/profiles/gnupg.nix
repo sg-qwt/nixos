@@ -1,5 +1,5 @@
-{ config, pkgs, lib, helpers, ... }:
-helpers.mkModule config lib "gnupg" "gnupg" {
+s@{ config, pkgs, lib, helpers, ... }:
+helpers.mkProfile s "gnupg" {
 
   home-manager.users."${config.myos.users.mainUser}" = {
 
