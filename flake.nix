@@ -110,7 +110,6 @@
       packages."${system}" = flake-utils.lib.flattenTree {
         hello-custom = pkgs.my.hello-custom;
         proton-ge = pkgs.my.proton-ge;
-        ryujinx = pkgs.my.ryujinx;
         azure-image = makeAzureBase;
       };
 
