@@ -1,6 +1,7 @@
 { pkgs, rootPath }:
 let tfenv = rootPath + "/secrets/tf.env"; in
   pkgs.mkShell {
+    name = "terraform-infra";
     nativeBuildInputs = [
       pkgs.azure-cli
       (pkgs.terraform.withPlugins (p: [
