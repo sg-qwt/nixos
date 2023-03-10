@@ -27,10 +27,7 @@
   myos.shell.enable = true;
   myos.git.enable = true;
   myos.gnupg.enable = true;
-  myos.ssh = {
-    enable = true;
-    openssh.enable = true;
-  };
+  myos.ssh.enable = true;
 
   # services.xserver = {
   #   enable = true;
