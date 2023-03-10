@@ -114,6 +114,8 @@
         azure-image = makeAzureBase;
       };
 
+      devShells."${system}".infra = (import ./shells/infra.nix { inherit pkgs rootPath; });
+
       nixosConfigurations =
         builtins.foldl' (x: y: x // y) {}
           [
