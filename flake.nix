@@ -59,8 +59,18 @@
       system = "x86_64-linux";
       rootPath = ./.;
       helpers = import ./helpers.nix;
-
-      pkgs = import nixpkgs {
+      nixpkgs-patched =
+        (import inputs.nixpkgs { inherit system; }).applyPatches {
+          name = "nixpkgs-patched";
+          src = inputs.nixpkgs;
+          patches = [
+            ((import inputs.nixpkgs {inherit system;}).fetchpatch {
+              url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/183874.patch";
+              hash = "sha256-cpV35L46URkvNfde7sUShOXuEXHXETZZzGK+b8atSWw=";
+            })
+          ];
+        };
+      pkgs = import nixpkgs-patched {
         inherit system;
 
         config.allowUnfree = true;
