@@ -1,4 +1,5 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs, rootPath }:
+let tfenv = rootPath + "/secrets/tf.env"; in
   pkgs.mkShell {
     nativeBuildInputs = [
       pkgs.azure-cli
@@ -8,7 +9,7 @@
     ];
     shellHook = ''
       set -a
-      source <(${pkgs.sops}/bin/sops --decrypt ${toString ../secrets/tf.env})
+      source <(${pkgs.sops}/bin/sops --decrypt ${tfenv})
       set +a
     '';
 }
