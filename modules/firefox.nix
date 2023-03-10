@@ -158,16 +158,12 @@ helpers.mkModule config lib "firefox" "firefox" {
                   template = "https://github.com/search";
                   params = [
                     {
-                      name = "l";
-                      value = "Nix";
-                    }
-                    {
                       name = "type";
                       value = "Code";
                     }
                     {
                       name = "q";
-                      value = "{searchTerms}";
+                      value = "{searchTerms}+language%3ANix";
                     }
                   ];
                 }];
