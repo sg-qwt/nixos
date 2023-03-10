@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, ... }:
+s@{ config, pkgs, lib, helpers, rootPath, ... }:
 helpers.mkProfile s "shell"
 {
   environment = {
@@ -22,7 +22,7 @@ helpers.mkProfile s "shell"
         "ignorespace"
       ];
 
-      bashrcExtra = (import ../config/scripts/bashrc.nix);
+      bashrcExtra = (import (rootPath + "/config/scripts/bashrc.nix"));
 
       shellAliases = {
         gpr = "git pull --rebase";
@@ -39,6 +39,6 @@ helpers.mkProfile s "shell"
       enableBashIntegration = true;
     };
 
-    xdg.configFile."starship.toml".source = ../config/starship/starship.toml;
+    xdg.configFile."starship.toml".source = (rootPath + "/config/starship/starship.toml");
   };
 }
