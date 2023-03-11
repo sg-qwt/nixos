@@ -11,6 +11,15 @@
       passwordAuthentication = false;
       permitRootLogin = lib.mkForce "no";
     };
+    extraConfig = ''
+      Match User deploy
+        AllowAgentForwarding no
+        AllowTcpForwarding no
+        PermitTTY no
+        PermitTunnel no
+        X11Forwarding no
+      Match All
+    '';
     hostKeys = [
       {
         bits = 4096;
