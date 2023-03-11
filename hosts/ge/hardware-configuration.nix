@@ -21,49 +21,55 @@ in
   '';
 
   fileSystems."/" =
-    { device = "/dev/nvme0n1p3";
+    {
+      device = "/dev/nvme0n1p3";
       fsType = "btrfs";
       options = [ "subvol=root" "compress=zstd" "noatime" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/nvme0n1p3";
+    {
+      device = "/dev/nvme0n1p3";
       fsType = "btrfs";
       options = [ "subvol=home" "compress=zstd" "noatime" ];
     };
 
   fileSystems."/home/me/.cache" =
-    { device = "/dev/nvme0n1p3";
+    {
+      device = "/dev/nvme0n1p3";
       fsType = "btrfs";
       options = [ "subvol=userdata/cache" "compress=zstd" "noatime" ];
     };
 
   fileSystems."/home/me/Downloads" =
-    { device = "/dev/nvme0n1p3";
+    {
+      device = "/dev/nvme0n1p3";
       fsType = "btrfs";
       options = [ "subvol=userdata/downloads" "compress=zstd" "noatime" ];
     };
 
   fileSystems."/home/me/.local/share/Steam" =
-    { device = "/dev/nvme0n1p3";
+    {
+      device = "/dev/nvme0n1p3";
       fsType = "btrfs";
       options = [ "subvol=userdata/steam" "compress=zstd" "noatime" ];
     };
 
   fileSystems."/nix" =
-    { device = "/dev/nvme0n1p3";
+    {
+      device = "/dev/nvme0n1p3";
       fsType = "btrfs";
       options = [ "subvol=nix" "compress=zstd" "noatime" ];
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/A218-480E";
+    {
+      device = "/dev/disk/by-uuid/A218-480E";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/6b5c6135-985d-43fd-84d0-a9212cdfe319"; }
-    ];
+    [{ device = "/dev/disk/by-uuid/6b5c6135-985d-43fd-84d0-a9212cdfe319"; }];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

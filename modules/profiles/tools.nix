@@ -3,24 +3,24 @@ helpers.mkProfile s "tools"
 {
   environment.variables.EDITOR = "${pkgs.vim}/bin/vim";
   environment.systemPackages = with pkgs; [
-      vim
+    vim
 
-      unrar
+    unrar
 
-      cloudflare-warp
+    cloudflare-warp
 
-      sops
+    sops
 
-      wget
+    wget
 
-      vim
+    vim
 
-      htop
+    htop
 
-      pciutils
+    pciutils
 
-      coreutils
+    coreutils
 
-      jq
-    ];
+    jq
+  ];
 }

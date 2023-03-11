@@ -10,7 +10,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostId = "a658e17d";
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   services.pcscd.enable = true;
 

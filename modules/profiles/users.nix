@@ -17,7 +17,7 @@ in
 
     extraGroups = mkOption {
       type = types.listOf types.str;
-      default = [];
+      default = [ ];
       description = "Host specific groups";
     };
   };

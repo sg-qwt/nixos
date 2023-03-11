@@ -34,7 +34,7 @@ resource "azurerm_subnet" "subnet" {
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
 
-  address_prefixes     = ["10.0.1.0/24","ace:cab:deca:daed::/64"]
+  address_prefixes = ["10.0.1.0/24", "ace:cab:deca:daed::/64"]
 }
 
 resource "azurerm_public_ip" "public_ip_v4" {
@@ -146,7 +146,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   admin_ssh_key {
     username   = "me"
-    public_key =  file("../resources/keys/ssh-me.pub")
+    public_key = file("../resources/keys/ssh-me.pub")
   }
 
   boot_diagnostics {
