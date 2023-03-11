@@ -4,7 +4,7 @@ keys:
   - &zheng age1a6zgnkyal7jaduz35ml9ua09w3w2utj9wzpkcm47msv3t8l8s54qe7tyql
   - &dui age102sxac3dpmhfyafywp0c8xvaqgz9x74enr84lstnujmkey643vwqqlkjg2
 creation_rules:
-  - path_regex: secrets/secrets\.yaml$
+  - path_regex: secrets\.yaml$
     key_groups:
     - age:
       - *ge
@@ -12,7 +12,7 @@ creation_rules:
       - *dui
       pgp:
       - *main
-  - path_regex: secrets/vault\.org$
+  - path_regex: vault\.org$
     key_groups:
     - pgp:
       - *main
@@ -20,7 +20,7 @@ creation_rules:
     key_groups:
     - pgp:
       - *main
-  - path_regex: secrets/clash\.yaml\.bin$
+  - path_regex: clash\.yaml\.bin$
     key_groups:
     - pgp:
       - *main
