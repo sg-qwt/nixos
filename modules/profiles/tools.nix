@@ -1,9 +1,10 @@
 s@{ config, pkgs, lib, helpers, ... }:
-helpers.mkProfile s "tools"
+helpers.mkModule s "tools"
 {
-  home-manager.users."${config.myos.users.mainUser}" = {
-    home.packages = with pkgs; [
-      nixfmt
+  environment.variables.EDITOR = "${pkgs.vim}/bin/vim";
+  environment.systemPackages =
+    [
+      vim
 
       unrar
 
@@ -23,5 +24,4 @@ helpers.mkProfile s "tools"
 
       jq
     ];
-  };
 }
