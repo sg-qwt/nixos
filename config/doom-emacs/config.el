@@ -93,3 +93,7 @@
    "C-l"           #'helm-maybe-exit-minibuffer)))
 
 (evil-ex-define-cmd "wq" 'doom/save-and-kill-buffer)
+
+(map!
+ (:map evil-window-map
+  "o" #'doom/window-maximize-buffer))
