@@ -18,7 +18,7 @@
             (builtins.attrNames (builtins.readDir ./packages))));
     };
 
-  mkProfile = s: pname:  body:
+  mkProfile = s: pname: body:
     {
       options.myos."${pname}" = {
         enable = s.lib.mkEnableOption pname;

@@ -1,9 +1,11 @@
 s@{ config, pkgs, lib, helpers, rootPath, ... }:
 helpers.mkProfile s "gnome"
   (
-    let ibus-enabled = config.myos.ibus.enable;
-        wallpaper = rootPath + "/resources/wallpapers/wr.jpg";
-    in {
+    let
+      ibus-enabled = config.myos.ibus.enable;
+      wallpaper = rootPath + "/resources/wallpapers/wr.jpg";
+    in
+    {
 
       services.xserver = {
         enable = true;

@@ -34,7 +34,7 @@
   };
 
   # https://github.com/cole-h/nixos-config/blob/colmena/modules/config/deploy.nix
-  users.groups.deploy = {};
+  users.groups.deploy = { };
   users.users.deploy = {
     isSystemUser = true;
     openssh.authorizedKeys.keyFiles = [

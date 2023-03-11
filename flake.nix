@@ -5,6 +5,11 @@
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -23,7 +28,7 @@
       url = "github:nix-community/nix-doom-emacs/b65e204ce9d20b376acc38ec205d08007eccdaef";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     doomemacs = {
       url = "github:doomemacs/doomemacs";
       flake = false;
@@ -64,7 +69,7 @@
           name = "nixpkgs-patched";
           src = inputs.nixpkgs;
           patches = [
-            ((import inputs.nixpkgs {inherit system;}).fetchpatch {
+            ((import inputs.nixpkgs { inherit system; }).fetchpatch {
               url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/183874.patch";
               hash = "sha256-cpV35L46URkvNfde7sUShOXuEXHXETZZzGK+b8atSWw=";
             })
@@ -84,7 +89,7 @@
       };
 
       makeAzureBase = (nixpkgs.lib.nixosSystem {
-	      inherit system;
+        inherit system;
         specialArgs = { inherit pkgs rootPath; };
         modules = [
           (import ./hosts/azure)
@@ -114,7 +119,13 @@
     {
       overlays.default = (helpers.default-overlays inputs);
 
-      formatter."${system}" = pkgs.nixpkgs-fmt;
+      formatter."${system}" = treefmt-nix.lib.mkWrapper
+        nixpkgs.legacyPackages.x86_64-linux
+        {
+          projectRootFile = "flake.nix";
+          programs.nixpkgs-fmt.enable = true;
+          programs.terraform.enable = true;
+        };
 
       # expose packages to flake here
       packages."${system}" = flake-utils.lib.flattenTree {
@@ -126,7 +137,7 @@
       devShells."${system}".infra = (import ./shells/infra.nix { inherit pkgs rootPath; });
 
       nixosConfigurations =
-        builtins.foldl' (x: y: x // y) {}
+        builtins.foldl' (x: y: x // y) { }
           [
             (mkOS "ge")
             (mkOS "zheng")
