@@ -26,7 +26,9 @@ helpers.mkProfile s "doom-emacs"
         (aspellWithDicts (ds: with ds; [ en ]))
       ];
     };
+
     home.sessionPath = [ "${config.xdg.configHome}/emacs/bin" ];
+    home.sessionVariables.EMACSDIR = "${config.xdg.configHome}/emacs";
     home.sessionVariables.DOOMLOCALDIR = "${config.xdg.configHome}/doom-local";
   };
 }
