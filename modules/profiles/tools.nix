@@ -1,9 +1,8 @@
 s@{ config, pkgs, lib, helpers, ... }:
-helpers.mkModule s "tools"
+helpers.mkProfile s "tools"
 {
   environment.variables.EDITOR = "${pkgs.vim}/bin/vim";
-  environment.systemPackages =
-    [
+  environment.systemPackages = with pkgs; [
       vim
 
       unrar
