@@ -4,7 +4,7 @@ helpers.mkProfile s "doom-emacs"
     services.emacs = {
         enable = true;
         package = pkgs.emacs;
-        defaultEditor = true;
+        defaultEditor = false;
     };
 
     fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
@@ -28,6 +28,5 @@ helpers.mkProfile s "doom-emacs"
       };
       home.sessionPath = [ "${config.xdg.configHome}/emacs/bin" ];
       home.sessionVariables.DOOMLOCALDIR = "${config.xdg.configHome}/doom-local";
-      home.sessionVariables.EDITOR = "emacsclient";
     };
   }

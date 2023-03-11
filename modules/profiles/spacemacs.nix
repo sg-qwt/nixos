@@ -10,7 +10,7 @@ helpers.mkProfile s "spacemacs"
   services.emacs = {
     enable = true;
     package = pkgs.emacs;
-    defaultEditor = true;
+    defaultEditor = false;
   };
 
   home-manager.users."${config.myos.users.mainUser}" = {
