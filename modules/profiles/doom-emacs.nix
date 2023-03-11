@@ -4,7 +4,7 @@ helpers.mkProfile s "doom-emacs"
   services.emacs = {
     enable = true;
     package = pkgs.emacs;
-    defaultEditor = false;
+    defaultEditor = true;
   };
 
   fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
