@@ -40,10 +40,11 @@
   myos.tools.enable = true;
   myos.theme.enable = true;
 
-  myos.clash = {
-    enable = true;
-    webui.enable = true;
-  };
+  # myos.clash = {
+  #   enable = true;
+  #   webui.enable = true;
+  # };
+  myos.clash-meta.enable = true;
 
   myos.wireguard.enable = true;
 
