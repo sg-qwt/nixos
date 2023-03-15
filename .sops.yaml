@@ -4,7 +4,7 @@ keys:
   - &zheng age1a6zgnkyal7jaduz35ml9ua09w3w2utj9wzpkcm47msv3t8l8s54qe7tyql
   - &dui age102sxac3dpmhfyafywp0c8xvaqgz9x74enr84lstnujmkey643vwqqlkjg2
 creation_rules:
-  - path_regex: secrets\.yaml$
+  - path_regex: (secrets\.yaml$|tfout\.json$)
     key_groups:
     - age:
       - *ge

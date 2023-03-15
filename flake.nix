@@ -15,19 +15,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    flake-utils.url = "github:numtide/flake-utils";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.utils.follows = "flake-utils";
     };
-
-    flake-utils.url = "github:numtide/flake-utils";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-
-    nix-doom-emacs = {
-      url = "github:nix-community/nix-doom-emacs/b65e204ce9d20b376acc38ec205d08007eccdaef";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     doomemacs = {
       url = "github:doomemacs/doomemacs";
@@ -45,6 +41,11 @@
       flake = false;
     };
 
+    yacd-meta = {
+      url = "github:metacubex/yacd-meta/gh-pages";
+      flake = false;
+    };
+
     nur.url = "github:nix-community/NUR";
 
     yacd = {
@@ -56,6 +57,13 @@
       url = "github:zhaofengli/Jovian-NixOS/7a9e41a66f1b0174845538de11203600b2160d61";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixos-cn = {
+      url = "github:nixos-cn/flakes";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
   };
 
   outputs = { self, ... }@inputs:
@@ -84,7 +92,6 @@
           self.overlays.default
           jovian-nixos.overlay
           emacs-overlay.overlays.default
-          # (import nix-doom-emacs.inputs.emacs-overlay.outPath)
         ];
       };
 
@@ -106,6 +113,7 @@
             nur.nixosModules.nur
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
+            nixos-cn.nixosModules.nixos-cn
             { networking.hostName = name; }
             { imports = helpers.profile-list; }
             {
