@@ -2,7 +2,7 @@
 {
   system.stateVersion = "22.05";
   nix.settings.trusted-users = [ "@wheel" "deploy" ];
-  nix.extraOptions = "experimental-features = nix-command flakes";
+  nix.extraOptions = "experimental-features = nix-command flakes repl-flake";
 
   services.openssh = {
     enable = true;
@@ -33,7 +33,6 @@
     ];
   };
 
-  # https://github.com/cole-h/nixos-config/blob/colmena/modules/config/deploy.nix
   users.groups.deploy = { };
   users.users.deploy = {
     isSystemUser = true;
@@ -48,18 +47,7 @@
     {
       users = [ "deploy" ];
       commands = [
-        {
-          command = "/nix/store/*/bin/switch-to-configuration";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "/run/current-system/sw/bin/nix-env";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "/run/current-system/sw/bin/nix-store";
-          options = [ "NOPASSWD" ];
-        }
+        { command = "ALL"; options = [ "NOPASSWD" ]; }
       ];
     }
   ];
