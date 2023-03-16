@@ -33,8 +33,6 @@ helpers.mkProfile s "common"
       registry.nixpkgs.flake = inputs.nixpkgs;
       registry.myos.flake = self;
 
-      extraOptions = "experimental-features = nix-command flakes repl-flake";
-
       nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
       settings = {
 
