@@ -2,7 +2,7 @@ keys:
   - &main C10D73542F9717B761424E7D77EEFB04BFD81826
   - &ge age1fehak2xwxm6gsckqadtexrvpjr77zj86ap73fzyl4jjx5nnq3dkqz3qq59
   - &zheng age1a6zgnkyal7jaduz35ml9ua09w3w2utj9wzpkcm47msv3t8l8s54qe7tyql
-  - &dui age102sxac3dpmhfyafywp0c8xvaqgz9x74enr84lstnujmkey643vwqqlkjg2
+  - &dui age1e38gadh7jsj59kd0kgg6tujvxcw98pm3rfh3dvnq3a23kgg46fnqmqcz8c
 creation_rules:
   - path_regex: (secrets\.yaml$|tfout\.json$)
     key_groups:
