@@ -12,7 +12,7 @@ data "azurerm_storage_account" "persist" {
 }
 
 data "azurerm_storage_blob" "image_vhd" {
-  name                   = "nixosbase1678353239.vhd"
+  name                   = "nixosbase-2023-03-17.vhd"
   storage_account_name   = data.azurerm_storage_account.persist.name
   storage_container_name = "vhds"
 }
@@ -130,13 +130,13 @@ resource "azurerm_linux_virtual_machine" "vm" {
   location              = var.region
   resource_group_name   = azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.nic.id]
-  size                  = "Standard_D2s_v3"
+  size                  = "Standard_D2as_v5"
 
   os_disk {
     name                 = "nixos-system"
     caching              = "ReadWrite"
     storage_account_type = "StandardSSD_LRS"
-    disk_size_gb         = 20
+    disk_size_gb         = 32
   }
 
   source_image_id = azurerm_image.nixos_image.id
