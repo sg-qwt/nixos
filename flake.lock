@@ -3,40 +3,17 @@
     "doomemacs": {
       "flake": false,
       "locked": {
-        "lastModified": 1678584345,
-        "narHash": "sha256-Ie/2tBvmEZZLRagb3qxoUw+BcrcXp3PV+7LkvxGbnwk=",
+        "lastModified": 1678325485,
+        "narHash": "sha256-aZtP666ZLZWxsw9l5LedLpz66Gem9c/tGNn8ThuwT5k=",
         "owner": "doomemacs",
         "repo": "doomemacs",
-        "rev": "63586423dab6248d6e5acfc68dc4324c15f05d83",
+        "rev": "d9f18e6040d5aa96245f93ccd864163c2eab82c0",
         "type": "github"
       },
       "original": {
         "owner": "doomemacs",
         "repo": "doomemacs",
-        "type": "github"
-      }
-    },
-    "emacs-overlay": {
-      "inputs": {
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1667538873,
-        "narHash": "sha256-zV1OemF3Pl4t8USt0S1pu7Ye/bNX7vYjqQ531zWWQLU=",
-        "owner": "nix-community",
-        "repo": "emacs-overlay",
-        "rev": "6f5b9e6e9b04a750edfa9e706173635186e2c7ea",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "emacs-overlay",
-        "rev": "6f5b9e6e9b04a750edfa9e706173635186e2c7ea",
+        "rev": "d9f18e6040d5aa96245f93ccd864163c2eab82c0",
         "type": "github"
       }
     },
@@ -188,7 +165,6 @@
     "root": {
       "inputs": {
         "doomemacs": "doomemacs",
-        "emacs-overlay": "emacs-overlay",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "jovian-nixos": "jovian-nixos",
