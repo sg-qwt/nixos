@@ -29,7 +29,7 @@
 
   myos.tmux.enable = true;
   myos.gaming.enable = true;
-  myos.doom-emacs.enable = true;
+  # myos.doom-emacs.enable = true;
   myos.alacritty.enable = true;
   myos.shell.enable = true;
   myos.git.enable = true;

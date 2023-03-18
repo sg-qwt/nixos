@@ -22,5 +22,9 @@ helpers.mkProfile s "tools"
     coreutils
 
     jq
+    
+    # emacs 
+    ripgrep
+
   ];
 }

@@ -12,6 +12,7 @@ in {
     home-manager.users."${config.myos.users.mainUser}" = {
       programs.ssh = {
         enable = true;
+        serverAliveInterval = 60;
       };
     };
   };

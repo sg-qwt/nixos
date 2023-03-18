@@ -26,14 +26,8 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     doomemacs = {
-      url = "github:doomemacs/doomemacs";
+      url = "github:doomemacs/doomemacs/d9f18e6040d5aa96245f93ccd864163c2eab82c0";
       flake = false;
-    };
-
-    emacs-overlay = {
-      url = "github:nix-community/emacs-overlay/6f5b9e6e9b04a750edfa9e706173635186e2c7ea";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
     };
 
     spacemacs = {
@@ -96,7 +90,7 @@
         overlays = [
           self.overlays.default
           jovian-nixos.overlay
-          emacs-overlay.overlays.default
+         # emacs-overlay.overlays.default
         ];
       };
 
