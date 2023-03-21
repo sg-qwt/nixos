@@ -72,11 +72,6 @@
           src = inputs.nixpkgs;
           patches = [
             ((import inputs.nixpkgs { inherit system; }).fetchpatch {
-              url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/183874.patch";
-              hash = "sha256-cpV35L46URkvNfde7sUShOXuEXHXETZZzGK+b8atSWw=";
-            })
-
-            ((import inputs.nixpkgs { inherit system; }).fetchpatch {
               url = "https://github.com/SuperSandro2000/nixpkgs/commit/449114c6240520433a650079c0b5440d9ecf6156.patch";
               hash = "sha256-8snymWug7U9GLlhJ0oKE0+lTtSFyijyE5IWVpsShCdw=";
             })
