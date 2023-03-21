@@ -16,16 +16,11 @@ pkgs.mkShell {
       (import ./tfout.nix { inherit tf pkgs; }))
   ];
   shellHook = ''
-    if ! [ -d "$PWD/infra" ]; then
-      echo "Wrong directory"
-      exit 1
-    fi
-
     set -a
 
-    export FLAKE_INFRA_DIR="$PWD/infra"
-    export FLAKE_SECRET_DIR="$PWD/secrets"
-
+    export FLAKE_HOME=$(${pkgs.git}/bin/git rev-parse --show-toplevel)
+    export FLAKE_INFRA_DIR="$FLAKE_HOME/infra"
+    export FLAKE_SECRET_DIR="$FLAKE_HOME/secrets"
     source <(${pkgs.sops}/bin/sops --decrypt ${tfenv})
 
     set +a
