@@ -85,7 +85,7 @@
         overlays = [
           self.overlays.default
           jovian-nixos.overlay
-         # emacs-overlay.overlays.default
+          # emacs-overlay.overlays.default
         ];
       };
 

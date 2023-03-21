@@ -6,10 +6,10 @@ stdenv.mkDerivation rec {
 
   prePatch =
     let port = (lib.importJSON (./. + "/../../config/ports.json")).clash-meta-api; in
-  ''
-    substituteInPlace ./index.html \
-      --replace "127.0.0.1:9090" "127.0.0.1:${toString port}"
-  '';
+    ''
+      substituteInPlace ./index.html \
+        --replace "127.0.0.1:9090" "127.0.0.1:${toString port}"
+    '';
 
   installPhase = ''
     cp -r . $out
