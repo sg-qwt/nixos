@@ -8,6 +8,7 @@ helpers.mkProfile s "shell"
   };
 
   home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
+    home.sessionVariables.MYOS_FLAKE = "${config.home.homeDirectory}/nixos";
 
     programs.bash = {
       enable = true;
@@ -29,8 +30,7 @@ helpers.mkProfile s "shell"
         gl = "git log --decorate --oneline --graph";
         wg-up = "sudo systemctl start wg-quick-wg0.service";
         wg-down = "sudo systemctl stop wg-quick-wg0.service";
-        wake-up = "${pkgs.wol}/bin/wol 9c:5c:8e:bb:ce:7d";
-        rebuild = "sudo nixos-rebuild switch --flake ${config.home.homeDirectory}/nixos";
+        rebuild = "sudo nixos-rebuild switch --flake $MYOS_FLAKE";
       };
     };
 

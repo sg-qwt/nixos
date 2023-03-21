@@ -15,6 +15,7 @@ helpers.mkProfile s "qqqemacs"
           orderless
           marginalia
           consult
+          cape
           command-log-mode
           magit
           nix-mode
@@ -23,11 +24,21 @@ helpers.mkProfile s "qqqemacs"
           use-package
           vertico
         ]));
+      search-epkgs = pkgs.writeShellScriptBin "search-epkgs" ''
+        (nix search nixpkgs#emacs.pkgs.melpaStablePackages $*
+        nix search nixpkgs#emacs.pkgs.melpaPackages $*
+        nix search nixpkgs#emacs.pkgs.elpaPackages $*
+        nix search nixpkgs#emacs.pkgs.orgPackages $*) 2> /dev/null
+      '';
     in
     {
-      documentation.man.generateCaches = true;
+      # sudo mkdir -p /var/cache/man/nixos
+      # sudo mandb
+      # this slows down builds
+      # documentation.man.generateCaches = true; 
       environment = {
         systemPackages = with pkgs; [
+          search-epkgs
           ripgrep
           qqqemacs
         ];

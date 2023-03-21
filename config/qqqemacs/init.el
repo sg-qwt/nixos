@@ -12,7 +12,7 @@
   :after evil
   :custom
   (inhibit-startup-message t)
-
+  (ring-bell-function #'ignore)
   (custom-file (concat user-emacs-directory "custom.el"))
 
   (backup-directory-alist `((".*" . ,temporary-file-directory)))
@@ -29,7 +29,7 @@
   (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
 
   :hook
-  (emacs-startup . (lambda () (find-file (concat user-emacs-directory "init.el"))))
+  (emacs-startup . (lambda () (find-file "$MYOS_FLAKE/config/qqqemacs/init.el")))
   :config
   (load custom-file t)
   (savehist-mode 1)
@@ -100,7 +100,8 @@
   (qqq/local-leader "" nil)
 
   (qqq/leader
-   "SPC" #'execute-extended-command)
+    "SPC" #'execute-extended-command
+    "/" #'consult-ripgrep)
 
   (qqq/leader
     "h s" #'describe-symbol
@@ -121,13 +122,11 @@
   (qqq/leader
     "s c" #'evil-ex-nohighlight
     "s b" #'consult-line
-    "s p" #'consult-ripgrep
-    )
+    "s p" #'project-find-file)
 
   (qqq/leader
     "b b" #'consult-buffer
-    "b p" #'qqq/consult-buffer-p
-    )
+    "b p" #'qqq/consult-buffer-p)
 
   (qqq/leader
     "f f" #'find-file
@@ -160,6 +159,11 @@
 		     #'consult-completion-in-region
 		   #'completion--in-region)
 		 args))))
+
+
+(use-package cape
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev))
 
 (use-package orderless
   :custom
