@@ -89,8 +89,9 @@ rec {
   };
 
   proxy-groups =
-    let custom-pxs = (map (x:(toString x.name)) proxies);
-        providers = builtins.attrNames proxy-providers;
+    let
+      custom-pxs = (map (x: (toString x.name)) proxies);
+      providers = builtins.attrNames proxy-providers;
     in
     [
       {
@@ -119,7 +120,7 @@ rec {
         interval = 7200;
         url = "http://www.gstatic.com/generate_204";
       }
-  ];
+    ];
 
   rules = [
     "DOMAIN-SUFFIX,apps.apple.com,DIRECT"

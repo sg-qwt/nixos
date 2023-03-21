@@ -31,7 +31,7 @@ in
       };
       sops.templates.clashm = {
         content = builtins.toJSON
-        (import (rootPath + "/config/clash-meta/clash.nix") { inherit config; });
+          (import (rootPath + "/config/clash-meta/clash.nix") { inherit config; });
         owner = config.users.users.clash-meta.name;
         group = config.users.users.clash-meta.group;
       };
