@@ -51,8 +51,12 @@
   (evil-want-C-d-scroll t)
   (evil-undo-system 'undo-redo)
   (evil-search-module 'evil-search)
-  
   :config
+  (defun qqq/ex-save-kill-buffer-and-close ()
+    (interactive)
+    (save-buffer)
+    (kill-current-buffer))
+  (evil-ex-define-cmd "wq" 'qqq/ex-save-kill-buffer-and-close)
   (evil-mode 1))
 
 (use-package evil-collection
@@ -217,4 +221,3 @@
 
 (use-package nix-mode
   :mode "\\.nix\\'")
-
