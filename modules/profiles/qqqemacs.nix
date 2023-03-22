@@ -19,6 +19,7 @@ helpers.mkProfile s "qqqemacs"
           command-log-mode
           magit
           nix-mode
+          hcl-mode
         ]) ++
         (with epkgs.elpaPackages; [
           use-package
