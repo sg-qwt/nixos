@@ -3,6 +3,10 @@ terraform {
     azurerm = {
       source = "hashicorp/azurerm"
     }
+
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+    }
   }
 
   backend "azurerm" {

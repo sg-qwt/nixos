@@ -1,12 +1,12 @@
 { config }:
 rec {
-  mixed-port = config.ports.clash-meta-mixed;
+  mixed-port = config.myos.data.ports.clash-meta-mixed;
 
   allow-lan = false;
 
   ipv6 = true;
 
-  external-controller = "127.0.0.1:${toString config.ports.clash-meta-api}";
+  external-controller = "127.0.0.1:${toString config.myos.data.ports.clash-meta-api}";
 
   log-level = "warning";
 
@@ -54,7 +54,7 @@ rec {
       name = "azv6test";
       type = "ss";
       server = config.sops.placeholder.dui_ipv6;
-      port = config.ports.ss1;
+      port = config.myos.data.ports.ss1;
       cipher = "chacha20-ietf-poly1305";
       password = config.sops.placeholder.sspass;
       udp = true;

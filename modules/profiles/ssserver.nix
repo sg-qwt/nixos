@@ -8,7 +8,7 @@ helpers.mkProfile s "ssserver"
 
   services.shadowsocks = {
     enable = true;
-    port = config.ports.ss1;
+    port = config.myos.data.ports.ss1;
     fastOpen = false;
     passwordFile = config.sops.secrets.sspass.path;
   };

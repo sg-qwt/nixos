@@ -13,6 +13,12 @@ in {
       programs.ssh = {
         enable = true;
         serverAliveInterval = 60;
+        matchBlocks = {
+          dui = {
+            hostname = "dui.${config.myos.data.fqdn.edg}";
+            user = "me";
+          };
+        };
       };
     };
   };
