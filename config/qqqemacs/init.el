@@ -27,9 +27,6 @@
 
   (enable-recursive-minibuffers t)
   (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
-
-  :hook
-  (emacs-startup . (lambda () (find-file "$MYOS_FLAKE/config/qqqemacs/init.el")))
   :config
   (load custom-file t)
   (savehist-mode 1)
