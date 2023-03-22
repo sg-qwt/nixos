@@ -147,6 +147,7 @@
   :after vertico
   :custom
   (consult-narrow-key "<")
+  (consult-preview-excluded-files '(".*\\.gpg$"))
   :general
   (general-imap "M-/" 'completion-at-point)
   :config
