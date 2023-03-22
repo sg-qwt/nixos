@@ -78,7 +78,7 @@ in
             enable = true;
             type = "socks5";
             host = "127.0.0.1";
-            port = config.ports.clash-meta-mixed;
+            port = config.myos.data.ports.clash-meta-mixed;
           };
         };
       };
