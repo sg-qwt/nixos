@@ -12,10 +12,6 @@ creation_rules:
       - *dui
       pgp:
       - *main
-  - path_regex: vault\.org$
-    key_groups:
-    - pgp:
-      - *main
   - path_regex: tf\.env$
     key_groups:
     - pgp:
