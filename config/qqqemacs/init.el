@@ -221,3 +221,6 @@
 
 (use-package nix-mode
   :mode "\\.nix\\'")
+
+(use-package hcl-mode
+  :mode "\\.tf\\'")
