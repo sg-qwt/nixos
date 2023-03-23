@@ -56,7 +56,11 @@
     (interactive)
     (save-buffer)
     (kill-current-buffer))
+  (defun qqq/ex-kill-buffer ()
+    (interactive)
+    (kill-current-buffer))
   (evil-ex-define-cmd "wq" 'qqq/ex-save-kill-buffer-and-close)
+  (evil-ex-define-cmd "q" 'qqq/ex-kill-buffer)
   (evil-mode 1))
 
 (use-package evil-collection
@@ -105,15 +109,17 @@
     "/" #'consult-ripgrep)
 
   (qqq/leader
-    "h s" #'describe-symbol
-    "h k" #'describe-key
-    "h v" #'describe-variable
-    "h f" #'describe-function
-    "h c" #'describe-char
-    "h M" #'describe-mode
-    "h m" #'consult-man
-    "h i" #'consult-info
-    "h l" #'global-command-log-mode)
+    :infix "h"
+    "s" #'describe-symbol
+    "k" #'describe-key
+    "K" #'describe-keymap
+    "v" #'describe-variable
+    "f" #'describe-function
+    "c" #'describe-char
+    "M" #'describe-mode
+    "m" #'consult-man
+    "i" #'consult-info
+    "l" #'global-command-log-mode)
 
   (qqq/leader
     "t m" #'consult-minor-mode-menu
@@ -224,3 +230,35 @@
 
 (use-package hcl-mode
   :mode "\\.tf\\'")
+
+(use-package org-roam
+  :custom
+  (org-roam-directory "~/org-roam")
+  :config
+  (org-roam-db-autosync-mode)
+  (defun qqq/return-t (orig-fun &rest args)
+    t)
+  (defun qqq/disable-yornp (orig-fun &rest args)
+    (advice-add 'yes-or-no-p :around #'qqq/return-t)
+    (advice-add 'y-or-n-p :around #'qqq/return-t)
+    (let ((res (apply orig-fun args)))
+      (advice-remove 'yes-or-no-p #'qqq/return-t)
+      (advice-remove 'y-or-n-p #'qqq/return-t)
+      res))
+  (advice-add 'org-roam-capture--finalize :around #'qqq/disable-yornp))
+
+
+(use-package org
+  :general
+  (qqq/local-leader
+    org-capture-mode-map
+    "c" #'org-capture-finalize
+    "k" #'org-capture-kill))
+
+(use-package evil-org
+  :after (evil org)
+  :hook ((org-mode . evil-org-mode)
+	 (evil-org-mode . evil-org-set-key-theme))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
