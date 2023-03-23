@@ -11,6 +11,7 @@ helpers.mkProfile s "qqqemacs"
         (with epkgs.melpaPackages; [
           evil
           evil-collection
+          evil-org
           general
           orderless
           marginalia
@@ -20,6 +21,9 @@ helpers.mkProfile s "qqqemacs"
           magit
           nix-mode
           hcl-mode
+
+          org-roam
+
         ]) ++
         (with epkgs.elpaPackages; [
           use-package
