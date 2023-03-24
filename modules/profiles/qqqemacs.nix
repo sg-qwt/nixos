@@ -46,6 +46,14 @@ helpers.mkProfile s "qqqemacs"
           search-epkgs
           ripgrep
           (aspellWithDicts (ds: with ds; [ en ]))
+          (makeDesktopItem {
+            name = "org-protocol";
+            exec = "emacsclient %u";
+            comment = "Org Protocol";
+            desktopName = "org-protocol";
+            type = "Application";
+            mimeTypes = [ "x-scheme-handler/org-protocol" ];
+          })
           qqqemacs
         ];
       };
