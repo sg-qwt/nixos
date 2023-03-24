@@ -236,14 +236,43 @@
   :mode "\\.tf\\'")
 
 (use-package org-roam
+  :demand t
   :general
   (qqq/leader
-    :infix "n"
-    "f" #'org-roam-node-find)
+    :infix "o"
+    "f" #'org-roam-node-find
+    "i" #'org-roam-node-insert
+    "t" #'org-roam-buffer-toggle
+    "c" #'org-roam-capture
+    "p" #'qqq/orm-capture-p)
   :custom
-  (org-roam-directory "~/org-roam")
+  (epa-file-encrypt-to "77EEFB04BFD81826")
+  (epa-file-select-keys "auto")
+  (garden-dir (substitute-in-file-name "${MYOS_FLAKE}/garden"))
+  (org-directory garden-dir)
+  (org-roam-directory garden-dir)
+  (org-roam-file-exclude-regexp "templates/")
   :config
+  (setq org-roam-capture-templates
+   '(("d" "default" plain "%?"
+      :target (file+head "%<%Y%m%d%H%M%S>.org.gpg" "#+title: ${title}\n")
+      :unnarrowed t)
+     ("p" "pass" entry
+      (file "templates/pass.org")
+      :target (file "pass.org.gpg"))))
+
+  (defun qqq/orm-capture-p ()
+    (interactive)
+    (org-roam-capture- :goto nil :keys "p" :node (org-roam-node-create)))
+
+  (require 'org-roam-protocol)
   (org-roam-db-autosync-mode)
+  (add-to-list 'display-buffer-alist
+	       '("\\*org-roam\\*"
+		 (display-buffer-in-direction)
+		 (direction . right)
+		 (window-width . 0.33)
+		 (window-height . fit-window-to-buffer)))
   (defun qqq/return-t (orig-fun &rest args)
     t)
   (defun qqq/disable-yornp (orig-fun &rest args)
@@ -254,7 +283,6 @@
       (advice-remove 'y-or-n-p #'qqq/return-t)
       res))
   (advice-add 'org-roam-capture--finalize :around #'qqq/disable-yornp))
-
 
 (use-package org
   :general
