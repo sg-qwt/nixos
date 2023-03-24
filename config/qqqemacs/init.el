@@ -27,6 +27,7 @@
 
   (enable-recursive-minibuffers t)
   (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
+  (global-auto-revert-non-file-buffers t)
   :config
   (load custom-file t)
   (savehist-mode 1)
@@ -35,8 +36,11 @@
   (menu-bar-mode 0)
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
-  (minibuffer-depth-indicate-mode 1)
 
+  (global-auto-revert-mode 1)
+
+  (minibuffer-depth-indicate-mode 1)
+  (add-to-list 'warning-suppress-types '(defvaralias))
   )
 
 (use-package evil
@@ -117,7 +121,7 @@
     "f" #'describe-function
     "c" #'describe-char
     "M" #'describe-mode
-    "m" #'consult-man
+    "m" #'woman
     "i" #'consult-info
     "l" #'global-command-log-mode)
 
@@ -232,6 +236,10 @@
   :mode "\\.tf\\'")
 
 (use-package org-roam
+  :general
+  (qqq/leader
+    :infix "n"
+    "f" #'org-roam-node-find)
   :custom
   (org-roam-directory "~/org-roam")
   :config
@@ -253,12 +261,22 @@
   (qqq/local-leader
     org-capture-mode-map
     "c" #'org-capture-finalize
-    "k" #'org-capture-kill))
+    "k" #'org-capture-kill)
+  (general-def '(normal)
+    org-mode-map
+    "RET" 'org-open-at-point
+    "gx"  'org-open-at-point))
 
 (use-package evil-org
   :after (evil org)
-  :hook ((org-mode . evil-org-mode)
-	 (evil-org-mode . evil-org-set-key-theme))
+  :custom
+  (evil-org-key-theme '(navigation insert textobjects additional calendar todo return))
+  :hook ((org-mode . evil-org-mode))
   :config
   (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
+  (evil-org-agenda-set-keys)
+  (evil-org-set-key-theme))
+
+(use-package flyspell
+  :hook
+  (text-mode . flyspell-mode))

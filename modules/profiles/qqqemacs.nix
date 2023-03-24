@@ -45,6 +45,7 @@ helpers.mkProfile s "qqqemacs"
         systemPackages = with pkgs; [
           search-epkgs
           ripgrep
+          (aspellWithDicts (ds: with ds; [ en ]))
           qqqemacs
         ];
       };
