@@ -1,0 +1,6 @@
+* %^{passname}
+:PROPERTIES:
+:ID: %(org-id-new)
+:END:
+secret: %(substring (shell-command-to-string  "head -c20 < /dev/random | base64") 0 -1)%
+username: %^{username}%?
