@@ -33,6 +33,10 @@ let edg = config.myos.data.fqdn.edg; in
 
   services.nginx = {
     enable = true;
+    recommendedTlsSettings = true;
+    recommendedOptimisation = true;
+    recommendedGzipSettings = true;
+    recommendedProxySettings = true;
     virtualHosts = {
       "${config.myos.data.fqdn.edg}" = {
         forceSSL = true;
