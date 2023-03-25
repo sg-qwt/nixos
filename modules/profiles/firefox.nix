@@ -14,6 +14,15 @@ helpers.mkProfile s "firefox" {
             metamask
             notion-web-clipper
           ];
+          bookmarks = [
+            {
+              toolbar = true;
+              bookmarks = [{
+                name = "roam";
+                url = "javascript:location.href ='org-protocol://roam-ref?template=b&ref='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title)+'&body='+encodeURIComponent(window.getSelection())";
+              }];
+            }
+          ];
           settings = {
             "browser.aboutwelcome.enabled" = false;
             "browser.discovery.enabled" = false;
@@ -64,6 +73,11 @@ helpers.mkProfile s "firefox" {
             "experiments.enabled" = false;
             "experiments.manifest.uri" = false;
             "network.allow-experiments" = false;
+
+            "dom.events.asyncClipboard.clipboardItem" = true;
+
+            "browser.bookmarks.addedImportButton" = false;
+            "browser.toolbars.bookmarks.visibility" = "never";
           };
 
           search = {

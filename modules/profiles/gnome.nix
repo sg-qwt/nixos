@@ -134,7 +134,7 @@ helpers.mkProfile s "gnome"
           "org/gnome/shell" = {
             favorite-apps = [
               "org.gnome.Nautilus.desktop"
-              "emacs.desktop"
+              "emacsclient.desktop"
               "org.gnome.Console.desktop"
               "firefox.desktop"
               "spotify.desktop"
