@@ -1,0 +1,7 @@
+* ${title}
+:PROPERTIES:
+:ID: %(org-id-new)
+:ROAM_REFS: ${ref}
+:ROAM_ALIASES:
+:END:
+${body}%?
