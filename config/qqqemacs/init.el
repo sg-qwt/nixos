@@ -41,7 +41,7 @@
 
   (minibuffer-depth-indicate-mode 1)
   (add-to-list 'warning-suppress-types '(defvaralias))
-  )
+  (setq qqq/garden-dir (substitute-in-file-name "${MYOS_FLAKE}/garden")))
 
 (use-package evil
   :demand t
@@ -248,19 +248,23 @@
   :custom
   (epa-file-encrypt-to "77EEFB04BFD81826")
   (epa-file-select-keys "auto")
-  (garden-dir (substitute-in-file-name "${MYOS_FLAKE}/garden"))
-  (org-directory garden-dir)
-  (org-roam-directory garden-dir)
+  (org-directory qqq/garden-dir)
+  (org-roam-directory qqq/garden-dir)
   (org-roam-file-exclude-regexp "templates/")
   :config
   (setq org-roam-capture-templates
-   '(("d" "default" plain "%?"
-      :target (file+head "%<%Y%m%d%H%M%S>.org.gpg" "#+title: ${title}\n")
-      :unnarrowed t)
-     ("p" "pass" entry
-      (file "templates/pass.org")
-      :target (file "pass.org.gpg"))))
-
+	'(("d" "default" plain "%?"
+	   :target (file+head "%<%Y%m%d%H%M%S>.org.gpg" "#+title: ${title}\n")
+	   :unnarrowed t)
+	  ("p" "pass" entry
+	   (file "templates/pass.org")
+	   :target (file "pass.org.gpg")
+	   :empty-lines 1)))
+  (setq org-roam-capture-ref-templates
+	'(("b" "bookmark" entry
+	   (file "templates/bookmark.org")
+	   :target (file "bookmark.org.gpg")
+	   :empty-lines 1)))
   (defun qqq/orm-capture-p ()
     (interactive)
     (org-roam-capture- :goto nil :keys "p" :node (org-roam-node-create)))
