@@ -41,6 +41,13 @@ helpers.mkProfile s "qqqemacs"
       # sudo mandb
       # this slows down builds
       # documentation.man.generateCaches = true; 
+
+      services.emacs = {
+        enable = true;
+        defaultEditor = true;
+        package = qqqemacs;
+      };
+
       environment = {
         systemPackages = with pkgs; [
           search-epkgs
@@ -54,14 +61,11 @@ helpers.mkProfile s "qqqemacs"
             type = "Application";
             mimeTypes = [ "x-scheme-handler/org-protocol" ];
           })
-          qqqemacs
         ];
       };
 
       home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
         xdg.configFile."emacs/init.el".source = (rootPath + "/config/qqqemacs/init.el");
-
-        home.sessionVariables.EDITOR = "${qqqemacs}/bin/emacs";
       };
     }
   )

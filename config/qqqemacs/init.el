@@ -240,6 +240,7 @@
   :general
   (qqq/leader
     :infix "o"
+    "s" #'org-roam-db-sync
     "f" #'org-roam-node-find
     "i" #'org-roam-node-insert
     "t" #'org-roam-buffer-toggle
@@ -252,6 +253,7 @@
   (org-roam-directory qqq/garden-dir)
   (org-roam-file-exclude-regexp "templates/")
   :config
+  (setq org-roam-capture-new-node-hook nil)
   (setq org-roam-capture-templates
 	'(("d" "default" plain "%?"
 	   :target (file+head "%<%Y%m%d%H%M%S>.org.gpg" "#+title: ${title}\n")
