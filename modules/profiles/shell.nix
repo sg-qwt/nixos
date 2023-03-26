@@ -2,14 +2,15 @@ s@{ config, pkgs, lib, helpers, rootPath, ... }:
 helpers.mkProfile s "shell"
 {
   environment = {
+    variables = {
+      MYOS_FLAKE = "$HOME/nixos";
+    };
     systemPackages = with pkgs; [
       zoxide
     ];
   };
 
   home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
-    home.sessionVariables.MYOS_FLAKE = "${config.home.homeDirectory}/nixos";
-
     programs.bash = {
       enable = true;
 

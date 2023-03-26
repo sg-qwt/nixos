@@ -24,6 +24,9 @@ helpers.mkProfile s "qqqemacs"
 
           org-roam
 
+          smartparens
+          evil-cleverparens
+
         ]) ++
         (with epkgs.elpaPackages; [
           use-package
