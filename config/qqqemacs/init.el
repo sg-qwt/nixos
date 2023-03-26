@@ -314,3 +314,19 @@
 (use-package flyspell
   :hook
   (text-mode . flyspell-mode))
+
+(use-package smartparens
+  :demand t
+  :hook
+  ((emacs-lisp-mode)
+   . smartparens-strict-mode)
+  :config
+  (smartparens-global-mode)
+  (require 'smartparens-config))
+
+(use-package evil-cleverparens
+  :after (evil smartparens)
+  :hook
+  ((emacs-lisp-mode) . evil-cleverparens-mode)
+  :config
+  (require 'evil-cleverparens-text-objects))
