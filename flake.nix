@@ -97,6 +97,13 @@
         ];
       }).config.system.build.azureImage;
 
+      makeGnome = (nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix"
+        ];
+      }).config.system.build.isoImage;
+
       mkOS = name: {
         ${name} = nixpkgs.lib.nixosSystem {
           inherit system;
@@ -134,6 +141,7 @@
         hello-custom = pkgs.my.hello-custom;
         proton-ge = pkgs.my.proton-ge;
         azure-image = makeAzureBase;
+        gnome-image = makeGnome;
       };
 
       devShells."${system}".infra = (import ./shells/infra.nix { inherit pkgs rootPath; });
