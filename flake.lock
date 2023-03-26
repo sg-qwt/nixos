@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "disko": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1679643957,
+        "narHash": "sha256-umr+j/0b3DXQO4VnhRwAJYS0Y2fW64I+ydHnZqpN/Pc=",
+        "owner": "nix-community",
+        "repo": "disko",
+        "rev": "eb5def310c7331545e72090b4cda6cb0255b870d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "disko",
+        "type": "github"
+      }
+    },
     "doomemacs": {
       "flake": false,
       "locked": {
@@ -164,6 +184,7 @@
     },
     "root": {
       "inputs": {
+        "disko": "disko",
         "doomemacs": "doomemacs",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
