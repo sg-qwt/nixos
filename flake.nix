@@ -52,9 +52,9 @@
       flake = false;
     };
 
-    jovian-nixos = {
-      url = "github:zhaofengli/Jovian-NixOS/7a9e41a66f1b0174845538de11203600b2160d61";
-      inputs.nixpkgs.follows = "nixpkgs";
+    jovian = {
+      url = "github:Jovian-Experiments/Jovian-NixOS";
+      flake = false;
     };
 
     nixos-cn = {
@@ -89,7 +89,7 @@
 
         overlays = [
           self.overlays.default
-          jovian-nixos.overlay
+          (import "${jovian}/overlay.nix")
           # emacs-overlay.overlays.default
         ];
       };
