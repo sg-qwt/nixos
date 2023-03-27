@@ -2,4 +2,5 @@
 [
   ./hardware-configuration.nix
   ./configuration.nix
-] ++ inputs.jovian-nixos.nixosModules.jovian.imports
+  "${inputs.jovian}/modules"
+]
