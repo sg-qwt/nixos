@@ -27,6 +27,8 @@ helpers.mkProfile s "qqqemacs"
           smartparens
           evil-cleverparens
 
+          pdf-tools
+
         ]) ++
         (with epkgs.elpaPackages; [
           use-package
