@@ -21,8 +21,6 @@
 
   (auto-save-list-file-prefix (concat temporary-file-directory "auto-saves-list/.saves-"))
 
-  (global-display-line-numbers-mode 1)
-  (display-line-numbers 'relative)
 
   (use-dialog-box nil)
 
@@ -236,15 +234,6 @@
 (use-package hcl-mode
   :mode "\\.tf\\'")
 
-(use-package pdf-tools
-  :mode ("\\.pdf$" . pdf-view-mode)
-  :config
-  (pdf-tools-install)
-  (add-hook 'pdf-view-mode-hook
-	    (lambda ()
-	      (set (make-local-variable 'evil-normal-state-cursor) (list nil))
-	      (display-line-numbers-mode 0))))
-
 (use-package org-roam
   :demand t
   :general
@@ -341,3 +330,40 @@
   :config
   (require 'evil-cleverparens-text-objects))
 
+;;;;;;;;;
+;; pdf ;;
+;;;;;;;;;
+(use-package pdf-tools
+  :mode ("\\.pdf$" . pdf-view-mode)
+  :config
+  (pdf-tools-install)
+  (add-hook 'pdf-view-mode-hook
+	    (lambda ()
+	      (set (make-local-variable 'evil-normal-state-cursor) (list nil)))))
+
+;;;;;;;;;;;;
+;; nov.el ;;
+;;;;;;;;;;;;
+(use-package nov
+  :mode ("\\.epub$" . nov-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; display line numbers ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package display-line-numbers
+  :config
+  (setq display-line-numbers-type 'relative)
+  (defcustom display-line-numbers-exempt-modes
+    '(nov-mode
+      pdf-view-mode)
+    "Major modes on which to disable line numbers."
+    :group 'display-line-numbers
+    :type 'list
+    :version "green")
+  (defun display-line-numbers--turn-on ()
+    "Turn on line numbers except for certain modes.
+  Exempt major modes are defined in `display-line-numbers-exempt-modes'."
+    (unless (or (minibufferp)
+                (member major-mode display-line-numbers-exempt-modes))
+      (display-line-numbers-mode)))
+  (global-display-line-numbers-mode))
