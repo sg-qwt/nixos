@@ -28,6 +28,7 @@ helpers.mkProfile s "qqqemacs"
           evil-cleverparens
 
           pdf-tools
+          nov
 
         ]) ++
         (with epkgs.elpaPackages; [
@@ -58,6 +59,7 @@ helpers.mkProfile s "qqqemacs"
           search-epkgs
           ripgrep
           (aspellWithDicts (ds: with ds; [ en ]))
+          unzip
           (makeDesktopItem {
             name = "org-protocol";
             exec = "emacsclient %u";
