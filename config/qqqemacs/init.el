@@ -21,6 +21,7 @@
 
   (auto-save-list-file-prefix (concat temporary-file-directory "auto-saves-list/.saves-"))
 
+  (global-display-line-numbers-mode 1)
   (display-line-numbers 'relative)
 
   (use-dialog-box nil)
@@ -235,6 +236,15 @@
 (use-package hcl-mode
   :mode "\\.tf\\'")
 
+(use-package pdf-tools
+  :mode ("\\.pdf$" . pdf-view-mode)
+  :config
+  (pdf-tools-install)
+  (add-hook 'pdf-view-mode-hook
+	    (lambda ()
+	      (set (make-local-variable 'evil-normal-state-cursor) (list nil))
+	      (display-line-numbers-mode 0))))
+
 (use-package org-roam
   :demand t
   :general
@@ -330,3 +340,4 @@
   ((emacs-lisp-mode) . evil-cleverparens-mode)
   :config
   (require 'evil-cleverparens-text-objects))
+
