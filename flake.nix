@@ -9,7 +9,7 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -128,7 +128,7 @@
           hello-custom = pkgs.my.hello-custom;
           proton-ge = pkgs.my.proton-ge;
         } //
-        (import ./images.nix {inherit nixpkgs system rootPath pkgs;}));
+        (import ./images.nix { inherit nixpkgs system rootPath pkgs; }));
 
       devShells."${system}".infra = (import ./shells/infra.nix { inherit pkgs rootPath; });
 
