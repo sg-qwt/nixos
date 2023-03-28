@@ -90,21 +90,6 @@
         ];
       };
 
-      makeAzureBase = (nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = { inherit pkgs rootPath; };
-        modules = [
-          (import ./hosts/azure)
-        ];
-      }).config.system.build.azureImage;
-
-      makeGnome = (nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-gnome.nix"
-        ];
-      }).config.system.build.isoImage;
-
       mkOS = name: {
         ${name} = nixpkgs.lib.nixosSystem {
           inherit system;
@@ -138,12 +123,12 @@
         };
 
       # expose packages to flake here
-      packages."${system}" = flake-utils.lib.flattenTree {
-        hello-custom = pkgs.my.hello-custom;
-        proton-ge = pkgs.my.proton-ge;
-        azure-image = makeAzureBase;
-        gnome-image = makeGnome;
-      };
+      packages."${system}" = flake-utils.lib.flattenTree
+        ({
+          hello-custom = pkgs.my.hello-custom;
+          proton-ge = pkgs.my.proton-ge;
+        } //
+        (import ./images.nix {inherit nixpkgs system rootPath pkgs;}));
 
       devShells."${system}".infra = (import ./shells/infra.nix { inherit pkgs rootPath; });
 
