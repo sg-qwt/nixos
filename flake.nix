@@ -85,16 +85,16 @@
 
         overlays = [
           self.overlays.default
-          (import "${jovian}/overlay.nix")
           # emacs-overlay.overlays.default
         ];
       };
 
-      mkOS = name: {
+      mkOS = { name, p ? pkgs }: {
         ${name} = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit pkgs home-manager helpers self inputs rootPath;
+            inherit home-manager helpers self inputs rootPath;
+            pkgs = p;
           };
           modules = [
             nur.nixosModules.nur
@@ -135,10 +135,14 @@
       nixosConfigurations =
         builtins.foldl' (x: y: x // y) { }
           [
-            (mkOS "ge")
-            (mkOS "zheng")
-            (mkOS "dui")
-            (mkOS "lei")
+            (mkOS { name = "ge"; })
+            (mkOS
+              {
+                name = "zheng";
+                p = (pkgs.extend (import "${jovian}/overlay.nix"));
+              })
+            (mkOS { name = "dui"; })
+            (mkOS { name = "lei"; })
           ];
 
     };
