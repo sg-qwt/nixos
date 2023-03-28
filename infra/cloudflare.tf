@@ -17,6 +17,6 @@ resource "cloudflare_api_token" "cf_acme_token" {
 }
 
 output "cloudflare_token" {
-  value = cloudflare_api_token.cf_acme_token.value
+  value     = cloudflare_api_token.cf_acme_token.value
   sensitive = true
 }

@@ -29,7 +29,7 @@ let edg = config.myos.data.fqdn.edg; in
     extraDomainNames = [ "*.${edg}" ];
     credentialsFile = config.sops.templates.acme-credential.path;
   };
-  users.users.nginx.extraGroups = [config.users.groups.acme.name];
+  users.users.nginx.extraGroups = [ config.users.groups.acme.name ];
 
   services.nginx = {
     enable = true;
