@@ -5,7 +5,7 @@ terraform {
     }
 
     cloudflare = {
-      source  = "cloudflare/cloudflare"
+      source = "cloudflare/cloudflare"
     }
   }
 

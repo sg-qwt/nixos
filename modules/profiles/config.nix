@@ -6,7 +6,7 @@
   };
 
   config =
-      {
+    {
       assertions = [
         {
           assertion =
@@ -14,10 +14,10 @@
               vals = lib.attrValues config.myos.data.ports;
               noCollision = l: lib.length (lib.unique l) == lib.length l;
             in
-              noCollision vals;
+            noCollision vals;
           message = "ports collision defined in config/data.json";
         }
       ];
       myos.data = lib.importJSON (rootPath + "/config/data.json");
-      } ;
+    };
 }
