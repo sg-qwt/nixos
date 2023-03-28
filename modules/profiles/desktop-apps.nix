@@ -28,8 +28,7 @@ helpers.mkProfile s "desktop-apps"
         '';
       })
 
-      qbittorrent
-
+      element-desktop
     ];
   };
 }
