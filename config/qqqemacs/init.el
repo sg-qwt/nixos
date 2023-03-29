@@ -67,7 +67,7 @@
   (evil-mode 1))
 
 (use-package evil-collection
-  :after evil
+  :after (evil magit)
   :custom
   (evil-collection-setup-minibuffer t)
   :config
@@ -188,9 +188,14 @@
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package magit
+  :demand t
   :general
   (qqq/leader
-    "g s" #'magit-status))
+    "g s" #'magit-status)
+  (general-def
+    '(normal)
+    magit-status-mode-map
+    "<escape>" #'transient-quit-one))
 
 (use-package marginalia
   :after evil
