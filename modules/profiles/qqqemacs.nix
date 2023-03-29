@@ -68,7 +68,7 @@ helpers.mkProfile s "qqqemacs"
           unzip
           (makeDesktopItem {
             name = "org-protocol";
-            exec = "emacsclient %u";
+            exec = "emacsclient --create-frame %u";
             comment = "Org Protocol";
             desktopName = "org-protocol";
             type = "Application";
