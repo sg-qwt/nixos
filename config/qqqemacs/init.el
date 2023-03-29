@@ -112,6 +112,12 @@
     "/" #'consult-ripgrep)
 
   (qqq/leader
+    :infix "c"
+    "l" #'comment-line
+    "b" #'comment-box
+    "r" #'comment-or-uncomment-region)
+
+  (qqq/leader
     :infix "h"
     "s" #'describe-symbol
     "k" #'describe-key
@@ -367,3 +373,56 @@
                 (member major-mode display-line-numbers-exempt-modes))
       (display-line-numbers-mode)))
   (global-display-line-numbers-mode))
+
+
+;;;;;;;;;;;;
+;; embark ;;
+;;;;;;;;;;;;
+(use-package embark
+  :general
+  (general-def 'override
+    "C-a" 'embark-act
+    "C-q" 'embark-dwim
+    "C-h B" 'embark-bindings)
+  (general-def
+    '(normal insert)
+    minibuffer-local-map
+    "C-e" 'qqq/embark-export-write)
+  :init
+  (setq prefix-help-command #'embark-prefix-help-command)
+  (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+  ;; borrowed from doom
+  (defun qqq/embark-export-write ()
+    "Export the current vertico results to a writable buffer if possible.
+Supports exporting consult-grep to wgrep, file to wdeired, and consult-location to occur-edit"
+    (interactive)
+    (require 'embark)
+    (require 'wgrep)
+    (let* ((edit-command
+	    (pcase-let ((`(,type . ,candidates)
+			 (run-hook-with-args-until-success 'embark-candidate-collectors)))
+	      (pcase type
+		('consult-grep #'wgrep-change-to-wgrep-mode)
+		('file #'wdired-change-to-wdired-mode)
+		('consult-location #'occur-edit-mode))))
+	   (embark-after-export-hook `(,@embark-after-export-hook ,edit-command)))
+      (embark-export)))
+  :custom
+  (embark-quit-after-action t)
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+(use-package embark-consult
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
+;;;;;;;;;;;
+;; wgrep ;;
+;;;;;;;;;;;
+(use-package wgrep
+  :custom
+  (wgrep-auto-save-buffer t))
