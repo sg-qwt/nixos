@@ -58,6 +58,8 @@ helpers.mkProfile s "qqqemacs"
         package = qqqemacs;
       };
 
+      systemd.user.services.emacs.wantedBy = [ "graphical-session.target" ];
+
       environment = {
         systemPackages = with pkgs; [
           search-epkgs
