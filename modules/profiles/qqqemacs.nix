@@ -24,6 +24,10 @@ helpers.mkProfile s "qqqemacs"
 
           org-roam
 
+          embark
+          embark-consult
+          wgrep
+
           smartparens
           evil-cleverparens
 
