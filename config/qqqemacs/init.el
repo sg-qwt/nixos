@@ -277,7 +277,6 @@
     (org-roam-capture- :goto nil :keys "p" :node (org-roam-node-create)))
 
   (require 'org-roam-protocol)
-  (org-roam-db-autosync-mode)
   (add-to-list 'display-buffer-alist
 	       '("\\*org-roam\\*"
 		 (display-buffer-in-direction)
