@@ -42,6 +42,7 @@ let edg = config.myos.data.fqdn.edg; in
         forceSSL = true;
         acmeRoot = null;
         useACMEHost = "edg";
+
         locations."/" = {
           root = pkgs.writeTextDir "index.html" "Hello world!";
         };
