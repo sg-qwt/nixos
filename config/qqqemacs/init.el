@@ -140,9 +140,21 @@
     "s b" #'consult-line
     "s p" #'project-find-file)
 
+  (defun qqq/switch-to-scratch ()
+    (interactive)
+    (switch-to-buffer "*scratch*"))
+
+  (defun qqq/switch-to-message ()
+    (interactive)
+    (display-buffer "*Messages*"))
+
   (qqq/leader
-    "b b" #'consult-buffer
-    "b p" #'qqq/consult-buffer-p)
+    :infix "b"
+    "b" #'consult-buffer
+    "s" #'qqq/switch-to-scratch
+    "m" #'qqq/switch-to-message
+    "p" #'qqq/consult-buffer-p
+    "d" #'kill-current-buffer)
 
   (qqq/leader
     "f f" #'find-file
@@ -166,17 +178,7 @@
   :after vertico
   :custom
   (consult-narrow-key "<")
-  (consult-preview-excluded-files '(".*\\.gpg$"))
-  :general
-  (general-imap "M-/" 'completion-at-point)
-  :config
-  (setq completion-in-region-function
-	(lambda (&rest args)
-	  (apply (if vertico-mode
-		     #'consult-completion-in-region
-		   #'completion--in-region)
-		 args))))
-
+  (consult-preview-excluded-files '(".*\\.gpg$")))
 
 (use-package cape
   :init
@@ -226,7 +228,7 @@
    "C-l" 'vertico-insert
    "C-p" 'previous-history-element
    "C-n" 'next-history-element 
-   "C-h" 'vertico-directory-delete-word
+   "C-w" 'vertico-directory-delete-word
    "C-f" 'vertico-scroll-up
    "C-b" 'vertico-scroll-down
    "C-]" 'top-level
@@ -386,8 +388,7 @@
   :general
   (general-def 'override
     "C-a" 'embark-act
-    "C-q" 'embark-dwim
-    "C-h B" 'embark-bindings)
+    "C-q" 'embark-dwim)
   (general-def
     '(normal insert)
     minibuffer-local-map
@@ -430,3 +431,27 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
 (use-package wgrep
   :custom
   (wgrep-auto-save-buffer t))
+
+;;;;;;;;;;;
+;; corfu ;;
+;;;;;;;;;;;
+(use-package corfu
+  :demand t
+  :general
+  (general-def
+    '(insert)
+    corfu-map
+    "C-l" 'corfu-complete
+    "C-m" 'corfu-move-to-minibuffer)
+  :custom
+  (corfu-auto t)
+  (corfu-cycle t)
+  (corfu-auto-delay 0)
+  (tab-always-indent 'complete)
+  :init
+  (defun corfu-move-to-minibuffer ()
+    (interactive)
+    (let ((completion-extra-properties corfu--extra)
+	  completion-cycle-threshold completion-cycling)
+      (apply #'consult-completion-in-region completion-in-region--data)))
+  (global-corfu-mode))

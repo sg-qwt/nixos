@@ -6,19 +6,24 @@ helpers.mkProfile s "qqqemacs"
       emacsWithPackages = (pkgs.emacsPackagesFor myEmacs).emacsWithPackages;
       qqqemacs = emacsWithPackages (epkgs:
         (with epkgs.melpaStablePackages; [
-          modus-themes
         ]) ++
         (with epkgs.melpaPackages; [
+          modus-themes
+
           evil
           evil-collection
           evil-org
           general
+
           orderless
           marginalia
           consult
           cape
+
           command-log-mode
+
           magit
+
           nix-mode
           hcl-mode
 
@@ -38,6 +43,7 @@ helpers.mkProfile s "qqqemacs"
         (with epkgs.elpaPackages; [
           use-package
           vertico
+          corfu
         ]));
       search-epkgs = pkgs.writeShellScriptBin "search-epkgs" ''
         (nix search nixpkgs#emacs.pkgs.melpaStablePackages $*
