@@ -8,6 +8,9 @@ let
     sopsFile = rootPath + "/secrets/secrets.yaml";
     restartUnits = [ "clash-meta.service" ];
   };
+  host = "127.0.0.1";
+  inherit (config.myos.data) ports;
+  yacd-url = "${host}:${toString ports.clash-meta-api}";
 in
 {
   options.myos.clash-meta = {
@@ -67,7 +70,7 @@ in
 
       services.nginx.enable = true;
       services.nginx.virtualHosts.localhost = {
-        root = "${pkgs.my.yacd-meta}";
+        root = "${(pkgs.my.yacd-meta.override {inherit yacd-url;})}";
       };
 
       programs.proxychains = {
@@ -75,10 +78,10 @@ in
         quietMode = true;
         proxies = {
           clash = {
+            inherit host;
             enable = true;
             type = "socks5";
-            host = "127.0.0.1";
-            port = config.myos.data.ports.clash-meta-mixed;
+            port = ports.clash-meta-mixed;
           };
         };
       };
