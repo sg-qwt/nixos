@@ -71,6 +71,8 @@ in
   swapDevices =
     [{ device = "/dev/disk/by-uuid/6b5c6135-985d-43fd-84d0-a9212cdfe319"; }];
 
+  services.btrfs.autoScrub.enable = true;
+
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
