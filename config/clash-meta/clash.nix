@@ -1,12 +1,15 @@
 { config }:
+let
+  inherit (config.myos.data) ports fqdn path;
+in
 rec {
-  mixed-port = config.myos.data.ports.clash-meta-mixed;
+  mixed-port = ports.clash-meta-mixed;
 
   allow-lan = false;
 
   ipv6 = true;
 
-  external-controller = "127.0.0.1:${toString config.myos.data.ports.clash-meta-api}";
+  external-controller = "127.0.0.1:${toString ports.clash-meta-api}";
 
   log-level = "warning";
 
@@ -54,13 +57,27 @@ rec {
       name = "azv6test";
       type = "ss";
       server = config.sops.placeholder.dui_ipv6;
-      port = config.myos.data.ports.ss1;
+      port = ports.ss1;
       cipher = "chacha20-ietf-poly1305";
       password = config.sops.placeholder.sspass;
       udp = true;
     }
+    {
+      name = "sswebsoc";
+      type = "ss";
+      server = "${fqdn.edg}";
+      port = 443;
+      cipher = "chacha20-ietf-poly1305";
+      password = config.sops.placeholder.sspass;
+      plugin = "v2ray-plugin";
+      plugin-opts = {
+        mode = "websocket";
+        tls = true;
+        host = "${fqdn.edg}";
+        path = "${path.ss2}";
+      };
+    }
   ];
-
 
   proxy-providers = {
     london = {
