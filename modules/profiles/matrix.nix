@@ -84,11 +84,6 @@ helpers.mkProfile s "matrix" (
       "= /.well-known/matrix/client".extraConfig = mkWellKnown clientConfig;
       "/_matrix" = {
         proxyPass = "http://[::1]:${toString httpPort}";
-        extraConfig = ''
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_read_timeout 600;
-        '';
       };
     };
 
