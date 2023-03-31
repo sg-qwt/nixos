@@ -10,7 +10,9 @@ let edg = config.myos.data.fqdn.edg; in
   myos.common.enable = true;
   myos.users.enable = true;
   myos.tmux.enable = true;
+
   myos.ssserver.enable = true;
+  myos.matrix.enable = true;
 
 
   sops.secrets.cloudflare_token = {
@@ -38,7 +40,7 @@ let edg = config.myos.data.fqdn.edg; in
     recommendedGzipSettings = true;
     recommendedProxySettings = true;
     virtualHosts = {
-      "${config.myos.data.fqdn.edg}" = {
+      "${edg}" = {
         forceSSL = true;
         acmeRoot = null;
         useACMEHost = "edg";

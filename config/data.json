@@ -3,7 +3,8 @@
 	"ss1": 2952,
 	"ss2": 8964,
 	"clash-meta-mixed": 7891,
-	"clash-meta-api": 9091
+	"clash-meta-api": 9091,
+	"dendrite": 8008
     },
     "fqdn":{
 	"edg": "edgerunners.eu.org"
