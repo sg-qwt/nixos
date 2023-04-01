@@ -6,19 +6,16 @@ helpers.mkProfile s "desktop-apps"
   home-manager.users."${config.myos.users.mainUser}" = {
 
     home.packages = with pkgs; [
-
       # browsers
-      # firefox
       chromium
 
       # media
       vlc
       (spotify.override { deviceScaleFactor = 2; })
+
       # irc
       slack
-
-      # discord
-
+      element-desktop
       (pkgs.symlinkJoin {
         name = "tdesktop";
         paths = [ pkgs.tdesktop ];
@@ -27,8 +24,6 @@ helpers.mkProfile s "desktop-apps"
           wrapProgram $out/bin/telegram-desktop --set QT_QPA_PLATFORM xcb
         '';
       })
-
-      element-desktop
     ];
   };
 }
