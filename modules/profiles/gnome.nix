@@ -68,6 +68,7 @@ helpers.mkProfile s "gnome"
           "org/gnome/desktop/sound".event-sounds = false;
 
           "org/gnome/mutter".workspaces-only-on-primary = false;
+          "org/gnome/mutter".experimental-features = [ "scale-monitor-framebuffer" ];
 
           "org/gnome/shell/keybindings" = {
             switch-to-application-1 = [ ];

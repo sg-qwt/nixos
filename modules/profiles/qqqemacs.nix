@@ -2,7 +2,7 @@ s@{ config, pkgs, lib, helpers, rootPath, ... }:
 helpers.mkProfile s "qqqemacs"
   (
     let
-      myEmacs = pkgs.emacs;
+      myEmacs = pkgs.emacsPgtk;
       emacsWithPackages = (pkgs.emacsPackagesFor myEmacs).emacsWithPackages;
       qqqemacs = emacsWithPackages (epkgs:
         (with epkgs.melpaStablePackages; [
