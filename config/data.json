@@ -11,7 +11,7 @@
 	"edg": "edgerunners.eu.org"
     },
     "path": {
-	"ss2": "/mopi"
+	"ss2": "/mopi",
 	"miniflux": "/flux"
     }
 }
