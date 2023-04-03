@@ -4,12 +4,14 @@
 	"ss2": 8964,
 	"clash-meta-mixed": 7891,
 	"clash-meta-api": 9091,
-	"dendrite": 8008
+	"dendrite": 8008,
+	"miniflux": 8018
     },
     "fqdn":{
 	"edg": "edgerunners.eu.org"
     },
     "path": {
 	"ss2": "/mopi"
+	"miniflux": "/flux"
     }
 }
