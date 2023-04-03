@@ -130,4 +130,9 @@ in
   user_api = {
     bcrypt_cost = 10;
   };
+
+  mscs.mscs = [
+    # spaces
+    "msc2946"
+  ];
 }
