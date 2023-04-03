@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, rootPath, ... }:
 
 with lib;
 
@@ -19,6 +19,15 @@ in {
             user = "me";
           };
         };
+
+        userKnownHostsFile =
+          let
+            knownHosts = pkgs.writeTextFile {
+              name = "known_hosts";
+              text = builtins.readFile (rootPath + "/config/known_hosts");
+            };
+          in
+          "~/.ssh/known_hosts ${knownHosts}";
       };
     };
   };
