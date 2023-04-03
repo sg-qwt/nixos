@@ -63,6 +63,12 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
   };
 
   outputs = { self, ... }@inputs:
@@ -85,7 +91,7 @@
 
         overlays = [
           self.overlays.default
-          # emacs-overlay.overlays.default
+          emacs-overlay.overlays.default
         ];
       };
 
