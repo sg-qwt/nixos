@@ -178,10 +178,15 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
 }
 
+locals {
+  dui_ipv4 = azurerm_public_ip.public_ip_v4.ip_address
+  dui_ipv6 = azurerm_public_ip.public_ip_v6.ip_address
+}
+
 output "dui_ipv4" {
-  value = azurerm_public_ip.public_ip_v4.ip_address
+  value = local.dui_ipv4
 }
 
 output "dui_ipv6" {
-  value = azurerm_public_ip.public_ip_v6.ip_address
+  value = local.dui_ipv6
 }
