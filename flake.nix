@@ -134,7 +134,7 @@
           hello-custom = pkgs.my.hello-custom;
           proton-ge = pkgs.my.proton-ge;
         } //
-        (import ./images.nix { inherit nixpkgs system rootPath pkgs; }));
+        (import ./images.nix { inherit jovian nixpkgs system rootPath pkgs; }));
 
       devShells."${system}".infra = (import ./shells/infra.nix { inherit pkgs rootPath; });
 
