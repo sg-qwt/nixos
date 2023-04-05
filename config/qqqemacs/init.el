@@ -393,7 +393,15 @@
     '(normal insert)
     minibuffer-local-map
     "C-e" 'qqq/embark-export-write)
+  (general-def embark-command-map "x" #'qqq/exec-with-prefix)
+
   :init
+  (defun qqq/exec-with-prefix (target)
+    (interactive
+     (list (read-string "Read target command ")))
+    (let ((prefix (read-from-minibuffer "Execute with prefix: ")))
+      (execute-extended-command prefix target)))
+  
   (setq prefix-help-command #'embark-prefix-help-command)
   (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
   ;; borrowed from doom
