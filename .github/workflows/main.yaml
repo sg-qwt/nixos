@@ -1,4 +1,5 @@
 name: "Build"
+on: workflow_dispatch
 jobs:
   build-nixos-configuration:
     strategy:
