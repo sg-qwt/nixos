@@ -61,10 +61,16 @@ in
         restartTriggers = [
           config.sops.templates.clashm.content
         ];
-        serviceConfig = {
+        serviceConfig = rec {
           User = "clash-meta";
           Restart = "on-failure";
           WorkingDirectory = cfg.stateDir;
+          CapabilityBoundingSet = [
+            "CAP_NET_BIND_SERVICE"
+            "CAP_NET_ADMIN"
+            "CAP_NET_RAW"
+          ];
+          AmbientCapabilities = CapabilityBoundingSet;
         };
       };
 
