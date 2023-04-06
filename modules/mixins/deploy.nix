@@ -1,6 +1,6 @@
 { config, lib, pkgs, rootPath, ... }:
 {
-  system.stateVersion = "22.05";
+  system.stateVersion = "22.11";
   nix.settings.trusted-users = [ "@wheel" "deploy" ];
   nix.extraOptions = "experimental-features = nix-command flakes repl-flake";
 
