@@ -4,6 +4,7 @@ let
 in
 rec {
   mixed-port = ports.clash-meta-mixed;
+  tproxy-port = 7893;
 
   allow-lan = false;
 
@@ -15,18 +16,6 @@ rec {
 
   mode = "rule";
 
-  interface-name = "enp5s0";
-
-  tun = {
-    enable = true;
-    stack = "gvisor";
-    dns-hijack = [ "any:53" ];
-    auto-route = true;
-    auto-redir = true;
-    auto-detect-interface = false;
-  };
-
-  
   dns = {
     enable = true;
     ipv6 = true;
