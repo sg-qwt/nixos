@@ -44,6 +44,7 @@ helpers.mkProfile s "qqqemacs"
           use-package
           vertico
           corfu
+          nftables-mode
         ]));
       search-epkgs = pkgs.writeShellScriptBin "search-epkgs" ''
         (nix search nixpkgs#emacs.pkgs.melpaStablePackages $*
