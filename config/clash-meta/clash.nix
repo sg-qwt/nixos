@@ -12,7 +12,7 @@ rec {
 
   external-controller = "127.0.0.1:${toString ports.clash-meta-api}";
 
-  log-level = "debug";
+  log-level = "warning";
 
   mode = "rule";
 
