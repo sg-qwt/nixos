@@ -463,3 +463,9 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
 	  completion-cycle-threshold completion-cycling)
       (apply #'consult-completion-in-region completion-in-region--data)))
   (global-corfu-mode))
+
+;;;;;;;;;;;;;;
+;; nftables ;;
+;;;;;;;;;;;;;;
+(use-package nftables-mode
+  :mode "\\.nft\\'")
