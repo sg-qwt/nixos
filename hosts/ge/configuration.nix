@@ -14,7 +14,8 @@
 
   networking.hostId = "2aaaac5b";
   networking.networkmanager.enable = true;
-  # programs.mtr.enable = true;
+  networking.networkmanager.firewallBackend = "nftables";
+  networking.nftables.enable = true;
 
   services.pcscd.enable = true;
 
@@ -49,8 +50,6 @@
   myos.clash-meta.enable = true;
 
   myos.wireguard.enable = true;
-
-  myos.docker.enable = true;
 
   services.blueman.enable = true;
 
