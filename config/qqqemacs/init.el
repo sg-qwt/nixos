@@ -27,6 +27,8 @@
   (enable-recursive-minibuffers t)
   (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
   (global-auto-revert-non-file-buffers t)
+
+  (use-short-answers t)
   :config
   (load custom-file t)
   (savehist-mode 1)
@@ -197,7 +199,12 @@
   (general-def
     '(normal)
     magit-status-mode-map
-    "<escape>" #'transient-quit-one))
+    "<escape>" #'transient-quit-one)
+  :config
+  ;; https://github.com/magit/magit/issues/4739
+  (add-hook 'magit-status-mode-hook
+	    (lambda ()
+	      (setq truncate-lines nil))))
 
 (use-package marginalia
   :after evil
