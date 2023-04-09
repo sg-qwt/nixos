@@ -18,10 +18,3 @@ creation_rules:
     key_groups:
     - pgp:
       - *main
-  - path_regex: clash\.yaml\.bin$
-    key_groups:
-    - pgp:
-      - *main
-      age:
-      - *ge
-      - *lei

@@ -4,7 +4,7 @@ let
 in
 rec {
   mixed-port = ports.clash-meta-mixed;
-  tproxy-port = 7893;
+  tproxy-port = ports.clash-tproxy;
 
   allow-lan = false;
 
@@ -19,37 +19,31 @@ rec {
   dns = {
     enable = true;
     ipv6 = true;
-    listen = "0.0.0.0:53";
+    listen = "0.0.0.0:${toString ports.clash-dns}";
 
+    enhanced-mode = "fake-ip";
+    fake-ip-range = "198.18.0.1/16";
 
     default-nameserver = [
       "223.5.5.5"
-      "119.29.29.29"
     ];
 
-    nameserver =
-      [
+    nameserver = [
+      "tls://8.8.4.4#select"
+      "tls://1.0.0.1#select"
+    ];
+
+    nameserver-policy = {
+      "geosite:geolocation-cn" = [
         "https://doh.pub/dns-query"
         "https://dns.alidns.com/dns-query"
-        "https://mozilla.cloudflare-dns.com/dns-query"
       ];
 
-    enhanced-mode = "fake-ip";
-
-    fake-ip-range = "198.18.0.1/16";
-
-    fallback = [
-      "tls://1.0.0.1:853"
-      "https://cloudflare-dns.com/dns-query"
-      "https://dns.google/dns-query"
-      "tls://8.8.4.4:853"
-    ];
-
-    fallback-filter = {
-      geoip = true;
-      geoip-code = "CN";
-      ipcidr = [ "240.0.0.0/4" "0.0.0.0/32" ];
     };
+
+    proxy-server-nameserver = [
+      "https://doh.pub/dns-query"
+    ];
 
     use-hosts = true;
   };
@@ -142,6 +136,8 @@ rec {
     ];
 
   rules = [
+    "GEOSITE,category-ads-all,REJECT"
+    "GEOSITE,geolocation-cn,DIRECT"
     "GEOIP,CN,DIRECT"
     "MATCH,select"
   ];
