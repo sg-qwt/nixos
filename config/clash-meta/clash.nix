@@ -21,8 +21,8 @@ rec {
     ipv6 = true;
     listen = "0.0.0.0:${toString ports.clash-dns}";
 
-    enhanced-mode = "fake-ip";
-    fake-ip-range = "198.18.0.1/16";
+    enhanced-mode = "redir-host";
+    # fake-ip-range = "198.18.0.1/16";
 
     default-nameserver = [
       "223.5.5.5"
@@ -35,6 +35,7 @@ rec {
 
     nameserver-policy = {
       "geosite:geolocation-cn" = [
+        "114.114.114.114"
         "https://doh.pub/dns-query"
         "https://dns.alidns.com/dns-query"
       ];
@@ -76,18 +77,6 @@ rec {
   ];
 
   proxy-providers = {
-    london = {
-      type = "http";
-      url = config.sops.placeholder.clash-provider-london;
-      interval = 3600;
-      path = "london.yaml";
-      health-check = {
-        enable = true;
-        interval = 600;
-        url = "http://www.gstatic.com/generate_204";
-      };
-    };
-
     mumbai = {
       type = "http";
       url = config.sops.placeholder.clash-provider-mumbai;
