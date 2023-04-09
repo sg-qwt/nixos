@@ -13,9 +13,12 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostId = "2aaaac5b";
+
+  networking.firewall.enable = true;
+  networking.nftables.enable = true;
   networking.networkmanager.enable = true;
   networking.networkmanager.firewallBackend = "nftables";
-  networking.nftables.enable = true;
+
 
   services.pcscd.enable = true;
 
@@ -43,10 +46,6 @@
   myos.tools.enable = true;
   myos.theme.enable = true;
 
-  # myos.clash = {
-  #   enable = true;
-  #   webui.enable = true;
-  # };
   myos.clash-meta.enable = true;
 
   myos.wireguard.enable = true;
@@ -100,6 +99,9 @@
       ncspot
       pavucontrol
       gtk3
+
+      linux-manual
+      man-pages
     ];
 
 
