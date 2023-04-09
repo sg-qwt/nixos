@@ -29,7 +29,6 @@ in
   config = mkIf cfg.enable
     {
       sops.secrets.sspass = sops-clash;
-      sops.secrets.clash-provider-london = sops-clash;
       sops.secrets.clash-provider-mumbai = sops-clash;
       sops.secrets.dui_ipv6 = {
         sopsFile = rootPath + "/secrets/tfout.json";
