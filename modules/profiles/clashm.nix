@@ -11,6 +11,9 @@ let
   host = "127.0.0.1";
   inherit (config.myos.data) ports;
   yacd-url = "${host}:${toString ports.clash-meta-api}";
+  fwmark = "0x238";
+  nft-table = "clash";
+  route-table = "8964";
 in
 {
   options.myos.clash-meta = {
@@ -51,6 +54,7 @@ in
         "d '${cfg.stateDir}' 0750 clash-meta clash-meta - -"
         "L+ '${cfg.stateDir}/config.yaml' - - - - ${config.sops.templates.clashm.path}"
         "L+ '${cfg.stateDir}/Country.mmdb' - - - - ${pkgs.clash-geoip}/etc/clash/Country.mmdb"
+        "L+ '${cfg.stateDir}/GeoSite.dat' - - - - ${pkgs.v2ray-domain-list-community}/share/v2ray/geosite.dat"
       ];
 
       systemd.services.clash-meta = {
@@ -78,6 +82,22 @@ in
       services.nginx.virtualHosts.localhost = {
         root = "${(pkgs.my.yacd-meta.override {inherit yacd-url;})}";
       };
+
+      environment.systemPackages = with pkgs; [
+        (writeShellApplication {
+          name = "enable-tproxy";
+          runtimeInputs = [ nftables iproute2 ];
+          text = (import (rootPath + "/config/clash-meta/enable-tproxy.nix")
+            { inherit fwmark ports nft-table route-table; });
+        })
+
+        (writeShellApplication {
+          name = "disable-tproxy";
+          runtimeInputs = [ nftables iproute2 ];
+          text = (import (rootPath + "/config/clash-meta/disable-tproxy.nix")
+            { inherit fwmark nft-table route-table; });
+        })
+      ];
 
       programs.proxychains = {
         enable = true;
