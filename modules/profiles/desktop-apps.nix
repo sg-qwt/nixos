@@ -11,7 +11,8 @@ helpers.mkProfile s "desktop-apps"
 
       # media
       vlc
-      (spotify.override { deviceScaleFactor = 2; })
+      # (spotify.override { deviceScaleFactor = 2; })
+      spotify
 
       # irc
       slack
