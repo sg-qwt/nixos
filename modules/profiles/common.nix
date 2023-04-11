@@ -37,10 +37,12 @@ helpers.mkProfile s "common"
       settings = {
 
         substituters = [
+          "https://ooo.edgerunners.eu.org/ghcr.io/sg-qwt/nixos"
           "https://nix-community.cachix.org"
         ];
 
         trusted-public-keys = [
+          "oranc:RZWCxVsNWs/6qPkfB17Mmk9HpkTv87UXnldHtGKkWLk="
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         ];
 

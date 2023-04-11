@@ -7,7 +7,8 @@
 	"clash-meta-api": 9091,
 	"clash-dns": 1053,
 	"dendrite": 8008,
-	"miniflux": 8018
+	"miniflux": 8018,
+	"oranc": 8020
     },
     "fqdn":{
 	"edg": "edgerunners.eu.org"
