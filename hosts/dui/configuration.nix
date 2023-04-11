@@ -14,6 +14,7 @@ let edg = config.myos.data.fqdn.edg; in
   myos.ssserver.enable = true;
   myos.matrix.enable = true;
   myos.miniflux.enable = true;
+  myos.oranc.enable = true;
 
 
   sops.secrets.cloudflare_token = {
@@ -43,7 +44,6 @@ let edg = config.myos.data.fqdn.edg; in
     virtualHosts = {
       "${edg}" = {
         forceSSL = true;
-        acmeRoot = null;
         useACMEHost = "edg";
 
         locations."/" = {
@@ -54,7 +54,6 @@ let edg = config.myos.data.fqdn.edg; in
       "_" = {
         default = true;
         forceSSL = true;
-        acmeRoot = null;
         useACMEHost = "edg";
         locations."/" = {
           return = "404";

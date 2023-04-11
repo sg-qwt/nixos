@@ -69,6 +69,12 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
+    oranc = {
+      url = "github:linyinfeng/oranc";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
   };
 
   outputs = { self, ... }@inputs:
@@ -77,14 +83,16 @@
       system = "x86_64-linux";
       rootPath = ./.;
       helpers = import ./helpers.nix;
-      nixpkgs-patched =
-        (import inputs.nixpkgs { inherit system; }).applyPatches {
-          name = "nixpkgs-patched";
-          src = inputs.nixpkgs;
-          patches = [
-          ];
-        };
-      pkgs = import nixpkgs-patched {
+
+      # nixpkgs-patched =
+      #   (import inputs.nixpkgs { inherit system; }).applyPatches {
+      #     name = "nixpkgs-patched";
+      #     src = inputs.nixpkgs;
+      #     patches = [
+      #     ];
+      #   };
+
+      pkgs = import nixpkgs {
         inherit system;
 
         config.allowUnfree = true;
@@ -92,6 +100,7 @@
         overlays = [
           self.overlays.default
           emacs-overlay.overlays.default
+          oranc.overlays.default
         ];
       };
 
@@ -105,6 +114,7 @@
           modules = [
             nur.nixosModules.nur
             home-manager.nixosModules.home-manager
+            oranc.nixosModules.oranc
             sops-nix.nixosModules.sops
             nixos-cn.nixosModules.nixos-cn
             { networking.hostName = name; }
