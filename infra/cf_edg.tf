@@ -25,6 +25,11 @@ resource "cloudflare_record" "root" {
       type  = "CNAME"
       value = local.fqdn.edg
     }
+    ooo = {
+      name  = "ooo"
+      type  = "CNAME"
+      value = local.fqdn.edg
+    }
   }
 
   allow_overwrite = true
