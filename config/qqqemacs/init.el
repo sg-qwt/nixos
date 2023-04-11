@@ -42,7 +42,38 @@
 
   (minibuffer-depth-indicate-mode 1)
   (add-to-list 'warning-suppress-types '(defvaralias))
-  (setq qqq/garden-dir (substitute-in-file-name "${MYOS_FLAKE}/garden")))
+  (setq qqq/garden-dir (substitute-in-file-name "${MYOS_FLAKE}/garden"))
+
+  ;; borrow from spacemacs
+  (defun qqq/rename-current-buffer-file ()
+    "Renames current buffer and file it is visiting."
+    (interactive)
+    (let* ((name (buffer-name))
+	   (filename (buffer-file-name)))
+      (if (not (and filename (file-exists-p filename)))
+	  (error "Buffer '%s' is not visiting a file!" name)
+	(let* ((dir (file-name-directory filename))
+	       (new-name (read-file-name "New name: " dir)))
+	  (cond ((get-buffer new-name)
+		 (error "A buffer named '%s' already exists!" new-name))
+		(t
+		 (let ((dir (file-name-directory new-name)))
+		   (when (and (not (file-exists-p dir)) (yes-or-no-p (format "Create directory '%s'?" dir)))
+		     (make-directory dir t)))
+		 (rename-file filename new-name 1)
+		 (rename-buffer new-name)
+		 (set-visited-file-name new-name)
+		 (set-buffer-modified-p nil)
+		 (when (fboundp 'recentf-add-file)
+		   (recentf-add-file new-name)
+		   (recentf-remove-if-non-kept filename))
+		 (when (and (configuration-layer/package-usedp 'projectile)
+			    (projectile-project-p))
+		   (call-interactively #'projectile-invalidate-cache))
+		 (message "File '%s' successfully renamed to '%s'" name (file-name-nondirectory new-name))))))))
+
+
+  )
 
 (use-package evil
   :demand t
@@ -110,6 +141,7 @@
   (qqq/local-leader "" nil)
 
   (qqq/leader
+    "TAB" #'mode-line-other-buffer
     "SPC" #'execute-extended-command
     "/" #'consult-ripgrep)
 
@@ -137,10 +169,14 @@
     "t s" #'consult-theme
     "t t" #'modus-themes-toggle)
 
+  ;;;;;;;;;;;;
+  ;; search ;;
+  ;;;;;;;;;;;;
   (qqq/leader
-    "s c" #'evil-ex-nohighlight
-    "s b" #'consult-line
-    "s p" #'project-find-file)
+    :infix "s"
+    "c" #'evil-ex-nohighlight
+    "b" #'consult-line
+    "p" #'consult-ripgrep)
 
   (defun qqq/switch-to-scratch ()
     (interactive)
@@ -158,9 +194,16 @@
     "p" #'qqq/consult-buffer-p
     "d" #'kill-current-buffer)
 
+  ;;;;;;;;;;
+  ;; file ;;
+  ;;;;;;;;;;
   (qqq/leader
-    "f f" #'find-file
-    "f d" #'dired)
+    :infix "f"
+    "r" #'qqq/rename-current-buffer-file
+    "f" #'find-file
+    "p" #'project-find-file
+    "d" #'dired-jump
+    "D" #'dired-jump-other-window)
 
   (qqq/leader
     "q" #'save-buffers-kill-emacs)
@@ -271,6 +314,7 @@
   (org-directory qqq/garden-dir)
   (org-roam-directory qqq/garden-dir)
   (org-roam-file-exclude-regexp "templates/")
+  (org-roam-database-connector 'sqlite-builtin)
   :config
   (setq org-roam-capture-new-node-hook nil)
   (setq org-roam-capture-templates
@@ -404,6 +448,7 @@
 
   :init
   (defun qqq/exec-with-prefix (target)
+    "Execute command with prefix."
     (interactive
      (list (read-string "Read target command ")))
     (let ((prefix (read-from-minibuffer "Execute with prefix: ")))
