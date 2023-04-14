@@ -12,6 +12,8 @@ in
 pkgs.mkShell {
   name = "terraform-infra";
   nativeBuildInputs = [
+    pkgs.babashka
+    pkgs.oranc
     pkgs.azure-cli
     pkgs.jq
     tf
