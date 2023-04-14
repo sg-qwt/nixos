@@ -5,7 +5,7 @@
       (builtins.attrNames (builtins.readDir ./modules/profiles)));
 
   default-overlays =
-    inputs: final: prev:
+    args: final: prev:
     {
       my =
         (builtins.listToAttrs
@@ -13,7 +13,7 @@
             (pkgname:
               {
                 name = pkgname;
-                value = prev.callPackage (./packages + "/${pkgname}") { inherit inputs; };
+                value = (prev.callPackage (./packages + "/${pkgname}") args);
               })
             (builtins.attrNames (builtins.readDir ./packages))));
     };
@@ -27,4 +27,8 @@
       config = s.lib.mkIf s.config.myos."${pname}".enable body;
     };
 
+  shells = args:
+    (builtins.foldl' (a: b: a // b) { }
+      (map (sname: { "${sname}" = (import (./shells + "/${sname}") args); })
+        (builtins.attrNames (builtins.readDir ./shells))));
 }
