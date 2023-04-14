@@ -6,6 +6,10 @@ helpers.mkProfile s "qqqemacs"
       emacsWithPackages = (pkgs.emacsPackagesFor myEmacs).emacsWithPackages;
       qqqemacs = emacsWithPackages (epkgs:
         (with epkgs.melpaStablePackages; [
+          clojure-mode
+          clojure-mode-extra-font-locking
+          cider
+          cider-eval-sexp-fu
         ]) ++
         (with epkgs.melpaPackages; [
           modus-themes
@@ -39,9 +43,10 @@ helpers.mkProfile s "qqqemacs"
           pdf-tools
           nov
 
+          peep-dired
+
         ]) ++
         (with epkgs.elpaPackages; [
-          use-package
           vertico
           corfu
           nftables-mode

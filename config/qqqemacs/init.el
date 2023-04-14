@@ -178,10 +178,6 @@
     "b" #'consult-line
     "p" #'consult-ripgrep)
 
-  (defun qqq/switch-to-scratch ()
-    (interactive)
-    (switch-to-buffer "*scratch*"))
-
   (defun qqq/switch-to-message ()
     (interactive)
     (display-buffer "*Messages*"))
@@ -189,7 +185,7 @@
   (qqq/leader
     :infix "b"
     "b" #'consult-buffer
-    "s" #'qqq/switch-to-scratch
+    "s" #'scratch-buffer
     "m" #'qqq/switch-to-message
     "p" #'qqq/consult-buffer-p
     "d" #'kill-current-buffer)
@@ -207,11 +203,6 @@
 
   (qqq/leader
     "q" #'save-buffers-kill-emacs)
-
-  (qqq/local-leader
-    "e b" #'eval-buffer
-    "e f" #'eval-defun
-    "e e" #'eval-expression)
 
   (qqq/local-leader
     with-editor-mode-map
@@ -296,6 +287,9 @@
 
 (use-package hcl-mode
   :mode "\\.tf\\'")
+
+(use-package yaml-ts-mode
+  :mode "\\.ya?ml\\'")
 
 (use-package org-roam
   :demand t
@@ -389,7 +383,7 @@
 (use-package evil-cleverparens
   :after (evil smartparens)
   :hook
-  ((emacs-lisp-mode) . evil-cleverparens-mode)
+  ((emacs-lisp-mode clojure-mode) . evil-cleverparens-mode)
   :config
   (require 'evil-cleverparens-text-objects))
 
@@ -521,3 +515,175 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
 ;;;;;;;;;;;;;;
 (use-package nftables-mode
   :mode "\\.nft\\'")
+
+;;;;;;;;;;;;;
+;; clojure ;;
+;;;;;;;;;;;;;
+(use-package clojure-mode
+  :config
+  (require 'clojure-mode-extra-font-locking))
+
+(use-package cider
+  :after evil-collection
+  :hook (clojure-mode . cider-mode)
+  :general
+  (general-unbind cider-repl-mode-map ",")
+  (general-def
+    '(normal insert)
+    cider-repl-mode-map
+    "C-l" #'cider-repl-clear-buffer)
+
+  (qqq/local-leader
+    clojure-mode-map
+    :infix "e"
+    "b" #'cider-eval-buffer
+    "r" #'cider-eval-region
+    "(" #'cider-eval-list-at-point
+    "f" #'cider-eval-defun-at-point
+    ";" #'cider-eval-defun-to-comment
+    "i" #'cider-interrupt
+    "m" #'cider-macroexpand-1
+    "M" #'cider-macroexpand-all)
+
+  (qqq/local-leader
+    :keymaps '(clojure-mode-map cider-repl-mode-map)
+    :infix "s"
+    "a" #'qqq/cider-switch)
+
+  (qqq/local-leader
+    clojure-mode-map
+    :infix "s"
+    "b" #'cider-load-buffer
+    "n" #'qqq/cider-send-ns-form-to-repl
+    "N" #'qqq/cider-send-ns-form-to-repl-focus
+    "f" #'qqq/cider-send-function-to-repl
+    "F" #'qqq/cider-send-function-to-repl-focus
+    "r" #'qqq/cider-send-region-to-repl
+    "R" #'qqq/cider-send-region-to-repl-focus)
+
+  (qqq/local-leader
+    clojure-mode-map
+    :infix "h"
+    "n" #'cider-find-ns
+    "a" #'cider-apropos
+    "c" #'cider-clojuredocs
+    "d" #'cider-doc
+    "j" #'cider-javadoc
+    "w" #'cider-clojuredocs-web)
+
+  (qqq/local-leader
+    :keymaps '(clojure-mode-map cider-repl-mode-map)
+    :infix "c"
+    "c" #'cider-connect-clj
+    "b" #'qqq/cider-connect-bb
+    "r" #'cider-restart
+    "q" #'cider-quit)
+
+  (qqq/local-leader
+    clojure-mode-map
+    :infix "="
+    "=" #'cider-format-buffer
+    "f" #'cider-format-defun
+    "r" #'cider-format-region
+    "e b" #'cider-format-edn-buffer)
+
+  :config
+  (defun qqq/cider-connect-bb ()
+    (interactive)
+    (cider-connect '(:host "localhost" :port 1667)))
+  ;; from spacemacs
+  (defun qqq//cider-eval-in-repl-no-focus (form)
+    "Insert FORM in the REPL buffer and eval it."
+    (while (string-match "\\`[ \t\n\r]+\\|[ \t\n\r]+\\'" form)
+      (setq form (replace-match "" t t form)))
+    (with-current-buffer (cider-current-connection)
+      (let ((pt-max (point-max)))
+	(goto-char pt-max)
+	(insert form)
+	(indent-region pt-max (point))
+	(cider-repl-return)
+	(with-selected-window (get-buffer-window (cider-current-connection))
+	  (goto-char (point-max))))))
+
+  (defun qqq/cider-send-region-to-repl (start end)
+    "Send region to REPL and evaluate it without changing
+the focus."
+    (interactive "r")
+    (qqq//cider-eval-in-repl-no-focus
+     (buffer-substring-no-properties start end)))
+
+  (defun qqq/cider-send-region-to-repl-focus (start end)
+    "Send region to REPL and evaluate it and switch to the REPL in
+`insert state'."
+    (interactive "r")
+    (cider-insert-in-repl
+     (buffer-substring-no-properties start end) t)
+    (evil-insert-state))
+
+  (defun qqq/cider-send-function-to-repl ()
+    "Send current function to REPL and evaluate it without changing
+the focus."
+    (interactive)
+    (qqq//cider-eval-in-repl-no-focus (cider-defun-at-point)))
+
+  (defun qqq/cider-send-function-to-repl-focus ()
+    "Send current function to REPL and evaluate it and switch to the REPL in
+`insert state'."
+    (interactive)
+    (cider-insert-defun-in-repl t)
+    (evil-insert-state))
+
+  (defun qqq/cider-send-ns-form-to-repl ()
+    "Send buffer's ns form to REPL and evaluate it without changing
+the focus."
+    (interactive)
+    (qqq//cider-eval-in-repl-no-focus (cider-ns-form)))
+
+  (defun qqq/cider-send-ns-form-to-repl-focus ()
+    "Send ns form to REPL and evaluate it and switch to the REPL in
+`insert state'."
+    (interactive)
+    (cider-insert-ns-form-in-repl t)
+    (evil-insert-state))
+
+  (defun qqq/cider-switch ()
+    (interactive)
+    (if (eq major-mode 'cider-repl-mode)
+	(cider-switch-to-last-clojure-buffer)
+      (cider-switch-to-repl-buffer))))
+
+(use-package cider-eval-sexp-fu
+  :after cider)
+
+;;;;;;;;;;;
+;; elisp ;;
+;;;;;;;;;;;
+(use-package emacs-lisp-mode
+  :general
+  (qqq/local-leader
+    emacs-lisp-mode-map
+    :infix "e"
+    "b" #'eval-buffer
+    "f" #'eval-defun
+    "e" #'eval-expression)
+
+  )
+
+;;;;;;;;;;;
+;; dired ;;
+;;;;;;;;;;;
+(use-package dired
+  :custom
+  (dired-kill-when-opening-new-dired-buffer t)
+  (dired-listing-switches "-alh"))
+(use-package peep-dired
+  :custom
+  (peep-dired-cleanup-on-disable t)
+  :general
+  (general-def dired-mode-map
+    [remap dired-do-print] 'peep-dired)
+  (general-def
+    '(normal)
+    peep-dired-mode-map
+    "j" #'peep-dired-next-file
+    "k" #'peep-dired-prev-file))
