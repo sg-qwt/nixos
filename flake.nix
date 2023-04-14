@@ -128,7 +128,7 @@
       };
     in
     {
-      overlays.default = (helpers.default-overlays inputs);
+      overlays.default = (helpers.default-overlays { inherit inputs rootPath; });
 
       formatter."${system}" = treefmt-nix.lib.mkWrapper
         nixpkgs.legacyPackages.x86_64-linux
@@ -136,6 +136,10 @@
           projectRootFile = "flake.nix";
           programs.nixpkgs-fmt.enable = true;
           programs.terraform.enable = true;
+          programs.zprint = {
+            enable = true;
+            zprintOpts = "{:style :community}";
+          };
         };
 
       # expose packages to flake here
@@ -143,10 +147,11 @@
         ({
           hello-custom = pkgs.my.hello-custom;
           proton-ge = pkgs.my.proton-ge;
+          gen-github-ci = pkgs.my.gen-github-ci;
         } //
         (import ./images.nix { inherit jovian nixpkgs system rootPath pkgs; }));
 
-      devShells."${system}".infra = (import ./shells/infra.nix { inherit pkgs rootPath; });
+      devShells."${system}" = (helpers.shells { inherit pkgs rootPath; });
 
       nixosConfigurations =
         builtins.foldl' (x: y: x // y) { }
