@@ -33,7 +33,8 @@
     (println (:err pushing)))
   (println ">>> pushing finised " path))
 
-(defn build-and-push [host]
+(defn build-and-push
+  [host]
   (let [path (build host)]
     (shell "sleep 5")
     (push-to-oranc path)))

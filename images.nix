@@ -13,9 +13,9 @@
             inherit pkgs lib config;
             partitionTableType = "efi";
             postVM = ''
-        ${pkgs.vmTools.qemu}/bin/qemu-img convert -f raw -o subformat=fixed,force_size -O vpc $diskImage $out/nixos.vhd
-        rm $diskImage
-      '';
+              ${pkgs.vmTools.qemu}/bin/qemu-img convert -f raw -o subformat=fixed,force_size -O vpc $diskImage $out/nixos.vhd
+              rm $diskImage
+            '';
             diskSize = config.virtualisation.azureImage.diskSize;
             format = "raw";
           });
