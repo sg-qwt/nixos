@@ -125,6 +125,7 @@ rec {
     ];
 
   rules = [
+    "DOMAIN-SUFFIX,openai.com,select"
     "GEOSITE,category-ads-all,REJECT"
     "GEOSITE,geolocation-cn,DIRECT"
     "GEOIP,CN,DIRECT"
