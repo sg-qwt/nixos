@@ -78,6 +78,9 @@ helpers.mkProfile s "firefox" {
 
             "browser.bookmarks.addedImportButton" = false;
             "browser.toolbars.bookmarks.visibility" = "never";
+
+            # tuic not go through proxy rule
+            "network.http.http3.enable" = false;
           };
 
           search = {
