@@ -110,5 +110,63 @@ helpers.mkProfile s "matrix" (
       '')
     ];
 
+    systemd.services."matrix-chatgpt-bot" = {
+      script = ''
+          ${config.nur.repos.linyinfeng.matrix-chatgpt-bot}/bin/matrix-chatgpt-bot
+        '';
+      serviceConfig = {
+        Restart = "on-failure";
+        DynamicUser = true;
+        StateDirectory = "matrix-chatgpt-bot";
+        EnvironmentFile = [
+          config.sops.templates."matrix-chatgpt-extra-env".path
+        ];
+      };
+      environment = {
+        DATA_PATH = "/var/lib/matrix-chatgpt-bot";
+
+        CHATGPT_CONTEXT = "room";
+        CHATGPT_API_MODEL = "gpt-3.5-turbo";
+
+        KEYV_BACKEND = "file";
+        KEYV_URL = "";
+        KEYV_BOT_ENCRYPTION = "false";
+        KEYV_BOT_STORAGE = "true";
+
+        MATRIX_HOMESERVER_URL = "https://${fqdn.edg}";
+        MATRIX_BOT_USERNAME = "@chatgptbot:${fqdn.edg}";
+
+        MATRIX_DEFAULT_PREFIX = "!chatgpt";
+        MATRIX_DEFAULT_PREFIX_REPLY = "false";
+
+        MATRIX_WHITELIST = ":${fqdn.edg}";
+        MATRIX_AUTOJOIN = "true";
+        MATRIX_ENCRYPTION = "false";
+        MATRIX_THREADS = "true";
+        MATRIX_PREFIX_DM = "false";
+        MATRIX_RICH_TEXT = "true";
+      };
+      after = ["dendrite.service"];
+      wantedBy = ["multi-user.target"];
+    };
+
+    sops.templates."matrix-chatgpt-extra-env".content = ''
+        OPENAI_API_KEY=${config.sops.placeholder."openai-api-key"}
+        MATRIX_BOT_PASSWORD=${config.sops.placeholder."matrix-bot-password"}
+        MATRIX_ACCESS_TOKEN=${config.sops.placeholder."matrix-bot-token"}
+      '';
+    sops.secrets."openai-api-key" = {
+      sopsFile = rootPath + "/secrets/secrets.yaml";
+      restartUnits = ["matrix-chatgpt-bot.service"];
+    };
+    sops.secrets."matrix-bot-password" = {
+      sopsFile = rootPath + "/secrets/secrets.yaml";
+      restartUnits = ["matrix-chatgpt-bot.service"];
+    };
+    sops.secrets."matrix-bot-token" = {
+      sopsFile = rootPath + "/secrets/secrets.yaml";
+      restartUnits = ["matrix-chatgpt-bot.service"];
+    };
+
   }
 )
