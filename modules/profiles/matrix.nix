@@ -75,7 +75,7 @@ helpers.mkProfile s "matrix" (
           ''
         ];
         ExecStart = lib.strings.concatStringsSep " " [
-          "${pkgs.dendrite}/bin/dendrite-monolith-server"
+          "${pkgs.dendrite}/bin/dendrite"
           "--config /run/dendrite/dendrite.yaml"
           "--http-bind-address :${builtins.toString httpPort}"
         ];
