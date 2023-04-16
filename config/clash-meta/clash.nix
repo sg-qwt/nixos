@@ -51,6 +51,18 @@ rec {
 
   proxies = [
     {
+      name = "wgteam";
+      type = "wireguard";
+      server = "engage.cloudflareclient.com";
+      port = 2408;
+      ip = "172.16.0.2";
+      ipv6 = "2606:4700:110:8410:f35c:f27f:d43e:b299";
+      private-key = config.sops.placeholder.wgteam;
+      public-key = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
+      udp = true;
+      mtu = 1420;
+    }
+    {
       name = "azv6test";
       type = "ss";
       server = config.sops.placeholder.dui_ipv6;
