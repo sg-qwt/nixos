@@ -3,12 +3,15 @@ helpers.mkProfile s "fcitx"
 {
   i18n.inputMethod = {
     enabled = "fcitx5";
-    fcitx5.enableRimeData = true;
     fcitx5.addons = with pkgs; [
-      fcitx5-rime
+      (fcitx5-rime.override {
+        rimeDataPkgs = [
+          rime-data
+          my.rime-zhwiki
+        ];
+      })
       libsForQt5.fcitx5-qt
       fcitx5-gtk
-      my.rime-zhwiki
     ];
   };
 

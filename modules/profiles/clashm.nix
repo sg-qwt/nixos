@@ -30,6 +30,7 @@ in
     {
       sops.secrets.sspass = sops-clash;
       sops.secrets.clash-provider-mumbai = sops-clash;
+      sops.secrets.wgteam = sops-clash;
       sops.secrets.dui_ipv6 = {
         sopsFile = rootPath + "/secrets/tfout.json";
         restartUnits = [ "clash-meta.service" ];
