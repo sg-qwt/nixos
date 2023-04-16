@@ -125,7 +125,7 @@ helpers.mkProfile s "matrix" (
       environment = {
         DATA_PATH = "/var/lib/matrix-chatgpt-bot";
 
-        CHATGPT_CONTEXT = "room";
+        CHATGPT_CONTEXT = "thread";
         CHATGPT_API_MODEL = "gpt-3.5-turbo";
 
         KEYV_BACKEND = "file";
