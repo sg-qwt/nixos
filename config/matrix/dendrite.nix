@@ -134,5 +134,7 @@ in
   mscs.mscs = [
     # spaces
     "msc2946"
+    # threading
+    "msc2836"
   ];
 }
