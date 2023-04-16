@@ -6,8 +6,6 @@ helpers.mkProfile s "tools"
 
     unrar
 
-    cloudflare-warp
-
     sops
 
     wget

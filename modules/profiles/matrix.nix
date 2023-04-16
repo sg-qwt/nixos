@@ -112,8 +112,8 @@ helpers.mkProfile s "matrix" (
 
     systemd.services."matrix-chatgpt-bot" = {
       script = ''
-          ${config.nur.repos.linyinfeng.matrix-chatgpt-bot}/bin/matrix-chatgpt-bot
-        '';
+        ${config.nur.repos.linyinfeng.matrix-chatgpt-bot}/bin/matrix-chatgpt-bot
+      '';
       serviceConfig = {
         Restart = "on-failure";
         DynamicUser = true;
@@ -146,26 +146,26 @@ helpers.mkProfile s "matrix" (
         MATRIX_PREFIX_DM = "false";
         MATRIX_RICH_TEXT = "true";
       };
-      after = ["dendrite.service"];
-      wantedBy = ["multi-user.target"];
+      after = [ "dendrite.service" ];
+      wantedBy = [ "multi-user.target" ];
     };
 
     sops.templates."matrix-chatgpt-extra-env".content = ''
-        OPENAI_API_KEY=${config.sops.placeholder."openai-api-key"}
-        MATRIX_BOT_PASSWORD=${config.sops.placeholder."matrix-bot-password"}
-        MATRIX_ACCESS_TOKEN=${config.sops.placeholder."matrix-bot-token"}
-      '';
+      OPENAI_API_KEY=${config.sops.placeholder."openai-api-key"}
+      MATRIX_BOT_PASSWORD=${config.sops.placeholder."matrix-bot-password"}
+      MATRIX_ACCESS_TOKEN=${config.sops.placeholder."matrix-bot-token"}
+    '';
     sops.secrets."openai-api-key" = {
       sopsFile = rootPath + "/secrets/secrets.yaml";
-      restartUnits = ["matrix-chatgpt-bot.service"];
+      restartUnits = [ "matrix-chatgpt-bot.service" ];
     };
     sops.secrets."matrix-bot-password" = {
       sopsFile = rootPath + "/secrets/secrets.yaml";
-      restartUnits = ["matrix-chatgpt-bot.service"];
+      restartUnits = [ "matrix-chatgpt-bot.service" ];
     };
     sops.secrets."matrix-bot-token" = {
       sopsFile = rootPath + "/secrets/secrets.yaml";
-      restartUnits = ["matrix-chatgpt-bot.service"];
+      restartUnits = [ "matrix-chatgpt-bot.service" ];
     };
 
   }
