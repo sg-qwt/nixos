@@ -11,7 +11,8 @@ table inet ${nft-table} {
 	    127.0.0.0/8,       # loopback
 	    192.168.0.0/16,    # private
 	    224.0.0.0/4,       # multicast
-	    255.255.255.255/32 # limited broadcast
+	    255.255.255.255/32, # limited broadcast
+	    100.64.0.0/10
 	}
     }
 

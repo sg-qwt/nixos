@@ -62,6 +62,7 @@
   myos.theme.enable = true;
 
   myos.clash-meta.enable = true;
+  myos.tailscale.enable = true;
 
   services.blueman.enable = true;
 
