@@ -11,7 +11,7 @@ helpers.mkProfile s "tailscale"
         echo "tailscale already up, skip"
       else
         echo "tailscale down, login using auth key"
-        tailscale up --auth-key "file:${config.sops.secrets.tailscale_tailnet_key.path}"
+        tailscale up --ssh=false --auth-key "file:${config.sops.secrets.tailscale_tailnet_key.path}"
       fi
     '';
     serviceConfig = {
