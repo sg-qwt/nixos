@@ -4,6 +4,7 @@ let
   terraform = (pkgs.terraform.withPlugins (p: [
     p.azurerm
     p.cloudflare
+    p.tailscale
   ]));
   tf = (pkgs.writeShellScriptBin "tf" ''
     ${terraform}/bin/terraform -chdir=$FLAKE_INFRA_DIR $@

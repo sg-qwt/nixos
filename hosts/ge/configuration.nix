@@ -19,7 +19,6 @@
   networking.networkmanager.enable = true;
   networking.networkmanager.firewallBackend = "nftables";
 
-
   services.pcscd.enable = true;
 
   myos.common.enable = true;
@@ -47,8 +46,8 @@
   myos.theme.enable = true;
 
   myos.clash-meta.enable = true;
+  myos.tailscale.enable = true;
 
-  myos.wireguard.enable = true;
 
   services.blueman.enable = true;
 
