@@ -29,27 +29,12 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
-    doomemacs = {
-      url = "github:doomemacs/doomemacs/d9f18e6040d5aa96245f93ccd864163c2eab82c0";
-      flake = false;
-    };
-
-    spacemacs = {
-      url = "github:syl20bnr/spacemacs/develop";
-      flake = false;
-    };
-
     yacd-meta = {
       url = "github:metacubex/yacd-meta/gh-pages";
       flake = false;
     };
 
     nur.url = "github:nix-community/NUR";
-
-    yacd = {
-      url = "https://github.com/haishanh/yacd/releases/download/v0.3.6/yacd.tar.xz";
-      flake = false;
-    };
 
     jovian = {
       url = "github:Jovian-Experiments/Jovian-NixOS";

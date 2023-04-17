@@ -53,23 +53,6 @@
         "type": "github"
       }
     },
-    "doomemacs": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1678325485,
-        "narHash": "sha256-aZtP666ZLZWxsw9l5LedLpz66Gem9c/tGNn8ThuwT5k=",
-        "owner": "doomemacs",
-        "repo": "doomemacs",
-        "rev": "d9f18e6040d5aa96245f93ccd864163c2eab82c0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "doomemacs",
-        "repo": "doomemacs",
-        "rev": "d9f18e6040d5aa96245f93ccd864163c2eab82c0",
-        "type": "github"
-      }
-    },
     "emacs-overlay": {
       "inputs": {
         "flake-utils": [
@@ -298,7 +281,6 @@
     "root": {
       "inputs": {
         "disko": "disko",
-        "doomemacs": "doomemacs",
         "emacs-overlay": "emacs-overlay",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
@@ -309,9 +291,7 @@
         "nur": "nur",
         "oranc": "oranc",
         "sops-nix": "sops-nix",
-        "spacemacs": "spacemacs",
         "treefmt-nix": "treefmt-nix_2",
-        "yacd": "yacd",
         "yacd-meta": "yacd-meta"
       }
     },
@@ -361,23 +341,6 @@
         "type": "github"
       }
     },
-    "spacemacs": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1677863231,
-        "narHash": "sha256-XseGT5dR7AKPep9XUJTsSlaGK/lniqN0YJz/l+N8ook=",
-        "owner": "syl20bnr",
-        "repo": "spacemacs",
-        "rev": "3512e43c9e6efef78b5104785c99518eff60d668",
-        "type": "github"
-      },
-      "original": {
-        "owner": "syl20bnr",
-        "ref": "develop",
-        "repo": "spacemacs",
-        "type": "github"
-      }
-    },
     "treefmt-nix": {
       "inputs": {
         "nixpkgs": [
@@ -417,18 +380,6 @@
         "owner": "numtide",
         "repo": "treefmt-nix",
         "type": "github"
-      }
-    },
-    "yacd": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-vjt67cE9HUc+G2XyPR+IZPgVvjizatQVqIyxeUUAJow=",
-        "type": "tarball",
-        "url": "https://github.com/haishanh/yacd/releases/download/v0.3.6/yacd.tar.xz"
-      },
-      "original": {
-        "type": "tarball",
-        "url": "https://github.com/haishanh/yacd/releases/download/v0.3.6/yacd.tar.xz"
       }
     },
     "yacd-meta": {
