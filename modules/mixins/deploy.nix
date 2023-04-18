@@ -2,7 +2,10 @@
 {
   system.stateVersion = "22.11";
   nix.settings.trusted-users = [ "@wheel" "deploy" ];
-  nix.extraOptions = "experimental-features = nix-command flakes repl-flake";
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes repl-flake
+    warn-dirty = false
+  '';
 
   services.openssh = {
     enable = true;
