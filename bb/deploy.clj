@@ -17,15 +17,15 @@
 (defn deploy-host
   [{:keys [id host user]}]
   (let [flake (or (System/getenv "MYOS_FLAKE") "github:sg-qwt/nixos")]
-    (println ">>> deploy: " id)
-    (println ">>> host: " host)
-    (println ">>> user: " user)
-    (println ">>> flake: " flake)
+    (println "🔥 start deploying: " (name id))
+    (println "💻 host: " host)
+    (println "🤖 user: " user)
+    (println "📦 flake: " flake)
     (shell "nixos-rebuild"
            "--target-host" (str user "@" host)
            "--flake" (str flake "#" (name id))
            "--use-remote-sudo" "switch")
-    (println ">>> deploy success")))
+    (println "✅ deploy successfully")))
 
 (defn deploy
   [name]
