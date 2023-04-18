@@ -23,6 +23,7 @@
   myos.shell.enable = true;
   myos.git.enable = true;
   myos.gnupg.enable = true;
+  myos.tailscale.enable = true;
 
   # services.xserver = {
   #   enable = true;
