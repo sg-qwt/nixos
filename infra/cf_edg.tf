@@ -40,6 +40,15 @@ resource "cloudflare_record" "root" {
   proxied         = false
 }
 
+resource "cloudflare_record" "edg_ts" {
+  for_each = local.ts_nixos_devices
+  name     = "${each.key}.ts"
+  type     = "A"
+  value    = each.value
+  zone_id  = local.edg_zone_id
+  proxied  = false
+}
+
 resource "cloudflare_email_routing_settings" "edg" {
   zone_id = local.edg_zone_id
   enabled = true
@@ -61,3 +70,4 @@ resource "cloudflare_email_routing_catch_all" "all" {
     value = [var.fw_email]
   }
 }
+
