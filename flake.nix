@@ -41,12 +41,6 @@
       flake = false;
     };
 
-    nixos-cn = {
-      url = "github:nixos-cn/flakes";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
-
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -100,7 +94,6 @@
             home-manager.nixosModules.home-manager
             oranc.nixosModules.oranc
             sops-nix.nixosModules.sops
-            nixos-cn.nixosModules.nixos-cn
             { networking.hostName = name; }
             { imports = helpers.profile-list; }
             {
