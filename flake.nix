@@ -115,7 +115,7 @@
           programs.terraform.enable = true;
           programs.zprint = {
             enable = true;
-            zprintOpts = "{:style :community}";
+            zprintOpts = "{:search-config? true}";
           };
         };
 

@@ -28,7 +28,7 @@
   (let
     [pushing
      (bp/shell
-      {:out :string, :err :string, :in path}
+      {:out :string :err :string :in path}
       "oranc push --registry ghcr.io --repository sg-qwt/nixos --allow-immutable-db")]
     (println (:err pushing)))
   (println ">>> pushing finised " path))
