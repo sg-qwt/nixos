@@ -7,9 +7,9 @@
   services.openssh = {
     enable = true;
     settings = {
-      kbdInteractiveAuthentication = false;
-      passwordAuthentication = false;
-      permitRootLogin = lib.mkForce "no";
+      KbdInteractiveAuthentication = false;
+      PasswordAuthentication = false;
+      PermitRootLogin = lib.mkForce "no";
     };
     extraConfig = ''
       Match User deploy
