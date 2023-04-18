@@ -1,9 +1,12 @@
-{:paths ["bb"],
- :tasks {build-cache {:requires ([ci :as ci]),
-                      :task (apply ci/build-and-push *command-line-args*)},
-         build-ci {:doc "Regenarate github ci yaml",
-                   :requires ([babashka.fs :as fs]),
+{:paths ["bb"]
+ :tasks {build-cache {:requires ([ci :as ci])
+                      :task (apply ci/build-and-push *command-line-args*)}
+         build-ci {:doc "Regenarate github ci yaml"
+                   :requires ([babashka.fs :as fs])
                    :task (do (fs/delete-if-exists
                               ".github/workflows/build.yaml")
-                             (shell "nix run .#gen-github-ci"))}}}
+                             (shell "nix run .#gen-github-ci"))}
+         deploy {:doc "Deploy host with nixos-rebuild"
+                 :requires ([deploy :as d])
+                 :task (apply d/deploy *command-line-args*)}}}
 
