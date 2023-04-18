@@ -13,7 +13,6 @@ let edg = config.myos.data.fqdn.edg; in
 
   myos.ssserver.enable = true;
   myos.matrix.enable = true;
-  myos.miniflux.enable = true;
   myos.oranc.enable = true;
 
 
