@@ -6,6 +6,7 @@
   };
 
   config =
+    let data = lib.importJSON (rootPath + "/config/data.json"); in
     {
       assertions = [
         {
@@ -18,6 +19,6 @@
           message = "ports collision defined in config/data.json";
         }
       ];
-      myos.data = lib.importJSON (rootPath + "/config/data.json");
+      myos.data = data;
     };
 }
