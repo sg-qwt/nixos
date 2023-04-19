@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, rootPath, ... }:
+s@{ config, pkgs, lib, helpers, self, ... }:
 helpers.mkProfile s "tailscale"
 {
   services.tailscale.enable = true;
@@ -24,7 +24,7 @@ helpers.mkProfile s "tailscale"
   };
 
   sops.secrets.tailscale_tailnet_key = {
-    sopsFile = rootPath + "/secrets/tfout.json";
+    sopsFile = self + "/secrets/tfout.json";
     restartUnits = [ "tailscale-setup.service" ];
   };
 }

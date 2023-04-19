@@ -1,4 +1,4 @@
-{ config, lib, pkgs, rootPath, ... }:
+{ config, lib, pkgs, self, ... }:
 
 with lib;
 
@@ -32,12 +32,12 @@ in
       extraGroups = [ "wheel" "networkmanager" "audio" "video" "docker" "systemd-journal" ] ++ cfg.extraGroups;
       passwordFile = config.sops.secrets.me-password.path;
       openssh.authorizedKeys.keyFiles = [
-        (rootPath + "/resources/keys/ssh-me.pub")
+        (self + "/resources/keys/ssh-me.pub")
       ];
     };
 
     sops.secrets.me-password = {
-      sopsFile = rootPath + "/secrets/secrets.yaml";
+      sopsFile = self + "/secrets/secrets.yaml";
       neededForUsers = true;
     };
 

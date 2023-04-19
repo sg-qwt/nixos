@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, rootPath, ... }:
+s@{ config, pkgs, lib, helpers, self, ... }:
 helpers.mkProfile s "wireguard" {
   # get gateway
   # $(${pkgs.iproute2}/bin/ip -o -4 route show to default | ${pkgs.gawk}/bin/awk '{print $3}' | ${pkgs.coreutils}/bin/head -n 1)
@@ -33,7 +33,7 @@ helpers.mkProfile s "wireguard" {
   };
 
   sops.secrets.wg0 = {
-    sopsFile = rootPath + "/secrets/secrets.yaml";
+    sopsFile = self + "/secrets/secrets.yaml";
     restartUnits = [ "wg-quick-wg0.service" ];
   };
 }

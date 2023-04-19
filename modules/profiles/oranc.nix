@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, rootPath, ... }:
+s@{ config, pkgs, lib, helpers, ... }:
 helpers.mkProfile s "oranc" (
   let
     inherit (config.myos.data) fqdn ports path;

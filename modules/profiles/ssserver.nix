@@ -1,8 +1,8 @@
-s@{ config, pkgs, lib, helpers, rootPath, ... }:
+s@{ config, pkgs, lib, helpers, self, ... }:
 helpers.mkProfile s "ssserver" (with config.myos.data;
 {
   sops.secrets.sspass = {
-    sopsFile = rootPath + "/secrets/secrets.yaml";
+    sopsFile = self + "/secrets/secrets.yaml";
     restartUnits = [ "shadowsocks-libev.service" ];
   };
 

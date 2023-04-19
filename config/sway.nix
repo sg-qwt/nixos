@@ -1,6 +1,6 @@
-{ config, rootPath }:
+{ config, self }:
 let
-  wallpaper = rootPath + "/resources/wallpapers/wr.jpg";
+  wallpaper = self + "/resources/wallpapers/wr.jpg";
 in
 ''
   ### Variables

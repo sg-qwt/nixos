@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, rootPath, ... }:
+s@{ config, pkgs, lib, helpers, self, ... }:
 helpers.mkProfile s "fcitx"
 {
   i18n.inputMethod = {
@@ -25,9 +25,9 @@ helpers.mkProfile s "fcitx"
   home-manager.users."${config.myos.users.mainUser}" = {
     xdg.dataFile = {
       "fcitx5/rime/luna_pinyin.custom.yaml".source =
-        (rootPath + "/config/rime/luna_pinyin.custom.yaml");
+        (self + "/config/rime/luna_pinyin.custom.yaml");
       "fcitx5/rime/luna_pinyin.extended.dict.yaml".source =
-        (rootPath + "/config/rime/luna_pinyin.extended.dict.yaml");
+        (self + "/config/rime/luna_pinyin.extended.dict.yaml");
     };
   };
 }

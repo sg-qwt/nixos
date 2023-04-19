@@ -1,4 +1,4 @@
-{ config, lib, pkgs, rootPath, ... }:
+{ config, lib, pkgs, self, ... }:
 {
   options.myos.data = lib.mkOption {
     type = with lib.types; attrsOf anything;
@@ -6,7 +6,7 @@
   };
 
   config =
-    let data = lib.importJSON (rootPath + "/config/data.json"); in
+    let data = lib.importJSON (self + "/config/data.json"); in
     {
       assertions = [
         {
