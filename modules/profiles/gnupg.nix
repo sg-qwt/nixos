@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, rootPath, ... }:
+s@{ config, pkgs, lib, helpers, self, ... }:
 helpers.mkProfile s "gnupg" {
 
   home-manager.users."${config.myos.users.mainUser}" = {
@@ -12,7 +12,7 @@ helpers.mkProfile s "gnupg" {
 
       publicKeys = [
         {
-          source = (rootPath + "/resources/keys/openpgp-me.asc");
+          source = (self + "/resources/keys/openpgp-me.asc");
           trust = 5;
         }
       ];

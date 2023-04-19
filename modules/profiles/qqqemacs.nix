@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, rootPath, ... }:
+s@{ config, pkgs, lib, helpers, self, ... }:
 helpers.mkProfile s "qqqemacs"
   (
     let
@@ -88,7 +88,7 @@ helpers.mkProfile s "qqqemacs"
       };
 
       home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
-        xdg.configFile."emacs/init.el".source = (rootPath + "/config/qqqemacs/init.el");
+        xdg.configFile."emacs/init.el".source = (self + "/config/qqqemacs/init.el");
       };
     }
   )

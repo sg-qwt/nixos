@@ -1,4 +1,4 @@
-{ config, lib, pkgs, rootPath, ... }:
+{ config, lib, pkgs, self, ... }:
 {
   system.stateVersion = "22.11";
   nix.settings.trusted-users = [ "@wheel" "deploy" ];
@@ -40,7 +40,7 @@
   users.users.deploy = {
     isSystemUser = true;
     openssh.authorizedKeys.keyFiles = [
-      (rootPath + "/resources/keys/ssh-me.pub")
+      (self + "/resources/keys/ssh-me.pub")
     ];
     group = "deploy";
     shell = pkgs.bash;

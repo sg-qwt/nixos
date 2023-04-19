@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, rootPath, ... }:
+s@{ config, pkgs, lib, helpers, self, ... }:
 helpers.mkProfile s "matrix" (
   let
     inherit (config.myos.data) fqdn ports;
@@ -6,7 +6,7 @@ helpers.mkProfile s "matrix" (
     httpPort = ports.dendrite;
     settingsFormat = pkgs.formats.yaml { };
     configurationYaml = settingsFormat.generate "dendrite.yaml"
-      (import (rootPath + "/config/matrix/dendrite.nix")
+      (import (self + "/config/matrix/dendrite.nix")
         { inherit config workingDir; });
     clientConfig."m.homeserver".base_url = "https://${fqdn.edg}";
     serverConfig."m.server" = "${fqdn.edg}:443";
@@ -37,12 +37,12 @@ helpers.mkProfile s "matrix" (
     };
 
     sops.secrets.dendrite-sign-key = {
-      sopsFile = rootPath + "/secrets/secrets.yaml";
+      sopsFile = self + "/secrets/secrets.yaml";
       restartUnits = [ "dendrite.service" ];
     };
 
     sops.secrets.dendrite-register = {
-      sopsFile = rootPath + "/secrets/secrets.yaml";
+      sopsFile = self + "/secrets/secrets.yaml";
       restartUnits = [ "dendrite.service" ];
     };
 
@@ -156,15 +156,15 @@ helpers.mkProfile s "matrix" (
       MATRIX_ACCESS_TOKEN=${config.sops.placeholder."matrix-bot-token"}
     '';
     sops.secrets."openai-api-key" = {
-      sopsFile = rootPath + "/secrets/secrets.yaml";
+      sopsFile = self + "/secrets/secrets.yaml";
       restartUnits = [ "matrix-chatgpt-bot.service" ];
     };
     sops.secrets."matrix-bot-password" = {
-      sopsFile = rootPath + "/secrets/secrets.yaml";
+      sopsFile = self + "/secrets/secrets.yaml";
       restartUnits = [ "matrix-chatgpt-bot.service" ];
     };
     sops.secrets."matrix-bot-token" = {
-      sopsFile = rootPath + "/secrets/secrets.yaml";
+      sopsFile = self + "/secrets/secrets.yaml";
       restartUnits = [ "matrix-chatgpt-bot.service" ];
     };
 

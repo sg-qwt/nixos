@@ -1,4 +1,4 @@
-{ nixpkgs, system, rootPath, pkgs, jovian }:
+{ nixpkgs, system, self, pkgs, jovian }:
 let
   mPath = "${nixpkgs}/nixos/modules";
   lib = nixpkgs.lib;
@@ -6,7 +6,7 @@ in
 {
   azure-image = (lib.nixosSystem {
     inherit system;
-    specialArgs = { inherit pkgs rootPath; };
+    specialArgs = { inherit pkgs self; };
     modules = [
       "${mPath}/virtualisation/azure-image.nix"
       ./modules/mixins/deploy.nix
@@ -37,7 +37,7 @@ in
   deck-minimal-image = (lib.nixosSystem {
     inherit system;
     specialArgs = {
-      inherit rootPath;
+      inherit self;
       pkgs = pkgs.extend (import "${jovian}/overlay.nix");
     };
     modules = [

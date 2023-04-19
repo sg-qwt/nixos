@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, rootPath, ... }:
+{ config, pkgs, self, ... }:
 
 {
   # boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -106,6 +106,6 @@
     ];
 
 
-    etc."sensors.d/it87.conf".source = (rootPath + "/config/sensors/it87.conf");
+    etc."sensors.d/it87.conf".source = (self + "/config/sensors/it87.conf");
   };
 }

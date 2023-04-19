@@ -1,6 +1,6 @@
-{ pkgs, rootPath }:
+{ pkgs, self }:
 let
-  tfenv = rootPath + "/secrets/tf.env";
+  tfenv = self + "/secrets/tf.env";
   terraform = (pkgs.terraform.withPlugins (p: [
     p.azurerm
     p.cloudflare
