@@ -35,8 +35,6 @@ helpers.mkProfile s "gaming"
       #   '';
       # }))
 
-      # config.nur.repos.dukzcry.gamescope
-
       (pkgs.writeTextDir
         "share/applications/steam-tcp.desktop"
         (lib.generators.toINI { }
