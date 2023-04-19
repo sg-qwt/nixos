@@ -674,8 +674,10 @@ the focus."
 ;;;;;;;;;;;
 (use-package dired
   :custom
+  (dired-clean-confirm-killing-deleted-buffers nil)
   (dired-kill-when-opening-new-dired-buffer t)
-  (dired-listing-switches "-alh"))
+  (dired-listing-switches "-alh")
+  (dired-recursive-copies 'always))
 (use-package peep-dired
   :custom
   (peep-dired-cleanup-on-disable t)
