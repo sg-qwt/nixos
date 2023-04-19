@@ -1,11 +1,11 @@
-{ config, lib, pkgs, rootPath, ... }:
+{ config, lib, pkgs, self, ... }:
 
 with lib;
 
 let
   cfg = config.myos.clash-meta;
   sops-clash = {
-    sopsFile = rootPath + "/secrets/secrets.yaml";
+    sopsFile = self + "/secrets/secrets.yaml";
     restartUnits = [ "clash-meta.service" ];
   };
   host = "127.0.0.1";
@@ -32,12 +32,12 @@ in
       sops.secrets.clash-provider-mumbai = sops-clash;
       sops.secrets.wgteam = sops-clash;
       sops.secrets.dui_ipv6 = {
-        sopsFile = rootPath + "/secrets/tfout.json";
+        sopsFile = self + "/secrets/tfout.json";
         restartUnits = [ "clash-meta.service" ];
       };
       sops.templates.clashm = {
         content = builtins.toJSON
-          (import (rootPath + "/config/clash-meta/clash.nix") { inherit config; });
+          (import (self + "/config/clash-meta/clash.nix") { inherit config; });
         owner = config.users.users.clash-meta.name;
         group = config.users.users.clash-meta.group;
       };
@@ -87,14 +87,14 @@ in
         (writeShellApplication {
           name = "enable-tproxy";
           runtimeInputs = [ nftables iproute2 ];
-          text = (import (rootPath + "/config/clash-meta/enable-tproxy.nix")
+          text = (import (self + "/config/clash-meta/enable-tproxy.nix")
             { inherit fwmark ports nft-table route-table; });
         })
 
         (writeShellApplication {
           name = "disable-tproxy";
           runtimeInputs = [ nftables iproute2 ];
-          text = (import (rootPath + "/config/clash-meta/disable-tproxy.nix")
+          text = (import (self + "/config/clash-meta/disable-tproxy.nix")
             { inherit fwmark nft-table route-table; });
         })
       ];

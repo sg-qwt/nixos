@@ -1,9 +1,9 @@
-s@{ config, pkgs, lib, helpers, rootPath, ... }:
+s@{ config, pkgs, lib, helpers, self, ... }:
 helpers.mkProfile s "gnome"
   (
     let
       ibus-enabled = config.myos.ibus.enable;
-      wallpaper = rootPath + "/resources/wallpapers/wr.jpg";
+      wallpaper = self + "/resources/wallpapers/wr.jpg";
     in
     {
 

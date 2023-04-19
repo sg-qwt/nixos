@@ -59,7 +59,6 @@
     with inputs;
     let
       system = "x86_64-linux";
-      rootPath = ./.;
       helpers = import ./helpers.nix;
 
       # nixpkgs-patched =
@@ -86,7 +85,7 @@
         ${name} = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit home-manager helpers self inputs rootPath;
+            inherit home-manager helpers self inputs;
             pkgs = p;
           };
           modules = [
@@ -105,7 +104,7 @@
       };
     in
     {
-      overlays.default = (helpers.default-overlays { inherit inputs rootPath; });
+      overlays.default = (helpers.default-overlays { inherit inputs; });
 
       formatter."${system}" = treefmt-nix.lib.mkWrapper
         nixpkgs.legacyPackages.x86_64-linux
@@ -126,9 +125,9 @@
           proton-ge = pkgs.my.proton-ge;
           gen-github-ci = pkgs.my.gen-github-ci;
         } //
-        (import ./images.nix { inherit jovian nixpkgs system rootPath pkgs; }));
+        (import ./images.nix { inherit jovian nixpkgs system pkgs self; }));
 
-      devShells."${system}" = (helpers.shells { inherit pkgs rootPath; });
+      devShells."${system}" = (helpers.shells { inherit pkgs self; });
 
       nixosConfigurations =
         builtins.foldl' (x: y: x // y) { }

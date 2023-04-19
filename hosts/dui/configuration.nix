@@ -1,4 +1,4 @@
-{ config, lib, pkgs, modulesPath, rootPath, ... }:
+{ config, lib, pkgs, modulesPath, self, ... }:
 let edg = config.myos.data.fqdn.edg; in
 {
   imports = [
@@ -17,7 +17,7 @@ let edg = config.myos.data.fqdn.edg; in
 
 
   sops.secrets.cloudflare_token = {
-    sopsFile = rootPath + "/secrets/tfout.json";
+    sopsFile = self + "/secrets/tfout.json";
   };
   sops.templates.acme-credential.content = ''
     CF_DNS_API_TOKEN=${config.sops.placeholder."cloudflare_token"}

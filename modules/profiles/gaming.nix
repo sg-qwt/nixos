@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, rootPath, ... }:
+s@{ config, pkgs, lib, helpers, self, ... }:
 helpers.mkProfile s "gaming"
 {
   programs.steam = {
@@ -54,6 +54,6 @@ helpers.mkProfile s "gaming"
   };
 
   home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
-    xdg.configFile."MangoHud/MangoHud.conf".source = (rootPath + "/config/mangohud.conf");
+    xdg.configFile."MangoHud/MangoHud.conf".source = (self + "/config/mangohud.conf");
   };
 }

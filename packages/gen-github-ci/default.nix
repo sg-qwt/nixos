@@ -1,7 +1,7 @@
 # credits to github.com/ifd3f/infra
-{ git, writeText, writeScriptBin, runCommand, yq, rootPath, ... }:
+{ inputs, git, writeText, writeScriptBin, runCommand, yq, ... }:
 let
-  workflow = import (rootPath + "/config/github-ci.nix");
+  workflow = import "${inputs.self}/config/github-ci.nix";
   workflowJSON =
     writeText "build.json" (builtins.toJSON workflow);
 

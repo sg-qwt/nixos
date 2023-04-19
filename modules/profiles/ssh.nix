@@ -1,4 +1,4 @@
-{ config, lib, pkgs, rootPath, ... }:
+{ config, lib, pkgs, self, ... }:
 
 with lib;
 
@@ -24,7 +24,7 @@ in {
           let
             knownHosts = pkgs.writeTextFile {
               name = "known_hosts";
-              text = builtins.readFile (rootPath + "/config/known_hosts");
+              text = builtins.readFile (self + "/config/known_hosts");
             };
           in
           "~/.ssh/known_hosts ${knownHosts}";
