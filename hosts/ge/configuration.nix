@@ -16,6 +16,7 @@
 
   networking.firewall.enable = true;
   networking.nftables.enable = true;
+  networking.nftables.flushRuleset = false;
   networking.networkmanager.enable = true;
   networking.networkmanager.firewallBackend = "nftables";
 

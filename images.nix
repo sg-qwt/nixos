@@ -1,6 +1,8 @@
 { nixpkgs, system, self, pkgs, jovian }:
 let
-  mPath = "${nixpkgs}/nixos/modules";
+  mPath = p: { modulesPath, ... }: {
+    imports = [ "${modulesPath}/${p}" ];
+  };
   lib = nixpkgs.lib;
 in
 {
@@ -8,7 +10,7 @@ in
     inherit system;
     specialArgs = { inherit pkgs self; };
     modules = [
-      "${mPath}/virtualisation/azure-image.nix"
+      (mPath "virtualisation/azure-image.nix")
       ./modules/mixins/deploy.nix
       ./modules/mixins/azurebase.nix
       ({ pkgs, modulesPath, lib, config, ... }: {
@@ -30,7 +32,7 @@ in
   gnome-image = (lib.nixosSystem {
     inherit system;
     modules = [
-      "${mPath}/installer/cd-dvd/installation-cd-graphical-gnome.nix"
+      (mPath "installer/cd-dvd/installation-cd-graphical-gnome.nix")
     ];
   }).config.system.build.isoImage;
 
@@ -42,7 +44,7 @@ in
     };
     modules = [
       "${jovian}/modules"
-      "${mPath}/installer/cd-dvd/installation-cd-minimal.nix"
+      (mPath "installer/cd-dvd/installation-cd-minimal.nix")
       ./modules/mixins/deploy.nix
       ({ lib, config, ... }: {
         jovian.devices.steamdeck.enable = true;
