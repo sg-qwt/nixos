@@ -60,16 +60,22 @@
     let
       system = "x86_64-linux";
       helpers = import ./helpers.nix;
+      pkgs-init = import inputs.nixpkgs { inherit system; };
+      patches = [
+        (pkgs-init.fetchpatch {
+          url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/207758.patch";
+          hash = "sha256-1bxn+U0NslCTElG+EhJe43FRf+5tIgMh7gvPKAyGe0U=";
+        })
+      ];
 
-      # nixpkgs-patched =
-      #   (import inputs.nixpkgs { inherit system; }).applyPatches {
-      #     name = "nixpkgs-patched";
-      #     src = inputs.nixpkgs;
-      #     patches = [
-      #     ];
-      #   };
+      nixpkgs-patched =
+        pkgs-init.applyPatches {
+          name = "nixpkgs-patched";
+          src = inputs.nixpkgs;
+          inherit patches;
+        };
 
-      pkgs = import nixpkgs {
+      pkgs = import nixpkgs-patched {
         inherit system;
 
         config.allowUnfree = true;
@@ -80,6 +86,8 @@
           oranc.overlays.default
         ];
       };
+
+      nixpkgs = (import "${nixpkgs-patched}/flake.nix").outputs { inherit self; };
 
       mkOS = { name, p ? pkgs }: {
         ${name} = nixpkgs.lib.nixosSystem {
