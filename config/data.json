@@ -8,7 +8,8 @@
 	"clash-dns": 1053,
 	"dendrite": 8008,
 	"miniflux": 8018,
-	"oranc": 8020
+	"oranc": 8020,
+	"tailscaled": 41641
     },
     "fqdn":{
 	"edg": "edgerunners.eu.org"
