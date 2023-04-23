@@ -267,8 +267,7 @@
         "nur": "nur",
         "oranc": "oranc",
         "sops-nix": "sops-nix",
-        "treefmt-nix": "treefmt-nix_2",
-        "yacd-meta": "yacd-meta"
+        "treefmt-nix": "treefmt-nix_2"
       }
     },
     "rust-overlay": {
@@ -355,23 +354,6 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "yacd-meta": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1677679138,
-        "narHash": "sha256-HLnnRBON9qp4J2sCWl6bIxi4NNtBcIGwiX/OGCdQDsY=",
-        "owner": "metacubex",
-        "repo": "yacd-meta",
-        "rev": "c3229bdf62b270d84dcfaf4d7e39811369dd9dc2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "metacubex",
-        "ref": "gh-pages",
-        "repo": "yacd-meta",
         "type": "github"
       }
     }

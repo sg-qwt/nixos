@@ -7,7 +7,7 @@ helpers.mkProfile s "fcitx"
       (fcitx5-rime.override {
         rimeDataPkgs = [
           rime-data
-          my.rime-zhwiki
+          my.rime-pinyin-zhwiki
         ];
       })
       libsForQt5.fcitx5-qt

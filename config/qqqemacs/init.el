@@ -26,7 +26,11 @@
 
   (enable-recursive-minibuffers t)
   (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
+
   (global-auto-revert-non-file-buffers t)
+  (auto-revert-use-notify nil)
+  (auto-revert-verbose nil)
+  
 
   (use-short-answers t)
   :config
