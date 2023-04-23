@@ -1,8 +1,6 @@
-{ stdenv, inputs, yacd-url ? "127.0.0.1:9090", ... }:
+{ stdenv, inputs, nvsource, yacd-url ? "127.0.0.1:9090", ... }:
 stdenv.mkDerivation rec {
-  pname = "yacd-meta";
-  version = inputs.yacd-meta.shortRev;
-  src = inputs.yacd-meta;
+  inherit (nvsource) pname version src;
 
   prePatch =
     ''

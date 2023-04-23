@@ -1,3 +1,4 @@
+{ sources }:
 {
   profile-list =
     (map
@@ -13,7 +14,7 @@
             (pkgname:
               {
                 name = pkgname;
-                value = (prev.callPackage (./packages + "/${pkgname}") args);
+                value = (prev.callPackage (./packages + "/${pkgname}") (args // { nvsource = sources."${pkgname}"; }));
               })
             (builtins.attrNames (builtins.readDir ./packages))));
     };
