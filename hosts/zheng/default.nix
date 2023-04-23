@@ -1,6 +1,6 @@
-{ inputs, ... }:
+{ inputs, jovian, ... }:
 [
   ./hardware-configuration.nix
   ./configuration.nix
-  "${inputs.jovian}/modules"
+  "${jovian}/modules"
 ]
