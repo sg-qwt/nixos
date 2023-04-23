@@ -29,11 +29,6 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
-    yacd-meta = {
-      url = "github:metacubex/yacd-meta/gh-pages";
-      flake = false;
-    };
-
     nur.url = "github:nix-community/NUR";
 
     jovian = {
@@ -59,8 +54,9 @@
     with inputs;
     let
       system = "x86_64-linux";
-      helpers = import ./helpers.nix;
       pkgs-init = import inputs.nixpkgs { inherit system; };
+      sources = import ./_sources/generated.nix { inherit (pkgs-init) fetchurl fetchgit fetchFromGitHub dockerTools; };
+      helpers = import ./helpers.nix { inherit sources; };
       patches = [
         (pkgs-init.fetchpatch {
           url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/207758.patch";
@@ -130,7 +126,7 @@
       packages."${system}" = flake-utils.lib.flattenTree
         ({
           hello-custom = pkgs.my.hello-custom;
-          proton-ge = pkgs.my.proton-ge;
+          proton-ge = pkgs.my.proton-ge-custom;
           gen-github-ci = pkgs.my.gen-github-ci;
         } //
         (import ./images.nix { inherit jovian nixpkgs system pkgs self; }));

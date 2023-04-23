@@ -1,0 +1,51 @@
+{
+    "proton-ge-custom": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "proton-ge-custom",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-/70DtApcja+6U+Rb1lUcEyUSrW/LqRIOJfDVENDNBIU=",
+            "type": "url",
+            "url": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-55/GE-Proton7-55.tar.gz"
+        },
+        "version": "GE-Proton7-55"
+    },
+    "rime-pinyin-zhwiki": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "rime-pinyin-zhwiki",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "name": null,
+            "sha256": "sha256-0B02FGISHqvrBUGkERdplhrx8zo6SV9hG2qRbSUqqd0=",
+            "type": "url",
+            "url": "https://github.com/felixonmars/fcitx5-pinyin-zhwiki/releases/download/0.2.4/zhwiki-20230329.dict.yaml"
+        },
+        "version": "20230329"
+    },
+    "yacd-meta": {
+        "cargoLocks": null,
+        "date": "2023-04-22",
+        "extract": null,
+        "name": "yacd-meta",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "ac99093187a622df1badf63c4c26c71b97a5dc5b",
+            "sha256": "sha256-QuEph6CSxnyxCTj868gl4Y6YgsI2Afv14Jd7g1cSG2Q=",
+            "type": "git",
+            "url": "https://github.com/metacubex/yacd-meta.git"
+        },
+        "version": "ac99093187a622df1badf63c4c26c71b97a5dc5b"
+    }
+}

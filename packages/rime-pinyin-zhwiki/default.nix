@@ -1,18 +1,12 @@
 { stdenvNoCC
 , lib
 , fetchurl
+, nvsource
 , ...
 }:
 
 stdenvNoCC.mkDerivation rec {
-  pname = "rime-zhwiki";
-
-  version = "20220722";
-
-  src = fetchurl {
-    url = "https://github.com/felixonmars/fcitx5-pinyin-zhwiki/releases/download/0.2.4/zhwiki-20220722.dict.yaml";
-    sha256 = "sha256-swROyS8iqbgkdxhvv/+a9v8r3xgBIWO2LC7pmfRTxcY=";
-  };
+  inherit (nvsource) pname version src;
 
   dontUnpack = true;
 
