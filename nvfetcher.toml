@@ -8,6 +8,10 @@ src.github = "GloriousEggroll/proton-ge-custom"
 fetch.url = "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/$ver/$ver.tar.gz"
 
 [yacd-meta]
-src.git = "https://github.com/metacubex/yacd-meta.git"
+src.git = "https://github.com/MetaCubeX/Yacd-meta"
 src.branch = "gh-pages"
-fetch.git = "https://github.com/metacubex/yacd-meta.git"
+fetch.github = "MetaCubeX/Yacd-meta"
+
+[jovian-nixos]
+src.git = "https://github.com/Jovian-Experiments/Jovian-NixOS"
+fetch.github = "Jovian-Experiments/Jovian-NixOS"

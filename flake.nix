@@ -31,11 +31,6 @@
 
     nur.url = "github:nix-community/NUR";
 
-    jovian = {
-      url = "github:Jovian-Experiments/Jovian-NixOS";
-      flake = false;
-    };
-
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -56,6 +51,7 @@
       system = "x86_64-linux";
       pkgs-init = import inputs.nixpkgs { inherit system; };
       sources = import ./_sources/generated.nix { inherit (pkgs-init) fetchurl fetchgit fetchFromGitHub dockerTools; };
+      jovian = sources.jovian-nixos.src;
       helpers = import ./helpers.nix { inherit sources; };
       patches = [
         (pkgs-init.fetchpatch {
@@ -103,7 +99,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
             }
-          ] ++ (import (./hosts + "/${name}") { inherit inputs; });
+          ] ++ (import (./hosts + "/${name}") { inherit inputs jovian; });
         };
       };
     in
