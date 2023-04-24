@@ -24,14 +24,14 @@ helpers.mkProfile s "shell"
         "ignorespace"
       ];
 
-      bashrcExtra = (import (self + "/config/scripts/bashrc.nix"));
-
       shellAliases = {
         gpr = "git pull --rebase";
         gl = "git log --decorate --oneline --graph";
         wg-up = "sudo systemctl start wg-quick-wg0.service";
         wg-down = "sudo systemctl stop wg-quick-wg0.service";
         rebuild = "sudo nixos-rebuild switch --flake $MYOS_FLAKE";
+        nfc = "nix flake check";
+        nf = "nix fmt";
         pass = "head -c20 < /dev/random | base64";
       };
     };

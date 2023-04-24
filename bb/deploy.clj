@@ -2,7 +2,7 @@
   (:require [babashka.process :as bp :refer [shell]]
             [cheshire.core :as json]))
 
-(def ts-host-ids [:ge :zheng :lei])
+(def ts-host-ids [:ge :zheng :lei :dui])
 (def fqdn "edgerunners.eu.org")
 (def user "deploy")
 
@@ -11,8 +11,7 @@
   (->> ids
        (mapv (fn [id] {:id id :host (str (name id) ".ts." fqdn) :user user}))))
 
-(def hosts
-  (conj (ts-hosts ts-host-ids) {:id :dui :host (str "dui." fqdn) :user user}))
+(def hosts (ts-hosts ts-host-ids))
 
 (defn deploy-host
   [{:keys [id host user]}]
@@ -33,4 +32,5 @@
                       (filter (fn [host] (= (:id host) (keyword name))))
                       first)]
     (deploy-host host)
-    (println ">>> no host found: " name)))
+    (do (println ">>> no host found: " name)
+        (println "available hosts are: " ts-host-ids))))
