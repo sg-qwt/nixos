@@ -17,4 +17,19 @@ helpers.mkProfile s "desktop"
       liberation_ttf
     ];
   };
+
+  networking = {
+    useDHCP = lib.mkDefault true;
+    firewall.enable = true;
+
+    nftables = {
+      enable = true;
+      flushRuleset = false;
+    };
+
+    networkmanager = {
+      enable = true;
+      firewallBackend = "nftables";
+    };
+  };
 }

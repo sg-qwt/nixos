@@ -14,12 +14,6 @@
 
   networking.hostId = "2aaaac5b";
 
-  networking.firewall.enable = true;
-  networking.nftables.enable = true;
-  networking.nftables.flushRuleset = false;
-  networking.networkmanager.enable = true;
-  networking.networkmanager.firewallBackend = "nftables";
-
   services.pcscd.enable = true;
 
   myos.common.enable = true;
