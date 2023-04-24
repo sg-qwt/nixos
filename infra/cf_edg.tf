@@ -20,11 +20,6 @@ resource "cloudflare_record" "root" {
       type  = "AAAA"
       value = local.dui_ipv6
     }
-    dui = {
-      name  = "dui"
-      type  = "CNAME"
-      value = local.fqdn.edg
-    }
     ooo = {
       name  = "ooo"
       type  = "CNAME"
