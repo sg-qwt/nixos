@@ -10,7 +10,7 @@ helpers.mkProfile s "desktop-apps"
       chromium
 
       # media
-      vlc
+      mpv
       # (spotify.override { deviceScaleFactor = 2; })
       spotify
 
