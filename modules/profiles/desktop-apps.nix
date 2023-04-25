@@ -11,7 +11,6 @@ helpers.mkProfile s "desktop-apps"
 
       # media
       mpv
-      # (spotify.override { deviceScaleFactor = 2; })
       spotify
 
       # irc
