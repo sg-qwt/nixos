@@ -35,9 +35,17 @@ resource "cloudflare_record" "root" {
   proxied         = false
 }
 
-resource "cloudflare_record" "edg_ts" {
+resource "cloudflare_record" "dui_h" {
+  name    = "dui.h"
+  type    = "A"
+  value   = local.dui_ipv4
+  zone_id = local.edg_zone_id
+  proxied = false
+}
+
+resource "cloudflare_record" "edg_ts_h" {
   for_each = local.ts_nixos_devices
-  name     = "${each.key}.ts"
+  name     = "${each.key}.h"
   type     = "A"
   value    = each.value
   zone_id  = local.edg_zone_id
