@@ -6,7 +6,11 @@
   };
 
   config =
-    let data = lib.importJSON (self + "/config/data.json"); in
+    let
+      data-json = lib.importJSON (self + "/config/data.json");
+      hosts = (builtins.attrNames self.nixosConfigurations);
+      data = data-json // { hosts = hosts; };
+    in
     {
       assertions = [
         {
