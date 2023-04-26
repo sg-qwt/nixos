@@ -3,15 +3,15 @@
 {
   jovian-nixos = {
     pname = "jovian-nixos";
-    version = "0586e3d1f3689ccd4c8820d2fd7775b39eb14c0d";
+    version = "4fe665707364b3c4228f66895f1b6316634ceabc";
     src = fetchFromGitHub ({
       owner = "Jovian-Experiments";
       repo = "Jovian-NixOS";
-      rev = "0586e3d1f3689ccd4c8820d2fd7775b39eb14c0d";
+      rev = "4fe665707364b3c4228f66895f1b6316634ceabc";
       fetchSubmodules = false;
-      sha256 = "sha256-zcRbZ12jl6MB1UMLH6daBIrc5XVw0IskZD8b6Zps/aQ=";
+      sha256 = "sha256-k1DlJCHQgEix/Be8m4MZlNYWocv7NxlPiLcPTXgcs+w=";
     });
-    date = "2023-04-09";
+    date = "2023-04-25";
   };
   proton-ge-custom = {
     pname = "proton-ge-custom";
@@ -31,14 +31,14 @@
   };
   yacd-meta = {
     pname = "yacd-meta";
-    version = "ac99093187a622df1badf63c4c26c71b97a5dc5b";
+    version = "1d93beb543ad2e1216e5c480d4ea04c1bb45efaf";
     src = fetchFromGitHub ({
       owner = "MetaCubeX";
       repo = "Yacd-meta";
-      rev = "ac99093187a622df1badf63c4c26c71b97a5dc5b";
+      rev = "1d93beb543ad2e1216e5c480d4ea04c1bb45efaf";
       fetchSubmodules = false;
-      sha256 = "sha256-QuEph6CSxnyxCTj868gl4Y6YgsI2Afv14Jd7g1cSG2Q=";
+      sha256 = "sha256-9Zt1CkhdC5m2FTtVr1EtnyFh2+Gi13xksT1BSzdEU2E=";
     });
-    date = "2023-04-22";
+    date = "2023-04-25";
   };
 }

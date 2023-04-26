@@ -13,6 +13,7 @@ in
 pkgs.mkShell {
   name = "nixos-dev";
   nativeBuildInputs = [
+    pkgs.nvfetcher
     pkgs.babashka
     pkgs.oranc
     pkgs.azure-cli

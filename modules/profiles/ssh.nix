@@ -4,16 +4,17 @@ with lib;
 
 let
   cfg = config.myos.ssh;
+  data = config.myos.data;
   match-blocks =
     (builtins.foldl' (a: b: a // b) { }
       (map
         (host: {
           "${host}" = {
-            hostname = "${host}.h.${config.myos.data.fqdn.edg}";
+            hostname = "${host}.h.${data.fqdn.edg}";
             user = "me";
           };
         })
-        (builtins.attrNames self.nixosConfigurations)));
+        data.hosts));
 in
 {
   options.myos.ssh = {
