@@ -2,8 +2,20 @@
 
 with lib;
 
-let cfg = config.myos.ssh;
-in {
+let
+  cfg = config.myos.ssh;
+  match-blocks =
+    (builtins.foldl' (a: b: a // b) { }
+      (map
+        (host: {
+          "${host}" = {
+            hostname = "${host}.h.${config.myos.data.fqdn.edg}";
+            user = "me";
+          };
+        })
+        (builtins.attrNames self.nixosConfigurations)));
+in
+{
   options.myos.ssh = {
     enable = mkEnableOption "ssh config";
   };
@@ -13,13 +25,7 @@ in {
       programs.ssh = {
         enable = true;
         serverAliveInterval = 60;
-        matchBlocks = {
-          dui = {
-            hostname = "dui.${config.myos.data.fqdn.edg}";
-            user = "me";
-          };
-        };
-
+        matchBlocks = match-blocks;
         userKnownHostsFile =
           let
             knownHosts = pkgs.writeTextFile {
