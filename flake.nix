@@ -127,7 +127,8 @@
         } //
         (import ./images.nix { inherit jovian nixpkgs system pkgs self; }));
 
-      devShells."${system}" = (helpers.shells { inherit pkgs self; });
+      devShells."${system}" =
+        (helpers.shells { inherit pkgs self; } "dev");
 
       nixosConfigurations =
         builtins.foldl' (x: y: x // y) { }
