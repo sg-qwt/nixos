@@ -172,7 +172,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     name                 = "nixos-system"
     caching              = "ReadWrite"
     storage_account_type = "StandardSSD_LRS"
-    disk_size_gb         = 32
+    disk_size_gb         = 100
   }
 
   source_image_id = azurerm_image.nixos_image.id

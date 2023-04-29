@@ -28,8 +28,11 @@
       config = s.lib.mkIf s.config.myos."${pname}".enable body;
     };
 
-  shells = args:
-    (builtins.foldl' (a: b: a // b) { }
-      (map (sname: { "${sname}" = (import (./shells + "/${sname}") args); })
-        (builtins.attrNames (builtins.readDir ./shells))));
+  shells = args: default:
+    let devshells =
+          (builtins.foldl' (a: b: a // b) { }
+            (map (sname: { "${sname}" = (import (./shells + "/${sname}") args); })
+              (builtins.attrNames (builtins.readDir ./shells))));
+    in
+      devshells // {default = devshells."${default}";};
 }
