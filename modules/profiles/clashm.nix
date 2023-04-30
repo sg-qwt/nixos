@@ -14,6 +14,18 @@ let
   fwmark = "0x238";
   nft-table = "clash";
   route-table = "8964";
+  disable-tproxy = pkgs.writeShellApplication {
+    name = "disable-tproxy";
+    runtimeInputs = with pkgs; [ nftables iproute2 ];
+    text = (import (self + "/config/clash-meta/disable-tproxy.nix")
+      { inherit fwmark nft-table route-table; });
+  };
+  enable-tproxy = pkgs.writeShellApplication {
+    name = "enable-tproxy";
+    runtimeInputs = with pkgs; [ nftables iproute2 ];
+    text = (import (self + "/config/clash-meta/enable-tproxy.nix")
+      { inherit fwmark ports nft-table route-table; });
+  };
 in
 {
   options.myos.clash-meta = {
@@ -68,6 +80,7 @@ in
         serviceConfig = rec {
           User = "clash-meta";
           Restart = "on-failure";
+          ExecStartPre = "${disable-tproxy}/bin/disable-tproxy";
           WorkingDirectory = cfg.stateDir;
           CapabilityBoundingSet = [
             "CAP_NET_BIND_SERVICE"
@@ -83,21 +96,7 @@ in
         root = "${(pkgs.my.yacd-meta.override {inherit yacd-url;})}";
       };
 
-      environment.systemPackages = with pkgs; [
-        (writeShellApplication {
-          name = "enable-tproxy";
-          runtimeInputs = [ nftables iproute2 ];
-          text = (import (self + "/config/clash-meta/enable-tproxy.nix")
-            { inherit fwmark ports nft-table route-table; });
-        })
-
-        (writeShellApplication {
-          name = "disable-tproxy";
-          runtimeInputs = [ nftables iproute2 ];
-          text = (import (self + "/config/clash-meta/disable-tproxy.nix")
-            { inherit fwmark nft-table route-table; });
-        })
-      ];
+      environment.systemPackages = [enable-tproxy disable-tproxy];
 
       programs.proxychains = {
         enable = true;
