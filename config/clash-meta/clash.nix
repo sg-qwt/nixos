@@ -10,7 +10,7 @@ rec {
 
   ipv6 = true;
 
-  external-controller = "127.0.0.1:${toString ports.clash-meta-api}";
+  external-controller = "0.0.0.0:${toString ports.clash-meta-api}";
 
   log-level = "warning";
 
@@ -137,6 +137,7 @@ rec {
     ];
 
   rules = [
+    "DOMAIN-SUFFIX,${fqdn.edg},DIRECT"
     "GEOSITE,category-ads-all,REJECT"
     "GEOSITE,openai,select"
     "GEOSITE,geolocation-cn,DIRECT"
