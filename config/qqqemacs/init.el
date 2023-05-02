@@ -44,6 +44,14 @@
 
   (global-auto-revert-mode 1)
 
+  ;;;;;;;;;;
+  ;; font ;;
+  ;;;;;;;;;;
+  (set-face-attribute 'default nil :font "JetBrains Mono 10")
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+    (set-fontset-font (frame-parameter nil 'font) charset
+		      (font-spec :family "LXGW WenKai Mono" :size 14)))
+
   (minibuffer-depth-indicate-mode 1)
   (add-to-list 'warning-suppress-types '(defvaralias))
   (setq qqq/garden-dir (substitute-in-file-name "${MYOS_FLAKE}/garden"))
@@ -171,7 +179,8 @@
   (qqq/leader
     "t m" #'consult-minor-mode-menu
     "t s" #'consult-theme
-    "t t" #'modus-themes-toggle)
+    "t t" #'modus-themes-toggle
+    "t p" #'smartparens-mode)
 
   ;;;;;;;;;;;;
   ;; search ;;
@@ -669,9 +678,8 @@ the focus."
     :infix "e"
     "b" #'eval-buffer
     "f" #'eval-defun
-    "e" #'eval-expression)
-
-  )
+    "e" #'eval-expression
+    ";" #'eval-print-last-sexp))
 
 ;;;;;;;;;;;
 ;; dired ;;
