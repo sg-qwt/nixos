@@ -6,15 +6,11 @@ helpers.mkProfile s "desktop"
     fontconfig.enable = true;
 
     fonts = with pkgs; [
+      jetbrains-mono
+      lxgw-wenkai
       noto-fonts
       noto-fonts-cjk
       noto-fonts-emoji
-      source-han-mono
-      source-han-sans
-      source-han-serif
-      wqy_microhei
-      wqy_zenhei
-      liberation_ttf
     ];
   };
 
