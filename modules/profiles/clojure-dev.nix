@@ -1,7 +1,7 @@
-s@{ config, pkgs, lib, helpers, ... }:
+s@{ config, pkgs, lib, helpers, self, ... }:
 helpers.mkProfile s "clojure-dev"
 {
-  home-manager.users."${config.myos.users.mainUser}" = {
+  home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
     home.packages = with pkgs; [
       jdk11
       (clojure.override { jdk = jdk11; })
@@ -17,5 +17,10 @@ helpers.mkProfile s "clojure-dev"
       }
       complete -f -F _bb_complete bb # autocomplete filenames as well
     '';
+
+    # FIXME https://ask.clojure.org/index.php/12911/proper-xdg-support
+    home.sessionVariables.CLJ_CONFIG = "${config.xdg.configHome}/clojure";
+    xdg.configFile."clojure/deps.edn".source = (self + "/config/clojure/deps.edn");
+
   };
 }

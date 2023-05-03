@@ -96,7 +96,7 @@ in
         root = "${(pkgs.my.yacd-meta.override {inherit yacd-url;})}";
       };
 
-      environment.systemPackages = [enable-tproxy disable-tproxy];
+      environment.systemPackages = [ enable-tproxy disable-tproxy ];
 
       programs.proxychains = {
         enable = true;
