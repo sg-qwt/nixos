@@ -18,6 +18,7 @@ helpers.mkProfile s "qqqemacs"
           modus-themes
 
           evil
+          evil-surround
           evil-collection
           evil-org
           general
