@@ -2,7 +2,10 @@ s@{ config, pkgs, lib, helpers, self, ... }:
 helpers.mkProfile s "qqqemacs"
   (
     let
-      myEmacs = pkgs.emacsUnstablePgtk;
+      # https://github.com/nix-community/emacs-overlay/issues/312
+      myEmacs = pkgs.emacsUnstablePgtk.overrideAttrs (prev: {
+        postFixup = builtins.replaceStrings [ "/bin/emacs" ] [ "/bin/.emacs-*-wrapped" ] prev.postFixup;
+      });
       emacsWithPackages = (pkgs.emacsPackagesFor myEmacs).emacsWithPackages;
       qqqemacs = emacsWithPackages (epkgs:
         (with epkgs.melpaStablePackages; [
