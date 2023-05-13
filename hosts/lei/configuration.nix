@@ -28,15 +28,17 @@
     pulse.enable = true;
   };
 
-  systemd.services.thinkpad-fix-sound = {
-    description = "Fix the sound on X1";
-    path = [ pkgs.alsaTools ];
-    wantedBy = [ "default.target" ];
-    after = [ "sound.target" "alsa-store.service" ];
-    script = ''
-      ${pkgs.alsaTools}/bin/hda-verb /dev/snd/hwC0D0 0x1d SET_PIN_WIDGET_CONTROL 0x0
-    '';
-  };
+  systemd.services.thinkpad-fix-sound =
+    let targets = [ "suspend.target" "hibernate.target" "hybrid-sleep.target" "suspend-then-hibernate.target" ]; in
+    {
+      description = "Fix the sound on X1";
+      path = [ pkgs.alsaTools ];
+      wantedBy = [ "sound.target" ] ++ targets;
+      after = [ "sound.target" "graphical.target" "multi-user.target" ] ++ targets;
+      script = ''
+        hda-verb /dev/snd/hwC0D0 0x1d SET_PIN_WIDGET_CONTROL 0x0
+      '';
+    };
 
   myos.common.enable = true;
   myos.desktop.enable = true;

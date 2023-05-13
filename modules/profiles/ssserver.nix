@@ -50,7 +50,7 @@ helpers.mkProfile s "ssserver" (with config.myos.data;
       LoadCredential = [
         "config:${config.sops.templates.ssserver-config.path}"
       ];
-      ExecStart = "${pkgs.shadowsocks-rust}/bin/ssserver -c %d/config";
+      ExecStart = "ssserver -c %d/config";
       DynamicUser = true;
     };
   };
