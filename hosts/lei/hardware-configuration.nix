@@ -13,9 +13,13 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
+  # sudo btrfs inspect-internal map-swapfile /swap/swapfile --resume-offset
   boot.kernelParams = [
     "mem_sleep_default=deep"
+    "resume_offset=2398698"
   ];
+  # findmnt -no UUID -T /swap/swapfile
+  boot.resumeDevice = "/dev/disk/by-uuid/8e30b445-751f-4af6-89e3-94ff2dcebf46";
 
   swapDevices = [{
     device = "/swap/swapfile";
