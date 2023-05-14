@@ -16,6 +16,10 @@ rec {
 
   mode = "rule";
 
+  sniffer = {
+    enable = true;
+  };
+
   dns = {
     enable = true;
     ipv6 = true;
