@@ -14,6 +14,7 @@ let edg = config.myos.data.fqdn.edg; in
   myos.ssserver.enable = true;
   myos.matrix.enable = true;
   myos.oranc.enable = true;
+  myos.reddit.enable = true;
 
   sops.secrets.cloudflare_token = {
     sopsFile = self + "/secrets/tfout.json";

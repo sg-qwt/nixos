@@ -9,7 +9,8 @@
 	"dendrite": 8008,
 	"miniflux": 8018,
 	"oranc": 8020,
-	"tailscaled": 41641
+	"tailscaled": 41641,
+	"reddit": 8030
     },
     "fqdn":{
 	"edg": "edgerunners.eu.org"

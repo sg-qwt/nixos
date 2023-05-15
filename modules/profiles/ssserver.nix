@@ -3,7 +3,7 @@ helpers.mkProfile s "ssserver" (with config.myos.data;
 {
   sops.secrets.sspass = {
     sopsFile = self + "/secrets/secrets.yaml";
-    restartUnits = [ "shadowsocks-libev.service" ];
+    restartUnits = [ "shadowsocks-server.service" ];
   };
 
   sops.templates.ssserver-config.content = builtins.toJSON
@@ -50,7 +50,7 @@ helpers.mkProfile s "ssserver" (with config.myos.data;
       LoadCredential = [
         "config:${config.sops.templates.ssserver-config.path}"
       ];
-      ExecStart = "ssserver -c %d/config";
+      ExecStart = "${pkgs.shadowsocks-rust}/bin/ssserver -c %d/config";
       DynamicUser = true;
     };
   };
