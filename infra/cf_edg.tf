@@ -20,8 +20,8 @@ resource "cloudflare_record" "root" {
       type  = "AAAA"
       value = local.dui_ipv6
     }
-    ooo = {
-      name  = "ooo"
+    catch = {
+      name  = "*"
       type  = "CNAME"
       value = local.fqdn.edg
     }
