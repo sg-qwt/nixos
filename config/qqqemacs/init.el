@@ -684,6 +684,7 @@ the focus."
     :infix "e"
     "b" #'eval-buffer
     "f" #'eval-defun
+    "r" #'eval-region
     "e" #'eval-expression
     ";" #'eval-print-last-sexp))
 
