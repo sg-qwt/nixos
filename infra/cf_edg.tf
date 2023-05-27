@@ -13,12 +13,12 @@ resource "cloudflare_record" "root" {
     a = {
       name  = "@"
       type  = "A"
-      value = local.dui_ipv4
+      value = module.az_dui.ipv4
     }
     aaaa = {
       name  = "@"
       type  = "AAAA"
-      value = local.dui_ipv6
+      value = module.az_dui.ipv6
     }
     catch = {
       name  = "*"
@@ -38,7 +38,7 @@ resource "cloudflare_record" "root" {
 resource "cloudflare_record" "dui_h" {
   name    = "dui.h"
   type    = "A"
-  value   = local.dui_ipv4
+  value   = module.az_dui.ipv4
   zone_id = local.edg_zone_id
   proxied = false
 }

@@ -1,10 +1,7 @@
-provider "azurerm" {
-  features {}
-}
-
-variable "region" {
-  default = "southeastasia"
-}
+variable "rg_name" {}
+variable "region" {}
+variable "hostname" {}
+variable "disk_size_gb" {}
 
 data "azurerm_storage_account" "persist" {
   name                = "sa25542"
@@ -18,19 +15,19 @@ data "azurerm_storage_blob" "image_vhd" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "nixos-lab"
+  name     = var.rg_name
   location = var.region
 }
 
 resource "azurerm_virtual_network" "vnet" {
-  name                = "dui-vnet"
+  name                = "${var.hostname}-vnet"
   address_space       = ["10.0.0.0/16", "ace:cab:deca::/48"]
   location            = var.region
   resource_group_name = azurerm_resource_group.rg.name
 }
 
 resource "azurerm_subnet" "subnet" {
-  name                 = "dui-subnet"
+  name                 = "${var.hostname}-subnet"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
 
@@ -38,7 +35,7 @@ resource "azurerm_subnet" "subnet" {
 }
 
 resource "azurerm_public_ip" "public_ip_v4" {
-  name                = "dui-v4-ip"
+  name                = "${var.hostname}-v4-ip"
   location            = var.region
   resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Static"
@@ -47,7 +44,7 @@ resource "azurerm_public_ip" "public_ip_v4" {
 }
 
 resource "azurerm_public_ip" "public_ip_v6" {
-  name                = "dui-v6-ip"
+  name                = "${var.hostname}-v6-ip"
   location            = var.region
   resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Static"
@@ -67,7 +64,7 @@ resource "azurerm_network_security_group" "nsg" {
     access                     = "Allow"
     protocol                   = "*"
     source_port_range          = "*"
-    destination_port_range     = local.ports.ss1
+    destination_port_range     = 2952
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
@@ -103,7 +100,7 @@ resource "azurerm_network_security_group" "nsg" {
     access                     = "Allow"
     protocol                   = "Udp"
     source_port_range          = "*"
-    destination_port_range     = local.ports.tailscaled
+    destination_port_range     = 41641
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
@@ -122,12 +119,12 @@ resource "azurerm_network_security_group" "nsg" {
 }
 
 resource "azurerm_network_interface" "nic" {
-  name                = "dui-nic"
+  name                = "${var.hostname}-nic"
   location            = var.region
   resource_group_name = azurerm_resource_group.rg.name
 
   ip_configuration {
-    name                          = "dui-nic-configuration-v4"
+    name                          = "${var.hostname}-nic-configuration-v4"
     subnet_id                     = azurerm_subnet.subnet.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.public_ip_v4.id
@@ -135,7 +132,7 @@ resource "azurerm_network_interface" "nic" {
   }
 
   ip_configuration {
-    name                          = "dui-nic-configuration-v6"
+    name                          = "${var.hostname}-nic-configuration-v6"
     subnet_id                     = azurerm_subnet.subnet.id
     private_ip_address_allocation = "Dynamic"
     private_ip_address_version    = "IPv6"
@@ -172,7 +169,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     name                 = "nixos-system"
     caching              = "ReadWrite"
     storage_account_type = "StandardSSD_LRS"
-    disk_size_gb         = 100
+    disk_size_gb         = var.disk_size_gb
   }
 
   source_image_id = azurerm_image.nixos_image.id
@@ -190,15 +187,10 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
 }
 
-locals {
-  dui_ipv4 = azurerm_public_ip.public_ip_v4.ip_address
-  dui_ipv6 = azurerm_public_ip.public_ip_v6.ip_address
+output "ipv4" {
+  value = azurerm_public_ip.public_ip_v4.ip_address
 }
 
-output "dui_ipv4" {
-  value = local.dui_ipv4
-}
-
-output "dui_ipv6" {
-  value = local.dui_ipv6
+output "ipv6" {
+  value = azurerm_public_ip.public_ip_v6.ip_address
 }
