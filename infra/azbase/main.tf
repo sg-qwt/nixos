@@ -1,6 +1,7 @@
 variable "rg_name" {}
 variable "region" {}
 variable "hostname" {}
+variable "size" {}
 variable "disk_size_gb" {}
 
 data "azurerm_storage_account" "persist" {
@@ -53,69 +54,10 @@ resource "azurerm_public_ip" "public_ip_v6" {
 }
 
 resource "azurerm_network_security_group" "nsg" {
-  name                = "dui-nsg"
+  name                = "${var.hostname}-nsg"
   location            = var.region
   resource_group_name = azurerm_resource_group.rg.name
-
-  security_rule {
-    name                       = "SS"
-    priority                   = 1002
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = 2952
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "HTTP"
-    priority                   = 1003
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = 80
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "HTTPS"
-    priority                   = 1004
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = 443
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "TS"
-    priority                   = 1005
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Udp"
-    source_port_range          = "*"
-    destination_port_range     = 41641
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "SSH"
-    priority                   = 1006
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = 22
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
+  security_rule       = []
 }
 
 resource "azurerm_network_interface" "nic" {
@@ -159,11 +101,11 @@ resource "azurerm_image" "nixos_image" {
 }
 
 resource "azurerm_linux_virtual_machine" "vm" {
-  name                  = "dui"
+  name                  = var.hostname
   location              = var.region
   resource_group_name   = azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.nic.id]
-  size                  = "Standard_D2as_v5"
+  size                  = var.size
 
   os_disk {
     name                 = "nixos-system"
@@ -185,6 +127,14 @@ resource "azurerm_linux_virtual_machine" "vm" {
   boot_diagnostics {
     storage_account_uri = null
   }
+}
+
+output "rg" {
+  value = azurerm_resource_group.rg.name
+}
+
+output "nsg" {
+  value = azurerm_network_security_group.nsg.name
 }
 
 output "ipv4" {

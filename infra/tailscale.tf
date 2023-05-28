@@ -1,7 +1,3 @@
-provider "tailscale" {
-  tailnet = "sg-qwt.github"
-}
-
 locals {
   owner        = "sg-qwt@github"
   tailnet_name = "tail2b3a2.ts.net"
