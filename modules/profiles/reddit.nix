@@ -6,19 +6,43 @@ helpers.mkProfile s "reddit" (
     subs =
       lib.concatStringsSep "+" [
         # gaming
-        "brotato" "deadcells" "DotA2" "humblebundles"
-        "linux_gaming" "NewYuzuPiracy" "SwitchPirates"
-        "Peglin" "Steam" "steamdeals" "SteamDeck" "TOTK"
+        "brotato"
+        "deadcells"
+        "DotA2"
+        "humblebundles"
+        "linux_gaming"
+        "NewYuzuPiracy"
+        "SwitchPirates"
+        "Peglin"
+        "Steam"
+        "steamdeals"
+        "SteamDeck"
+        "TOTK"
         # tech
-        "btrfs" "Clojure" "framework" "hackernews"
-        "homelab" "lisp" "NixOS" "unixporn" "ProgrammerHumor"
+        "btrfs"
+        "Clojure"
+        "framework"
+        "hackernews"
+        "homelab"
+        "lisp"
+        "NixOS"
+        "unixporn"
+        "ProgrammerHumor"
         # emacs
-        "emacs" "OrgRoam" "planetemacs"
+        "emacs"
+        "OrgRoam"
+        "planetemacs"
         # crypto & finance
-        "CryptoMarkets" "CryptoCurrency" "Bitcoin" "wallstreetbets"
+        "CryptoMarkets"
+        "CryptoCurrency"
+        "Bitcoin"
+        "wallstreetbets"
         # misc
-        "dumbclub" "real_China_irl" "saraba2nd"
-        "shanghai" "unpopularopinion"
+        "dumbclub"
+        "real_China_irl"
+        "saraba2nd"
+        "shanghai"
+        "unpopularopinion"
       ];
   in
   {
