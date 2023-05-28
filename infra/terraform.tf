@@ -20,3 +20,13 @@ terraform {
     key                  = "terraform.tfstate"
   }
 }
+
+provider "azurerm" {
+  features {}
+}
+
+provider "cloudflare" {}
+
+provider "tailscale" {
+  tailnet = "sg-qwt.github"
+}
