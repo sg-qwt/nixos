@@ -2,7 +2,7 @@
   (:require [babashka.process :as bp :refer [shell]]
             [cheshire.core :as json]))
 
-(def host-ids [:ge :zheng :lei :dui])
+(def host-ids [:ge :zheng :lei :dui :xun])
 (def fqdn-suffix ".h.edgerunners.eu.org")
 (def user "deploy")
 

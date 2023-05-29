@@ -2,16 +2,18 @@ keys:
   - &main C10D73542F9717B761424E7D77EEFB04BFD81826
   - &ge age1fehak2xwxm6gsckqadtexrvpjr77zj86ap73fzyl4jjx5nnq3dkqz3qq59
   - &zheng age1a6zgnkyal7jaduz35ml9ua09w3w2utj9wzpkcm47msv3t8l8s54qe7tyql
-  - &dui age1e38gadh7jsj59kd0kgg6tujvxcw98pm3rfh3dvnq3a23kgg46fnqmqcz8c
   - &lei age12tsl048ttvtc3lackky7huxumq24jstuu5qnwwfenlxra886mcmszhqhwe
+  - &dui age1mxy9hgmz7ja4ny9cvq6eqj9gpqlkfypke5jsurx6zk75asyw6f0sxcek63
+  - &xun age1tmr3ndranyswjjtnfuvxv2mv4cn2wyqqguys85a40ruq2pgrhugqqw4459
 creation_rules:
   - path_regex: (secrets\.yaml$|tfout\.json$)
     key_groups:
     - age:
       - *ge
       - *zheng
-      - *dui
       - *lei
+      - *dui
+      - *xun
       pgp:
       - *main
   - path_regex: tf\.env$

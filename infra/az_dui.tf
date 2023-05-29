@@ -1,11 +1,12 @@
 module "az_dui" {
   source = "./azbase"
 
-  rg_name      = "nixos-lab"
-  region       = "southeastasia"
-  hostname     = "dui"
-  size         = "Standard_D2as_v5"
-  disk_size_gb = 100
+  rg_name       = "nixos-lab"
+  region        = "southeastasia"
+  hostname      = "dui"
+  size          = "Standard_D2as_v5"
+  disk_size_gb  = 100
+  image_version = azurerm_shared_image_version.nixos.id
 }
 
 resource "azurerm_network_security_rule" "SS" {

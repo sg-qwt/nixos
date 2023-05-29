@@ -3,17 +3,7 @@ variable "region" {}
 variable "hostname" {}
 variable "size" {}
 variable "disk_size_gb" {}
-
-data "azurerm_storage_account" "persist" {
-  name                = "sa25542"
-  resource_group_name = "persistent"
-}
-
-data "azurerm_storage_blob" "image_vhd" {
-  name                   = "nixosbase-2023-03-17.vhd"
-  storage_account_name   = data.azurerm_storage_account.persist.name
-  storage_container_name = "vhds"
-}
+variable "image_version" {}
 
 resource "azurerm_resource_group" "rg" {
   name     = var.rg_name
@@ -57,7 +47,6 @@ resource "azurerm_network_security_group" "nsg" {
   name                = "${var.hostname}-nsg"
   location            = var.region
   resource_group_name = azurerm_resource_group.rg.name
-  security_rule       = []
 }
 
 resource "azurerm_network_interface" "nic" {
@@ -87,19 +76,6 @@ resource "azurerm_network_interface_security_group_association" "nsg_assoc" {
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
-resource "azurerm_image" "nixos_image" {
-  name                = "nixos-image"
-  location            = var.region
-  resource_group_name = azurerm_resource_group.rg.name
-  hyper_v_generation  = "V2"
-
-  os_disk {
-    os_type  = "Linux"
-    os_state = "Generalized"
-    blob_uri = data.azurerm_storage_blob.image_vhd.id
-  }
-}
-
 resource "azurerm_linux_virtual_machine" "vm" {
   name                  = var.hostname
   location              = var.region
@@ -114,7 +90,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     disk_size_gb         = var.disk_size_gb
   }
 
-  source_image_id = azurerm_image.nixos_image.id
+  source_image_id = var.image_version
 
   admin_username                  = "me"
   disable_password_authentication = true
