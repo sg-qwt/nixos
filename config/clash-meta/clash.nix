@@ -90,6 +90,21 @@ rec {
         path = "${path.ss2}";
       };
     }
+    {
+      name = "sstls";
+      type = "ss";
+      server = config.sops.placeholder.xun_ipv4;
+      port = ports.sstls;
+      cipher = "2022-blake3-aes-128-gcm";
+      password = config.sops.placeholder.sing-shadow;
+      plugin = "shadow-tls";
+      client-fingerprint =  "chrome";
+      plugin-opts = {
+        host = "www.microsoft.com";
+        password = config.sops.placeholder.sing-shadow-tls;
+        version = 2;
+      };
+    }
   ];
 
   proxy-providers = {

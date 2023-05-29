@@ -43,7 +43,13 @@ in
       sops.secrets.sspass = sops-clash;
       sops.secrets.clash-provider-mumbai = sops-clash;
       sops.secrets.wgteam = sops-clash;
+      sops.secrets.sing-shadow = sops-clash;
+      sops.secrets.sing-shadow-tls = sops-clash;
       sops.secrets.dui_ipv6 = {
+        sopsFile = self + "/secrets/tfout.json";
+        restartUnits = [ "clash-meta.service" ];
+      };
+      sops.secrets.xun_ipv4 = {
         sopsFile = self + "/secrets/tfout.json";
         restartUnits = [ "clash-meta.service" ];
       };
