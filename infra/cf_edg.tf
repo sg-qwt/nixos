@@ -43,6 +43,14 @@ resource "cloudflare_record" "dui_h" {
   proxied = false
 }
 
+resource "cloudflare_record" "xun_h" {
+  name    = "xun.h"
+  type    = "A"
+  value   = module.az_xun.ipv4
+  zone_id = local.edg_zone_id
+  proxied = false
+}
+
 resource "cloudflare_record" "edg_ts_h" {
   for_each = local.ts_nixos_devices
   name     = "${each.key}.h"

@@ -140,6 +140,7 @@
                 p = (pkgs.extend (import "${jovian}/overlay.nix"));
               })
             (mkOS { name = "dui"; })
+            (mkOS { name = "xun"; })
             (mkOS { name = "lei"; })
           ];
 
