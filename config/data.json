@@ -2,6 +2,7 @@
     "ports": {
 	"ss1": 2952,
 	"ss2": 8964,
+	"sstls": 8989,
 	"clash-meta-mixed": 7891,
 	"clash-tproxy": 7893,
 	"clash-meta-api": 9091,
