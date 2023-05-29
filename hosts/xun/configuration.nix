@@ -10,4 +10,5 @@ let edg = config.myos.data.fqdn.edg; in
   myos.common.enable = true;
   myos.users.enable = true;
   myos.tmux.enable = true;
+  myos.singbox.enable = true;
 }

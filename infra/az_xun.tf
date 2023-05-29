@@ -23,6 +23,20 @@ resource "azurerm_network_security_rule" "SSH_xun" {
   network_security_group_name = module.az_xun.nsg
 }
 
+resource "azurerm_network_security_rule" "SSTLS_xun" {
+  name                        = "SSTLS"
+  priority                    = 1006
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = local.ports.sstls
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = module.az_xun.rg
+  network_security_group_name = module.az_xun.nsg
+}
+
 output "xun_ipv4" {
   value = module.az_xun.ipv4
 }
