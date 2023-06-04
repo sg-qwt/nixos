@@ -310,6 +310,9 @@
 (use-package yaml-ts-mode
   :mode "\\.ya?ml\\'")
 
+(use-package typescript-ts-mode
+  :mode "\\.ts\\'")
+
 (use-package org-roam
   :demand t
   :general
