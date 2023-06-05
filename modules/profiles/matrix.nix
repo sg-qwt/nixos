@@ -112,7 +112,7 @@ helpers.mkProfile s "matrix" (
 
     systemd.services."matrix-chatgpt-bot" = {
       script = ''
-        ${config.nur.repos.linyinfeng.matrix-chatgpt-bot}/bin/matrix-chatgpt-bot
+        ${pkgs.my.matrix-chatgpt-bot}/bin/matrix-chatgpt-bot
       '';
       serviceConfig = {
         Restart = "on-failure";
@@ -145,6 +145,9 @@ helpers.mkProfile s "matrix" (
         MATRIX_THREADS = "true";
         MATRIX_PREFIX_DM = "false";
         MATRIX_RICH_TEXT = "true";
+
+        OPENAI_AZURE = "true";
+        CHATGPT_REVERSE_PROXY = "https://shijia.openai.azure.com/openai/deployments/simaqian/chat/completions?api-version=2023-05-15";
       };
       after = [ "dendrite.service" ];
       wantedBy = [ "multi-user.target" ];
