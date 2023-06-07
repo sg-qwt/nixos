@@ -1,6 +1,13 @@
-{ callPackage, fetchFromGitHub, lib,
-  mkYarnPackage, fetchYarnDeps, nodejs,
-  makeWrapper, matrix-sdk-crypto-nodejs, ... }:
+{ callPackage
+, fetchFromGitHub
+, lib
+, mkYarnPackage
+, fetchYarnDeps
+, nodejs
+, makeWrapper
+, matrix-sdk-crypto-nodejs
+, ...
+}:
 
 mkYarnPackage rec {
   pname = "matrix-chatgpt-bot";
@@ -16,7 +23,7 @@ mkYarnPackage rec {
   packageJSON = ./package.json;
   offlineCache = fetchYarnDeps {
     yarnLock = "${src}/yarn.lock";
-    sha256 =  "sha256-h8xyyfhCRJW+VX7yCBFSS8Kx7tN72mnBrS1KREXlbFI=";
+    sha256 = "sha256-h8xyyfhCRJW+VX7yCBFSS8Kx7tN72mnBrS1KREXlbFI=";
   };
 
   nativeBuildInputs = [
