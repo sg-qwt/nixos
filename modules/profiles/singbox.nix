@@ -42,7 +42,7 @@ in
           ];
           ExecStart = "${pkgs.sing-box}/bin/sing-box run -c %d/config -D $STATE_DIRECTORY";
           CapabilityBoundingSet = cap;
-          AmbientCapabilities =  cap;
+          AmbientCapabilities = cap;
           Restart = "on-failure";
         };
       };

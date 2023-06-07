@@ -27,33 +27,34 @@ table inet ${nft-table} {
     }
 
     chain dnsfw {
-	type nat hook output priority filter;
+	type nat hook output priority mangle;
 	udp dport 53 redirect to ${toString ports.clash-dns}
 	tcp dport 53 redirect to ${toString ports.clash-dns}
     }
 
     chain prerouting {
-	type filter hook prerouting priority filter; policy accept;
+	type filter hook prerouting priority mangle; policy accept;
 
-	mark ${fwmark} meta l4proto { tcp, udp } tproxy to :${toString ports.clash-tproxy} accept
+	iif != "lo" return
 
 	jump filter
+
+	meta l4proto { tcp, udp } tproxy to :${toString ports.clash-tproxy} meta mark set ${fwmark}
     }
 
     chain output {
-	type route hook output priority filter; policy accept;
-
-	socket cgroupv2 level 2 "system.slice/clash-meta.service" return
+	type route hook output priority mangle; policy accept;
 
 	jump filter
+
+	socket cgroupv2 level 2 "system.slice/clash-meta.service" return
 
 	meta l4proto { tcp, udp } meta mark set ${fwmark}
     }
 
     chain filter {
-	fib daddr type local accept
-	ip  daddr @reserved4 accept
-	ip6 daddr @reserved6 accept
+	ip  daddr @reserved4 accept 
+	ip6 daddr @reserved6 accept 
     }
 }
 ''
