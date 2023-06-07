@@ -8,7 +8,7 @@ rec {
 
   allow-lan = false;
 
-  ipv6 = true;
+  ipv6 = false;
 
   external-controller = "0.0.0.0:${toString ports.clash-meta-api}";
 
@@ -22,7 +22,7 @@ rec {
 
   dns = {
     enable = true;
-    ipv6 = true;
+    ipv6 = false;
     listen = "0.0.0.0:${toString ports.clash-dns}";
 
     enhanced-mode = "redir-host";
@@ -98,7 +98,7 @@ rec {
       cipher = "2022-blake3-aes-128-gcm";
       password = config.sops.placeholder.sing-shadow;
       plugin = "shadow-tls";
-      client-fingerprint =  "chrome";
+      client-fingerprint = "chrome";
       plugin-opts = {
         host = "www.microsoft.com";
         password = config.sops.placeholder.sing-shadow-tls;
