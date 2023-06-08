@@ -46,8 +46,6 @@
 
   services.blueman.enable = true;
 
-  programs.thunar.enable = true;
-
   hardware.bluetooth = {
     enable = true;
     package = pkgs.bluez;
