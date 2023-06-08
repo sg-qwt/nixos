@@ -11,6 +11,7 @@ helpers.mkProfile s "desktop"
       noto-fonts
       noto-fonts-cjk
       noto-fonts-emoji
+      hanazono
     ];
   };
 
