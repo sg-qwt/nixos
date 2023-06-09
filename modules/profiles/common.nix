@@ -38,9 +38,7 @@ helpers.mkProfile s "common"
 
         substituters =
           lib.mkForce (
-            (lib.optional config.myos.desktop.enable
-              "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=10")
-            ++ [
+            [
               "https://cache.nixos.org?priority=20"
               "https://nix-community.cachix.org?priority=30"
               "https://ooo.edgerunners.eu.org/ghcr.io/sg-qwt/nixos?priority=40"
