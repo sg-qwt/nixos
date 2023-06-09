@@ -38,6 +38,7 @@
   myos.desktop-apps.enable = true;
   myos.clojure-dev.enable = true;
   myos.tools.enable = true;
+  myos.sdcv-with-dicts.enable = true;
   myos.theme.enable = true;
 
   myos.clash-meta.enable = true;
