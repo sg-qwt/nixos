@@ -722,4 +722,13 @@ the focus."
   :hook
   ((nix-mode . eglot-ensure))
   :config
-  (add-to-list 'eglot-server-programs '((nix-mode) "nixd")))
+  (add-to-list 'eglot-server-programs '((nix-mode) "nixd"))
+  
+  ;; (setq-default eglot-workspace-configuration
+  ;; 		'((nixd
+  ;; 		   (options
+  ;; 		    (enable . t)
+  ;; 		    (target
+  ;; 		     (installable . "<flakeref>#nixosConfigurations.<name>.options"))))))  
+
+  )
