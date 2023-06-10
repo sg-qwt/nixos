@@ -71,7 +71,7 @@ in
       systemd.tmpfiles.rules = [
         "d '${cfg.stateDir}' 0750 clash-meta clash-meta - -"
         "L+ '${cfg.stateDir}/config.yaml' - - - - ${config.sops.templates.clashm.path}"
-        "L+ '${cfg.stateDir}/Country.mmdb' - - - - ${pkgs.clash-geoip}/etc/clash/Country.mmdb"
+        "L+ '${cfg.stateDir}/Country.mmdb' - - - - ${pkgs.dbip-country-lite}/share/dbip/dbip-country-lite.mmdb"
         "L+ '${cfg.stateDir}/GeoSite.dat' - - - - ${pkgs.v2ray-domain-list-community}/share/v2ray/geosite.dat"
       ];
 

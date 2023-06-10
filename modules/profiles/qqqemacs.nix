@@ -3,16 +3,16 @@ helpers.mkProfile s "qqqemacs"
   (
     let
       # https://github.com/nix-community/emacs-overlay/issues/312
-      myEmacs = pkgs.emacsUnstablePgtk;
+      myEmacs = pkgs.emacs-unstable-pgtk;
       emacsWithPackages = (pkgs.emacsPackagesFor myEmacs).emacsWithPackages;
       qqqemacs = emacsWithPackages (epkgs:
 
-        (epkgs.treesit-grammars.with-grammars
+        [(epkgs.treesit-grammars.with-grammars
           (grammars: with grammars;
             [
               tree-sitter-yaml
               tree-sitter-typescript
-            ])) ++
+            ]))] ++
 
         (with epkgs.melpaStablePackages; [
           clojure-mode
