@@ -3,17 +3,24 @@ helpers.mkProfile s "qqqemacs"
   (
     let
       # https://github.com/nix-community/emacs-overlay/issues/312
-      myEmacs = pkgs.emacsUnstablePgtk.overrideAttrs (prev: {
-        postFixup = builtins.replaceStrings [ "/bin/emacs" ] [ "/bin/.emacs-*-wrapped" ] prev.postFixup;
-      });
+      myEmacs = pkgs.emacsUnstablePgtk;
       emacsWithPackages = (pkgs.emacsPackagesFor myEmacs).emacsWithPackages;
       qqqemacs = emacsWithPackages (epkgs:
+
+        (epkgs.treesit-grammars.with-grammars
+          (grammars: with grammars;
+            [
+              tree-sitter-yaml
+              tree-sitter-typescript
+            ])) ++
+
         (with epkgs.melpaStablePackages; [
           clojure-mode
           clojure-mode-extra-font-locking
           cider
           cider-eval-sexp-fu
         ]) ++
+
         (with epkgs.melpaPackages; [
           modus-themes
 
@@ -50,6 +57,7 @@ helpers.mkProfile s "qqqemacs"
           peep-dired
 
         ]) ++
+
         (with epkgs.elpaPackages; [
           vertico
           corfu
@@ -88,6 +96,8 @@ helpers.mkProfile s "qqqemacs"
             type = "Application";
             mimeTypes = [ "x-scheme-handler/org-protocol" ];
           })
+          # lsp servers
+          nixd
         ];
       };
 

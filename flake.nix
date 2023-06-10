@@ -37,6 +37,11 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
+    nixd = {
+      url = "github:nix-community/nixd";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     oranc = {
       url = "github:linyinfeng/oranc";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -76,6 +81,7 @@
           self.overlays.default
           emacs-overlay.overlays.default
           oranc.overlays.default
+          nixd.overlays.default
         ];
       };
 

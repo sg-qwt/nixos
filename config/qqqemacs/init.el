@@ -711,3 +711,15 @@ the focus."
     peep-dired-mode-map
     "j" #'peep-dired-next-file
     "k" #'peep-dired-prev-file))
+
+;;;;;;;;;;;
+;; eglot ;;
+;;;;;;;;;;;
+(use-package eglot
+  :custom
+  ;; :documentHighlightProvider
+  (eglot-ignored-server-capabilities '(:hoverProvider))
+  :hook
+  ((nix-mode . eglot-ensure))
+  :config
+  (add-to-list 'eglot-server-programs '((nix-mode) "nixd")))
