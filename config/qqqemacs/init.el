@@ -11,7 +11,6 @@
 (use-package emacs
   :after evil
   :custom
-  (inhibit-startup-message t)
   (ring-bell-function #'ignore)
   (custom-file (concat user-emacs-directory "custom.el"))
 
@@ -43,6 +42,19 @@
   (scroll-bar-mode 0)
 
   (global-auto-revert-mode 1)
+
+  ;;;;;;;;;;;;;;;;;;;;;
+  ;; startup scratch ;;
+  ;;;;;;;;;;;;;;;;;;;;;
+  (setq inhibit-startup-message t)
+  (setq initial-scratch-message
+	(shell-command-to-string "grab-shi"))
+  (add-hook 'emacs-startup-hook
+	    (lambda ()
+	      (with-current-buffer "*scratch*"
+		(goto-char (point-max))
+		(insert (concat "\n;; Emacs startup time: "
+				(format "%d packages loaded in %s" (length package-activated-list) (emacs-init-time)))))))
 
   ;;;;;;;;;;
   ;; font ;;
@@ -716,19 +728,10 @@ the focus."
 ;; eglot ;;
 ;;;;;;;;;;;
 (use-package eglot
-  :custom
+  ;; :custom
   ;; :documentHighlightProvider
-  (eglot-ignored-server-capabilities '(:hoverProvider))
+  ;; (eglot-ignored-server-capabilities '(:hoverProvider))
   :hook
   ((nix-mode . eglot-ensure))
   :config
-  (add-to-list 'eglot-server-programs '((nix-mode) "nixd"))
-  
-  ;; (setq-default eglot-workspace-configuration
-  ;; 		'((nixd
-  ;; 		   (options
-  ;; 		    (enable . t)
-  ;; 		    (target
-  ;; 		     (installable . "<flakeref>#nixosConfigurations.<name>.options"))))))  
-
-  )
+  (add-to-list 'eglot-server-programs '((nix-mode) "nixd")))
