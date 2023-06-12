@@ -96,6 +96,11 @@ helpers.mkProfile s "qqqemacs"
             type = "Application";
             mimeTypes = [ "x-scheme-handler/org-protocol" ];
           })
+          (writeScriptBin "grab-shi" ''
+            ${pkgs.babashka}/bin/bb \
+              ${(self + "/bb/shi.clj")} \
+              ${(self + "/resources/dicts/shi.txt")}
+          '')
           # lsp servers
           nixd
         ];
