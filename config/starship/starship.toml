@@ -97,6 +97,7 @@ symbol = "nim "
 
 [nix_shell]
 symbol = "nix "
+heuristic = true
 
 [ocaml]
 symbol = "ml "
