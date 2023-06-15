@@ -473,8 +473,38 @@
     minibuffer-local-map
     "C-e" 'qqq/embark-export-write)
   (general-def embark-command-map "x" #'qqq/exec-with-prefix)
+  (general-def embark-symbol-map
+    "d" #'qqq/sdcv-at-char
+    "D" #'qqq/sdcv-at-word)
+  (general-def embark-identifier-map
+    "d" #'qqq/sdcv-at-char
+    "D" #'qqq/sdcv-at-word)
 
   :init
+  (defun qqq/sdcv-at-word ()
+    "Search word under cursor with sdcv"
+    (interactive)
+    (with-output-to-temp-buffer "*dict*"
+      (shell-command  (concat "sdcv --non-interactive " (current-word))
+		      "*dict*"
+		      "*Messages*")
+      (when (get-buffer "*dict*")
+	(pop-to-buffer "*dict*")
+	(with-current-buffer "*dict*"
+	  (ansi-color-apply-on-region (point-min) (point-max))
+	  (special-mode)))))
+  (defun qqq/sdcv-at-char ()
+    "Search character under cursor with sdcv"
+    (interactive)
+    (with-output-to-temp-buffer "*dict*"
+      (shell-command  (concat "sdcv --non-interactive " (string (following-char)))
+		      "*dict*"
+		      "*Messages*")
+      (when (get-buffer "*dict*")
+	(pop-to-buffer "*dict*")
+	(with-current-buffer "*dict*"
+	  (ansi-color-apply-on-region (point-min) (point-max))
+	  (special-mode)))))
   (defun qqq/exec-with-prefix (target)
     "Execute command with prefix."
     (interactive
