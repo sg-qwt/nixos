@@ -483,7 +483,6 @@
       (execute-extended-command prefix target)))
   
   (setq prefix-help-command #'embark-prefix-help-command)
-  (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
   ;; borrowed from doom
   (defun qqq/embark-export-write ()
     "Export the current vertico results to a writable buffer if possible.
@@ -734,4 +733,10 @@ the focus."
   :hook
   ((nix-mode . eglot-ensure))
   :config
-  (add-to-list 'eglot-server-programs '((nix-mode) "nixd")))
+  (add-to-list 'eglot-server-programs '((nix-mode) "nil")))
+
+(use-package eldoc
+  :custom
+  (eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly)
+  (eldoc-echo-area-use-multiline-p nil)
+  (eldoc-echo-area-prefer-doc-buffer t))
