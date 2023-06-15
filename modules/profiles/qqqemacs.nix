@@ -102,7 +102,7 @@ helpers.mkProfile s "qqqemacs"
               ${(self + "/resources/dicts/shi.txt")}
           '')
           # lsp servers
-          nixd
+          nil
         ];
       };
 
