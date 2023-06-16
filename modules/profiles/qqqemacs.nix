@@ -76,6 +76,8 @@ helpers.mkProfile s "qqqemacs"
       # this slows down builds
       # documentation.man.generateCaches = true; 
 
+      myos.sdcv-with-dicts.enable = true;
+
       services.emacs = {
         enable = true;
         defaultEditor = true;
