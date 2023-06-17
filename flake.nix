@@ -137,7 +137,7 @@
         ({
           hello-custom = pkgs.my.hello-custom;
           proton-ge = pkgs.my.proton-ge-custom;
-          gen-github-ci = pkgs.my.gen-github-ci;
+          gen-config = pkgs.my.gen-config;
           matrix-chatgpt-bot = pkgs.my.matrix-chatgpt-bot;
         } //
         (import ./images.nix { inherit jovian nixpkgs system pkgs self; }));
