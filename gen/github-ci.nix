@@ -3,6 +3,8 @@ let
   hosts = (builtins.attrNames (builtins.readDir ../hosts));
 in
 {
+  _gentarget = ".github/workflows/build.yaml";
+
   name = "Build";
   on = {
     workflow_dispatch = { };

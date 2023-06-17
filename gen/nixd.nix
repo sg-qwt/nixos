@@ -1,5 +1,5 @@
-# nix eval --json --file .nixd.nix > .nixd.json
 {
+  _gentarget = ".nixd.json";
   options = {
     enable = true;
     target = {
