@@ -11,7 +11,8 @@
 	"miniflux": 8018,
 	"oranc": 8020,
 	"tailscaled": 41641,
-	"reddit": 8030
+	"reddit": 8030,
+	"atticd": 8040
     },
     "fqdn":{
 	"edg": "edgerunners.eu.org"
