@@ -35,7 +35,6 @@ helpers.mkProfile s "common"
 
       nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
       settings = {
-
         substituters =
           lib.mkForce (
             [
@@ -49,8 +48,6 @@ helpers.mkProfile s "common"
           "oranc:RZWCxVsNWs/6qPkfB17Mmk9HpkTv87UXnldHtGKkWLk="
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         ];
-
-        auto-optimise-store = true;
       };
 
       gc = {
