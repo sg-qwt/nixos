@@ -34,21 +34,6 @@ helpers.mkProfile s "common"
       registry.myos.flake = self;
 
       nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
-      settings = {
-        substituters =
-          lib.mkForce (
-            [
-              "https://cache.nixos.org?priority=20"
-              "https://nix-community.cachix.org?priority=30"
-              "https://ooo.edgerunners.eu.org/ghcr.io/sg-qwt/nixos?priority=40"
-            ]
-          );
-
-        trusted-public-keys = [
-          "oranc:RZWCxVsNWs/6qPkfB17Mmk9HpkTv87UXnldHtGKkWLk="
-          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        ];
-      };
 
       gc = {
         automatic = true;
@@ -56,4 +41,6 @@ helpers.mkProfile s "common"
         dates = "weekly";
       };
     };
+
+    myos.cache.enable = true;
   }
