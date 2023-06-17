@@ -42,6 +42,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    attic = {
+      url = "github:zhaofengli/attic";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
     oranc = {
       url = "github:linyinfeng/oranc";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -82,6 +88,7 @@
           emacs-overlay.overlays.default
           oranc.overlays.default
           nixd.overlays.default
+          attic.overlays.default
         ];
       };
 
@@ -95,6 +102,7 @@
             pkgs = p;
           };
           modules = [
+            attic.nixosModules.atticd
             nur.nixosModules.nur
             home-manager.nixosModules.home-manager
             oranc.nixosModules.oranc
