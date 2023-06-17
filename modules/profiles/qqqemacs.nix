@@ -7,12 +7,14 @@ helpers.mkProfile s "qqqemacs"
       emacsWithPackages = (pkgs.emacsPackagesFor myEmacs).emacsWithPackages;
       qqqemacs = emacsWithPackages (epkgs:
 
-        [(epkgs.treesit-grammars.with-grammars
-          (grammars: with grammars;
+        [
+          (epkgs.treesit-grammars.with-grammars
+            (grammars: with grammars;
             [
               tree-sitter-yaml
               tree-sitter-typescript
-            ]))] ++
+            ]))
+        ] ++
 
         (with epkgs.melpaStablePackages; [
           clojure-mode
