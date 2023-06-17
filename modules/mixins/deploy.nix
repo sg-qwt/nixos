@@ -1,11 +1,21 @@
 { config, lib, pkgs, self, ... }:
 {
   system.stateVersion = "22.11";
-  nix.settings.trusted-users = [ "@wheel" "deploy" ];
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes repl-flake
-    warn-dirty = false
-  '';
+  nix.settings = {
+    trusted-users = [ "@wheel" "deploy" ];
+
+    experimental-features = [
+      "nix-command"
+      "flakes"
+      "repl-flake"
+    ];
+
+    warn-dirty = false;
+    fallback = true;
+    connect-timeout = 5;
+    log-lines = 25;
+    auto-optimise-store = true;
+  };
 
   services.openssh = {
     enable = true;
