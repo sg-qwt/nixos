@@ -21,6 +21,6 @@ helpers.mkProfile s "sdcv-with-dicts" (
     '';
   in
   {
-    environment.systemPackages = [ mySdcv ]; 
+    environment.systemPackages = [ mySdcv ];
   }
 )
