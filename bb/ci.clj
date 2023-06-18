@@ -21,20 +21,26 @@
     (println ">>> Building finised " path)
     path))
 
-(defn push-to-oranc
+(defn configure-attic []
+  (println ">>> attic server " (System/getenv "ATTIC_SERVER"))
+  (println ">>> attic cache " (System/getenv "ATTIC_CACHE"))
+  (shell (format "attic login --set-default ci %s %s"
+                 (System/getenv "ATTIC_SERVER")
+                 (System/getenv "ATTIC_TOKEN")))
+  (shell (format "attic use %s" (System/getenv "ATTIC_CACHE"))))
+
+(defn push-to-attic
   [path]
-  (println ">>> oranc username " (System/getenv "ORANC_USERNAME"))
   (println ">>> start pushing " path)
-  (let
-    [pushing
-     (bp/shell
-      {:out :string :err :string :in path}
-      "oranc push --registry ghcr.io --repository sg-qwt/nixos --allow-immutable-db")]
-    (println (:err pushing)))
-  (println ">>> pushing finised " path))
+  (shell
+   (format "attic push ci:%s %s"
+           (System/getenv "ATTIC_CACHE")
+           path))
+  (println ">>> finished pushing " path))
 
 (defn build-and-push
   [host]
   (let [path (build host)]
     (shell "sleep 5")
-    (push-to-oranc path)))
+    (configure-attic)
+    (push-to-attic path)))

@@ -2,7 +2,7 @@
 pkgs.mkShell {
   name = "ci";
   nativeBuildInputs = with pkgs; [
-    oranc
+    attic-client
     babashka
   ];
 }
