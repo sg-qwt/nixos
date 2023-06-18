@@ -389,7 +389,14 @@
   (general-def '(normal)
     org-mode-map
     "RET" 'org-open-at-point
-    "gx"  'org-open-at-point))
+    "gx"  'org-open-at-point)
+  :config
+  (add-hook 'org-capture-mode-hook
+	    (lambda ()
+	      (setq-local
+	       header-line-format
+	       (substitute-command-keys
+		"Capture buffer.  Finish \\`, c'.  Abort \\`, k'.")))))
 
 (use-package evil-org
   :after (evil org)
