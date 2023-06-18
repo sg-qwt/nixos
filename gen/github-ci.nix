@@ -1,13 +1,25 @@
 let
   ghexpr = v: "\${{ ${v} }}";
   hosts = (builtins.attrNames (builtins.readDir ../hosts));
+  if-clause = ghexpr "github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)";
 in
 {
   _gentarget = ".github/workflows/build.yaml";
 
   name = "Build";
+
   on = {
-    workflow_dispatch = { };
+    workflow_dispatch = {
+      inputs = {
+        host = {
+          description = "Host to build";
+          required = true;
+          default = "all";
+          type = "choice";
+          options = hosts ++ [ "all" ];
+        };
+      };
+    };
   };
 
   jobs = {
@@ -19,6 +31,8 @@ in
       };
 
       runs-on = "ubuntu-latest";
+
+      "if" = if-clause;
 
       steps = [
         {

@@ -4,6 +4,8 @@
 
 jobs:
   build-nixos-configuration:
+    if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
+      }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -51,4 +53,17 @@ jobs:
           - zheng
 name: Build
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      host:
+        default: all
+        description: Host to build
+        options:
+          - dui
+          - ge
+          - lei
+          - xun
+          - zheng
+          - all
+        required: true
+        type: choice
