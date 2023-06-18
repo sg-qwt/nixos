@@ -42,22 +42,22 @@ in
           "with" = {
             github_access_token = ghexpr "secrets.GITHUB_TOKEN";
             extra_nix_config = ''
-              trusted-public-keys = oranc:RZWCxVsNWs/6qPkfB17Mmk9HpkTv87UXnldHtGKkWLk= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= linyinfeng.cachix.org-1:sPYQXcNrnCf7Vr7T0YmjXz5dMZ7aOKG3EqLja0xr9MM=
-              substituters = https://ooo.edgerunners.eu.org/ghcr.io/sg-qwt/nixos https://cache.nixos.org https://nix-community.cachix.org https://linyinfeng.cachix.org
+              extra-substituters = https://staging.attic.rs/attic-ci
+              extra-trusted-public-keys = attic-ci:U5Sey4mUxwBXM3iFapmP0/ogODXywKLRNgRPQpEXxbo=
             '';
           };
         }
         {
-          name = "Build and push with oranc";
-          env = {
-            ORANC_USERNAME = "sg-qwt";
-            ORANC_PASSWORD = ghexpr "secrets.ORANC_PASSWORD";
-            ORANC_SIGNING_KEY = ghexpr "secrets.ORANC_SIGNING_KEY";
-          };
+          name = "Build and push with Attic";
           run = ''
             nix develop .#ci --command \
             bb build-cache ${ghexpr "matrix.host"}
           '';
+          env = {
+            ATTIC_SERVER = "https://attic.edgerunners.eu.org/";
+            ATTIC_CACHE = "hello";
+            ATTIC_TOKEN = ghexpr "secrets.ATTIC_HELLO_TOKEN";
+          };
         }
       ];
     };
