@@ -33,8 +33,6 @@ in
 
       runs-on = "ubuntu-latest";
 
-      "if" = if-clause;
-
       steps = [
         (step {
           name = "Checkout";
