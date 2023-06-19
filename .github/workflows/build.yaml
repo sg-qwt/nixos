@@ -8,9 +8,13 @@ jobs:
       }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
+          }}
+        name: Checkout
         uses: actions/checkout@v3
-      - name: Make more space
+      - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
+          }}
+        name: Make more space
         run: 'echo "=== Before pruning ==="
 
           df -h
@@ -24,7 +28,9 @@ jobs:
           df -h
 
           '
-      - name: Install Nix
+      - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
+          }}
+        name: Install Nix
         uses: cachix/install-nix-action@v19
         with:
           extra_nix_config: 'extra-substituters = https://staging.attic.rs/attic-ci
@@ -37,6 +43,8 @@ jobs:
           ATTIC_CACHE: hello
           ATTIC_SERVER: https://attic.edgerunners.eu.org/
           ATTIC_TOKEN: ${{ secrets.ATTIC_HELLO_TOKEN }}
+        if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
+          }}
         name: Build and push with Attic
         run: 'nix develop .#ci --command \
 
