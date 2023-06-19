@@ -11,6 +11,13 @@ helpers.mkProfile s "shell"
   };
 
   home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
+    programs.fzf = {
+      enable = true;
+      enableBashIntegration = true;
+      defaultCommand = "${pkgs.ripgrep}/bin/rg --files";
+      defaultOptions = [ "--bind ctrl-l:accept" ];
+    };
+
     programs.bash = {
       enable = true;
 
