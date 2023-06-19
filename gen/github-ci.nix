@@ -36,7 +36,8 @@ in
       steps = [
         (step {
           name = "Checkout";
-          uses = "actions/checkout@v3";})
+          uses = "actions/checkout@v3";
+        })
         (step {
           name = "Make more space";
           run = ''
@@ -46,28 +47,30 @@ in
             echo
             echo "=== After pruning ==="
             df -h
-          '';})
+          '';
+        })
         (step {
           name = "Install Nix";
-          uses = "cachix/install-nix-action@v19";
+          uses = "cachix/install-nix-action@v22";
           "with" = {
             github_access_token = ghexpr "secrets.GITHUB_TOKEN";
-            extra_nix_config = ''
-              extra-substituters = https://staging.attic.rs/attic-ci
-              extra-trusted-public-keys = attic-ci:U5Sey4mUxwBXM3iFapmP0/ogODXywKLRNgRPQpEXxbo=
-            '';
-          };}) 
+          };
+        }) 
         (step {
-          name = "Build and push with Attic";
+          name = "Setup Attic";
+          uses = "icewind1991/attic-action@v1.1";
+          "with" = {
+            name = "hello";
+            instance = "https://attic.edgerunners.eu.org";
+            authToken = ghexpr "secrets.ATTIC_HELLO_TOKEN";
+          };
+        })
+        (step {
+          name = "Build host";
           run = ''
-            nix develop .#ci --command \
-            bb build-cache ${ghexpr "matrix.host"}
+            nix build .#nixosConfigurations.${ghexpr "matrix.host"}.config.system.build.toplevel
           '';
-          env = {
-            ATTIC_SERVER = "https://attic.edgerunners.eu.org/";
-            ATTIC_CACHE = "hello";
-            ATTIC_TOKEN = ghexpr "secrets.ATTIC_HELLO_TOKEN";
-          };})
+        })
       ];
     };
   };

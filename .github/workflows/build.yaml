@@ -29,24 +29,21 @@ jobs:
       - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
           }}
         name: Install Nix
-        uses: cachix/install-nix-action@v19
+        uses: cachix/install-nix-action@v22
         with:
-          extra_nix_config: 'extra-substituters = https://staging.attic.rs/attic-ci
-
-            extra-trusted-public-keys = attic-ci:U5Sey4mUxwBXM3iFapmP0/ogODXywKLRNgRPQpEXxbo=
-
-            '
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
-      - env:
-          ATTIC_CACHE: hello
-          ATTIC_SERVER: https://attic.edgerunners.eu.org/
-          ATTIC_TOKEN: ${{ secrets.ATTIC_HELLO_TOKEN }}
-        if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
+      - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
           }}
-        name: Build and push with Attic
-        run: 'nix develop .#ci --command \
-
-          bb build-cache ${{ matrix.host }}
+        name: Setup Attic
+        uses: icewind1991/attic-action@v1.1
+        with:
+          authToken: ${{ secrets.ATTIC_HELLO_TOKEN }}
+          instance: https://attic.edgerunners.eu.org
+          name: hello
+      - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
+          }}
+        name: Build host
+        run: 'nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
 
           '
     strategy:
