@@ -16,6 +16,8 @@ helpers.mkProfile s "shell"
 
       initExtra = ''
         eval "$(${pkgs.zoxide}/bin/zoxide init bash)"
+        source ${pkgs.complete-alias}/bin/complete_alias
+        complete -F _complete_alias "''${!BASH_ALIASES[@]}"
       '';
 
       historyControl = [
