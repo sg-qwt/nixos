@@ -4,8 +4,6 @@
 
 jobs:
   build-nixos-configuration:
-    if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
-      }}
     runs-on: ubuntu-latest
     steps:
       - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
