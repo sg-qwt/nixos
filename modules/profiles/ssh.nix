@@ -5,13 +5,14 @@ with lib;
 let
   cfg = config.myos.ssh;
   data = config.myos.data;
+  username = config.myos.users.mainUser;
   match-blocks =
     (builtins.foldl' (a: b: a // b) { }
       (map
         (host: {
           "${host}" = {
             hostname = "${host}.h.${data.fqdn.edg}";
-            user = "me";
+            user = username;
           };
         })
         data.hosts));
