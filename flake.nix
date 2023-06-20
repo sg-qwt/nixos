@@ -116,21 +116,13 @@
           ] ++ (import (./hosts + "/${name}") { inherit inputs jovian; });
         };
       };
+
+      mytreefmt = (inputs.treefmt-nix.lib.mkWrapper pkgs (import ./checks/treefmt.nix));
     in
     {
       overlays.default = (helpers.default-overlays { inherit inputs; });
 
-      formatter."${system}" = treefmt-nix.lib.mkWrapper
-        nixpkgs.legacyPackages.x86_64-linux
-        {
-          projectRootFile = "flake.nix";
-          programs.nixpkgs-fmt.enable = true;
-          programs.terraform.enable = true;
-          programs.zprint = {
-            enable = true;
-            zprintOpts = "{:search-config? true}";
-          };
-        };
+      formatter."${system}" = mytreefmt;
 
       # expose packages to flake here
       packages."${system}" = flake-utils.lib.flattenTree
@@ -159,5 +151,7 @@
             (mkOS { name = "lei"; })
           ];
 
+      # checks.x86_64-linux.math = self.nixosConfigurations.lei.config.system.build.toplevel;
+      checks.x86_64-linux.tfm = import ./checks/treefmtcheck.nix { inherit pkgs mytreefmt self; };
     };
 }
