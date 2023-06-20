@@ -28,7 +28,6 @@ in
 
     users.users."${cfg.mainUser}" = {
       isNormalUser = true;
-      description = "me";
       extraGroups = [ "wheel" "networkmanager" "audio" "video" "docker" "systemd-journal" ] ++ cfg.extraGroups;
       passwordFile = config.sops.secrets.me-password.path;
       openssh.authorizedKeys.keyFiles = [
