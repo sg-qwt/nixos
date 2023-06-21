@@ -1,9 +1,9 @@
-{
-  pkgs,
-  mytreefmt,
-  self
+{ pkgs
+, mytreefmt
+, self
 }:
-pkgs.runCommandNoCC "treefmt" {
+pkgs.runCommandNoCC "treefmt"
+{
   nativeBuildInputs = [
     mytreefmt
   ];
