@@ -71,7 +71,5 @@ in
   swapDevices =
     [{ device = "/dev/disk/by-uuid/6b5c6135-985d-43fd-84d0-a9212cdfe319"; }];
 
-  services.btrfs.autoScrub.enable = true;
-
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
