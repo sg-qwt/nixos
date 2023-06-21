@@ -2,7 +2,7 @@ let
   ghexpr = v: "\${{ ${v} }}";
   hosts = (builtins.attrNames (builtins.readDir ../hosts));
   if-clause = ghexpr "github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)";
-  step = attr : ({ "if" = if-clause; } // attr);
+  step = attr: ({ "if" = if-clause; } // attr);
 in
 {
   _gentarget = ".github/workflows/build.yaml";
@@ -55,7 +55,7 @@ in
           "with" = {
             github_access_token = ghexpr "secrets.GITHUB_TOKEN";
           };
-        }) 
+        })
         (step {
           name = "Setup Attic";
           uses = "icewind1991/attic-action@v1.1";

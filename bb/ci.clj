@@ -21,7 +21,8 @@
     (println ">>> Building finised " path)
     path))
 
-(defn configure-attic []
+(defn configure-attic
+  []
   (println ">>> attic server " (System/getenv "ATTIC_SERVER"))
   (println ">>> attic cache " (System/getenv "ATTIC_CACHE"))
   (shell (format "attic login --set-default ci %s %s"
@@ -32,10 +33,7 @@
 (defn push-to-attic
   [path]
   (println ">>> start pushing " path)
-  (shell
-   (format "attic push ci:%s %s"
-           (System/getenv "ATTIC_CACHE")
-           path))
+  (shell (format "attic push ci:%s %s" (System/getenv "ATTIC_CACHE") path))
   (println ">>> finished pushing " path))
 
 (defn build-and-push
