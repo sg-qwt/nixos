@@ -1,11 +1,21 @@
 s@{ config, pkgs, lib, helpers, inputs, self, ... }:
+with lib;
+let
+  cfg = config.myos.common;
+  btrfsExist = (builtins.any
+    (filesystem: filesystem.fsType == "btrfs")
+    (lib.attrValues config.fileSystems));
+in
 {
   imports = [
     ../../modules/mixins/deploy.nix
   ];
-} //
-helpers.mkProfile s "common"
-  {
+
+  options.myos.common = {
+    enable = mkEnableOption "base shared profile";
+  };
+
+  config = mkIf cfg.enable {
     sops = {
       age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
       gnupg.sshKeyPaths = [ ];
@@ -43,4 +53,10 @@ helpers.mkProfile s "common"
     };
 
     myos.cache.enable = true;
-  }
+
+    services.btrfs.autoScrub = lib.mkIf btrfsExist {
+      enable = true;
+    };
+  };
+
+}
