@@ -424,7 +424,7 @@
 (use-package evil-cleverparens
   :after (evil smartparens)
   :hook
-  ((emacs-lisp-mode clojure-mode) . evil-cleverparens-mode)
+  ((emacs-lisp-mode clojure-mode cider-repl-mode) . evil-cleverparens-mode)
   :config
   (require 'evil-cleverparens-text-objects))
 
