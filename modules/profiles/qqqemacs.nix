@@ -2,7 +2,6 @@ s@{ config, pkgs, lib, helpers, self, ... }:
 helpers.mkProfile s "qqqemacs"
   (
     let
-      # https://github.com/nix-community/emacs-overlay/issues/312
       myEmacs = pkgs.emacs-unstable-pgtk;
       emacsWithPackages = (pkgs.emacsPackagesFor myEmacs).emacsWithPackages;
       qqqemacs = emacsWithPackages (epkgs:
@@ -100,11 +99,7 @@ helpers.mkProfile s "qqqemacs"
             type = "Application";
             mimeTypes = [ "x-scheme-handler/org-protocol" ];
           })
-          (writeScriptBin "grab-shi" ''
-            ${pkgs.babashka}/bin/bb \
-              ${(self + "/bb/shi.clj")} \
-              ${(self + "/resources/dicts/shi.txt")}
-          '')
+          self.packages.x86_64-linux.grab-shi
           # lsp servers
           nil
         ];

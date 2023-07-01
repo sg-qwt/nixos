@@ -1,3 +1,4 @@
+{ ... }:
 {
   _gentarget = ".nixd.json";
   options = {
