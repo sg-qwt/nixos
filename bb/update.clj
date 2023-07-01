@@ -17,9 +17,9 @@
                     nv-out
                     \newline
                     "</pre>")]
-    (when-let [output (getenv "GITHUB_OUTPUT")]
+    (when-let [output (System/getenv "GITHUB_OUTPUT")]
       (println ">>> setting summary")
-      (spit step-summary (str "report=" report) :append true))
+      (spit output (str "report=" report) :append true))
     (println ">>> report")
     (println report)))
 
