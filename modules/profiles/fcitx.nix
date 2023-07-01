@@ -10,16 +10,7 @@ helpers.mkProfile s "fcitx"
           my.rime-pinyin-zhwiki
         ];
       })
-      libsForQt5.fcitx5-qt
-      fcitx5-gtk
     ];
-  };
-
-  environment.sessionVariables = {
-    GTK_IM_MODULE = "fcitx";
-    QT_IM_MODULE = "fcitx";
-    SDL_IM_MODULE = "fcitx";
-    XMODIFIERS = "@im=fcitx";
   };
 
   home-manager.users."${config.myos.users.mainUser}" = {
