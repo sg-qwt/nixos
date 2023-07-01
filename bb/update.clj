@@ -19,7 +19,7 @@
                     "</pre>")]
     (when-let [output (System/getenv "GITHUB_OUTPUT")]
       (println ">>> setting summary")
-      (spit output (str "report=" report) :append true))
+      (spit output (str "report<<EOF" report "EOF") :append true))
     (println ">>> report")
     (println report)))
 
