@@ -21,7 +21,7 @@ let
 
   scripts =
     lib.pipe files [
-      (map (file: import "${inputs.self}/gen/${file}"))
+      (map (file: import "${inputs.self}/gen/${file}" { inherit lib; }))
       (map (aset:
         {
           dest = aset._gentarget;
@@ -38,7 +38,7 @@ let
 
           echo "Updating file: $dest" >&2
         
-          cp ${aset.outfile} "$dest"
+          cp -f ${aset.outfile} "$dest"
         ''
       ))
     ];

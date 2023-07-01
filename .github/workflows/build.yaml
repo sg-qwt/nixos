@@ -4,6 +4,10 @@
 
 jobs:
   build-nixos-configuration:
+    environment: deploy
+    needs:
+      - check-flake-and-formatter
+      - check-eval-host
     runs-on: ubuntu-latest
     steps:
       - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
@@ -54,8 +58,43 @@ jobs:
           - lei
           - xun
           - zheng
+  check-eval-host:
+    needs: check-flake-and-formatter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Nix
+        uses: cachix/install-nix-action@v22
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Eval
+        run: 'nix eval --raw .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+
+          '
+    strategy:
+      fail-fast: false
+      matrix:
+        host:
+          - dui
+          - ge
+          - lei
+          - xun
+          - zheng
+  check-flake-and-formatter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Nix
+        uses: cachix/install-nix-action@v22
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check
+        run: nix flake check --verbose --print-build-logs
 name: Build
 on:
+  push: {}
   workflow_dispatch:
     inputs:
       host:

@@ -132,7 +132,9 @@
           gen-config = pkgs.my.gen-config;
           matrix-chatgpt-bot = pkgs.my.matrix-chatgpt-bot;
         } //
-        (import ./images.nix { inherit jovian nixpkgs system pkgs self; }));
+        (import ./images.nix { inherit jovian nixpkgs system pkgs self; })
+        //
+        (import ./bb/scripts.nix { inherit pkgs self; }));
 
       devShells."${system}" =
         (helpers.shells { inherit pkgs self; } "dev");
