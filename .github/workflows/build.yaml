@@ -4,17 +4,20 @@
 
 jobs:
   build-nixos-configuration:
-    environment: deploy
+    if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+      }}
     needs:
       - check-flake-and-formatter
       - check-eval-host
     runs-on: ubuntu-latest
     steps:
       - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
+          || (github.event.pull_request.head.repo.full_name == github.repository)
           }}
         name: Checkout
         uses: actions/checkout@v3
       - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
+          || (github.event.pull_request.head.repo.full_name == github.repository)
           }}
         name: Make more space
         run: 'echo "=== Before pruning ==="
@@ -31,12 +34,14 @@ jobs:
 
           '
       - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
+          || (github.event.pull_request.head.repo.full_name == github.repository)
           }}
         name: Install Nix
         uses: cachix/install-nix-action@v22
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
       - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
+          || (github.event.pull_request.head.repo.full_name == github.repository)
           }}
         name: Setup Attic
         uses: icewind1991/attic-action@v1.1
@@ -45,6 +50,7 @@ jobs:
           instance: https://attic.edgerunners.eu.org
           name: hello
       - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
+          || (github.event.pull_request.head.repo.full_name == github.repository)
           }}
         name: Build host
         run: 'nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
@@ -94,6 +100,7 @@ jobs:
         run: nix flake check --verbose --print-build-logs
 name: Build
 on:
+  pull_request: {}
   push: {}
   workflow_dispatch:
     inputs:
