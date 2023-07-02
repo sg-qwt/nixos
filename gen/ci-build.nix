@@ -89,13 +89,13 @@ in
       "if" = ghexpr "github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'";
 
       strategy = {
+        fail-fast = false;
         matrix = {
           host = hosts;
         };
       };
 
       steps = [
-        (step common-steps.checkout)
         (step {
           name = "Make more space";
           run = ''
@@ -107,10 +107,18 @@ in
             df -h
           '';
         })
+        (step {
+          name = "Set swap space";
+          uses = "pierotofy/set-swap-space@v1.0";
+          "with" = {
+            swap-size-gb = 10;
+          };
+        })
+        (step common-steps.checkout)
         (step common-steps.install-nix)
         (step {
           name = "Setup Attic";
-          uses = "icewind1991/attic-action@v1.1";
+          uses = "icewind1991/attic-action@v1.1.1";
           "with" = {
             name = "hello";
             instance = "https://attic.edgerunners.eu.org";

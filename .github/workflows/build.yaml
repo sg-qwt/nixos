@@ -14,11 +14,6 @@ jobs:
       - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
           || (github.event.pull_request.head.repo.full_name == github.repository)
           }}
-        name: Checkout
-        uses: actions/checkout@v3
-      - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
-          || (github.event.pull_request.head.repo.full_name == github.repository)
-          }}
         name: Make more space
         run: 'echo "=== Before pruning ==="
 
@@ -36,6 +31,18 @@ jobs:
       - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
           || (github.event.pull_request.head.repo.full_name == github.repository)
           }}
+        name: Set swap space
+        uses: pierotofy/set-swap-space@v1.0
+        with:
+          swap-size-gb: 10
+      - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
+          || (github.event.pull_request.head.repo.full_name == github.repository)
+          }}
+        name: Checkout
+        uses: actions/checkout@v3
+      - if: ${{ github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)
+          || (github.event.pull_request.head.repo.full_name == github.repository)
+          }}
         name: Install Nix
         uses: cachix/install-nix-action@v22
         with:
@@ -44,7 +51,7 @@ jobs:
           || (github.event.pull_request.head.repo.full_name == github.repository)
           }}
         name: Setup Attic
-        uses: icewind1991/attic-action@v1.1
+        uses: icewind1991/attic-action@v1.1.1
         with:
           authToken: ${{ secrets.ATTIC_HELLO_TOKEN }}
           instance: https://attic.edgerunners.eu.org
@@ -57,6 +64,7 @@ jobs:
 
           '
     strategy:
+      fail-fast: false
       matrix:
         host:
           - dui
