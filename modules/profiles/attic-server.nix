@@ -41,6 +41,11 @@ helpers.mkProfile s "attic-server" (
       };
     };
 
+    systemd.services.atticd = {
+      after = [ "postgresql.service" ];
+      requires = [ "postgresql.service" ];
+    };
+
     services.postgresql = {
       ensureDatabases = [ "atticd" ];
       ensureUsers = [
