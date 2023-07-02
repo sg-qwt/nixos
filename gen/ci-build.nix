@@ -1,24 +1,15 @@
 { lib }:
 let
-  ghexpr = v: "\${{ ${v} }}";
-  hosts = (builtins.attrNames (builtins.readDir ../hosts));
-  if-clause = ghexpr
-    "github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host) || (github.event.pull_request.head.repo.full_name == github.repository)";
-  step = attr: ({ "if" = if-clause; } // attr);
-  runs-on = "ubuntu-latest";
-  common-steps = {
-    checkout = {
-      name = "Checkout";
-      uses = "actions/checkout@v3";
-    };
-    install-nix = {
-      name = "Install Nix";
-      uses = "cachix/install-nix-action@v22";
-      "with" = {
-        github_access_token = ghexpr "secrets.GITHUB_TOKEN";
-      };
-    };
-  };
+  cilib = import ../lib/ci-lib.nix;
+  inherit (cilib) ghexpr ors runs-on steps hosts;
+  if-clause =
+    ghexpr
+      (ors [
+        "(github.event.inputs.host == 'all')"
+        "(matrix.host == github.event.inputs.host)"
+        "(github.event.pull_request.head.repo.full_name == github.repository)"
+      ]);
+  cond-step = step: ({ "if" = if-clause; } // step);
   job-id = {
     check = "check-flake-and-formatter";
     eval-host = "check-eval-host";
@@ -52,12 +43,9 @@ in
       inherit runs-on;
 
       steps = [
-        common-steps.checkout
-        common-steps.install-nix
-        {
-          name = "Check";
-          run = "nix flake check --verbose --print-build-logs";
-        }
+        steps.checkout
+        steps.install-nix
+        steps.flake-check
       ];
     };
 
@@ -73,20 +61,22 @@ in
       };
 
       steps = [
-        common-steps.checkout
-        common-steps.install-nix
-        {
-          name = "Eval";
-          run = "nix eval --raw .#nixosConfigurations.${ghexpr "matrix.host"}.config.system.build.toplevel
-";
-        }
+        steps.checkout
+        steps.install-nix
+        (steps.eval-host (ghexpr "matrix.host"))
       ];
     };
 
     build-nixos-configuration = {
       inherit runs-on;
       needs = [ job-id.check job-id.eval-host ];
-      "if" = ghexpr "github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'";
+
+      "if" =
+        ghexpr
+          (ors [
+            "(github.event_name == 'pull_request')"
+            "(github.event_name == 'workflow_dispatch')"
+          ]);
 
       strategy = {
         fail-fast = false;
@@ -95,43 +85,17 @@ in
         };
       };
 
-      steps = [
-        (step {
-          name = "Make more space";
-          run = ''
-            echo "=== Before pruning ==="
-            df -h
-            sudo rm -rf /usr/share /usr/local /opt || true
-            echo
-            echo "=== After pruning ==="
-            df -h
-          '';
-        })
-        (step {
-          name = "Set swap space";
-          uses = "pierotofy/set-swap-space@v1.0";
-          "with" = {
-            swap-size-gb = 10;
-          };
-        })
-        (step common-steps.checkout)
-        (step common-steps.install-nix)
-        (step {
-          name = "Setup Attic";
-          uses = "icewind1991/attic-action@v1.1.1";
-          "with" = {
-            name = "hello";
-            instance = "https://attic.edgerunners.eu.org";
-            authToken = ghexpr "secrets.ATTIC_HELLO_TOKEN";
-          };
-        })
-        (step {
-          name = "Build host";
-          run = ''
-            nix build .#nixosConfigurations.${ghexpr "matrix.host"}.config.system.build.toplevel
-          '';
-        })
-      ];
+      steps =
+        (map cond-step
+          [
+            steps.make-space
+            steps.set-swap
+            steps.checkout
+            steps.install-nix
+            steps.setup-attic-cache
+            (steps.build-host (ghexpr "matrix.host"))
+          ]
+        );
     };
   };
 }
