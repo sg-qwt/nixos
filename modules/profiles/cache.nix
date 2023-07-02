@@ -17,12 +17,10 @@ helpers.mkProfile s "cache" {
   nix.settings.substituters = [
     "https://cache.nixos.org?priority=20"
     "https://nix-community.cachix.org?priority=30"
-    "https://ooo.${fqdn.edg}/ghcr.io/sg-qwt/nixos?priority=40"
-    "https://attic.${fqdn.edg}/hello?priority=50"
+    "https://attic.${fqdn.edg}/hello?priority=40"
   ];
 
   nix.settings.trusted-public-keys = [
-    "oranc:RZWCxVsNWs/6qPkfB17Mmk9HpkTv87UXnldHtGKkWLk="
     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     "hello:1i/LXgtEDpGmjTelurlADkaoFZdBP55NBJMxL2swzLY="
   ];
