@@ -10,4 +10,8 @@
     source = (self + "/bb/shi.clj");
     args = [ (self + "/resources/dicts/shi.txt") ];
   };
+  deploy = pkgs.my.write-bb {
+    name = "deploy";
+    source = (self + "/bb/deploy.clj");
+  };
 }
