@@ -1,7 +1,7 @@
 {
     "jovian-nixos": {
         "cargoLocks": null,
-        "date": "2023-04-25",
+        "date": "2023-06-30",
         "extract": null,
         "name": "jovian-nixos",
         "passthru": null,
@@ -13,11 +13,11 @@
             "name": null,
             "owner": "Jovian-Experiments",
             "repo": "Jovian-NixOS",
-            "rev": "4fe665707364b3c4228f66895f1b6316634ceabc",
-            "sha256": "sha256-k1DlJCHQgEix/Be8m4MZlNYWocv7NxlPiLcPTXgcs+w=",
+            "rev": "449faaa41e55c504d2068f2a77c91a0dbc5b191d",
+            "sha256": "sha256-E4Lk1HlRSvbcflAB23U1Arul013IN34kvReQyulzFTw=",
             "type": "github"
         },
-        "version": "4fe665707364b3c4228f66895f1b6316634ceabc"
+        "version": "449faaa41e55c504d2068f2a77c91a0dbc5b191d"
     },
     "proton-ge-custom": {
         "cargoLocks": null,
@@ -28,11 +28,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-/70DtApcja+6U+Rb1lUcEyUSrW/LqRIOJfDVENDNBIU=",
+            "sha256": "sha256-OPwmVxBGaWo51pDJcqvxvZ8qxMH8X0DwZTpwiKbdx/I=",
             "type": "url",
-            "url": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-55/GE-Proton7-55.tar.gz"
+            "url": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-4/GE-Proton8-4.tar.gz"
         },
-        "version": "GE-Proton7-55"
+        "version": "GE-Proton8-4"
     },
     "rime-pinyin-zhwiki": {
         "cargoLocks": null,
@@ -43,15 +43,15 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-0B02FGISHqvrBUGkERdplhrx8zo6SV9hG2qRbSUqqd0=",
+            "sha256": "sha256-SB2TcvJb/7D3cO3NG34QecMxWMAFwwHCSr3sKHLZa3o=",
             "type": "url",
-            "url": "https://github.com/felixonmars/fcitx5-pinyin-zhwiki/releases/download/0.2.4/zhwiki-20230329.dict.yaml"
+            "url": "https://github.com/felixonmars/fcitx5-pinyin-zhwiki/releases/download/0.2.4/zhwiki-20230605.dict.yaml"
         },
-        "version": "20230329"
+        "version": "20230605"
     },
     "yacd-meta": {
         "cargoLocks": null,
-        "date": "2023-04-25",
+        "date": "2023-06-29",
         "extract": null,
         "name": "yacd-meta",
         "passthru": null,
@@ -63,10 +63,10 @@
             "name": null,
             "owner": "MetaCubeX",
             "repo": "Yacd-meta",
-            "rev": "1d93beb543ad2e1216e5c480d4ea04c1bb45efaf",
-            "sha256": "sha256-9Zt1CkhdC5m2FTtVr1EtnyFh2+Gi13xksT1BSzdEU2E=",
+            "rev": "2d0c52cecf9ee7ed8446d2fa240291ef83facbde",
+            "sha256": "sha256-Pi1LV+DnBiFqcelPz/F6Ip2wH+GC87vE+9H4nCaWlBU=",
             "type": "github"
         },
-        "version": "1d93beb543ad2e1216e5c480d4ea04c1bb45efaf"
+        "version": "2d0c52cecf9ee7ed8446d2fa240291ef83facbde"
     }
 }
