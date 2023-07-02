@@ -3,42 +3,42 @@
 {
   jovian-nixos = {
     pname = "jovian-nixos";
-    version = "4fe665707364b3c4228f66895f1b6316634ceabc";
-    src = fetchFromGitHub ({
+    version = "449faaa41e55c504d2068f2a77c91a0dbc5b191d";
+    src = fetchFromGitHub {
       owner = "Jovian-Experiments";
       repo = "Jovian-NixOS";
-      rev = "4fe665707364b3c4228f66895f1b6316634ceabc";
+      rev = "449faaa41e55c504d2068f2a77c91a0dbc5b191d";
       fetchSubmodules = false;
-      sha256 = "sha256-k1DlJCHQgEix/Be8m4MZlNYWocv7NxlPiLcPTXgcs+w=";
-    });
-    date = "2023-04-25";
+      sha256 = "sha256-E4Lk1HlRSvbcflAB23U1Arul013IN34kvReQyulzFTw=";
+    };
+    date = "2023-06-30";
   };
   proton-ge-custom = {
     pname = "proton-ge-custom";
-    version = "GE-Proton7-55";
+    version = "GE-Proton8-4";
     src = fetchurl {
-      url = "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton7-55/GE-Proton7-55.tar.gz";
-      sha256 = "sha256-/70DtApcja+6U+Rb1lUcEyUSrW/LqRIOJfDVENDNBIU=";
+      url = "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-4/GE-Proton8-4.tar.gz";
+      sha256 = "sha256-OPwmVxBGaWo51pDJcqvxvZ8qxMH8X0DwZTpwiKbdx/I=";
     };
   };
   rime-pinyin-zhwiki = {
     pname = "rime-pinyin-zhwiki";
-    version = "20230329";
+    version = "20230605";
     src = fetchurl {
-      url = "https://github.com/felixonmars/fcitx5-pinyin-zhwiki/releases/download/0.2.4/zhwiki-20230329.dict.yaml";
-      sha256 = "sha256-0B02FGISHqvrBUGkERdplhrx8zo6SV9hG2qRbSUqqd0=";
+      url = "https://github.com/felixonmars/fcitx5-pinyin-zhwiki/releases/download/0.2.4/zhwiki-20230605.dict.yaml";
+      sha256 = "sha256-SB2TcvJb/7D3cO3NG34QecMxWMAFwwHCSr3sKHLZa3o=";
     };
   };
   yacd-meta = {
     pname = "yacd-meta";
-    version = "1d93beb543ad2e1216e5c480d4ea04c1bb45efaf";
-    src = fetchFromGitHub ({
+    version = "2d0c52cecf9ee7ed8446d2fa240291ef83facbde";
+    src = fetchFromGitHub {
       owner = "MetaCubeX";
       repo = "Yacd-meta";
-      rev = "1d93beb543ad2e1216e5c480d4ea04c1bb45efaf";
+      rev = "2d0c52cecf9ee7ed8446d2fa240291ef83facbde";
       fetchSubmodules = false;
-      sha256 = "sha256-9Zt1CkhdC5m2FTtVr1EtnyFh2+Gi13xksT1BSzdEU2E=";
-    });
-    date = "2023-04-25";
+      sha256 = "sha256-Pi1LV+DnBiFqcelPz/F6Ip2wH+GC87vE+9H4nCaWlBU=";
+    };
+    date = "2023-06-29";
   };
 }
