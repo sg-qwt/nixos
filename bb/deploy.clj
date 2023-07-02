@@ -34,3 +34,6 @@
     (deploy-host host)
     (do (println ">>> no host found: " name)
         (println "available hosts are: " host-ids))))
+
+
+(apply deploy *command-line-args*)

@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, ... }:
+s@{ config, pkgs, lib, helpers, self, ... }:
 helpers.mkProfile s "tools"
 {
   environment.systemPackages = with pkgs; [
@@ -19,5 +19,7 @@ helpers.mkProfile s "tools"
     coreutils
 
     jq
+
+    self.packages.x86_64-linux.deploy
   ];
 }
