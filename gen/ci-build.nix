@@ -2,7 +2,8 @@
 let
   ghexpr = v: "\${{ ${v} }}";
   hosts = (builtins.attrNames (builtins.readDir ../hosts));
-  if-clause = ghexpr "github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host)";
+  if-clause = ghexpr
+    "github.event.inputs.host == 'all' || (matrix.host == github.event.inputs.host) || (github.event.pull_request.head.repo.full_name == github.repository)";
   step = attr: ({ "if" = if-clause; } // attr);
   runs-on = "ubuntu-latest";
   common-steps = {
@@ -41,6 +42,7 @@ in
       };
     };
     push = { };
+    pull_request = { };
   };
 
   jobs = {
@@ -82,7 +84,7 @@ in
     build-nixos-configuration = {
       inherit runs-on;
       needs = [ job-id.check job-id.eval-host ];
-      environment = "deploy";
+      "if" = ghexpr "github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'";
 
       strategy = {
         matrix = {
