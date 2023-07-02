@@ -1,20 +1,8 @@
 { lib }:
 let
-  ghexpr = v: "\${{ ${v} }}";
-  runs-on = "ubuntu-latest";
-  common-steps = {
-    checkout = {
-      name = "Checkout";
-      uses = "actions/checkout@v3";
-    };
-    install-nix = {
-      name = "Install Nix";
-      uses = "cachix/install-nix-action@v22";
-      "with" = {
-        github_access_token = ghexpr "secrets.GITHUB_TOKEN";
-      };
-    };
-  };
+
+  cilib = import ../lib/ci-lib.nix;
+  inherit (cilib) ghexpr runs-on steps;
 in
 {
   _gentarget = ".github/workflows/update.yaml";
@@ -33,8 +21,8 @@ in
       inherit runs-on;
 
       steps = [
-        common-steps.checkout
-        common-steps.install-nix
+        steps.checkout
+        steps.install-nix
         {
           name = "Update";
           id = "update";
