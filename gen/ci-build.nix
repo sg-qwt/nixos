@@ -41,7 +41,9 @@ in
         };
       };
     };
-    push = { };
+    push = {
+      branches-ignore = [ "ci-update" ];
+    };
     pull_request = { };
   };
 
