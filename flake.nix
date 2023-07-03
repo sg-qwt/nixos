@@ -48,12 +48,6 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
-    oranc = {
-      url = "github:linyinfeng/oranc";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
-
   };
 
   outputs = { self, ... }@inputs:
@@ -86,7 +80,6 @@
         overlays = [
           self.overlays.default
           emacs-overlay.overlays.default
-          oranc.overlays.default
           nixd.overlays.default
           attic.overlays.default
         ];
@@ -105,7 +98,6 @@
             attic.nixosModules.atticd
             nur.nixosModules.nur
             home-manager.nixosModules.home-manager
-            oranc.nixosModules.oranc
             sops-nix.nixosModules.sops
             { networking.hostName = name; }
             { imports = helpers.profile-list; }

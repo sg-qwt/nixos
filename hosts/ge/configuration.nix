@@ -94,8 +94,6 @@
 
       linux-manual
       man-pages
-
-      oranc
     ];
 
 

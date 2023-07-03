@@ -15,7 +15,6 @@ pkgs.mkShell {
   nativeBuildInputs = [
     pkgs.nvfetcher
     pkgs.babashka
-    pkgs.oranc
     pkgs.azure-cli
     pkgs.jq
     tf
@@ -28,7 +27,6 @@ pkgs.mkShell {
     export FLAKE_HOME=$(${pkgs.git}/bin/git rev-parse --show-toplevel)
     export FLAKE_INFRA_DIR="$FLAKE_HOME/infra"
     export FLAKE_SECRET_DIR="$FLAKE_HOME/secrets"
-    export ORANC_USERNAME="sg-qwt"
     source <(${pkgs.sops}/bin/sops --decrypt ${tfenv})
 
     alias tfp="tf plan"
