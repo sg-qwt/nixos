@@ -13,7 +13,6 @@ let edg = config.myos.data.fqdn.edg; in
 
   myos.ssserver.enable = true;
   myos.matrix.enable = true;
-  myos.oranc.enable = true;
   myos.reddit.enable = true;
   myos.attic-server.enable = true;
 
