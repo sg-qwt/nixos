@@ -4,7 +4,7 @@ helpers.mkProfile s "firefox" {
 
     programs.firefox = {
       enable = true;
-      package = pkgs.firefox-beta;
+      package = pkgs.firefox;
       profiles = {
         windranger = {
           isDefault = true;
