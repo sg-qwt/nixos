@@ -8,6 +8,7 @@
       "nix-command"
       "flakes"
       "repl-flake"
+      "ca-derivations"
     ];
 
     warn-dirty = false;
