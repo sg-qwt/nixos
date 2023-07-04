@@ -1,6 +1,8 @@
 s@{ config, pkgs, lib, helpers, self, ... }:
 helpers.mkProfile s "gnupg" {
 
+  services.pcscd.enable = true;
+
   home-manager.users."${config.myos.users.mainUser}" = {
 
     programs.gpg = {

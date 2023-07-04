@@ -11,8 +11,6 @@
 
   networking.hostId = "a658e17d";
 
-  services.pcscd.enable = true;
-
   myos.common.enable = true;
   myos.desktop.enable = true;
   myos.users = {
