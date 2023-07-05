@@ -1,4 +1,24 @@
 {
+    "cape-yasnippet": {
+        "cargoLocks": null,
+        "date": "2023-05-19",
+        "extract": null,
+        "name": "cape-yasnippet",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "elken",
+            "repo": "cape-yasnippet",
+            "rev": "ad8c27c2f748b410e7dd568927e99081f87b98b9",
+            "sha256": "sha256-JmJljrvo9AcEVALv5GHa/XdpVLAUaww3wGmlXSAoITs=",
+            "type": "github"
+        },
+        "version": "ad8c27c2f748b410e7dd568927e99081f87b98b9"
+    },
     "jovian-nixos": {
         "cargoLocks": null,
         "date": "2023-06-30",

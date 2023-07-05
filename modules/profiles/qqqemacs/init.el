@@ -179,7 +179,8 @@
     :infix "c"
     "l" #'comment-line
     "b" #'comment-box
-    "r" #'comment-or-uncomment-region)
+    "r" #'comment-or-uncomment-region
+    "c" #'comment-dwim)
 
   (qqq/leader
     :infix "h"
@@ -246,10 +247,6 @@
   :custom
   (consult-narrow-key "<")
   (consult-preview-excluded-files '(".*\\.gpg$")))
-
-(use-package cape
-  :init
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev))
 
 (use-package orderless
   :custom
@@ -571,6 +568,7 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
   (corfu-auto t)
   (corfu-cycle t)
   (corfu-auto-delay 0)
+  (corfu-on-exact-match 'quit)
   (tab-always-indent 'complete)
   :init
   (defun corfu-move-to-minibuffer ()
@@ -767,6 +765,8 @@ the focus."
   ;; :custom
   ;; :documentHighlightProvider
   ;; (eglot-ignored-server-capabilities '(:hoverProvider))
+  ;; :init
+  ;; (setq eglot-stay-out-of '(yasnippet corfu))
   :hook
   ((nix-mode . eglot-ensure))
   :config
@@ -777,3 +777,51 @@ the focus."
   (eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly)
   (eldoc-echo-area-use-multiline-p nil)
   (eldoc-echo-area-prefer-doc-buffer t))
+
+;;;;;;;;;;;;;;;;;;;;;;
+;; cape & yasnippet ;;
+;;;;;;;;;;;;;;;;;;;;;;
+(use-package yasnippet
+  :demand t
+  :general
+  (general-unbind yas-minor-mode-map
+    "TAB"
+    "<tab>")
+  :custom
+  (yas-snippet-dirs `(,(concat user-emacs-directory "snippets")))
+  :config
+  (yas-global-mode 1))
+
+(use-package cape
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file))
+
+(use-package cape-yasnippet
+  :after (cape yasnippet)
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-yasnippet))
+
+(use-package eglot-cape
+  :no-require t
+  :after (cape eglot)
+  :hook (eglot-managed-mode . qqq/eglot-capf)
+  :preface
+  (defun qqq/eglot-capf ()
+    (setq-local completion-at-point-functions
+		(list (cape-super-capf
+		       (cape-capf-buster #'eglot-completion-at-point)
+		       #'cape-yasnippet
+		       #'cape-file)))))
+
+(use-package elisp-mode-cape
+  :no-require t
+  :after (cape elisp-mode)
+  :hook (emacs-lisp-mode . qqq/setup-elisp)
+  :preface
+  (defun qqq/setup-elisp ()
+    (setq-local completion-at-point-functions
+		(list (cape-super-capf
+		       #'elisp-completion-at-point
+		       #'cape-dabbrev)
+		      #'cape-file))))

@@ -91,7 +91,7 @@
         ${name} = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit home-manager helpers self inputs;
+            inherit home-manager helpers self inputs sources;
             pkgs = p;
           };
           modules = [
