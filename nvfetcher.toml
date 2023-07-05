@@ -15,3 +15,7 @@ fetch.github = "MetaCubeX/Yacd-meta"
 [jovian-nixos]
 src.git = "https://github.com/Jovian-Experiments/Jovian-NixOS"
 fetch.github = "Jovian-Experiments/Jovian-NixOS"
+
+[cape-yasnippet]
+src.git = "https://github.com/elken/cape-yasnippet"
+fetch.github = "elken/cape-yasnippet"

@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: profile
+# key: profile
+# expand-env: ((yas-indent-line 'fixed))
+# --
+s@{ config, pkgs, lib, helpers, self, ... }:
+helpers.mkProfile s "$1" {
+
+}

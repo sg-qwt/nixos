@@ -1,11 +1,10 @@
-s@{ config, pkgs, lib, helpers, self, ... }:
+s@{ config, pkgs, sources, helpers, self, ... }:
 helpers.mkProfile s "qqqemacs"
   (
     let
       myEmacs = pkgs.emacs-unstable-pgtk;
       emacsWithPackages = (pkgs.emacsPackagesFor myEmacs).emacsWithPackages;
       qqqemacs = emacsWithPackages (epkgs:
-
         [
           (epkgs.treesit-grammars.with-grammars
             (grammars: with grammars;
@@ -13,6 +12,15 @@ helpers.mkProfile s "qqqemacs"
               tree-sitter-yaml
               tree-sitter-typescript
             ]))
+
+          (epkgs.trivialBuild {
+            inherit (sources.cape-yasnippet) pname version src;
+            packageRequires = with epkgs; [
+              cape
+              yasnippet
+              cl-lib
+            ];
+          })
         ] ++
 
         (with epkgs.melpaStablePackages; [
@@ -57,6 +65,7 @@ helpers.mkProfile s "qqqemacs"
 
           peep-dired
 
+          yasnippet
         ]) ++
 
         (with epkgs.elpaPackages; [
@@ -106,7 +115,11 @@ helpers.mkProfile s "qqqemacs"
       };
 
       home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
-        xdg.configFile."emacs/init.el".source = (self + "/config/qqqemacs/init.el");
+        xdg.configFile."emacs/init.el".source = ./init.el;
+        xdg.configFile."emacs/snippets" = {
+          source = ./snippets;
+          recursive = true;
+        };
       };
     }
   )
