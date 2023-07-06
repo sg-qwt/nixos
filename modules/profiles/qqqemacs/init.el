@@ -1,74 +1,32 @@
 (eval-when-compile
   (require 'use-package))
 
-(use-package modus-themes
-  :custom
-  (modus-themes-bold-constructs t)
-  :config
-  (setq modus-themes-common-palette-overrides modus-themes-preset-overrides-intense)
-  (load-theme 'modus-operandi t))
+(use-package qqqdefun
+  :no-require t
+  :preface
+  (defun qqq/return-t (orig-fun &rest args) t)
 
-(use-package emacs
-  :after evil
-  :custom
-  (ring-bell-function #'ignore)
-  (custom-file (concat user-emacs-directory "custom.el"))
+  (defun qqq/disable-yornp (orig-fun &rest args)
+    (advice-add 'yes-or-no-p :around #'qqq/return-t)
+    (advice-add 'y-or-n-p :around #'qqq/return-t)
+    (let ((res (apply orig-fun args)))
+      (advice-remove 'yes-or-no-p #'qqq/return-t)
+      (advice-remove 'y-or-n-p #'qqq/return-t)
+      res))
 
-  (backup-directory-alist `((".*" . ,temporary-file-directory)))
+  (defun qqq/ex-kill-buffer ()
+    (interactive)
+    (kill-current-buffer))
 
-  (auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+  (defun qqq/ex-save-kill-buffer-and-close ()
+    (interactive)
+    (save-buffer)
+    (kill-current-buffer))
 
-  (auto-save-list-file-prefix (concat temporary-file-directory "auto-saves-list/.saves-"))
+  (defun qqq/switch-to-message ()
+    (interactive)
+    (display-buffer "*Messages*"))
 
-
-  (use-dialog-box nil)
-
-  (enable-recursive-minibuffers t)
-  (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
-
-  (global-auto-revert-non-file-buffers t)
-  (auto-revert-use-notify nil)
-  (auto-revert-verbose nil)
-  
-
-  (use-short-answers t)
-  :config
-  (load custom-file t)
-  (savehist-mode 1)
-  (recentf-mode 1)
-
-  (menu-bar-mode 0)
-  (tool-bar-mode 0)
-  (scroll-bar-mode 0)
-
-  (global-auto-revert-mode 1)
-
-  ;;;;;;;;;;;;;;;;;;;;;
-  ;; startup scratch ;;
-  ;;;;;;;;;;;;;;;;;;;;;
-  (setq inhibit-startup-message t)
-  (setq initial-scratch-message
-	(shell-command-to-string "grab-shi"))
-  (add-hook 'emacs-startup-hook
-	    (lambda ()
-	      (with-current-buffer "*scratch*"
-		(goto-char (point-max))
-		(insert (concat "\n;; Emacs startup time: "
-				(format "%d packages loaded in %s" (length package-activated-list) (emacs-init-time)))))))
-
-  ;;;;;;;;;;
-  ;; font ;;
-  ;;;;;;;;;;
-  (set-face-attribute 'default nil :font "JetBrains Mono 10")
-  (dolist (charset '(kana han symbol cjk-misc bopomofo))
-    (set-fontset-font (frame-parameter nil 'font) charset
-		      (font-spec :family "LXGW WenKai Mono" :size 14)))
-
-  (minibuffer-depth-indicate-mode 1)
-  (add-to-list 'warning-suppress-types '(defvaralias))
-  (setq qqq/garden-dir (substitute-in-file-name "${MYOS_FLAKE}/garden"))
-
-  ;; borrow from spacemacs
   (defun qqq/rename-current-buffer-file ()
     "Renames current buffer and file it is visiting."
     (interactive)
@@ -94,10 +52,78 @@
 		 (when (and (configuration-layer/package-usedp 'projectile)
 			    (projectile-project-p))
 		   (call-interactively #'projectile-invalidate-cache))
-		 (message "File '%s' successfully renamed to '%s'" name (file-name-nondirectory new-name))))))))
+		 (message "File '%s' successfully renamed to '%s'" name (file-name-nondirectory new-name)))))))))
 
+(use-package modus-themes
+  :custom
+  (modus-themes-bold-constructs t)
+  :config
+  (setq modus-themes-common-palette-overrides modus-themes-preset-overrides-intense)
+  (load-theme 'modus-operandi t))
 
-  )
+(use-package autorevert
+  :custom
+  (global-auto-revert-non-file-buffers t)
+  (auto-revert-use-notify nil)
+  (auto-revert-verbose nil)
+  :config
+  (global-auto-revert-mode t))
+
+(use-package savehist
+  :config
+  (savehist-mode 1))
+
+(use-package mb-depth
+  :config
+  (minibuffer-depth-indicate-mode 1))
+
+(use-package startup
+  :preface
+  (defun qqq/startup ()
+    (with-current-buffer "*scratch*"
+      (goto-char (point-max))
+      (insert (concat "\n;; Emacs startup time: "
+		      (format "%d packages loaded in %s" (length package-activated-list) (emacs-init-time))))))
+  :hook
+  (emacs-startup . qqq/startup)
+  :custom
+  (inhibit-startup-screen t)
+  (initial-scratch-message (shell-command-to-string "grab-shi"))
+  (initial-major-mode 'emacs-lisp-mode))
+
+(use-package emacs
+  :init
+  (setq qqq/garden-dir (substitute-in-file-name "${MYOS_FLAKE}/garden"))
+  :custom
+  (ring-bell-function #'ignore)
+  (custom-file (concat user-emacs-directory "custom.el"))
+
+  (backup-directory-alist `((".*" . ,temporary-file-directory)))
+
+  (auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+
+  (auto-save-list-file-prefix (concat temporary-file-directory "auto-saves-list/.saves-"))
+
+  (use-dialog-box nil)
+
+  (enable-recursive-minibuffers t)
+  (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
+
+  (use-short-answers t)
+  :config
+  (load custom-file t) ;; write customizations to a separate file
+  (recentf-mode 1)
+  (menu-bar-mode 0)
+  (tool-bar-mode 0)
+  (scroll-bar-mode 0)
+
+  ;;;;;;;;;;
+  ;; font ;;
+  ;;;;;;;;;;
+  (set-face-attribute 'default nil :font "JetBrains Mono 10")
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+    (set-fontset-font (frame-parameter nil 'font) charset
+		      (font-spec :family "LXGW WenKai Mono" :size 14))))
 
 (use-package evil
   :demand t
@@ -112,20 +138,11 @@
   (evil-undo-system 'undo-redo)
   (evil-search-module 'evil-search)
   :config
-  (defun qqq/ex-save-kill-buffer-and-close ()
-    (interactive)
-    (save-buffer)
-    (kill-current-buffer))
-  (defun qqq/ex-kill-buffer ()
-    (interactive)
-    (kill-current-buffer))
   (evil-ex-define-cmd "wq" 'qqq/ex-save-kill-buffer-and-close)
   (evil-ex-define-cmd "q" 'qqq/ex-kill-buffer)
   (evil-mode 1))
 
 (use-package evil-surround
-  :after evil-collection
-  :demand t
   :config
   (global-evil-surround-mode 1))
 
@@ -144,12 +161,6 @@
 (use-package general
   :after evil
   :config
-
-  (defun qqq/consult-buffer-p ()
-    (interactive)
-    (setq unread-command-events (append unread-command-events (list ?p 32)))
-    (consult-buffer)) 
-
   (general-evil-setup t)
 
   (general-auto-unbind-keys)
@@ -210,10 +221,6 @@
     "b" #'consult-line
     "p" #'consult-ripgrep)
 
-  (defun qqq/switch-to-message ()
-    (interactive)
-    (display-buffer "*Messages*"))
-
   (qqq/leader
     :infix "b"
     "b" #'consult-buffer
@@ -243,7 +250,11 @@
 
 (use-package consult
   :demand t
-  :after vertico
+  :preface
+  (defun qqq/consult-buffer-p ()
+    (interactive)
+    (setq unread-command-events (append unread-command-events (list ?p 32)))
+    (consult-buffer))
   :custom
   (consult-narrow-key "<")
   (consult-preview-excluded-files '(".*\\.gpg$")))
@@ -261,15 +272,9 @@
   (general-def
     '(normal)
     magit-status-mode-map
-    "<escape>" #'transient-quit-one)
-  :config
-  ;; https://github.com/magit/magit/issues/4739
-  (add-hook 'magit-status-mode-hook
-	    (lambda ()
-	      (setq truncate-lines nil))))
+    "<escape>" #'transient-quit-one))
 
 (use-package marginalia
-  :after evil
   :demand t
   :general
   (general-def
@@ -281,34 +286,32 @@
 
 (use-package vertico
   :demand t
+  :general
+  (general-def
+    '(normal insert)
+    vertico-map
+    "C-j" 'vertico-next
+    "C-k" 'vertico-previous
+    "C-l" 'vertico-insert
+    "C-p" 'previous-history-element
+    "C-n" 'next-history-element 
+    "C-w" 'vertico-directory-delete-word
+    "C-f" 'vertico-scroll-up
+    "C-b" 'vertico-scroll-down
+    "C-]" 'top-level
+    "C-r" 'consult-history)
+  (general-def
+    '(normal)
+    vertico-map
+    "G" 'vertico-last
+    "g g" 'vertico-first)
   :hook
   (minibuffer-setup . cursor-intangible-mode)
   :custom
   (vertico-resize t)
   (vertico-cycle t)
   :config
-  (vertico-mode 1)
-  :general
-  (general-def
-    '(normal insert)
-   vertico-map
-   "C-j" 'vertico-next
-   "C-k" 'vertico-previous
-   "C-l" 'vertico-insert
-   "C-p" 'previous-history-element
-   "C-n" 'next-history-element 
-   "C-w" 'vertico-directory-delete-word
-   "C-f" 'vertico-scroll-up
-   "C-b" 'vertico-scroll-down
-   "C-]" 'top-level
-   "C-r" 'consult-history)
-  (general-def
-    '(normal)
-    vertico-map
-    "G" 'vertico-last
-    "g g" 'vertico-first
-    )
-  )
+  (vertico-mode 1))
 
 (use-package nix-mode
   :mode "\\.nix\\'")
@@ -323,6 +326,10 @@
   :mode "\\.ts\\'")
 
 (use-package org-roam
+  :preface
+  (defun qqq/orm-capture-p ()
+    (interactive)
+    (org-roam-capture- :goto nil :keys "p" :node (org-roam-node-create)))
   :demand t
   :general
   (qqq/leader
@@ -355,9 +362,6 @@
 	   (file "templates/bookmark.org")
 	   :target (file "bookmark.org.gpg")
 	   :empty-lines 1)))
-  (defun qqq/orm-capture-p ()
-    (interactive)
-    (org-roam-capture- :goto nil :keys "p" :node (org-roam-node-create)))
 
   (require 'org-roam-protocol)
   (add-to-list 'display-buffer-alist
@@ -366,15 +370,6 @@
 		 (direction . right)
 		 (window-width . 0.33)
 		 (window-height . fit-window-to-buffer)))
-  (defun qqq/return-t (orig-fun &rest args)
-    t)
-  (defun qqq/disable-yornp (orig-fun &rest args)
-    (advice-add 'yes-or-no-p :around #'qqq/return-t)
-    (advice-add 'y-or-n-p :around #'qqq/return-t)
-    (let ((res (apply orig-fun args)))
-      (advice-remove 'yes-or-no-p #'qqq/return-t)
-      (advice-remove 'y-or-n-p #'qqq/return-t)
-      res))
   (advice-add 'org-roam-capture--finalize :around #'qqq/disable-yornp))
 
 (use-package org
@@ -468,23 +463,28 @@
 ;; embark ;;
 ;;;;;;;;;;;;
 (use-package embark
-  :general
-  (general-def 'override
-    "C-a" 'embark-act
-    "C-q" 'embark-dwim)
-  (general-def
-    '(normal insert)
-    minibuffer-local-map
-    "C-e" 'qqq/embark-export-write)
-  (general-def embark-command-map "x" #'qqq/exec-with-prefix)
-  (general-def embark-symbol-map
-    "d" #'qqq/sdcv-at-char
-    "D" #'qqq/sdcv-at-word)
-  (general-def embark-identifier-map
-    "d" #'qqq/sdcv-at-char
-    "D" #'qqq/sdcv-at-word)
-
-  :init
+  :preface
+  (defun qqq/embark-export-write ()
+    "Export the current vertico results to a writable buffer if possible.
+Supports exporting consult-grep to wgrep, file to wdeired, and consult-location to occur-edit"
+    (interactive)
+    (require 'embark)
+    (require 'wgrep)
+    (let* ((edit-command
+	    (pcase-let ((`(,type . ,candidates)
+			 (run-hook-with-args-until-success 'embark-candidate-collectors)))
+	      (pcase type
+		('consult-grep #'wgrep-change-to-wgrep-mode)
+		('file #'wdired-change-to-wdired-mode)
+		('consult-location #'occur-edit-mode))))
+	   (embark-after-export-hook `(,@embark-after-export-hook ,edit-command)))
+      (embark-export)))
+  (defun qqq/exec-with-prefix (target)
+    "Execute command with prefix."
+    (interactive
+     (list (read-string "Read target command ")))
+    (let ((prefix (read-from-minibuffer "Execute with prefix: ")))
+      (execute-extended-command prefix target)))
   (defun qqq/sdcv-at-word ()
     "Search word under cursor with sdcv"
     (interactive)
@@ -509,34 +509,28 @@
 	(with-current-buffer "*dict*"
 	  (ansi-color-apply-on-region (point-min) (point-max))
 	  (special-mode)))))
-  (defun qqq/exec-with-prefix (target)
-    "Execute command with prefix."
-    (interactive
-     (list (read-string "Read target command ")))
-    (let ((prefix (read-from-minibuffer "Execute with prefix: ")))
-      (execute-extended-command prefix target)))
-  
+  :general
+  (general-def 'override
+    "C-a" 'embark-act
+    "C-q" 'embark-dwim)
+  (general-def
+    '(normal insert)
+    minibuffer-local-map
+    "C-e" 'qqq/embark-export-write)
+  (general-def embark-command-map "x" #'qqq/exec-with-prefix)
+  (general-def embark-symbol-map
+    "d" #'qqq/sdcv-at-char
+    "D" #'qqq/sdcv-at-word)
+  (general-def embark-identifier-map
+    "d" #'qqq/sdcv-at-char
+    "D" #'qqq/sdcv-at-word)
+
+  :init
   (setq prefix-help-command #'embark-prefix-help-command)
-  ;; borrowed from doom
-  (defun qqq/embark-export-write ()
-    "Export the current vertico results to a writable buffer if possible.
-Supports exporting consult-grep to wgrep, file to wdeired, and consult-location to occur-edit"
-    (interactive)
-    (require 'embark)
-    (require 'wgrep)
-    (let* ((edit-command
-	    (pcase-let ((`(,type . ,candidates)
-			 (run-hook-with-args-until-success 'embark-candidate-collectors)))
-	      (pcase type
-		('consult-grep #'wgrep-change-to-wgrep-mode)
-		('file #'wdired-change-to-wdired-mode)
-		('consult-location #'occur-edit-mode))))
-	   (embark-after-export-hook `(,@embark-after-export-hook ,edit-command)))
-      (embark-export)))
   :custom
   (embark-quit-after-action t)
   :config
-  ;; Hide the mode line of the Embark live/completions buffers
+  ;; hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
@@ -570,12 +564,13 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
   (corfu-auto-delay 0)
   (corfu-on-exact-match 'quit)
   (tab-always-indent 'complete)
-  :init
+  :preface
   (defun corfu-move-to-minibuffer ()
     (interactive)
     (let ((completion-extra-properties corfu--extra)
 	  completion-cycle-threshold completion-cycling)
       (apply #'consult-completion-in-region completion-in-region--data)))
+  :init
   (global-corfu-mode))
 
 ;;;;;;;;;;;;;;
@@ -592,73 +587,11 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
   (require 'clojure-mode-extra-font-locking))
 
 (use-package cider
-  :after evil-collection
-  :hook (clojure-mode . cider-mode)
-  :general
-  (general-unbind cider-repl-mode-map ",")
-  (general-def
-    '(normal insert)
-    cider-repl-mode-map
-    "C-l" #'cider-repl-clear-buffer)
-
-  (qqq/local-leader
-    clojure-mode-map
-    :infix "e"
-    "b" #'cider-eval-buffer
-    "r" #'cider-eval-region
-    "(" #'cider-eval-list-at-point
-    "f" #'cider-eval-defun-at-point
-    ";" #'cider-eval-defun-to-comment
-    "i" #'cider-interrupt
-    "m" #'cider-macroexpand-1
-    "M" #'cider-macroexpand-all)
-
-  (qqq/local-leader
-    :keymaps '(clojure-mode-map cider-repl-mode-map)
-    :infix "s"
-    "a" #'qqq/cider-switch)
-
-  (qqq/local-leader
-    clojure-mode-map
-    :infix "s"
-    "b" #'cider-load-buffer
-    "n" #'qqq/cider-send-ns-form-to-repl
-    "N" #'qqq/cider-send-ns-form-to-repl-focus
-    "f" #'qqq/cider-send-function-to-repl
-    "F" #'qqq/cider-send-function-to-repl-focus
-    "r" #'qqq/cider-send-region-to-repl
-    "R" #'qqq/cider-send-region-to-repl-focus)
-
-  (qqq/local-leader
-    clojure-mode-map
-    :infix "h"
-    "n" #'cider-find-ns
-    "a" #'cider-apropos
-    "c" #'cider-clojuredocs
-    "d" #'cider-doc
-    "j" #'cider-javadoc
-    "w" #'cider-clojuredocs-web)
-
-  (qqq/local-leader
-    :keymaps '(clojure-mode-map cider-repl-mode-map)
-    :infix "c"
-    "c" #'cider-connect-clj
-    "b" #'qqq/cider-connect-bb
-    "r" #'cider-restart
-    "q" #'cider-quit)
-
-  (qqq/local-leader
-    clojure-mode-map
-    :infix "="
-    "=" #'cider-format-buffer
-    "f" #'cider-format-defun
-    "r" #'cider-format-region
-    "e b" #'cider-format-edn-buffer)
-
-  :config
+  :preface
   (defun qqq/cider-connect-bb ()
     (interactive)
     (cider-connect '(:host "localhost" :port 1667)))
+
   ;; from spacemacs
   (defun qqq//cider-eval-in-repl-no-focus (form)
     "Insert FORM in the REPL buffer and eval it."
@@ -718,10 +651,72 @@ the focus."
     (interactive)
     (if (eq major-mode 'cider-repl-mode)
 	(cider-switch-to-last-clojure-buffer)
-      (cider-switch-to-repl-buffer))))
+      (cider-switch-to-repl-buffer)))
 
-(use-package cider-eval-sexp-fu
-  :after cider)
+  :hook (clojure-mode . cider-mode)
+
+  :general
+  (general-unbind cider-repl-mode-map ",")
+  (general-def
+    '(normal insert)
+    cider-repl-mode-map
+    "C-l" #'cider-repl-clear-buffer)
+
+  (qqq/local-leader
+    clojure-mode-map
+    :infix "e"
+    "b" #'cider-eval-buffer
+    "r" #'cider-eval-region
+    "(" #'cider-eval-list-at-point
+    "f" #'cider-eval-defun-at-point
+    ";" #'cider-eval-defun-to-comment
+    "i" #'cider-interrupt
+    "m" #'cider-macroexpand-1
+    "M" #'cider-macroexpand-all)
+
+  (qqq/local-leader
+    :keymaps '(clojure-mode-map cider-repl-mode-map)
+    :infix "s"
+    "a" #'qqq/cider-switch)
+
+  (qqq/local-leader
+    clojure-mode-map
+    :infix "s"
+    "b" #'cider-load-buffer
+    "n" #'qqq/cider-send-ns-form-to-repl
+    "N" #'qqq/cider-send-ns-form-to-repl-focus
+    "f" #'qqq/cider-send-function-to-repl
+    "F" #'qqq/cider-send-function-to-repl-focus
+    "r" #'qqq/cider-send-region-to-repl
+    "R" #'qqq/cider-send-region-to-repl-focus)
+
+  (qqq/local-leader
+    clojure-mode-map
+    :infix "h"
+    "n" #'cider-find-ns
+    "a" #'cider-apropos
+    "c" #'cider-clojuredocs
+    "d" #'cider-doc
+    "j" #'cider-javadoc
+    "w" #'cider-clojuredocs-web)
+
+  (qqq/local-leader
+    :keymaps '(clojure-mode-map cider-repl-mode-map)
+    :infix "c"
+    "c" #'cider-connect-clj
+    "b" #'qqq/cider-connect-bb
+    "r" #'cider-restart
+    "q" #'cider-quit)
+
+  (qqq/local-leader
+    clojure-mode-map
+    :infix "="
+    "=" #'cider-format-buffer
+    "f" #'cider-format-defun
+    "r" #'cider-format-region
+    "e b" #'cider-format-edn-buffer))
+
+(use-package cider-eval-sexp-fu :after cider)
 
 ;;;;;;;;;;;
 ;; elisp ;;
