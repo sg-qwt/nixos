@@ -4,6 +4,7 @@ helpers.mkProfile s "tmux"
   environment = {
     systemPackages = with pkgs; [
       tmux
+      wl-clipboard
     ];
 
     etc."tmux.conf".source = ./tmux.conf;
