@@ -4,6 +4,11 @@ variable "hostname" {}
 variable "size" {}
 variable "disk_size_gb" {}
 variable "image_version" {}
+variable "ip_refresh" {
+  description = "Change this to force refresh ip"
+  type = string
+  default = ""
+}
 
 resource "azurerm_resource_group" "rg" {
   name     = var.rg_name
@@ -26,21 +31,29 @@ resource "azurerm_subnet" "subnet" {
 }
 
 resource "azurerm_public_ip" "public_ip_v4" {
-  name                = "${var.hostname}-v4-ip"
+  name                = "${var.hostname}${var.ip_refresh}-v4-ip"
   location            = var.region
   resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Static"
   sku                 = "Standard"
   ip_version          = "IPv4"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "azurerm_public_ip" "public_ip_v6" {
-  name                = "${var.hostname}-v6-ip"
+  name                = "${var.hostname}${var.ip_refresh}-v6-ip"
   location            = var.region
   resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Static"
   sku                 = "Standard"
   ip_version          = "IPv6"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "azurerm_network_security_group" "nsg" {

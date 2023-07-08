@@ -7,6 +7,7 @@ module "az_dui" {
   size          = "Standard_D2as_v5"
   disk_size_gb  = 100
   image_version = azurerm_shared_image_version.nixos.id
+  ip_refresh    = "0707"
 }
 
 resource "azurerm_network_security_rule" "SS" {

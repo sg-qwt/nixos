@@ -1,5 +1,7 @@
 {
     "ports": {
+	"https": 443,
+	"reality": 9989,
 	"ss1": 2952,
 	"ss2": 8964,
 	"sstls": 8989,
@@ -11,7 +13,8 @@
 	"miniflux": 8018,
 	"tailscaled": 41641,
 	"reddit": 8030,
-	"atticd": 8040
+	"atticd": 8040,
+	"default-ssl": 8443
     },
     "fqdn":{
 	"edg": "edgerunners.eu.org"
