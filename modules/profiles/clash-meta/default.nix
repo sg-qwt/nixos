@@ -1,7 +1,6 @@
 { config, lib, pkgs, self, ... }:
 
 with lib;
-
 let
   cfg = config.myos.clash-meta;
   sops-clash = {
@@ -17,13 +16,13 @@ let
   disable-tproxy = pkgs.writeShellApplication {
     name = "disable-tproxy";
     runtimeInputs = with pkgs; [ nftables iproute2 ];
-    text = (import (self + "/config/clash-meta/disable-tproxy.nix")
+    text = (import ./disable-tproxy.nix
       { inherit fwmark nft-table route-table; });
   };
   enable-tproxy = pkgs.writeShellApplication {
     name = "enable-tproxy";
     runtimeInputs = with pkgs; [ nftables iproute2 ];
-    text = (import (self + "/config/clash-meta/enable-tproxy.nix")
+    text = (import ./enable-tproxy.nix
       { inherit fwmark ports nft-table route-table; });
   };
 in
@@ -56,7 +55,7 @@ in
       };
       sops.templates.clashm = {
         content = builtins.toJSON
-          (import (self + "/config/clash-meta/clash.nix") { inherit config; });
+          (import ./clash.nix { inherit config; });
         owner = config.users.users.clash-meta.name;
         group = config.users.users.clash-meta.group;
       };

@@ -39,19 +39,19 @@ in
 
       services.nginx.defaultSSLListenPort = ports.default-ssl;
       services.nginx.streamConfig = mkIf (cfg.profile == "reality") ''
-         map $ssl_preread_server_name $sni_upstream {
-           ${cfg.sni} singbox;
-           default [::1]:${toString ports.default-ssl};
-         }
-         upstream singbox {
-           server [::]:${toString ports.reality};
-         }
-         server {
-           listen 0.0.0.0:${toString ports.https};
-           listen [::]:${toString ports.https};
-           proxy_pass $sni_upstream;
-           ssl_preread on;
-         }
+        map $ssl_preread_server_name $sni_upstream {
+          ${cfg.sni} singbox;
+          default [::1]:${toString ports.default-ssl};
+        }
+        upstream singbox {
+          server [::]:${toString ports.reality};
+        }
+        server {
+          listen 0.0.0.0:${toString ports.https};
+          listen [::]:${toString ports.https};
+          proxy_pass $sni_upstream;
+          ssl_preread on;
+        }
       '';
 
       systemd.services.singbox = {
