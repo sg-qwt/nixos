@@ -1,6 +1,12 @@
 (eval-when-compile
   (require 'use-package))
 
+(when init-file-debug
+  (setq use-package-verbose t
+	use-package-expand-minimally nil
+	use-package-compute-statistics t
+	debug-on-error t))
+
 (use-package qqqdefun
   :no-require t
   :preface
