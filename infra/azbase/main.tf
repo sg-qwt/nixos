@@ -6,8 +6,8 @@ variable "disk_size_gb" {}
 variable "image_version" {}
 variable "ip_refresh" {
   description = "Change this to force refresh ip"
-  type = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 resource "azurerm_resource_group" "rg" {
