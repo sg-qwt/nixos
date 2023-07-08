@@ -8,7 +8,7 @@ rec {
 
   allow-lan = false;
 
-  ipv6 = false;
+  ipv6 = true;
 
   external-controller = "0.0.0.0:${toString ports.clash-meta-api}";
 
@@ -22,7 +22,7 @@ rec {
 
   dns = {
     enable = true;
-    ipv6 = false;
+    ipv6 = true;
     listen = "0.0.0.0:${toString ports.clash-dns}";
 
     enhanced-mode = "redir-host";
@@ -30,6 +30,7 @@ rec {
 
     default-nameserver = [
       "223.5.5.5"
+      "114.114.114.114"
     ];
 
     nameserver = [
@@ -38,7 +39,7 @@ rec {
     ];
 
     nameserver-policy = {
-      "geosite:geolocation-cn" = [
+      "geosite:cn" = [
         "114.114.114.114"
         "https://doh.pub/dns-query"
         "https://dns.alidns.com/dns-query"
@@ -54,41 +55,34 @@ rec {
   };
 
   proxies = [
+    # {
+    #   name = "wgteam";
+    #   type = "wireguard";
+    #   server = "engage.cloudflareclient.com";
+    #   port = 2408;
+    #   ip = "172.16.0.2";
+    #   ipv6 = "2606:4700:110:8410:f35c:f27f:d43e:b299";
+    #   private-key = config.sops.placeholder.wgteam;
+    #   public-key = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
+    #   udp = true;
+    #   mtu = 1420;
+    # }
     {
-      name = "wgteam";
-      type = "wireguard";
-      server = "engage.cloudflareclient.com";
-      port = 2408;
-      ip = "172.16.0.2";
-      ipv6 = "2606:4700:110:8410:f35c:f27f:d43e:b299";
-      private-key = config.sops.placeholder.wgteam;
-      public-key = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
+      name = "vless";
+      type = "vless";
+      server = config.sops.placeholder.dui_ipv4;
+      port = ports.https;
+      uuid = config.sops.placeholder.sing-vless-uuid;
+      network = "tcp";
+      tls = true;
       udp = true;
-      mtu = 1420;
-    }
-    {
-      name = "azv6test";
-      type = "ss";
-      server = config.sops.placeholder.dui_ipv6;
-      port = ports.ss1;
-      cipher = "chacha20-ietf-poly1305";
-      password = config.sops.placeholder.sspass;
-      udp = true;
-    }
-    {
-      name = "sswebsoc";
-      type = "ss";
-      server = "${fqdn.edg}";
-      port = 443;
-      cipher = "chacha20-ietf-poly1305";
-      password = config.sops.placeholder.sspass;
-      plugin = "v2ray-plugin";
-      plugin-opts = {
-        mode = "websocket";
-        tls = true;
-        host = "${fqdn.edg}";
-        path = "${path.ss2}";
+      flow = "xtls-rprx-vision";
+      servername = config.myos.singbox.sni;
+      reality-opts = {
+        public-key = "MaT4kg5zs3YFoMa6X4N_EcQJkKJ67Q-vp5wKAOS5YBk";
+        short-id = "fdb1";
       };
+      client-fingerprint = "chrome";
     }
     {
       name = "sstls";
@@ -108,17 +102,17 @@ rec {
   ];
 
   proxy-providers = {
-    mumbai = {
-      type = "http";
-      url = config.sops.placeholder.clash-provider-mumbai;
-      interval = 3600;
-      path = "mumbai.yaml";
-      health-check = {
-        enable = true;
-        interval = 600;
-        url = "http://www.gstatic.com/generate_204";
-      };
-    };
+    # mumbai = {
+    #   type = "http";
+    #   url = config.sops.placeholder.clash-provider-mumbai;
+    #   interval = 3600;
+    #   path = "mumbai.yaml";
+    #   health-check = {
+    #     enable = true;
+    #     interval = 600;
+    #     url = "http://www.gstatic.com/generate_204";
+    #   };
+    # };
   };
 
   proxy-groups =

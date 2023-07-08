@@ -24,7 +24,7 @@ in
       version = 2;
       password = config.sops.placeholder.sing-shadow-tls;
       handshake = {
-        server = "www.microsoft.com";
+        server = config.myos.singbox.sni;
         server_port = 443;
       };
     }

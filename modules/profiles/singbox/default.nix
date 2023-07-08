@@ -12,20 +12,47 @@ let
     "CAP_NET_ADMIN"
     "CAP_NET_BIND_SERVICE"
   ];
+  inherit (config.myos.data) ports;
 in
 {
   options.myos.singbox = {
     enable = mkEnableOption "singbox server";
+    profile = mkOption {
+      type = types.enum [ "sstls" "reality" ];
+    };
+    sni = mkOption {
+      type = types.str;
+      default = "www.microsoft.com";
+    };
   };
 
   config = mkIf cfg.enable
     {
       sops.secrets.sing-shadow = sops-sing;
       sops.secrets.sing-shadow-tls = sops-sing;
+      sops.secrets.sing-vless-uuid = sops-sing;
+      sops.secrets.sing-reality-private = sops-sing;
       sops.templates.singbox = {
         content = builtins.toJSON
-          (import (self + "/config/singbox.nix") { inherit config; });
+          (import (./. + "/${toString cfg.profile}.nix") { inherit config; });
       };
+
+      services.nginx.defaultSSLListenPort = ports.default-ssl;
+      services.nginx.streamConfig = mkIf (cfg.profile == "reality") ''
+         map $ssl_preread_server_name $sni_upstream {
+           ${cfg.sni} singbox;
+           default [::1]:${toString ports.default-ssl};
+         }
+         upstream singbox {
+           server [::]:${toString ports.reality};
+         }
+         server {
+           listen 0.0.0.0:${toString ports.https};
+           listen [::]:${toString ports.https};
+           proxy_pass $sni_upstream;
+           ssl_preread on;
+         }
+      '';
 
       systemd.services.singbox = {
         description = "singbox server daemon service";

@@ -11,7 +11,10 @@ let edg = config.myos.data.fqdn.edg; in
   myos.users.enable = true;
   myos.tmux.enable = true;
 
-  myos.ssserver.enable = true;
+  myos.singbox = {
+    enable = true;
+    profile = "reality";
+  };
   myos.matrix.enable = true;
   myos.reddit.enable = true;
   myos.attic-server.enable = true;
