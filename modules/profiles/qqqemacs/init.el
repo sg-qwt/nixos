@@ -740,7 +740,19 @@ the focus."
   (dired-clean-confirm-killing-deleted-buffers nil)
   (dired-kill-when-opening-new-dired-buffer t)
   (dired-listing-switches "-alh")
-  (dired-recursive-copies 'always))
+  (dired-recursive-copies 'always)
+  :config
+  (defadvice dired-mark-read-file-name
+      (after rv:dired-create-dir-when-needed
+	     (prompt dir op-symbol arg files &optional default) activate)
+    (when (member op-symbol '(copy move))
+      (let ((directory-name (if (< 1 (length files))
+				ad-return-value
+			      (file-name-directory ad-return-value))))
+	(when (and (not (file-directory-p directory-name))
+		   (y-or-n-p (format "directory %s doesn't exist, create it?" directory-name)))
+	  (make-directory directory-name t))))))
+
 (use-package peep-dired
   :custom
   (peep-dired-cleanup-on-disable t)
