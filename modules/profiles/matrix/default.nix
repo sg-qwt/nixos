@@ -1,22 +1,37 @@
 s@{ config, pkgs, lib, helpers, self, ... }:
-helpers.mkProfile s "matrix" (
-  let
-    inherit (config.myos.data) fqdn ports;
-    workingDir = "/var/lib/dendrite";
-    httpPort = ports.dendrite;
-    settingsFormat = pkgs.formats.yaml { };
-    configurationYaml = settingsFormat.generate "dendrite.yaml"
-      (import (self + "/config/matrix/dendrite.nix")
-        { inherit config workingDir; });
-    clientConfig."m.homeserver".base_url = "https://${fqdn.edg}";
-    serverConfig."m.server" = "${fqdn.edg}:443";
-    mkWellKnown = data: ''
-      add_header Content-Type application/json;
-      add_header Access-Control-Allow-Origin *;
-      return 200 '${builtins.toJSON data}';
-    '';
-  in
-  {
+with lib;
+let
+  cfg = config.myos.matrix;
+  inherit (config.myos.data) fqdn ports;
+  workingDir = "/var/lib/dendrite";
+  httpPort = ports.dendrite;
+  settingsFormat = pkgs.formats.yaml { };
+  configurationYaml = settingsFormat.generate "dendrite.yaml"
+    (import ./dendrite-cfg.nix { inherit config workingDir lib; });
+  clientConfig."m.homeserver".base_url = "https://${fqdn.edg}";
+  serverConfig."m.server" = "${fqdn.edg}:443";
+  mkWellKnown = data: ''
+    add_header Content-Type application/json;
+    add_header Access-Control-Allow-Origin *;
+    return 200 '${builtins.toJSON data}';
+  '';
+in
+{
+  imports = [
+    ./matrix-chatgpt.nix
+    ./mautrix-slack.nix
+  ];
+
+  options.myos.matrix = {
+    enable = mkEnableOption "matrix";
+    chatgpt-bot = mkEnableOption "chatgpt bot";
+    slack-bot = mkEnableOption "slack bot";
+  };
+
+  config = mkIf cfg.enable {
+    myos.matrix-chatgpt.enable = cfg.chatgpt-bot;
+    myos.mautrix-slack.enable = cfg.slack-bot;
+
     services.postgresql = {
       enable = true;
       authentication = lib.mkForce ''
@@ -50,6 +65,7 @@ helpers.mkProfile s "matrix" (
     # client_max_body_size 
     systemd.services.dendrite = {
       description = "Dendrite Matrix homeserver";
+      requires = [ "postgresql.service" ];
       after = [
         "network.target"
         "postgresql.service"
@@ -66,7 +82,7 @@ helpers.mkProfile s "matrix" (
         EnvironmentFile = config.sops.secrets.dendrite-register.path;
         LoadCredential = [
           "dendrite-sign-key:${config.sops.secrets.dendrite-sign-key.path}"
-        ];
+        ] ++ (lib.optional cfg.slack-bot "mautrix-slack-registration:${config.sops.templates.mautrix-slack-registration.path}");
         ExecStartPre = [
           ''
             ${pkgs.envsubst}/bin/envsubst \
@@ -110,66 +126,5 @@ helpers.mkProfile s "matrix" (
       '')
     ];
 
-    systemd.services."matrix-chatgpt-bot" = {
-      script = ''
-        ${pkgs.my.matrix-chatgpt-bot}/bin/matrix-chatgpt-bot
-      '';
-      serviceConfig = {
-        Restart = "on-failure";
-        DynamicUser = true;
-        StateDirectory = "matrix-chatgpt-bot";
-        EnvironmentFile = [
-          config.sops.templates."matrix-chatgpt-extra-env".path
-        ];
-      };
-      environment = {
-        DATA_PATH = "/var/lib/matrix-chatgpt-bot";
-
-        CHATGPT_CONTEXT = "thread";
-        CHATGPT_API_MODEL = "gpt-3.5-turbo";
-
-        KEYV_BACKEND = "file";
-        KEYV_URL = "";
-        KEYV_BOT_ENCRYPTION = "false";
-        KEYV_BOT_STORAGE = "true";
-
-        MATRIX_HOMESERVER_URL = "https://${fqdn.edg}";
-        MATRIX_BOT_USERNAME = "@chatgptbot:${fqdn.edg}";
-
-        MATRIX_DEFAULT_PREFIX = "!chatgpt";
-        MATRIX_DEFAULT_PREFIX_REPLY = "false";
-
-        MATRIX_WHITELIST = ":${fqdn.edg}";
-        MATRIX_AUTOJOIN = "true";
-        MATRIX_ENCRYPTION = "false";
-        MATRIX_THREADS = "true";
-        MATRIX_PREFIX_DM = "false";
-        MATRIX_RICH_TEXT = "true";
-
-        OPENAI_AZURE = "true";
-        CHATGPT_REVERSE_PROXY = "https://shijia.openai.azure.com/openai/deployments/simaqian/chat/completions?api-version=2023-05-15";
-      };
-      after = [ "dendrite.service" ];
-      wantedBy = [ "multi-user.target" ];
-    };
-
-    sops.templates."matrix-chatgpt-extra-env".content = ''
-      OPENAI_API_KEY=${config.sops.placeholder."openai-api-key"}
-      MATRIX_BOT_PASSWORD=${config.sops.placeholder."matrix-bot-password"}
-      MATRIX_ACCESS_TOKEN=${config.sops.placeholder."matrix-bot-token"}
-    '';
-    sops.secrets."openai-api-key" = {
-      sopsFile = self + "/secrets/secrets.yaml";
-      restartUnits = [ "matrix-chatgpt-bot.service" ];
-    };
-    sops.secrets."matrix-bot-password" = {
-      sopsFile = self + "/secrets/secrets.yaml";
-      restartUnits = [ "matrix-chatgpt-bot.service" ];
-    };
-    sops.secrets."matrix-bot-token" = {
-      sopsFile = self + "/secrets/secrets.yaml";
-      restartUnits = [ "matrix-chatgpt-bot.service" ];
-    };
-
-  }
-)
+  };
+}
