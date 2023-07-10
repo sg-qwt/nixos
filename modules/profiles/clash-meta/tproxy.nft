@@ -28,6 +28,7 @@ table inet ${nft-table} {
 
     chain dnsfw {
 	type nat hook output priority mangle;
+	socket cgroupv2 level 2 "system.slice/clash-meta.service" return
 	udp dport 53 redirect to ${toString ports.clash-dns}
 	tcp dport 53 redirect to ${toString ports.clash-dns}
     }
@@ -39,7 +40,7 @@ table inet ${nft-table} {
 
 	jump filter
 
-	meta l4proto { tcp, udp } tproxy to :${toString ports.clash-tproxy} meta mark set ${fwmark}
+	meta l4proto { tcp, udp } meta mark ${fwmark} tproxy to :${toString ports.clash-tproxy}
     }
 
     chain output {
