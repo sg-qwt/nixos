@@ -8,7 +8,7 @@ rec {
 
   allow-lan = false;
 
-  ipv6 = true;
+  ipv6 = false;
 
   external-controller = "0.0.0.0:${toString ports.clash-meta-api}";
 
@@ -22,7 +22,7 @@ rec {
 
   dns = {
     enable = true;
-    ipv6 = true;
+    ipv6 = false;
     listen = "0.0.0.0:${toString ports.clash-dns}";
 
     enhanced-mode = "redir-host";
@@ -47,26 +47,23 @@ rec {
 
     };
 
-    proxy-server-nameserver = [
-      "https://doh.pub/dns-query"
-    ];
-
     use-hosts = true;
   };
 
   proxies = [
-    # {
-    #   name = "wgteam";
-    #   type = "wireguard";
-    #   server = "engage.cloudflareclient.com";
-    #   port = 2408;
-    #   ip = "172.16.0.2";
-    #   ipv6 = "2606:4700:110:8410:f35c:f27f:d43e:b299";
-    #   private-key = config.sops.placeholder.wgteam;
-    #   public-key = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
-    #   udp = true;
-    #   mtu = 1420;
-    # }
+    {
+      name = "wgteam";
+      type = "wireguard";
+      server = "engage.cloudflareclient.com";
+      port = 2408;
+      ip = "172.16.0.2";
+      ipv6 = "2606:4700:110:8410:f35c:f27f:d43e:b299";
+      private-key = config.sops.placeholder.wgteam;
+      public-key = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
+      udp = true;
+      mtu = 1420;
+      dialer-proxy = "vless";
+    }
     {
       name = "vless";
       type = "vless";
@@ -101,52 +98,56 @@ rec {
     }
   ];
 
-  proxy-providers = {
-    # mumbai = {
-    #   type = "http";
-    #   url = config.sops.placeholder.clash-provider-mumbai;
-    #   interval = 3600;
-    #   path = "mumbai.yaml";
-    #   health-check = {
-    #     enable = true;
-    #     interval = 600;
-    #     url = "http://www.gstatic.com/generate_204";
-    #   };
-    # };
-  };
+  # proxy-providers = {
+  #   # mumbai = {
+  #   #   type = "http";
+  #   #   url = config.sops.placeholder.clash-provider-mumbai;
+  #   #   interval = 3600;
+  #   #   path = "mumbai.yaml";
+  #   #   health-check = {
+  #   #     enable = true;
+  #   #     interval = 600;
+  #   #     url = "http://www.gstatic.com/generate_204";
+  #   #   };
+  #   # };
+  # };
+  proxy-providers = { };
 
   proxy-groups =
     let
       custom-pxs = (map (x: (toString x.name)) proxies);
       providers = builtins.attrNames proxy-providers;
+      build-group = attr: 
+        if (providers == [ ])
+        then attr
+        else attr // { use = providers; };
     in
     [
-      {
+      (build-group {
         name = "select";
         type = "select";
-        use = providers;
         proxies = custom-pxs ++ [
           "auto"
           "fallback"
           "DIRECT"
         ];
-      }
-      {
+      })
+
+      (build-group {
         name = "auto";
         type = "url-test";
-        use = providers;
         proxies = custom-pxs;
         interval = 86400;
         url = "http://www.gstatic.com/generate_204";
-      }
-      {
+      })
+
+      (build-group {
         name = "fallback";
         type = "fallback";
-        use = providers;
         proxies = custom-pxs;
         interval = 7200;
         url = "http://www.gstatic.com/generate_204";
-      }
+      })
     ];
 
   rules = [

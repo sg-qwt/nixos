@@ -25,6 +25,9 @@ let
     text = (import ./enable-tproxy.nix
       { inherit fwmark ports nft-table route-table; });
   };
+  cfg-yaml = (pkgs.formats.yaml { }).generate
+    "config.yaml"
+    (import ./clash.nix { inherit config; });
 in
 {
   options.myos.clash-meta = {
@@ -54,8 +57,7 @@ in
         restartUnits = [ "clash-meta.service" ];
       };
       sops.templates.clashm = {
-        content = builtins.toJSON
-          (import ./clash.nix { inherit config; });
+        content = builtins.readFile cfg-yaml;
         owner = config.users.users.clash-meta.name;
         group = config.users.users.clash-meta.group;
       };
