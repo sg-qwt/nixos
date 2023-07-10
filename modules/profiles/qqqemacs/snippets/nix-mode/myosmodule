@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: myosmodule
+# key: myosmodule
+# expand-env: ((yas-indent-line 'fixed))
+# --
+s@{ config, pkgs, lib, helpers, self, ... }:
+with lib;
+let
+  cfg = config.myos.$1;
+  inherit (config.myos.data) ports;
+in
+{
+  options.myos.$1 = {
+    enable = mkEnableOption "$1";
+  };
+
+  config = mkIf cfg.enable {
+
+  };
+}

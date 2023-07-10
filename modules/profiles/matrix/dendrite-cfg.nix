@@ -1,4 +1,4 @@
-{ config, workingDir }:
+{ config, workingDir, lib }:
 let
   inherit (config.myos.data) fqdn;
 in
@@ -62,6 +62,12 @@ in
     registration_disabled = true;
     guests_disabled = true;
     registration_shared_secret = "$REGISTRATION_SHARED_SECRET";
+  };
+
+  app_service_api = {
+    config_files = lib.optional
+      config.myos.mautrix-slack.enable
+      "$CREDENTIALS_DIRECTORY/mautrix-slack-registration";
   };
 
   federation_api = {

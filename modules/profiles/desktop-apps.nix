@@ -12,11 +12,7 @@ helpers.mkProfile s "desktop-apps"
       # media
       mpv
       spotify
-
-      # irc
-      slack
-      element-desktop
-      tdesktop
+      dmlive
     ];
   };
 }

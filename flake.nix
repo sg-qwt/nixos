@@ -63,6 +63,10 @@
           url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/207758.patch";
           hash = "sha256-1bxn+U0NslCTElG+EhJe43FRf+5tIgMh7gvPKAyGe0U=";
         })
+        (pkgs-init.fetchpatch {
+          url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/242183.patch";
+          hash = "sha256-vbLHe8FVh5FgwvRCACrWB8lYTGfSQDrbpoSSaEq0P9E=";
+        })
       ];
 
       nixpkgs-patched =
@@ -123,6 +127,7 @@
           proton-ge = pkgs.my.proton-ge-custom;
           gen-config = pkgs.my.gen-config;
           matrix-chatgpt-bot = pkgs.my.matrix-chatgpt-bot;
+          mautrix-slack = pkgs.my.mautrix-slack;
         } //
         (import ./images.nix { inherit jovian nixpkgs system pkgs self; })
         //

@@ -14,7 +14,8 @@
 	"tailscaled": 41641,
 	"reddit": 8030,
 	"atticd": 8040,
-	"default-ssl": 8443
+	"default-ssl": 8443,
+	"mautrix-slack": 29335
     },
     "fqdn":{
 	"edg": "edgerunners.eu.org"
