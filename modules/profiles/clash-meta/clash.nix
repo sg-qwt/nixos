@@ -117,7 +117,7 @@ rec {
     let
       custom-pxs = (map (x: (toString x.name)) proxies);
       providers = builtins.attrNames proxy-providers;
-      build-group = attr: 
+      build-group = attr:
         if (providers == [ ])
         then attr
         else attr // { use = providers; };
