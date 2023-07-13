@@ -3,9 +3,9 @@ helpers.mkProfile s "clojure-dev"
 {
   home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
     home.packages = with pkgs; [
-      jdk11
-      (clojure.override { jdk = jdk11; })
-      clojure-lsp
+      jdk17
+      (clojure.override { jdk = jdk17; })
+      # clojure-lsp
       babashka
     ];
 
@@ -18,9 +18,8 @@ helpers.mkProfile s "clojure-dev"
       complete -f -F _bb_complete bb # autocomplete filenames as well
     '';
 
-    # FIXME https://ask.clojure.org/index.php/12911/proper-xdg-support
     home.sessionVariables.CLJ_CONFIG = "${config.xdg.configHome}/clojure";
-    xdg.configFile."clojure/deps.edn".source = (self + "/config/clojure/deps.edn");
+    xdg.configFile."clojure/deps.edn".source = ./deps.edn;
 
   };
 }
