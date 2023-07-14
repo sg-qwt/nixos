@@ -31,12 +31,6 @@
 
     nur.url = "github:nix-community/NUR";
 
-    emacs-overlay = {
-      url = "github:nix-community/emacs-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
-
     nixd = {
       url = "github:nix-community/nixd";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -83,7 +77,6 @@
 
         overlays = [
           self.overlays.default
-          emacs-overlay.overlays.default
           nixd.overlays.default
           attic.overlays.default
         ];

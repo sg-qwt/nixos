@@ -2,7 +2,7 @@ s@{ config, pkgs, sources, helpers, self, ... }:
 helpers.mkProfile s "qqqemacs"
   (
     let
-      myEmacs = pkgs.emacs-unstable-pgtk;
+      myEmacs = pkgs.emacs29-pgtk;
       emacsWithPackages = (pkgs.emacsPackagesFor myEmacs).emacsWithPackages;
       qqqemacs = emacsWithPackages (epkgs:
         [
