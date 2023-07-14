@@ -62,7 +62,7 @@ rec {
       public-key = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
       udp = true;
       mtu = 1420;
-      dialer-proxy = "vless";
+      # dialer-proxy = "vless";
     }
     {
       name = "vless";
@@ -91,7 +91,7 @@ rec {
       plugin = "shadow-tls";
       client-fingerprint = "chrome";
       plugin-opts = {
-        host = "www.microsoft.com";
+        host = config.myos.singbox.sni;
         password = config.sops.placeholder.sing-shadow-tls;
         version = 2;
       };

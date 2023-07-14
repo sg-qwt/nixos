@@ -22,7 +22,7 @@ in
     };
     sni = mkOption {
       type = types.str;
-      default = "www.microsoft.com";
+      default = "www.samsung.com";
     };
   };
 
