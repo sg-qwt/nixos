@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, self, ... }:
+s@{ config, pkgs, lib, self, ... }:
 with lib;
 let
   cfg = config.myos.matrix;

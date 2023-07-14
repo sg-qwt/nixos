@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, self, ... }:
-helpers.mkProfile s "ssserver" (with config.myos.data;
+s@{ config, pkgs, lib, self, ... }:
+lib.mkProfile s "ssserver" (with config.myos.data;
 {
   sops.secrets.sspass = {
     sopsFile = self + "/secrets/secrets.yaml";

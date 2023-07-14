@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, inputs, self, ... }:
+s@{ config, pkgs, lib, inputs, self, ... }:
 with lib;
 let
   cfg = config.myos.common;

@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, self, ... }:
-helpers.mkProfile s "sdcv-with-dicts" (
+s@{ config, pkgs, lib, self, ... }:
+lib.mkProfile s "sdcv-with-dicts" (
   let
     handict = pkgs.fetchzip {
       url = "http://download.huzheng.org/zh_CN/stardict-chibigenc-2.4.2.tar.bz2";

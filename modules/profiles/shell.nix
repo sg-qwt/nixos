@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, self, ... }:
-helpers.mkProfile s "shell"
+s@{ config, pkgs, lib, self, ... }:
+lib.mkProfile s "shell"
 {
   environment = {
     variables = {

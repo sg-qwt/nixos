@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, self, ... }:
-helpers.mkProfile s "attic-server" (
+s@{ config, pkgs, lib, self, ... }:
+lib.mkProfile s "attic-server" (
   let
     inherit (config.myos.data) fqdn ports;
     listen-addr = "[::]:${toString ports.atticd}";
