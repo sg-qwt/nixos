@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, self, ... }:
 {
   options.myos.data = lib.mkOption {
     type = with lib.types; attrsOf anything;
@@ -7,7 +7,7 @@
 
   config =
     let
-      data-json =  builtins.fromJSON ./data.json;
+      data-json = lib.importJSON ./data.json;
       hosts = (builtins.attrNames self.nixosConfigurations);
       data = data-json // { hosts = hosts; };
     in
