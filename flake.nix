@@ -113,12 +113,12 @@
         };
       };
 
-      mytreefmt = (inputs.treefmt-nix.lib.mkWrapper pkgs (import ./checks/treefmt.nix));
+      treefmt-eval = (inputs.treefmt-nix.lib.evalModule pkgs ./lib/treefmt.nix);
     in
     {
       overlays.default = (helpers.default-overlays { inherit inputs; });
 
-      formatter."${system}" = mytreefmt;
+      formatter."${system}" = treefmt-eval.config.build.wrapper;
 
       # expose packages to flake here
       packages."${system}" = flake-utils.lib.flattenTree
@@ -151,6 +151,6 @@
           ];
 
       # checks.x86_64-linux.math = self.nixosConfigurations.lei.config.system.build.toplevel;
-      checks.x86_64-linux.tfm = import ./checks/treefmtcheck.nix { inherit pkgs mytreefmt self; };
+      checks."${system}".tfm = treefmt-eval.config.build.check self;
     };
 }
