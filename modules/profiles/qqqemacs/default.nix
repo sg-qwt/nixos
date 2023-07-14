@@ -1,5 +1,5 @@
-s@{ config, pkgs, sources, helpers, self, ... }:
-helpers.mkProfile s "qqqemacs"
+s@{ config, pkgs, sources, lib, self, ... }:
+lib.mkProfile s "qqqemacs"
   (
     let
       myEmacs = pkgs.emacs29-pgtk;

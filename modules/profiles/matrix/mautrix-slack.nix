@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, self, ... }:
+s@{ config, pkgs, lib, self, ... }:
 let
   name = "mautrix-slack";
   inherit (config.myos.data) fqdn ports;
@@ -99,7 +99,7 @@ let
     };
   };
 in
-helpers.mkProfile s name {
+lib.mkProfile s name {
 
   sops.secrets.mautrix-slack-as = bot-secret;
   sops.secrets.mautrix-slack-hs = bot-secret;

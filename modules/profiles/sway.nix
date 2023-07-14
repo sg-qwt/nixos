@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, home-manager, helpers, self, ... }:
-helpers.mkProfile s "sway"
+s@{ config, pkgs, lib, home-manager, self, ... }:
+lib.mkProfile s "sway"
 {
   programs.sway = {
     enable = true;

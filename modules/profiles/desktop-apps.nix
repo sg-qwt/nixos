@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, ... }:
-helpers.mkProfile s "desktop-apps"
+s@{ config, pkgs, lib, ... }:
+lib.mkProfile s "desktop-apps"
 {
   myos.firefox.enable = true;
 

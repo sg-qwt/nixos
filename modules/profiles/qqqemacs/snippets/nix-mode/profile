@@ -3,7 +3,7 @@
 # key: profile
 # expand-env: ((yas-indent-line 'fixed))
 # --
-s@{ config, pkgs, lib, helpers, self, ... }:
-helpers.mkProfile s "$1" {
+s@{ config, pkgs, lib,  self, ... }:
+lib.mkProfile s "$1" {
 
 }

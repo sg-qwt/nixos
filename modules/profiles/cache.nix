@@ -1,8 +1,8 @@
-s@{ config, pkgs, lib, helpers, inputs, self, ... }:
+s@{ config, pkgs, lib, inputs, self, ... }:
 let
   inherit (config.myos.data) fqdn ports;
 in
-helpers.mkProfile s "cache" {
+lib.mkProfile s "cache" {
   sops.secrets.attic-hello-token = {
     sopsFile = self + "/secrets/secrets.yaml";
   };

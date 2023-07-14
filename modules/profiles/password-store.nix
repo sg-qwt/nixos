@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, ... }:
-helpers.mkProfile s "password-store"
+s@{ config, pkgs, lib, ... }:
+lib.mkProfile s "password-store"
 {
   home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
 

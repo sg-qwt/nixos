@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, self, ... }:
-helpers.mkProfile s "gaming"
+s@{ config, pkgs, lib, self, ... }:
+lib.mkProfile s "gaming"
 {
   programs.steam = {
     enable = true;

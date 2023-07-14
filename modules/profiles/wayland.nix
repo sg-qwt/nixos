@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, ... }:
-helpers.mkProfile s "wayland"
+s@{ config, pkgs, lib, ... }:
+lib.mkProfile s "wayland"
 {
   environment = {
     sessionVariables = {

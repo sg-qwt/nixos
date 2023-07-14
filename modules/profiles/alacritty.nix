@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, ... }:
-helpers.mkProfile s "alacritty"
+s@{ config, pkgs, lib, ... }:
+lib.mkProfile s "alacritty"
 {
   home-manager.users."${config.myos.users.mainUser}" = {
     programs.alacritty = {

@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, self, ... }:
-helpers.mkProfile s "tailscale" (
+s@{ config, pkgs, lib, self, ... }:
+lib.mkProfile s "tailscale" (
   let
     interface = "tailscale0";
     port = config.myos.data.ports.tailscaled;

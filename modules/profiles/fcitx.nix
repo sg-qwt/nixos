@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, self, ... }:
-helpers.mkProfile s "fcitx"
+s@{ config, pkgs, lib, self, ... }:
+lib.mkProfile s "fcitx"
 {
   i18n.inputMethod = {
     enabled = "fcitx5";

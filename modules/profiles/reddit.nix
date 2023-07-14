@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, ... }:
-helpers.mkProfile s "reddit" (
+s@{ config, pkgs, lib, ... }:
+lib.mkProfile s "reddit" (
   let
     inherit (config.myos.data) fqdn ports;
     reddit-port = ports.reddit;

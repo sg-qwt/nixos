@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, ... }:
-helpers.mkProfile s "ibus"
+s@{ config, pkgs, lib, ... }:
+lib.mkProfile s "ibus"
 {
   i18n.inputMethod = {
     enabled = "ibus";

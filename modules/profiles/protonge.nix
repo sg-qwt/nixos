@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, ... }:
-helpers.mkProfile s "protonge"
+s@{ config, pkgs, lib, ... }:
+lib.mkProfile s "protonge"
 {
   environment = {
     systemPackages = with pkgs; [ my.proton-ge-custom ];

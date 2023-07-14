@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, helpers, self, ... }:
+s@{ config, pkgs, lib, self, ... }:
 let
   inherit (config.myos.data) fqdn;
   chatgpt-secret = {
@@ -6,7 +6,7 @@ let
     restartUnits = [ "matrix-chatgpt-bot.service" ];
   };
 in
-helpers.mkProfile s "matrix-chatgpt" {
+lib.mkProfile s "matrix-chatgpt" {
 
   sops.templates."matrix-chatgpt-extra-env".content = ''
     OPENAI_API_KEY=${config.sops.placeholder."openai-api-key"}

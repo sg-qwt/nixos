@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, self, ... }:
-helpers.mkProfile s "clojure-dev"
+s@{ config, pkgs, lib, self, ... }:
+lib.mkProfile s "clojure-dev"
 {
   home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
     home.packages = with pkgs; [

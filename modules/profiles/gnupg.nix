@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, self, ... }:
-helpers.mkProfile s "gnupg" {
+s@{ config, pkgs, lib, self, ... }:
+lib.mkProfile s "gnupg" {
 
   services.pcscd.enable = true;
 

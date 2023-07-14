@@ -1,4 +1,5 @@
 locals {
-  ports = jsondecode(file("../config/data.json")).ports
-  fqdn  = jsondecode(file("../config/data.json")).fqdn
+  data-file = file("../modules/profiles/data/data.json")
+  ports = jsondecode(local.data-file).ports
+  fqdn  = jsondecode(local.data-file).fqdn
 }

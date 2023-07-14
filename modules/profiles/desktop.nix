@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, inputs, self, ... }:
-helpers.mkProfile s "desktop"
+s@{ config, pkgs, lib, inputs, self, ... }:
+lib.mkProfile s "desktop"
 {
   fonts = {
     fontDir.enable = true;

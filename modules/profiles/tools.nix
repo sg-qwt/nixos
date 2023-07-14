@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, self, ... }:
-helpers.mkProfile s "tools"
+s@{ config, pkgs, lib, self, ... }:
+lib.mkProfile s "tools"
 {
   environment.systemPackages = with pkgs; [
     vim

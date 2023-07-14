@@ -1,5 +1,5 @@
-s@{ config, pkgs, lib, helpers, self, ... }:
-helpers.mkProfile s "miniflux" (
+s@{ config, pkgs, lib, self, ... }:
+lib.mkProfile s "miniflux" (
   let
     inherit (config.myos.data) fqdn ports path;
   in

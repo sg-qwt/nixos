@@ -51,7 +51,7 @@
       pkgs-init = import inputs.nixpkgs { inherit system; };
       sources = import ./_sources/generated.nix { inherit (pkgs-init) fetchurl fetchgit fetchFromGitHub dockerTools; };
       jovian = sources.jovian-nixos.src;
-      helpers = import ./helpers.nix { inherit sources; };
+      helpers = import ./lib/helpers.nix { inherit sources self nixpkgs; };
       patches = [
         (pkgs-init.fetchpatch {
           url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/207758.patch";
@@ -88,8 +88,9 @@
         ${name} = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit home-manager helpers self inputs sources;
+            inherit home-manager self inputs sources;
             pkgs = p;
+            lib = helpers.lib;
           };
           modules = [
             attic.nixosModules.atticd
