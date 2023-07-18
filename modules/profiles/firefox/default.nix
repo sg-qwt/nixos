@@ -2,9 +2,13 @@ s@{ config, pkgs, lib, ... }:
 lib.mkProfile s "firefox" {
   home-manager.users."${config.myos.users.mainUser}" = {
 
+    xdg.configFile."tridactyl/tridactylrc".source = ./tridactylrc;
+
     programs.firefox = {
       enable = true;
-      package = pkgs.firefox;
+      package = pkgs.firefox.override {
+        cfg.enableTridactylNative = true;
+      };
       profiles = {
         windranger = {
           isDefault = true;
@@ -14,6 +18,7 @@ lib.mkProfile s "firefox" {
             steam-database
             metamask
             notion-web-clipper
+            tridactyl
           ];
           bookmarks = [
             {
