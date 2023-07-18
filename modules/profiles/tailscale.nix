@@ -10,6 +10,9 @@ lib.mkProfile s "tailscale" (
       interfaceName = interface;
       port = port;
     };
+    systemd.services.tailscaled.environment = {
+      TS_NO_LOGS_NO_SUPPORT = "true";
+    };
 
     networking.firewall.allowedUDPPorts = [ port ];
     networking.firewall.trustedInterfaces = [ interface ];
