@@ -15,7 +15,8 @@
 	"reddit": 8030,
 	"atticd": 8040,
 	"default-ssl": 8443,
-	"mautrix-slack": 29335
+	"mautrix-slack": 29335,
+	"matrix-sliding-sync": 8050
     },
     "fqdn":{
 	"edg": "edgerunners.eu.org"
