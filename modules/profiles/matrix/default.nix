@@ -8,7 +8,15 @@ let
   settingsFormat = pkgs.formats.yaml { };
   configurationYaml = settingsFormat.generate "dendrite.yaml"
     (import ./dendrite-cfg.nix { inherit config workingDir lib; });
-  clientConfig."m.homeserver".base_url = "https://${fqdn.edg}";
+  clientConfig =
+    {
+      "m.homeserver".base_url = "https://${fqdn.edg}";
+      "m.identity_server".base_url = "https://vector.im";
+    } //
+    (optionalAttrs cfg.sliding-sync {
+      "org.matrix.msc3575.proxy".url = "https://matrix-sliging-sync.${fqdn.edg}";
+    });
+
   serverConfig."m.server" = "${fqdn.edg}:443";
   mkWellKnown = data: ''
     add_header Content-Type application/json;
@@ -20,17 +28,20 @@ in
   imports = [
     ./matrix-chatgpt.nix
     ./mautrix-slack.nix
+    ./sliding-sync.nix
   ];
 
   options.myos.matrix = {
     enable = mkEnableOption "matrix";
     chatgpt-bot = mkEnableOption "chatgpt bot";
     slack-bot = mkEnableOption "slack bot";
+    sliding-sync = mkEnableOption "sliding sync";
   };
 
   config = mkIf cfg.enable {
     myos.matrix-chatgpt.enable = cfg.chatgpt-bot;
     myos.mautrix-slack.enable = cfg.slack-bot;
+    myos.matrix-sliging-sync.enable = cfg.sliding-sync;
 
     services.postgresql = {
       enable = true;
