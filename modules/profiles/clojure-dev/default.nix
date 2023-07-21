@@ -7,6 +7,7 @@ lib.mkProfile s "clojure-dev"
       (clojure.override { jdk = jdk17; })
       # clojure-lsp
       babashka
+      neil
     ];
 
     programs.bash.bashrcExtra = ''
