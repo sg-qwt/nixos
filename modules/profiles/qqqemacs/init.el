@@ -99,7 +99,7 @@
 
 (use-package emacs
   :init
-  (setq qqq/garden-dir (substitute-in-file-name "${MYOS_FLAKE}/garden"))
+  (setq qqq/garden-dir (substitute-in-file-name "${HOME}/garden"))
   :custom
   (ring-bell-function #'ignore)
   (custom-file (concat user-emacs-directory "custom.el"))
