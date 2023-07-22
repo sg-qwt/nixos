@@ -8,6 +8,7 @@ lib.mkProfile s "clojure-dev"
       # clojure-lsp
       babashka
       neil
+      my.cljfmt
     ];
 
     programs.bash.bashrcExtra = ''

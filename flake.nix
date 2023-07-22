@@ -118,6 +118,7 @@
           gen-config = pkgs.my.gen-config;
           matrix-chatgpt-bot = pkgs.my.matrix-chatgpt-bot;
           mautrix-slack = pkgs.my.mautrix-slack;
+          cljfmt = pkgs.my.cljfmt;
         } //
         (import ./images.nix { inherit jovian nixpkgs system pkgs self; })
         //
