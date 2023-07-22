@@ -1,6 +1,6 @@
 s@{ config, pkgs, lib, ... }:
 let
-  fxpkg = pkgs.firefox.override {cfg.enableTridactylNative = true;};
+  fxpkg = pkgs.firefox.override { cfg.enableTridactylNative = true; };
 in
 lib.mkProfile s "firefox" {
   home-manager.users."${config.myos.users.mainUser}" = {
