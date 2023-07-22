@@ -1,7 +1,8 @@
 (ns myos.update
-  (:require [babashka.process :as bp :refer [shell]]
-            [babashka.fs :as fs]
-            [cheshire.core :as json]))
+  (:require
+   [babashka.process :as bp :refer [shell]]
+   [babashka.fs :as fs]
+   [cheshire.core :as json]))
 
 (defn update
   []

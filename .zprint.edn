@@ -1,2 +1,4 @@
-{:style :community
- :map {:comma? false}}
+{:style [:how-to-ns :binding-nl :community]
+ :width 100
+ :comment {:inline-align-style :none}
+ :map {:comma? false :sort? false}}

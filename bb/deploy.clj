@@ -1,6 +1,7 @@
 (ns deploy
-  (:require [babashka.process :as bp :refer [shell]]
-            [cheshire.core :as json]))
+  (:require
+   [babashka.process :as bp :refer [shell]]
+   [cheshire.core :as json]))
 
 (def host-ids [:ge :zheng :lei :dui :xun])
 (def fqdn-suffix ".h.edgerunners.eu.org")
@@ -32,8 +33,7 @@
                       (filter (fn [host] (= (:id host) (keyword name))))
                       first)]
     (deploy-host host)
-    (do (println ">>> no host found: " name)
-        (println "available hosts are: " host-ids))))
+    (do (println ">>> no host found: " name) (println "available hosts are: " host-ids))))
 
 
 (apply deploy *command-line-args*)

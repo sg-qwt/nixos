@@ -1,5 +1,4 @@
-{:aliases {:cljfmt {:deps {dev.weavejester/cljfmt {:mvn/version "RELEASE"}}
-                    :ns-default cljfmt.tool}
+{:aliases {:cljfmt {:deps {dev.weavejester/cljfmt {:mvn/version "RELEASE"}} :ns-default cljfmt.tool}
            :dev {:extra-deps {cider/cider-nrepl {:mvn/version "RELEASE"}
                               nrepl/nrepl {:mvn/version "RELEASE"}}
                  :main-opts ["-m" "nrepl.cmdline" "--middleware"
