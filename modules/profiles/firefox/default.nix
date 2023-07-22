@@ -1,14 +1,19 @@
 s@{ config, pkgs, lib, ... }:
+let
+  fxpkg = pkgs.firefox.override {cfg.enableTridactylNative = true;};
+in
 lib.mkProfile s "firefox" {
   home-manager.users."${config.myos.users.mainUser}" = {
 
     xdg.configFile."tridactyl/tridactylrc".source = ./tridactylrc;
 
+    # https://github.com/NixOS/nixpkgs/issues/238025
+    # https://bugzilla.mozilla.org/show_bug.cgi?id=1839287
+    home.packages = [ (lib.patchDesktop pkgs fxpkg "firefox" "^Exec=firefox --name firefox %U" "Exec=env TZ=:/etc/localtime firefox --name firefox %U") ];
+
     programs.firefox = {
       enable = true;
-      package = pkgs.firefox.override {
-        cfg.enableTridactylNative = true;
-      };
+      package = fxpkg;
       profiles = {
         windranger = {
           isDefault = true;
