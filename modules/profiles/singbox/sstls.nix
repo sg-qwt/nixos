@@ -21,10 +21,15 @@ in
       detour = detour;
       listen = "::";
       listen_port = ports.sstls;
-      version = 2;
-      password = config.sops.placeholder.sing-shadow-tls;
+      version = 3;
+      users = [
+        {
+          name = "sstls";
+          password = config.sops.placeholder.sing-shadow-tls;
+        }
+      ];
       handshake = {
-        server = config.myos.singbox.sni;
+        server = config.myos.singbox.sni2;
         server_port = 443;
       };
     }

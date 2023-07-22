@@ -91,9 +91,9 @@ rec {
       plugin = "shadow-tls";
       client-fingerprint = "chrome";
       plugin-opts = {
-        host = config.myos.singbox.sni;
+        host = config.myos.singbox.sni2;
         password = config.sops.placeholder.sing-shadow-tls;
-        version = 2;
+        version = 3;
       };
     }
   ];

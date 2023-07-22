@@ -24,6 +24,10 @@ in
       type = types.str;
       default = "www.samsung.com";
     };
+    sni2 = mkOption {
+      type = types.str;
+      default = "www.bing.com";
+    };
   };
 
   config = mkIf cfg.enable
