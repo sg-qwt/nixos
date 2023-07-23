@@ -17,7 +17,8 @@
 	"default-ssl": 8443,
 	"mautrix-slack": 29335,
 	"matrix-sliding-sync": 8050,
-	"telegraf-prometheus-client": 9373
+	"telegraf-prometheus-client": 9373,
+	"prometheus": 9390
     },
     "fqdn":{
 	"edg": "edgerunners.eu.org"
