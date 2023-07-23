@@ -16,13 +16,15 @@
 	"atticd": 8040,
 	"default-ssl": 8443,
 	"mautrix-slack": 29335,
-	"matrix-sliding-sync": 8050
+	"matrix-sliding-sync": 8050,
+	"telegraf-prometheus-client": 9373
     },
     "fqdn":{
 	"edg": "edgerunners.eu.org"
     },
     "path": {
 	"ss2": "/mopi",
-	"miniflux": "/flux"
+	"miniflux": "/flux",
+	"metrics": "/metrics"
     }
 }
