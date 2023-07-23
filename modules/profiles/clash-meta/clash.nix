@@ -11,6 +11,7 @@ rec {
   ipv6 = false;
 
   external-controller = "0.0.0.0:${toString ports.clash-meta-api}";
+  secret = config.sops.placeholder.clash-secret;
 
   log-level = "warning";
 
