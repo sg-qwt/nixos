@@ -4,13 +4,20 @@ lib.mkProfile s "desktop-apps"
   myos.firefox.enable = true;
 
   home-manager.users."${config.myos.users.mainUser}" = {
+    programs.mpv = {
+      enable = true;
+      package = pkgs.wrapMpv pkgs.mpv-unwrapped { youtubeSupport = true; };
+      config = {
+        hwdec = "auto";
+        ytdl-raw-options = "cookies-from-browser=firefox";
+      };
+    };
 
     home.packages = with pkgs; [
       # browsers
       chromium
 
       # media
-      mpv
       spotify
       dmlive
     ];
