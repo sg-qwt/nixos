@@ -8,6 +8,7 @@ lib.mkProfile s "desktop-apps"
       enable = true;
       package = pkgs.wrapMpv pkgs.mpv-unwrapped { youtubeSupport = true; };
       config = {
+        profile = "gpu-hq";
         hwdec = "auto";
         ytdl-raw-options = "cookies-from-browser=firefox";
       };
