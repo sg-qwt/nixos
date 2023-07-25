@@ -18,7 +18,7 @@ lib.mkProfile s "prometheus" {
         job_name = "prometheus";
         static_configs = [
           {
-            targets = ["localhost:${toString ports.prometheus}"];
+            targets = [ "localhost:${toString ports.prometheus}" ];
           }
         ];
       }
@@ -26,7 +26,7 @@ lib.mkProfile s "prometheus" {
         job_name = "metrics";
         static_configs = [
           {
-            targets = ["ge.h.edgerunners.eu.org:${toString ports.telegraf-prometheus-client}"];
+            targets = [ "ge.h.edgerunners.eu.org:${toString ports.telegraf-prometheus-client}" ];
           }
         ];
       }
