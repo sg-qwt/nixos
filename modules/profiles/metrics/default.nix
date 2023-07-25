@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib,  self, ... }:
+s@{ config, pkgs, lib, self, ... }:
 let
   inherit (config.myos.data) ports fqdn path;
 in

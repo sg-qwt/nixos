@@ -35,6 +35,8 @@ lib.mkProfile s "firefox" {
             }
           ];
           settings = {
+            "media.ffmpeg.vaapi.enabled" = true;
+
             "browser.aboutwelcome.enabled" = false;
             "browser.discovery.enabled" = false;
             "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons" =
