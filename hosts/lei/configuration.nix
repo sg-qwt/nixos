@@ -16,6 +16,7 @@
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
+    extraPackages = [ pkgs.intel-media-driver ];
   };
 
   hardware.pulseaudio.enable = false;
