@@ -130,6 +130,11 @@
   (dolist (charset '(kana han symbol cjk-misc bopomofo))
     (set-fontset-font (frame-parameter nil 'font) charset
 		      (font-spec :family "LXGW WenKai Mono" :size 14))))
+(use-package epg
+  :config
+  ;; remove this after gnupg 2.4.x
+  ;; https://github.com/NixOS/nixpkgs/pull/245479
+  (fset 'epg-wait-for-status 'ignore))
 
 (use-package evil
   :demand t
