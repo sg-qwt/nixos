@@ -18,7 +18,8 @@
 	"mautrix-slack": 29335,
 	"matrix-sliding-sync": 8050,
 	"telegraf-prometheus-client": 9373,
-	"prometheus": 9390
+	"prometheus": 9390,
+	"teledrive": 9490
     },
     "fqdn":{
 	"edg": "edgerunners.eu.org"
