@@ -29,6 +29,8 @@ let
           substituteInPlace api/src/index.ts --replace "path.join(__dirname, '..', '..', 'web', 'build')" 'process.env.WEB_DIR'
 
           substituteInPlace api/src/index.ts --replace "path.join(__dirname, '..', '..','web', 'build', 'index.html')" "path.join(process.env.WEB_DIR, 'index.html')"
+
+          substituteInPlace api/src/api/v1/Files.ts --replace '`''${__dirname}/../../../../.cached`' "process.env.CACHE_DIR"
         '';
 
       };
@@ -90,6 +92,15 @@ let
               --set PRISMA_MIGRATION_ENGINE_BINARY "${prisma-engines}/bin/migration-engine" \
               --set PRISMA_QUERY_ENGINE_BINARY "${prisma-engines}/bin/query-engine" \
               --set PRISMA_QUERY_ENGINE_LIBRARY "${prisma-engines}/lib/libquery_engine.node"
+
+            makeWrapper ${nodejs}/bin/node $out/bin/teledrive-migrate-deploy \
+              --add-flags $out/libexec/api/node_modules/prisma/build/index.js \
+              --add-flags migrate \
+              --add-flags deploy \
+              --append-flags "--schema $out/libexec/api/deps/api/prisma/schema.prisma" \
+              --set PRISMA_MIGRATION_ENGINE_BINARY "${prisma-engines}/bin/migration-engine" \
+              --set PRISMA_QUERY_ENGINE_BINARY "${prisma-engines}/bin/query-engine" \
+              --set PRISMA_QUERY_ENGINE_LIBRARY "${prisma-engines}/lib/libquery_engine.node" \
           '';
         };
       };
