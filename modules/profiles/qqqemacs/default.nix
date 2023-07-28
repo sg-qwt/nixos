@@ -66,6 +66,8 @@ lib.mkProfile s "qqqemacs"
           peep-dired
 
           yasnippet
+
+          ibuffer-vc
         ]) ++
 
         (with epkgs.elpaPackages; [
