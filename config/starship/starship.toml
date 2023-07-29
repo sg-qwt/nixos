@@ -52,6 +52,7 @@ symbol = ".NET "
 
 [directory]
 read_only = " ro"
+home_symbol = "home"
 
 [docker_context]
 symbol = "docker "
