@@ -887,7 +887,18 @@ the focus."
 
 (use-package ibuffer-vc
   :hook (ibuffer . ibuffer-vc-set-filter-groups-by-vc-root)
-  :custom (ibuffer-vc-skip-if-remote 'nil))
+  :custom (ibuffer-vc-skip-if-remote 'nil)
+  :config
+  ;; include project local vterm, leave dedicated alone
+  (setq ibuffer-vc-buffer-file-name-function
+	(lambda (buf)
+	  (with-current-buffer buf
+	    (when-let ((file-name (or buffer-file-name
+				      list-buffers-directory
+				      (and (string-prefix-p "*vterminal" (buffer-name buf))
+					   (not (string-match-p (regexp-quote "dedicated") (buffer-name buf)))
+					   default-directory))))
+	      (file-truename file-name))))))
 
 ;;;;;;;;;;;
 ;; vterm ;;
