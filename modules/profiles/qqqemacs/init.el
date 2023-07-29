@@ -234,11 +234,20 @@
     "b" #'consult-line
     "p" #'consult-ripgrep)
 
+  ;;;;;;;;;;;;;
+  ;; project ;;
+  ;;;;;;;;;;;;;
+  (qqq/leader
+    :infix "p"
+    "p" #'project-switch-project
+    "t" #'multi-vterm-project)
+
   ;;;;;;;;;;;;
   ;; buffer ;;
   ;;;;;;;;;;;;
   (qqq/leader
     :infix "b"
+    "t" #'multi-vterm-dedicated-toggle
     "i" #'ibuffer
     "b" #'consult-buffer
     "s" #'scratch-buffer
@@ -879,3 +888,27 @@ the focus."
 (use-package ibuffer-vc
   :hook (ibuffer . ibuffer-vc-set-filter-groups-by-vc-root)
   :custom (ibuffer-vc-skip-if-remote 'nil))
+
+;;;;;;;;;;;
+;; vterm ;;
+;;;;;;;;;;;
+(use-package vterm
+  :demand t
+  :custom
+  (vterm-kill-buffer-on-exit t)
+  (vterm-max-scrollback 5000))
+
+(use-package multi-vterm
+  :demand t
+  :custom
+  (multi-vterm-dedicated-window-height-percent 40)
+  :general
+  (qqq/local-leader
+    vterm-mode-map
+    "r" #'multi-vterm-rename-buffer
+    "n" #'multi-vterm-next
+    "p" #'multi-vterm-prev))
+
+(use-package project
+  :custom
+  (project-switch-commands #'project-dired))

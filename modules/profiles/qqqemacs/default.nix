@@ -68,6 +68,9 @@ lib.mkProfile s "qqqemacs"
           yasnippet
 
           ibuffer-vc
+
+          vterm
+          multi-vterm
         ]) ++
 
         (with epkgs.elpaPackages; [
