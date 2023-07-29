@@ -907,7 +907,10 @@ the focus."
   :demand t
   :custom
   (vterm-kill-buffer-on-exit t)
-  (vterm-max-scrollback 5000))
+  (vterm-max-scrollback 5000)
+  :config
+  (setq kill-buffer-query-functions
+	(delq 'process-kill-buffer-query-function kill-buffer-query-functions)))
 
 (use-package multi-vterm
   :demand t
