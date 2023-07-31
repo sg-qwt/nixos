@@ -1,9 +1,9 @@
-{ babashka, writeShellApplication, ... }:
+{ babashka-unwrapped, writeShellApplication, ... }:
 { name, source, deps ? [ ], args ? [ ] }:
 writeShellApplication {
   inherit name;
   runtimeInputs = deps;
   text = ''
-    ${babashka}/bin/bb ${source} ${toString args} "$@"
+    ${babashka-unwrapped}/bin/bb ${source} ${toString args} "$@"
   '';
 }
