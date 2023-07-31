@@ -803,7 +803,15 @@ the focus."
   :hook
   ((nix-mode . eglot-ensure))
   :config
-  (add-to-list 'eglot-server-programs '((nix-mode) "nil")))
+  (add-to-list 'eglot-server-programs '((nix-mode) "nil"))
+  (defun nix-flake-format (options flake-ref)
+    "Format the flake.
+
+For OPTIONS and FLAKE-REF, see the documentation of
+`nix-flake-run-attribute'."
+    (interactive (list (nix-flake--options) nix-flake-ref))
+    (let ((default-directory flake-ref))
+      (compile (nix-flake--command '("fmt") options flake-ref)))))
 
 (use-package eldoc
   :custom
