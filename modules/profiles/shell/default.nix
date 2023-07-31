@@ -29,7 +29,7 @@ lib.mkProfile s "shell"
         complete -F _complete_alias "''${!BASH_ALIASES[@]}"
 
         if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
-	        source ${./emacs-vterm-bash.sh}
+          source ${./emacs-vterm-bash.sh}
         fi
       '';
 
