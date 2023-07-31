@@ -1,3 +1,5 @@
 **/.terraform/*
 result
 *.dump
+.clj-kondo
+.lsp
