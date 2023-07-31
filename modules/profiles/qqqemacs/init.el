@@ -10,6 +10,24 @@
 (use-package qqqdefun
   :no-require t
   :preface
+  (defun qqq/flake.format ()
+    "Selec nixos to build and deploy."
+    (interactive)
+    (let* ((default-directory (vc-root-dir))
+	   (bname (concat "*nix-fmt* " default-directory))
+	   (cmd "nix fmt"))
+      (async-shell-command cmd bname)))
+  (defun qqq/system.build (host)
+    "Selec nixos to build and deploy."
+    (interactive
+     (list
+      (completing-read
+       "Select host: "
+       (split-string (shell-command-to-string "deploy -l"))
+       nil nil (system-name))))
+    (let ((bname "*nixos-build*"))
+      (async-shell-command (concat "deploy " host) bname)))
+
   (defun qqq/return-t (orig-fun &rest args) t)
 
   (defun qqq/disable-yornp (orig-fun &rest args)
@@ -806,15 +824,7 @@ the focus."
    (clojurescript-mode . eglot-ensure)
    (clojurec-mode . eglot-ensure))
   :config
-  (add-to-list 'eglot-server-programs '((nix-mode) "nil"))
-  (defun nix-flake-format (options flake-ref)
-    "Format the flake.
-
-For OPTIONS and FLAKE-REF, see the documentation of
-`nix-flake-run-attribute'."
-    (interactive (list (nix-flake--options) nix-flake-ref))
-    (let ((default-directory flake-ref))
-      (compile (nix-flake--command '("fmt") options flake-ref)))))
+  (add-to-list 'eglot-server-programs '((nix-mode) "nil")))
 
 (use-package eldoc
   :custom
