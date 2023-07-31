@@ -21,6 +21,8 @@ lib.mkProfile s "git"
         push.autoSetupRemote = true;
         feature.manyFiles = true;
       };
+
+      ignores = [ ".lsp/.cache" ".clj-kondo/.cache" ];
     };
   };
 }
