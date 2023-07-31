@@ -116,6 +116,7 @@ lib.mkProfile s "qqqemacs"
           self.packages.x86_64-linux.grab-shi
           # lsp servers
           nil
+          clojure-lsp
         ];
       };
 

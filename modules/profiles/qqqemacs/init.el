@@ -801,7 +801,10 @@ the focus."
   ;; :init
   ;; (setq eglot-stay-out-of '(yasnippet corfu))
   :hook
-  ((nix-mode . eglot-ensure))
+  ((nix-mode . eglot-ensure)
+   (clojure-mode . eglot-ensure)
+   (clojurescript-mode . eglot-ensure)
+   (clojurec-mode . eglot-ensure))
   :config
   (add-to-list 'eglot-server-programs '((nix-mode) "nil"))
   (defun nix-flake-format (options flake-ref)
