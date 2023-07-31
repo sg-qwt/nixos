@@ -5,9 +5,6 @@ lib.mkProfile s "shell"
     variables = {
       MYOS_FLAKE = "$HOME/nixos";
     };
-    systemPackages = with pkgs; [
-      zoxide
-    ];
   };
 
   home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
@@ -18,13 +15,22 @@ lib.mkProfile s "shell"
       defaultOptions = [ "--bind ctrl-l:accept" ];
     };
 
+    programs.zoxide = {
+      enable = true;
+      enableBashIntegration = true;
+    };
+
     programs.bash = {
       enable = true;
 
       initExtra = ''
-        eval "$(${pkgs.zoxide}/bin/zoxide init bash)"
         source ${pkgs.complete-alias}/bin/complete_alias
+
         complete -F _complete_alias "''${!BASH_ALIASES[@]}"
+
+        if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+	        source ${./emacs-vterm-bash.sh}
+        fi
       '';
 
       historyControl = [
@@ -52,6 +58,6 @@ lib.mkProfile s "shell"
       enableBashIntegration = true;
     };
 
-    xdg.configFile."starship.toml".source = (self + "/config/starship/starship.toml");
+    xdg.configFile."starship.toml".source = ./starship.toml;
   };
 }
