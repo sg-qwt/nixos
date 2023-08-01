@@ -13,7 +13,7 @@
   (defun qqq/flake.format ()
     "Selec nixos to build and deploy."
     (interactive)
-    (let* ((default-directory (vc-root-dir))
+    (let* ((default-directory (or (vc-root-dir) (magit-toplevel)))
 	   (bname (concat "*nix-fmt* " default-directory))
 	   (cmd "nix fmt"))
       (async-shell-command cmd bname)))
@@ -760,7 +760,8 @@ the focus."
     "r" #'cider-format-region
     "e b" #'cider-format-edn-buffer))
 
-(use-package cider-eval-sexp-fu :after cider)
+(use-package cider-eval-sexp-fu
+  :after cider)
 
 ;;;;;;;;;;;
 ;; elisp ;;
@@ -818,11 +819,15 @@ the focus."
   ;; (eglot-ignored-server-capabilities '(:hoverProvider))
   ;; :init
   ;; (setq eglot-stay-out-of '(yasnippet corfu))
+  :custom
+  (eglot-autoshutdown t)
+  (eglot-confirm-server-initiated-edits nil)
+  (eglot-extend-to-xref t)
   :hook
-  ((nix-mode . eglot-ensure)
-   (clojure-mode . eglot-ensure)
-   (clojurescript-mode . eglot-ensure)
-   (clojurec-mode . eglot-ensure))
+  ;; (clojure-mode . eglot-ensure)
+  ;; (clojurescript-mode . eglot-ensure)
+  ;; (clojurec-mode . eglot-ensure)
+  ((nix-mode . eglot-ensure))
   :config
   (add-to-list 'eglot-server-programs '((nix-mode) "nil")))
 

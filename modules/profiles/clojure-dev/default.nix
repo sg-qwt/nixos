@@ -1,12 +1,18 @@
 s@{ config, pkgs, lib, self, ... }:
+let
+  jdk = pkgs.jdk17;
+in
 lib.mkProfile s "clojure-dev"
 {
+  programs.java = {
+    enable = true;
+    package = jdk;
+  };
+
   home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
     home.packages = with pkgs; [
-      jdk17
-      (clojure.override { jdk = jdk17; })
-      # clojure-lsp
-      babashka
+      (clojure.override { inherit jdk; })
+      babashka-unwrapped
       neil
       my.cljfmt
     ];
