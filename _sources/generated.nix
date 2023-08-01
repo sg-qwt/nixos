@@ -3,54 +3,54 @@
 {
   cape-yasnippet = {
     pname = "cape-yasnippet";
-    version = "ad8c27c2f748b410e7dd568927e99081f87b98b9";
+    version = "ed06497466718fc6de43606cbc3a6ac9f237008a";
     src = fetchFromGitHub {
       owner = "elken";
       repo = "cape-yasnippet";
-      rev = "ad8c27c2f748b410e7dd568927e99081f87b98b9";
+      rev = "ed06497466718fc6de43606cbc3a6ac9f237008a";
       fetchSubmodules = false;
-      sha256 = "sha256-JmJljrvo9AcEVALv5GHa/XdpVLAUaww3wGmlXSAoITs=";
+      sha256 = "sha256-bG6rS9yI3WOqcGu1aOH98hlzY6Uac6ZcpvHYENFjrps=";
     };
-    date = "2023-05-19";
+    date = "2023-07-12";
   };
   jovian-nixos = {
     pname = "jovian-nixos";
-    version = "449faaa41e55c504d2068f2a77c91a0dbc5b191d";
+    version = "9758792434ae5693cb6c70454f534a47b4fe5241";
     src = fetchFromGitHub {
       owner = "Jovian-Experiments";
       repo = "Jovian-NixOS";
-      rev = "449faaa41e55c504d2068f2a77c91a0dbc5b191d";
+      rev = "9758792434ae5693cb6c70454f534a47b4fe5241";
       fetchSubmodules = false;
-      sha256 = "sha256-E4Lk1HlRSvbcflAB23U1Arul013IN34kvReQyulzFTw=";
+      sha256 = "sha256-Vt4gtWbdeuPGAm4O+tW1opHZcc4xNokMvWn35OotHvc=";
     };
-    date = "2023-06-30";
+    date = "2023-07-30";
   };
   proton-ge-custom = {
     pname = "proton-ge-custom";
-    version = "GE-Proton8-4";
+    version = "GE-Proton8-9";
     src = fetchurl {
-      url = "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-4/GE-Proton8-4.tar.gz";
-      sha256 = "sha256-OPwmVxBGaWo51pDJcqvxvZ8qxMH8X0DwZTpwiKbdx/I=";
+      url = "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-9/GE-Proton8-9.tar.gz";
+      sha256 = "sha256-yZn4vrG9FCX2Wvpz3aKPaqBK4ttNupZmrmX13QBDZFo=";
     };
   };
   rime-pinyin-zhwiki = {
     pname = "rime-pinyin-zhwiki";
-    version = "20230605";
+    version = "20230728";
     src = fetchurl {
-      url = "https://github.com/felixonmars/fcitx5-pinyin-zhwiki/releases/download/0.2.4/zhwiki-20230605.dict.yaml";
-      sha256 = "sha256-SB2TcvJb/7D3cO3NG34QecMxWMAFwwHCSr3sKHLZa3o=";
+      url = "https://github.com/felixonmars/fcitx5-pinyin-zhwiki/releases/download/0.2.4/zhwiki-20230728.dict.yaml";
+      sha256 = "sha256-KMlsC+04NjXSsIDskVVY69MKta4W22EDcKUVRtM0diA=";
     };
   };
   yacd-meta = {
     pname = "yacd-meta";
-    version = "2d0c52cecf9ee7ed8446d2fa240291ef83facbde";
+    version = "fa8f6c1a27b37c17cd89b9255a584d21f6ddb7bd";
     src = fetchFromGitHub {
       owner = "MetaCubeX";
       repo = "Yacd-meta";
-      rev = "2d0c52cecf9ee7ed8446d2fa240291ef83facbde";
+      rev = "fa8f6c1a27b37c17cd89b9255a584d21f6ddb7bd";
       fetchSubmodules = false;
-      sha256 = "sha256-Pi1LV+DnBiFqcelPz/F6Ip2wH+GC87vE+9H4nCaWlBU=";
+      sha256 = "sha256-SpyDC+cgnKk27LgS6VS7hxpx40V2U97CqYgIsEbwDsg=";
     };
-    date = "2023-06-29";
+    date = "2023-07-15";
   };
 }

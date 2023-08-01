@@ -1,7 +1,7 @@
 {
     "cape-yasnippet": {
         "cargoLocks": null,
-        "date": "2023-05-19",
+        "date": "2023-07-12",
         "extract": null,
         "name": "cape-yasnippet",
         "passthru": null,
@@ -13,15 +13,15 @@
             "name": null,
             "owner": "elken",
             "repo": "cape-yasnippet",
-            "rev": "ad8c27c2f748b410e7dd568927e99081f87b98b9",
-            "sha256": "sha256-JmJljrvo9AcEVALv5GHa/XdpVLAUaww3wGmlXSAoITs=",
+            "rev": "ed06497466718fc6de43606cbc3a6ac9f237008a",
+            "sha256": "sha256-bG6rS9yI3WOqcGu1aOH98hlzY6Uac6ZcpvHYENFjrps=",
             "type": "github"
         },
-        "version": "ad8c27c2f748b410e7dd568927e99081f87b98b9"
+        "version": "ed06497466718fc6de43606cbc3a6ac9f237008a"
     },
     "jovian-nixos": {
         "cargoLocks": null,
-        "date": "2023-06-30",
+        "date": "2023-07-30",
         "extract": null,
         "name": "jovian-nixos",
         "passthru": null,
@@ -33,11 +33,11 @@
             "name": null,
             "owner": "Jovian-Experiments",
             "repo": "Jovian-NixOS",
-            "rev": "449faaa41e55c504d2068f2a77c91a0dbc5b191d",
-            "sha256": "sha256-E4Lk1HlRSvbcflAB23U1Arul013IN34kvReQyulzFTw=",
+            "rev": "9758792434ae5693cb6c70454f534a47b4fe5241",
+            "sha256": "sha256-Vt4gtWbdeuPGAm4O+tW1opHZcc4xNokMvWn35OotHvc=",
             "type": "github"
         },
-        "version": "449faaa41e55c504d2068f2a77c91a0dbc5b191d"
+        "version": "9758792434ae5693cb6c70454f534a47b4fe5241"
     },
     "proton-ge-custom": {
         "cargoLocks": null,
@@ -48,11 +48,11 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-OPwmVxBGaWo51pDJcqvxvZ8qxMH8X0DwZTpwiKbdx/I=",
+            "sha256": "sha256-yZn4vrG9FCX2Wvpz3aKPaqBK4ttNupZmrmX13QBDZFo=",
             "type": "url",
-            "url": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-4/GE-Proton8-4.tar.gz"
+            "url": "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton8-9/GE-Proton8-9.tar.gz"
         },
-        "version": "GE-Proton8-4"
+        "version": "GE-Proton8-9"
     },
     "rime-pinyin-zhwiki": {
         "cargoLocks": null,
@@ -63,15 +63,15 @@
         "pinned": false,
         "src": {
             "name": null,
-            "sha256": "sha256-SB2TcvJb/7D3cO3NG34QecMxWMAFwwHCSr3sKHLZa3o=",
+            "sha256": "sha256-KMlsC+04NjXSsIDskVVY69MKta4W22EDcKUVRtM0diA=",
             "type": "url",
-            "url": "https://github.com/felixonmars/fcitx5-pinyin-zhwiki/releases/download/0.2.4/zhwiki-20230605.dict.yaml"
+            "url": "https://github.com/felixonmars/fcitx5-pinyin-zhwiki/releases/download/0.2.4/zhwiki-20230728.dict.yaml"
         },
-        "version": "20230605"
+        "version": "20230728"
     },
     "yacd-meta": {
         "cargoLocks": null,
-        "date": "2023-06-29",
+        "date": "2023-07-15",
         "extract": null,
         "name": "yacd-meta",
         "passthru": null,
@@ -83,10 +83,10 @@
             "name": null,
             "owner": "MetaCubeX",
             "repo": "Yacd-meta",
-            "rev": "2d0c52cecf9ee7ed8446d2fa240291ef83facbde",
-            "sha256": "sha256-Pi1LV+DnBiFqcelPz/F6Ip2wH+GC87vE+9H4nCaWlBU=",
+            "rev": "fa8f6c1a27b37c17cd89b9255a584d21f6ddb7bd",
+            "sha256": "sha256-SpyDC+cgnKk27LgS6VS7hxpx40V2U97CqYgIsEbwDsg=",
             "type": "github"
         },
-        "version": "2d0c52cecf9ee7ed8446d2fa240291ef83facbde"
+        "version": "fa8f6c1a27b37c17cd89b9255a584d21f6ddb7bd"
     }
 }
