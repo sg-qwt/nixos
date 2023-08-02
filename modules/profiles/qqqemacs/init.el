@@ -292,6 +292,12 @@
     "c" #'with-editor-finish
     "k" #'with-editor-cancel))
 
+(use-package avy
+  :demand t
+  :general
+  (general-def '(normal)
+    "f" #'evil-avy-goto-word-or-subword-1))
+
 (use-package consult
   :demand t
   :preface
