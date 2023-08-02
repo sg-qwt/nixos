@@ -183,7 +183,7 @@ lib.mkProfile s "firefox" {
                 definedAliases = [ "@ni" ];
               };
 
-              "Nix code" = {
+              "Nix Code" = {
                 urls = [{
                   template = "https://github.com/search";
                   params = [
