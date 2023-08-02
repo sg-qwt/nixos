@@ -33,6 +33,7 @@ lib.mkProfile s "qqqemacs"
         (with epkgs.melpaPackages; [
           modus-themes
 
+          avy
           evil
           evil-surround
           evil-collection
