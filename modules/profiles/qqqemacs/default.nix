@@ -94,14 +94,9 @@ lib.mkProfile s "qqqemacs"
 
       myos.sdcv-with-dicts.enable = true;
 
-      services.emacs = {
-        enable = true;
-        defaultEditor = true;
-        package = qqqemacs;
-      };
-
       environment = {
         systemPackages = with pkgs; [
+          qqqemacs
           search-epkgs
           ripgrep
           (aspellWithDicts (ds: with ds; [ en ]))
@@ -121,6 +116,16 @@ lib.mkProfile s "qqqemacs"
       };
 
       home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
+
+        systemd.user.services.emacs.Unit.X-RestartIfChanged = lib.mkForce true;
+        systemd.user.services.emacs.Unit.X-Restart-Triggers = [ "${./init.el}" ];
+        services.emacs = {
+          enable = true;
+          package = qqqemacs;
+          startWithUserSession = "graphical";
+          defaultEditor = true;
+        };
+
         xdg.configFile."emacs/init.el".source = ./init.el;
         xdg.configFile."emacs/snippets" = {
           source = ./snippets;
