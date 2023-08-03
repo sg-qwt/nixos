@@ -51,6 +51,12 @@
     (interactive)
     (display-buffer "*Messages*"))
 
+  (defun qqq/scratch-buffer-other-window ()
+    "Switch to the *scratch* buffer other window.
+If the buffer doesn't exist, create it first."
+    (interactive)
+    (pop-to-buffer (get-scratch-buffer-create)))
+
   (defun qqq/rename-current-buffer-file ()
     "Renames current buffer and file it is visiting."
     (interactive)
@@ -268,7 +274,8 @@
     "t" #'multi-vterm-dedicated-toggle
     "i" #'ibuffer
     "b" #'consult-buffer
-    "s" #'scratch-buffer
+    "S" #'scratch-buffer
+    "s" #'qqq/scratch-buffer-other-window
     "m" #'qqq/switch-to-message
     "p" #'qqq/consult-buffer-p
     "d" #'kill-current-buffer)
@@ -380,10 +387,19 @@
   (defun qqq/orm-capture-p ()
     (interactive)
     (org-roam-capture- :goto nil :keys "p" :node (org-roam-node-create)))
+  (defun qqq/orm-upload ()
+    "Sync roam db to git."
+    (interactive)
+    (let ((default-directory org-roam-directory))
+      (magit-call-git "pull" "--rebase" "--autostash")
+      (magit-call-git "add" "--all")
+      (magit-call-git "commit" "-m" (concat "auto: " (current-time-string)))
+      (magit-call-git "push")))
   :demand t
   :general
   (qqq/leader
     :infix "o"
+    "u" #'qqq/orm-upload
     "s" #'org-roam-db-sync
     "f" #'org-roam-node-find
     "i" #'org-roam-node-insert
