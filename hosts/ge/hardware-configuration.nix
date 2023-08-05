@@ -72,4 +72,5 @@ in
     [{ device = "/dev/disk/by-uuid/6b5c6135-985d-43fd-84d0-a9212cdfe319"; }];
 
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 }
