@@ -24,7 +24,7 @@
       (completing-read
        "Select host: "
        (split-string (shell-command-to-string "deploy -l"))
-       nil nil (system-name))))
+       nil nil nil)))
     (let ((bname "*nixos-build*"))
       (async-shell-command (concat "deploy " host) bname)))
 
@@ -265,6 +265,15 @@ If the buffer doesn't exist, create it first."
     :infix "p"
     "p" #'project-switch-project
     "t" #'multi-vterm-project)
+
+  ;;;;;;;;;;
+  ;; myos ;;
+  ;;;;;;;;;;
+  (qqq/leader
+    :infix "m"
+    "b" #'(lambda () (interactive) (qqq/system.build (system-name)))
+    "B" #'qqq/system.build
+    "f" #'qqq/flake.format)
 
   ;;;;;;;;;;;;
   ;; buffer ;;
