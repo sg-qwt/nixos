@@ -696,6 +696,23 @@ the focus."
      (buffer-substring-no-properties start end) t)
     (evil-insert-state))
 
+  (defun qqq/cider-send-sexp-to-repl ()
+    "Send current function to REPL and evaluate it without changing
+the focus."
+    (interactive)
+    (when (eq evil-state 'normal)
+      (forward-char 1))
+    (qqq//cider-eval-in-repl-no-focus (cider-sexp-at-point)))
+
+  (defun qqq/cider-send-sexp-to-repl-focus ()
+    "Send current function to REPL and evaluate it and switch to the REPL in
+`insert state'."
+    (interactive)
+    (when (eq evil-state 'normal)
+      (forward-char 1))
+    (cider-insert-last-sexp-in-repl t)
+    (evil-insert-state))
+
   (defun qqq/cider-send-function-to-repl ()
     "Send current function to REPL and evaluate it without changing
 the focus."
@@ -722,6 +739,13 @@ the focus."
     (cider-insert-ns-form-in-repl t)
     (evil-insert-state))
 
+  (defun qqq/pprint-eval-last-sexp-to-comment (&optional insert-before)
+    "Pointer position fix for evil normal state."
+    (interactive "P")
+    (when (eq evil-state 'normal)
+      (forward-char 1))
+    (call-interactively #'cider-pprint-eval-last-sexp-to-comment))
+
   (defun qqq/cider-switch ()
     (interactive)
     (if (eq major-mode 'cider-repl-mode)
@@ -742,9 +766,11 @@ the focus."
     :infix "e"
     "b" #'cider-eval-buffer
     "r" #'cider-eval-region
+    "e" #'cider-eval-sexp-at-point
     "(" #'cider-eval-list-at-point
     "f" #'cider-eval-defun-at-point
-    ";" #'cider-eval-defun-to-comment
+    ";" #'cider-pprint-eval-defun-to-comment
+    ":" #'qqq/pprint-eval-last-sexp-to-comment
     "i" #'cider-interrupt
     "m" #'cider-macroexpand-1
     "M" #'cider-macroexpand-all)
@@ -760,6 +786,8 @@ the focus."
     "b" #'cider-load-buffer
     "n" #'qqq/cider-send-ns-form-to-repl
     "N" #'qqq/cider-send-ns-form-to-repl-focus
+    "e" #'qqq/cider-send-sexp-to-repl
+    "E" #'qqq/cider-send-sexp-to-repl-focus
     "f" #'qqq/cider-send-function-to-repl
     "F" #'qqq/cider-send-function-to-repl-focus
     "r" #'qqq/cider-send-region-to-repl
