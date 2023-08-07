@@ -15,15 +15,15 @@
   };
   jovian-nixos = {
     pname = "jovian-nixos";
-    version = "449faaa41e55c504d2068f2a77c91a0dbc5b191d";
+    version = "8501772997eae3ca4be3584ad4e93d448b0224e5";
     src = fetchFromGitHub {
-      owner = "Jovian-Experiments";
+      owner = "sg-qwt";
       repo = "Jovian-NixOS";
-      rev = "449faaa41e55c504d2068f2a77c91a0dbc5b191d";
+      rev = "8501772997eae3ca4be3584ad4e93d448b0224e5";
       fetchSubmodules = false;
-      sha256 = "sha256-E4Lk1HlRSvbcflAB23U1Arul013IN34kvReQyulzFTw=";
+      sha256 = "sha256-+A2EQ+W9UrJqbqoqQj/wWJIEw8D1MFoiRKiKn0YrkgY=";
     };
-    date = "2023-06-30";
+    date = "2023-08-07";
   };
   proton-ge-custom = {
     pname = "proton-ge-custom";
