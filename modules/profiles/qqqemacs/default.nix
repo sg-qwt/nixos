@@ -72,6 +72,8 @@ lib.mkProfile s "qqqemacs"
 
           vterm
           multi-vterm
+
+          hl-todo
         ]) ++
 
         (with epkgs.elpaPackages; [
