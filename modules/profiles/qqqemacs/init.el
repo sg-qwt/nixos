@@ -264,6 +264,10 @@ If the buffer doesn't exist, create it first."
   (qqq/leader
     :infix "p"
     "p" #'project-switch-project
+    "l" #'project-switch-project
+    "T" #'(lambda ()
+	    "Project TODOs"
+	    (interactive) (consult-ripgrep nil "TODO"))
     "t" #'multi-vterm-project)
 
   ;;;;;;;;;;
@@ -1010,3 +1014,6 @@ the focus."
 (use-package project
   :custom
   (project-switch-commands #'project-dired))
+
+(use-package hl-todo
+  :hook (prog-mode . hl-todo-mode))
