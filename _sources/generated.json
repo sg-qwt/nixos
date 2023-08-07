@@ -21,7 +21,7 @@
     },
     "jovian-nixos": {
         "cargoLocks": null,
-        "date": "2023-06-30",
+        "date": "2023-08-07",
         "extract": null,
         "name": "jovian-nixos",
         "passthru": null,
@@ -31,13 +31,13 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "owner": "Jovian-Experiments",
+            "owner": "sg-qwt",
             "repo": "Jovian-NixOS",
-            "rev": "449faaa41e55c504d2068f2a77c91a0dbc5b191d",
-            "sha256": "sha256-E4Lk1HlRSvbcflAB23U1Arul013IN34kvReQyulzFTw=",
+            "rev": "8501772997eae3ca4be3584ad4e93d448b0224e5",
+            "sha256": "sha256-+A2EQ+W9UrJqbqoqQj/wWJIEw8D1MFoiRKiKn0YrkgY=",
             "type": "github"
         },
-        "version": "449faaa41e55c504d2068f2a77c91a0dbc5b191d"
+        "version": "8501772997eae3ca4be3584ad4e93d448b0224e5"
     },
     "proton-ge-custom": {
         "cargoLocks": null,
