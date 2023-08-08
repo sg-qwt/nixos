@@ -28,6 +28,8 @@ lib.mkProfile s "qqqemacs"
           clojure-mode-extra-font-locking
           cider
           cider-eval-sexp-fu
+          clj-refactor
+          flymake-kondor
         ]) ++
 
         (with epkgs.melpaPackages; [
@@ -114,6 +116,7 @@ lib.mkProfile s "qqqemacs"
           self.packages.x86_64-linux.grab-shi
           # lsp servers
           nil
+          clj-kondo
         ];
       };
 
