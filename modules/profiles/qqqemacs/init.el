@@ -745,7 +745,9 @@ the focus."
 	(cider-switch-to-last-clojure-buffer)
       (cider-switch-to-repl-buffer)))
 
-  :hook (clojure-mode . cider-mode)
+  :hook
+  (clojure-mode . cider-mode)
+  (clojure-mode . flymake-mode)
 
   :config
   (advice-add 'cider-pprint-eval-last-sexp-to-comment
@@ -824,6 +826,18 @@ the focus."
 
 (use-package cider-eval-sexp-fu
   :after cider)
+
+(use-package clj-refactor
+  :hook
+  (clojure-mode . clj-refactor-mode)
+  :custom
+  (cljr-warn-on-eval nil)
+  :config
+  (advice-add 'cljr--version :override
+	      (lambda (&optional remove-package-version) "3.9.1")))
+
+(use-package flymake-kondor
+  :hook (clojure-mode . flymake-kondor-setup))
 
 ;;;;;;;;;;;
 ;; elisp ;;
@@ -1017,3 +1031,18 @@ the focus."
 
 (use-package hl-todo
   :hook (prog-mode . hl-todo-mode))
+
+;;;;;;;;;;
+;; lint ;;
+;;;;;;;;;;
+(use-package flymake
+  :general
+  (qqq/local-leader
+    flymake-mode-map
+    :infix "l"
+    "n" #'flymake-goto-next-error
+    "p" #'flymake-goto-prev-error
+    "b" #'flymake-show-buffer-diagnostics
+    "P" #'flymake-show-project-diagnostics)
+  :config
+  (remove-hook 'flymake-diagnostic-functions #'flymake-proc-legacy-flymake))
