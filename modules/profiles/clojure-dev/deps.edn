@@ -1,5 +1,6 @@
 {:aliases {:dev {:extra-deps {cider/cider-nrepl {:mvn/version "RELEASE"}
                               nrepl/nrepl {:mvn/version "RELEASE"}
                               refactor-nrepl/refactor-nrepl {:mvn/version "RELEASE"}}
-                 :main-opts ["--main" "nrepl.cmdline"
-                             "--middleware" "[refactor-nrepl.middleware/wrap-refactor,cider.nrepl/cider-middleware]"]}}}
+                 :main-opts
+                 ["--main" "nrepl.cmdline" "--middleware"
+                  "[refactor-nrepl.middleware/wrap-refactor,cider.nrepl/cider-middleware]"]}}}
