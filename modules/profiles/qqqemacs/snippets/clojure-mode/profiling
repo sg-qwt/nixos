@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: profiling
+# key: profiling
+# --
+(dotimes [reps 10]
+  (time
+   (dotimes [i 1000]
+     $0)))
