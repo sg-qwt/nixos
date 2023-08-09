@@ -19,7 +19,8 @@
 	"matrix-sliding-sync": 8050,
 	"telegraf-prometheus-client": 9373,
 	"prometheus": 9390,
-	"teledrive": 9490
+	"teledrive": 9490,
+	"rsshub": 1264
     },
     "fqdn":{
 	"edg": "edgerunners.eu.org"
