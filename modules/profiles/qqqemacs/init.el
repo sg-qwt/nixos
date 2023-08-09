@@ -667,6 +667,12 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
 
 (use-package cider
   :preface
+  (defun qqq/cider-capf ()
+    (setq-local completion-at-point-functions
+		(list (cape-super-capf
+		       #'cider-complete-at-point
+		       #'cape-yasnippet))))
+
   (defun qqq/cider-connect-bb ()
     (interactive)
     (cider-connect '(:host "localhost" :port 1667)))
@@ -748,6 +754,7 @@ the focus."
   :hook
   (clojure-mode . cider-mode)
   (clojure-mode . flymake-mode)
+  (cider-mode . qqq/cider-capf)
 
   :config
   (advice-add 'cider-pprint-eval-last-sexp-to-comment
