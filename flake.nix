@@ -125,6 +125,7 @@
           mautrix-slack = pkgs.my.mautrix-slack;
           cljfmt = pkgs.my.cljfmt;
           teledrive = pkgs.my.teledrive;
+          rsshub = pkgs.my.rsshub;
         } //
         (import ./images.nix { inherit jovian nixpkgs system pkgs self; })
         //
