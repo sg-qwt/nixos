@@ -11,7 +11,9 @@ lib.mkProfile s "gnome"
         enable = true;
         displayManager.gdm.autoSuspend = false;
         displayManager.gdm.enable = true;
+        displayManager.gdm.wayland = false;
         desktopManager.gnome.enable = true;
+
         displayManager.job.preStart = "sleep 5";
         displayManager.autoLogin.enable = true;
         displayManager.autoLogin.user = "${config.myos.users.mainUser}";

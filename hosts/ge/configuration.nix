@@ -20,7 +20,7 @@
   # myos.sway.enable = true;
   myos.fcitx.enable = true;
   myos.gnome.enable = true;
-  myos.wayland.enable = true;
+  myos.wayland.enable = false;
   # myos.ibus.enable = true;
 
   myos.tmux.enable = true;
@@ -54,16 +54,16 @@
     };
   };
 
-  # Enable sound.
-  hardware.pulseaudio.enable = false;
-  services.pipewire = {
-    enable = true;
-    alsa = {
-      enable = true;
-      support32Bit = true;
-    };
-    pulse.enable = true;
-  };
+  # # Enable sound. Wayland only
+  # hardware.pulseaudio.enable = false;
+  # services.pipewire = {
+  #   enable = true;
+  #   alsa = {
+  #     enable = true;
+  #     support32Bit = true;
+  #   };
+  #   pulse.enable = true;
+  # };
 
   hardware.opengl = {
     enable = true;
