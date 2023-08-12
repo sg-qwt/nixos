@@ -126,6 +126,7 @@
           cljfmt = pkgs.my.cljfmt;
           teledrive = pkgs.my.teledrive;
           rsshub = pkgs.my.rsshub;
+          pop = pkgs.my.pop;
         } //
         (import ./images.nix { inherit jovian nixpkgs system pkgs self; })
         //

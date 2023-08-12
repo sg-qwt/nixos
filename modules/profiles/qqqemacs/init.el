@@ -150,11 +150,12 @@ If the buffer doesn't exist, create it first."
   ;;;;;;;;;;
   ;; font ;;
   ;;;;;;;;;;
+  ;; TODO size on x11 and wayland is different
   (when (display-graphic-p)
     (set-face-attribute 'default nil :font "JetBrains Mono 10")
     (dolist (charset '(kana han symbol cjk-misc bopomofo))
       (set-fontset-font (frame-parameter nil 'font) charset
-			(font-spec :family "LXGW WenKai Mono" :size 14)))))
+			(font-spec :family "LXGW WenKai Mono" :size 28)))))
 
 (use-package epg
   :config

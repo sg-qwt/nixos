@@ -2,7 +2,7 @@ s@{ config, pkgs, sources, lib, self, ... }:
 lib.mkProfile s "qqqemacs"
   (
     let
-      myEmacs = pkgs.emacs29-pgtk;
+      myEmacs = (if config.myos.wayland.enable then pkgs.emacs29-pgtk else pkgs.emacs29);
       emacsWithPackages = (pkgs.emacsPackagesFor myEmacs).emacsWithPackages;
       qqqemacs = emacsWithPackages (epkgs:
         [
