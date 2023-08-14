@@ -19,8 +19,11 @@
   myos.users.enable = true;
   # myos.sway.enable = true;
   myos.fcitx.enable = true;
-  myos.gnome.enable = true;
-  myos.wayland.enable = false;
+  myos.gnome = {
+    enable = true;
+    wayland = false;
+  };
+
   # myos.ibus.enable = true;
 
   myos.tmux.enable = true;
