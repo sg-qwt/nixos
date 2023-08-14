@@ -26,7 +26,7 @@
        (split-string (shell-command-to-string "deploy -l"))
        nil nil nil)))
     (let ((bname "*nixos-build*"))
-      (async-shell-command (concat "deploy " host) bname)))
+      (async-shell-command (concat "deploy --host " host) bname)))
 
   (defun qqq/return-t (orig-fun &rest args) t)
 
@@ -276,7 +276,9 @@ If the buffer doesn't exist, create it first."
   ;;;;;;;;;;
   (qqq/leader
     :infix "m"
-    "b" #'(lambda () (interactive) (qqq/system.build (system-name)))
+    "b" #'(lambda ()
+	    "Build current host"
+	    (interactive) (qqq/system.build (system-name)))
     "B" #'qqq/system.build
     "f" #'qqq/flake.format)
 
