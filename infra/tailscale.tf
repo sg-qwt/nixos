@@ -31,6 +31,12 @@ resource "tailscale_tailnet_key" "tailnet_key" {
   ephemeral     = false
   preauthorized = true
   tags          = [local.nixos_tag]
+
+  lifecycle {
+    replace_triggered_by = [
+      time_static.rotate_monthly
+    ]
+  }
 }
 
 data "tailscale_devices" "all" {

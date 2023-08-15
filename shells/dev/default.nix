@@ -5,6 +5,7 @@ let
     p.azurerm
     p.cloudflare
     p.tailscale
+    p.time
   ]));
   tf = (pkgs.writeShellScriptBin "tf" ''
     ${terraform}/bin/terraform -chdir=$FLAKE_INFRA_DIR $@
@@ -32,6 +33,7 @@ pkgs.mkShell {
     alias tfp="tf plan"
     alias tfa="tf apply -auto-approve"
 
+    rm $FLAKE_INFRA_DIR/.terraform.lock.hcl
     tf init -upgrade 
 
     set +a
