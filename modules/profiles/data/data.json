@@ -20,7 +20,9 @@
 	"telegraf-prometheus-client": 9373,
 	"prometheus": 9390,
 	"teledrive": 9490,
-	"rsshub": 1264
+	"rsshub": 1264,
+	"transmission": 9191,
+	"transmission-peer": 51513
     },
     "fqdn":{
 	"edg": "edgerunners.eu.org"
@@ -28,6 +30,7 @@
     "path": {
 	"ss2": "/mopi",
 	"miniflux": "/flux",
-	"metrics": "/metrics"
+	"metrics": "/metrics",
+	"transmission": "/trans"
     }
 }

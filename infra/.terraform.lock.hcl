@@ -2,22 +2,29 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/cloudflare/cloudflare" {
-  version = "4.9.0"
+  version = "4.10.0"
   hashes = [
-    "h1:4flOac6i74sxiFHypxdXq331Ro6UeiTdtnpM/kmej8o=",
+    "h1:BVjw6c9NbAZYpMxZTht98xPSI8McGb+T646ShX+dGqQ=",
   ]
 }
 
 provider "registry.terraform.io/hashicorp/azurerm" {
-  version = "3.62.1"
+  version = "3.65.0"
   hashes = [
-    "h1:6lQVQTsKEiQQ3ZaJuwBbX3OPCWQh3eFGk2MZcP79jk8=",
+    "h1:tJ9o5Qb5UxOFqyO3Mx2sqEVlz+AxxkwXOJZDkMF+7ak=",
+  ]
+}
+
+provider "registry.terraform.io/hashicorp/time" {
+  version = "0.9.1"
+  hashes = [
+    "h1:n9lJpX9PPmmr2EIw8lv5dKeMWWBhItUMvOJjhLFlsJ8=",
   ]
 }
 
 provider "registry.terraform.io/tailscale/tailscale" {
   version = "0.13.7"
   hashes = [
-    "h1:1ocMbbhFEmIcKSt61iSKeyFsJs8PNs5grkhs2/cp8qU=",
+    "h1:w+pWmnfCmqRyiLPKOEs/OaNuBiHpFnPbIWzXmPzSWLI=",
   ]
 }

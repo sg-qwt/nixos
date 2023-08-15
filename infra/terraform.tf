@@ -11,6 +11,10 @@ terraform {
     tailscale = {
       source = "tailscale/tailscale"
     }
+
+    time = {
+      source = "hashicorp/time"
+    }
   }
 
   backend "azurerm" {
