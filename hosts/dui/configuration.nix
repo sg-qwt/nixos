@@ -25,6 +25,7 @@ let edg = config.myos.data.fqdn.edg; in
   myos.attic-server.enable = true;
   myos.miniflux.enable = true;
   myos.teledrive.enable = true;
+  myos.transmission.enable = true;
 
   sops.secrets.cloudflare_token = {
     sopsFile = self + "/secrets/tfout.json";

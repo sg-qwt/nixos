@@ -10,14 +10,14 @@ module "az_dui" {
   ip_refresh    = "0707"
 }
 
-resource "azurerm_network_security_rule" "SS" {
-  name                        = "SS"
+resource "azurerm_network_security_rule" "TRANS" {
+  name                        = "TRANS"
   priority                    = 1002
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "*"
   source_port_range           = "*"
-  destination_port_range      = local.ports.ss1
+  destination_port_range      = local.ports.transmission-peer
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = module.az_dui.rg
