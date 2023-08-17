@@ -150,12 +150,12 @@ If the buffer doesn't exist, create it first."
   ;;;;;;;;;;
   ;; font ;;
   ;;;;;;;;;;
-  ;; TODO size on x11 and wayland is different
   (when (display-graphic-p)
     (set-face-attribute 'default nil :font "JetBrains Mono 10")
     (dolist (charset '(kana han symbol cjk-misc bopomofo))
       (set-fontset-font (frame-parameter nil 'font) charset
-			(font-spec :family "LXGW WenKai Mono" :size 28)))))
+			(font-spec :family "LXGW WenKai Mono"
+				   :size (if (eq window-system 'x) 28 14))))))
 
 (use-package epg
   :config
@@ -669,12 +669,16 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
   (require 'clojure-mode-extra-font-locking))
 
 (use-package cider
+  :custom
+  (cider-eldoc-display-for-symbol-at-point nil)
+  (cider-use-xref nil)
   :preface
-  (defun qqq/cider-capf ()
-    (setq-local completion-at-point-functions
-		(list (cape-super-capf
-		       #'cider-complete-at-point
-		       #'cape-yasnippet))))
+  (defun qqq/cider-disable-completion ()
+    "Use lsp completion instead of cider."
+    (remove-hook 'completion-at-point-functions #'cider-complete-at-point t))
+  (defun qqq/cider-disable-eldoc ()
+    "Let lsp handle ElDoc instead of CIDER."
+    (remove-hook 'eldoc-documentation-functions #'cider-eldoc t))
 
   (defun qqq/cider-connect-bb ()
     (interactive)
@@ -755,10 +759,9 @@ the focus."
       (cider-switch-to-repl-buffer)))
 
   :hook
-  (clojure-mode . cider-mode)
-  (clojure-mode . flymake-mode)
-  (cider-mode . qqq/cider-capf)
-
+  (cider-mode . qqq/cider-disable-completion)
+  (cider-mode . qqq/cider-disable-eldoc)
+  
   :config
   (advice-add 'cider-pprint-eval-last-sexp-to-comment
 	      :around 'evil-collection-cider-last-sexp)
@@ -837,17 +840,11 @@ the focus."
 (use-package cider-eval-sexp-fu
   :after cider)
 
-(use-package clj-refactor
+(use-package jarchive
   :hook
-  (clojure-mode . clj-refactor-mode)
-  :custom
-  (cljr-warn-on-eval nil)
-  :config
-  (advice-add 'cljr--version :override
-	      (lambda (&optional remove-package-version) "3.9.1")))
-
-(use-package flymake-kondor
-  :hook (clojure-mode . flymake-kondor-setup))
+  (clojure-mode . jarchive-setup)
+  (clojurec-mode . jarchive-setup)
+  (clojurescript-mode . jarchive-setup))
 
 ;;;;;;;;;;;
 ;; elisp ;;
@@ -908,18 +905,27 @@ the focus."
   :custom
   (eglot-autoshutdown t)
   (eglot-confirm-server-initiated-edits nil)
-  (eglot-extend-to-xref t)
+  (eglot-extend-to-xref t))
+
+(use-package eglot-nix-config
+  :no-require t
+  :after (eglot nix-mode)
   :hook
-  ;; (clojure-mode . eglot-ensure)
-  ;; (clojurescript-mode . eglot-ensure)
-  ;; (clojurec-mode . eglot-ensure)
-  ((nix-mode . eglot-ensure))
+  (nix-mode . eglot-ensure)
   :config
   (add-to-list 'eglot-server-programs '((nix-mode) "nil")))
 
+(use-package eglot-clojure-config
+  :no-require t
+  :after (eglot clojure-mode)
+  :hook
+  (clojure-mode . eglot-ensure)
+  (clojurescript-mode . eglot-ensure)
+  (clojurec-mode . eglot-ensure))
+
 (use-package eldoc
   :custom
-  (eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly)
+  ;; (eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly)
   (eldoc-echo-area-use-multiline-p nil)
   (eldoc-echo-area-prefer-doc-buffer t))
 
@@ -942,10 +948,10 @@ the focus."
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file))
 
-(use-package cape-yasnippet
+(use-package yasnippet-capf
   :after (cape yasnippet)
   :init
-  (add-to-list 'completion-at-point-functions #'cape-yasnippet))
+  (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
 (use-package eglot-cape
   :no-require t
@@ -956,7 +962,7 @@ the focus."
     (setq-local completion-at-point-functions
 		(list (cape-super-capf
 		       (cape-capf-buster #'eglot-completion-at-point)
-		       #'cape-yasnippet
+		       #'yasnippet-capf
 		       #'cape-file)))))
 
 (use-package elisp-mode-cape
@@ -1037,7 +1043,9 @@ the focus."
 
 (use-package project
   :custom
-  (project-switch-commands #'project-dired))
+  (project-switch-commands #'project-dired)
+  (project-vc-extra-root-markers
+   '("flake.nix" "deps.edn")))
 
 (use-package hl-todo
   :hook (prog-mode . hl-todo-mode))

@@ -28,11 +28,10 @@ lib.mkProfile s "qqqemacs"
           clojure-mode-extra-font-locking
           cider
           cider-eval-sexp-fu
-          clj-refactor
-          flymake-kondor
         ]) ++
 
         (with epkgs.melpaPackages; [
+          # TODO remove after emacs 30
           modus-themes
 
           avy
@@ -66,6 +65,7 @@ lib.mkProfile s "qqqemacs"
           pdf-tools
           nov
 
+          # TODO replacde with dired-preview
           peep-dired
 
           yasnippet
@@ -82,6 +82,7 @@ lib.mkProfile s "qqqemacs"
           vertico
           corfu
           nftables-mode
+          jarchive
         ]));
       search-epkgs = pkgs.writeShellScriptBin "search-epkgs" ''
         (nix search nixpkgs#emacs.pkgs.melpaStablePackages $*
@@ -101,10 +102,15 @@ lib.mkProfile s "qqqemacs"
       environment = {
         systemPackages = with pkgs; [
           qqqemacs
+
           search-epkgs
+          # consult-ripgrep
           ripgrep
           (aspellWithDicts (ds: with ds; [ en ]))
+
+          # needed by nov.el
           unzip
+
           (makeDesktopItem {
             name = "org-protocol";
             exec = "emacsclient --create-frame %u";
@@ -114,9 +120,10 @@ lib.mkProfile s "qqqemacs"
             mimeTypes = [ "x-scheme-handler/org-protocol" ];
           })
           self.packages.x86_64-linux.grab-shi
+
           # lsp servers
           nil
-          clj-kondo
+          clojure-lsp
         ];
       };
 

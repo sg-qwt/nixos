@@ -57,11 +57,6 @@
           url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/207758.patch";
           hash = "sha256-1bxn+U0NslCTElG+EhJe43FRf+5tIgMh7gvPKAyGe0U=";
         })
-
-        (pkgs-init.fetchpatch {
-          url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/245497.patch";
-          hash = "sha256-Ek5dWYdcv9aHC2Ol0qxrOzVTT0e07Z06Gkd2oXY757g=";
-        })
       ];
 
       nixpkgs-patched =
