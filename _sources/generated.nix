@@ -3,15 +3,15 @@
 {
   cape-yasnippet = {
     pname = "cape-yasnippet";
-    version = "ad8c27c2f748b410e7dd568927e99081f87b98b9";
+    version = "40654214db7a44db3a99321447632b43a10fae57";
     src = fetchFromGitHub {
       owner = "elken";
       repo = "cape-yasnippet";
-      rev = "ad8c27c2f748b410e7dd568927e99081f87b98b9";
+      rev = "40654214db7a44db3a99321447632b43a10fae57";
       fetchSubmodules = false;
-      sha256 = "sha256-JmJljrvo9AcEVALv5GHa/XdpVLAUaww3wGmlXSAoITs=";
+      sha256 = "sha256-w5gckpREvV4ET6+/wSgul0wPC42Xeb5B7rFmuuSh3M8=";
     };
-    date = "2023-05-19";
+    date = "2023-08-13";
   };
   jovian-nixos = {
     pname = "jovian-nixos";

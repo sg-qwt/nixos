@@ -2,7 +2,5 @@
  :deps {org.clojure/clojure {:mvn/version "1.11.1"}
         com.pulumi/pulumi {:mvn/version "0.9.5"}
         com.pulumi/azure-native {:mvn/version "2.3.0"}}
- :aliases
- {:build {:deps {io.github.clojure/tools.build {:mvn/version "0.9.5"}}
-          :ns-default build}
-  :neil {:project {:name infralab/infralab}}}}
+ :aliases {:build {:deps {io.github.clojure/tools.build {:mvn/version "0.9.5"}} :ns-default build}
+           :neil {:project {:name infralab/infralab}}}}

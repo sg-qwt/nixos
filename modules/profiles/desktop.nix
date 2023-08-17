@@ -5,7 +5,7 @@ lib.mkProfile s "desktop"
     fontDir.enable = true;
     fontconfig.enable = true;
 
-    fonts = with pkgs; [
+    packages = with pkgs; [
       jetbrains-mono
       lxgw-wenkai
       noto-fonts
