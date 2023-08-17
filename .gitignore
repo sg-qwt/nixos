@@ -1,3 +1,6 @@
 **/.terraform/*
 result
 *.dump
+**/.cpcache
+**/target
+**/.nrepl-port
