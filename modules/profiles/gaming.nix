@@ -8,7 +8,7 @@ lib.mkProfile s "gaming"
 
   myos.protonge.enable = true;
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     wqy_microhei
     wqy_zenhei
     liberation_ttf

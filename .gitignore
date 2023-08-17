@@ -4,3 +4,6 @@ result
 **/.cpcache
 **/target
 **/.nrepl-port
+**/.lsp/.cache
+**/.lsp/sqlite.db
+**/.clj-kondo
