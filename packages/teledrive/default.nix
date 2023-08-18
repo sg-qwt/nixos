@@ -78,7 +78,7 @@ let
 
           buildPhase = ''
             runHook preBuild
-            export PRISMA_MIGRATION_ENGINE_BINARY=${prisma-engines}/bin/migration-engine
+            export PRISMA_SCHEMA_ENGINE_BINARY=${prisma-engines}/bin/schema-engine
             export PRISMA_QUERY_ENGINE_BINARY=${prisma-engines}/bin/query-engine
             export PRISMA_QUERY_ENGINE_LIBRARY=${prisma-engines}/lib/libquery_engine.node
             export HOME=$(mktemp -d)
@@ -89,7 +89,7 @@ let
           postInstall = ''
             makeWrapper ${nodejs}/bin/node $out/bin/teledrive \
               --add-flags $out/libexec/api/deps/api/dist/index.js \
-              --set PRISMA_MIGRATION_ENGINE_BINARY "${prisma-engines}/bin/migration-engine" \
+              --set PRISMA_SCHEMA_ENGINE_BINARY "${prisma-engines}/bin/schema-engine" \
               --set PRISMA_QUERY_ENGINE_BINARY "${prisma-engines}/bin/query-engine" \
               --set PRISMA_QUERY_ENGINE_LIBRARY "${prisma-engines}/lib/libquery_engine.node"
 
@@ -98,7 +98,7 @@ let
               --add-flags migrate \
               --add-flags deploy \
               --append-flags "--schema $out/libexec/api/deps/api/prisma/schema.prisma" \
-              --set PRISMA_MIGRATION_ENGINE_BINARY "${prisma-engines}/bin/migration-engine" \
+              --set PRISMA_SCHEMA_ENGINE_BINARY "${prisma-engines}/bin/schema-engine" \
               --set PRISMA_QUERY_ENGINE_BINARY "${prisma-engines}/bin/query-engine" \
               --set PRISMA_QUERY_ENGINE_LIBRARY "${prisma-engines}/lib/libquery_engine.node" \
           '';
