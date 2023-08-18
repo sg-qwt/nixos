@@ -774,6 +774,11 @@ the focus."
   :general
   (general-unbind cider-repl-mode-map ",")
   (general-def
+    'normal
+    cider-mode-map
+    [remap cider-find-var] #'xref-find-definitions
+    [remap cider-doc] #'eldoc-doc-buffer)
+  (general-def
     '(normal insert)
     cider-repl-mode-map
     "C-l" #'cider-repl-clear-buffer)
