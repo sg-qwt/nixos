@@ -910,7 +910,8 @@ the focus."
   :custom
   (eglot-autoshutdown t)
   (eglot-confirm-server-initiated-edits nil)
-  (eglot-extend-to-xref t))
+  ;; https://github.com/joaotavora/eglot/issues/1275
+  (eglot-extend-to-xref nil))
 
 (use-package eglot-nix-config
   :no-require t
