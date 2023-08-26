@@ -122,6 +122,7 @@
           teledrive = pkgs.my.teledrive;
           rsshub = pkgs.my.rsshub;
           pop = pkgs.my.pop;
+          libation = pkgs.my.libation;
         } //
         (import ./images.nix { inherit jovian nixpkgs system pkgs self; })
         //
