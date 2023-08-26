@@ -21,6 +21,7 @@ lib.mkProfile s "desktop-apps"
       # media
       spotify
       dmlive
+      my.libation
 
       my.pop
     ];
