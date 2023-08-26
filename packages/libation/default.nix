@@ -36,8 +36,7 @@ buildDotnetModule rec {
   nugetDeps = ./deps.nix;
 
   dotnet-sdk = dotnetCorePackages.sdk_7_0;
-
-  selfContainedBuild = true;
+  dotnet-runtime = dotnetCorePackages.runtime_7_0;
 
   executables = [
     "Libation"
@@ -67,11 +66,7 @@ buildDotnetModule rec {
     glew
   ];
 
-  # FIXME empty appsetttings won't work, https://github.com/rmcrackan/Libation/issues/725
-  # Libation seems to confuse about where to create a new appsettings
-  postInstall = ''
-    touch $out/lib/libation/appsettings.json
-  '';
+  #TODO add desktop item
 
   meta = with lib; {
     description = "Libation: Liberate your Library ";
