@@ -2,7 +2,6 @@
 , fetchFromGitHub
 , buildDotnetModule
 , dotnetCorePackages
-, ffmpeg-full
 , libX11
 , libICE
 , libSM
@@ -64,8 +63,6 @@ buildDotnetModule rec {
   ];
 
   runtimeDeps = [
-    ffmpeg-full
-
     # Avalonia
     libX11
     libICE
