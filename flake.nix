@@ -100,8 +100,6 @@
     {
       overlays.default = (helpers.default-overlays { inherit inputs; });
 
-      formatter."${system}" = treefmt-eval.config.build.wrapper;
-
       # expose packages to flake here
       packages."${system}" = flake-utils.lib.flattenTree
         ({
@@ -137,7 +135,8 @@
             (mkOS { name = "lei"; })
           ];
 
-      # checks.x86_64-linux.math = self.nixosConfigurations.lei.config.system.build.toplevel;
+      formatter."${system}" = treefmt-eval.config.build.wrapper;
+
       checks."${system}".tfm = treefmt-eval.config.build.check self;
     };
 }
