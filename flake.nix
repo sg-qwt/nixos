@@ -42,31 +42,20 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
+    nvfetcher = {
+      url = "github:berberman/nvfetcher";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
   };
 
   outputs = { self, ... }@inputs:
     with inputs;
     let
       system = "x86_64-linux";
-      pkgs-init = import inputs.nixpkgs { inherit system; };
-      sources = import ./_sources/generated.nix { inherit (pkgs-init) fetchurl fetchgit fetchFromGitHub dockerTools; };
-      jovian = sources.jovian-nixos.src;
-      helpers = import ./lib/helpers.nix { inherit sources self nixpkgs; };
-      patches = [
-        (pkgs-init.fetchpatch {
-          url = "https://patch-diff.githubusercontent.com/raw/NixOS/nixpkgs/pull/207758.patch";
-          hash = "sha256-DIYQ4VkzFExXb1ZynlKjkKQ01+YGQV2ZK+E4x8TMb0M=";
-        })
-      ];
 
-      nixpkgs-patched =
-        pkgs-init.applyPatches {
-          name = "nixpkgs-patched";
-          src = inputs.nixpkgs;
-          inherit patches;
-        };
-
-      pkgs = import nixpkgs-patched {
+      pkgs = import nixpkgs {
         inherit system;
 
         config.allowUnfree = true;
@@ -75,10 +64,13 @@
           self.overlays.default
           nixd.overlays.default
           attic.overlays.default
+          nvfetcher.overlays.default
         ];
       };
 
-      nixpkgs = (import "${nixpkgs-patched}/flake.nix").outputs { inherit self; };
+      sources = import ./_sources/generated.nix { inherit (pkgs) fetchurl fetchgit fetchFromGitHub dockerTools; };
+      jovian = sources.jovian-nixos.src;
+      helpers = import ./lib/helpers.nix { inherit sources self nixpkgs; };
 
       mkOS = { name, p ? pkgs }: {
         ${name} = nixpkgs.lib.nixosSystem {
