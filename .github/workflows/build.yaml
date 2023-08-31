@@ -1,14 +1,13 @@
 jobs:
   build-nixos-configuration:
-    if: ${{ (github.event_name == 'pull_request') || (github.event_name == 'workflow_dispatch')
-      }}
     needs:
     - check-flake-and-formatter
     - check-eval-host
     runs-on: ubuntu-latest
     steps:
     - if: ${{ (github.event.inputs.host == 'all') || (matrix.host == github.event.inputs.host)
-        || (github.event.pull_request.head.repo.full_name == github.repository) }}
+        || (github.event.pull_request.head.repo.full_name == github.repository) ||
+        (github.event_name == 'push') }}
       name: Make More Space
       run: 'echo "=== Before pruning ==="
 
@@ -24,23 +23,27 @@ jobs:
 
         '
     - if: ${{ (github.event.inputs.host == 'all') || (matrix.host == github.event.inputs.host)
-        || (github.event.pull_request.head.repo.full_name == github.repository) }}
+        || (github.event.pull_request.head.repo.full_name == github.repository) ||
+        (github.event_name == 'push') }}
       name: Set Swap Space
       uses: pierotofy/set-swap-space@v1.0
       with:
         swap-size-gb: 10
     - if: ${{ (github.event.inputs.host == 'all') || (matrix.host == github.event.inputs.host)
-        || (github.event.pull_request.head.repo.full_name == github.repository) }}
+        || (github.event.pull_request.head.repo.full_name == github.repository) ||
+        (github.event_name == 'push') }}
       name: Checkout
       uses: actions/checkout@v3
     - if: ${{ (github.event.inputs.host == 'all') || (matrix.host == github.event.inputs.host)
-        || (github.event.pull_request.head.repo.full_name == github.repository) }}
+        || (github.event.pull_request.head.repo.full_name == github.repository) ||
+        (github.event_name == 'push') }}
       name: Install Nix
       uses: cachix/install-nix-action@v22
       with:
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
     - if: ${{ (github.event.inputs.host == 'all') || (matrix.host == github.event.inputs.host)
-        || (github.event.pull_request.head.repo.full_name == github.repository) }}
+        || (github.event.pull_request.head.repo.full_name == github.repository) ||
+        (github.event_name == 'push') }}
       name: Setup Attic Cache
       uses: icewind1991/attic-action@v1.1.1
       with:
@@ -48,7 +51,8 @@ jobs:
         instance: https://attic.edgerunners.eu.org
         name: hello
     - if: ${{ (github.event.inputs.host == 'all') || (matrix.host == github.event.inputs.host)
-        || (github.event.pull_request.head.repo.full_name == github.repository) }}
+        || (github.event.pull_request.head.repo.full_name == github.repository) ||
+        (github.event_name == 'push') }}
       name: Build Host ${{ matrix.host }}
       run: "nix build --print-build-logs .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel\
         \ \n"
@@ -99,8 +103,8 @@ name: Build
 'on':
   pull_request: {}
   push:
-    branches-ignore:
-    - ci-update
+    branches:
+    - main
   workflow_dispatch:
     inputs:
       host:
