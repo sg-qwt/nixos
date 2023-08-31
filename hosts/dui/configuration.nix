@@ -21,10 +21,9 @@ let edg = config.myos.data.fqdn.edg; in
     slack-bot = true;
     sliding-sync = false;
   };
-  # myos.reddit.enable = true;
+
   myos.attic-server.enable = true;
   myos.miniflux.enable = true;
-  myos.teledrive.enable = true;
   myos.transmission.enable = true;
 
   sops.secrets.cloudflare_token = {
