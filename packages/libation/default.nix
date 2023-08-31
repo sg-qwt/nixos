@@ -16,26 +16,14 @@
 
 buildDotnetModule rec {
   pname = "libation";
-  version = "11.0.1";
+  version = "11.0.2";
 
   src = fetchFromGitHub {
     owner = "rmcrackan";
     repo = pname;
     rev = "v${version}";
-    sha256 = "sha256-//ihWGbYgcBZrckT/y87xu21XNr9rNOuSRdqufeypj4=";
+    sha256 = "sha256-dLIkcSRpTRD1OcVn3ahG3t8kmNkLWGKsSF+Mm48H0WM=";
   };
-
-  # skip search appsettings.json in nix store
-  # if Libation folder doesn't exist, create appsettings.json would also fail
-  # create Libation folder in ~/.local/share/Libation by default
-  # see https://github.com/rmcrackan/Libation/issues/725
-  postPatch = ''
-    substituteInPlace Source/LibationFileManager/Configuration.LibationFiles.cs \
-      --replace "Path.Combine(ProcessDirectory, appsettings_filename)," ""
-
-    substituteInPlace Source/LibationFileManager/Configuration.LibationFiles.cs \
-      --replace "//Valid appsettings.json not found. Try to create it in each folder." 'Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Libation"));'
-  '';
 
   projectFile = [
     "Source/LibationAvalonia/LibationAvalonia.csproj"
