@@ -8,6 +8,7 @@ let
         "(github.event.inputs.host == 'all')"
         "(matrix.host == github.event.inputs.host)"
         "(github.event.pull_request.head.repo.full_name == github.repository)"
+        "(github.event_name == 'push')"
       ]);
   cond-step = step: ({ "if" = if-clause; } // step);
   job-id = {
@@ -33,7 +34,7 @@ in
       };
     };
     push = {
-      branches-ignore = [ "ci-update" ];
+      branches = [ "main" ];
     };
     pull_request = { };
   };
@@ -71,12 +72,12 @@ in
       inherit runs-on;
       needs = [ job-id.check job-id.eval-host ];
 
-      "if" =
-        ghexpr
-          (ors [
-            "(github.event_name == 'pull_request')"
-            "(github.event_name == 'workflow_dispatch')"
-          ]);
+      # "if" =
+      #   ghexpr
+      #     (ors [
+      #       "(github.event_name == 'pull_request')"
+      #       "(github.event_name == 'workflow_dispatch')"
+      #     ]);
 
       strategy = {
         fail-fast = false;
