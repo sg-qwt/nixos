@@ -1,10 +1,6 @@
 { config, lib, pkgs, modulesPath, self, ... }:
 let edg = config.myos.data.fqdn.edg; in
 {
-  imports = [
-    ../../modules/mixins/azurebase.nix
-  ];
-
   networking.firewall.enable = false;
 
   myos.common.enable = true;
@@ -18,7 +14,7 @@ let edg = config.myos.data.fqdn.edg; in
   myos.matrix = {
     enable = true;
     chatgpt-bot = true;
-    slack-bot = true;
+    slack-bot = false;
     sliding-sync = false;
   };
 
