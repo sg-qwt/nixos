@@ -15,6 +15,7 @@ lib.mkProfile s "clojure-dev"
       babashka-unwrapped
       neil
       my.cljfmt
+      clojure-lsp
     ];
 
     programs.bash.bashrcExtra = ''
@@ -28,6 +29,5 @@ lib.mkProfile s "clojure-dev"
 
     home.sessionVariables.CLJ_CONFIG = "${config.xdg.configHome}/clojure";
     xdg.configFile."clojure/deps.edn".source = ./deps.edn;
-
   };
 }
