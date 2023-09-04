@@ -59,7 +59,6 @@
   myos.ssh.enable = true;
   myos.gnupg.enable = true;
   myos.desktop-apps.enable = true;
-  myos.clojure-dev.enable = true;
   myos.tools.enable = true;
   myos.theme.enable = true;
 
