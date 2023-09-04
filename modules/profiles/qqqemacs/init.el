@@ -1070,3 +1070,17 @@ the focus."
     "P" #'flymake-show-project-diagnostics)
   :config
   (remove-hook 'flymake-diagnostic-functions #'flymake-proc-legacy-flymake))
+
+;;;;;;;;;;
+;; rust ;;
+;;;;;;;;;;
+(use-package rust-mode
+  :mode "\\.rs\\'"
+  :custom
+  (rust-format-on-save t))
+
+(use-package eglot-rust-config
+  :no-require t
+  :after (eglot rust-mode)
+  :hook
+  (rust-mode . eglot-ensure))

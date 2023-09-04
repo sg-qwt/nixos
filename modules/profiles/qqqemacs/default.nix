@@ -76,6 +76,8 @@ lib.mkProfile s "qqqemacs"
           multi-vterm
 
           hl-todo
+
+          rust-mode
         ]) ++
 
         (with epkgs.elpaPackages; [
@@ -99,6 +101,12 @@ lib.mkProfile s "qqqemacs"
 
       myos.sdcv-with-dicts.enable = true;
 
+      myos.langs = {
+        clojure = true;
+        rust = true;
+        nix = true;
+      };
+
       environment = {
         systemPackages = with pkgs; [
           qqqemacs
@@ -120,10 +128,6 @@ lib.mkProfile s "qqqemacs"
             mimeTypes = [ "x-scheme-handler/org-protocol" ];
           })
           self.packages.x86_64-linux.grab-shi
-
-          # lsp servers
-          nil
-          clojure-lsp
         ];
       };
 
