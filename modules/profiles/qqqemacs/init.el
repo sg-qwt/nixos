@@ -287,6 +287,7 @@ If the buffer doesn't exist, create it first."
   ;;;;;;;;;;;;
   (qqq/leader
     :infix "b"
+    "c" #'gptel
     "t" #'multi-vterm-dedicated-toggle
     "i" #'ibuffer
     "b" #'consult-buffer
@@ -1084,3 +1085,36 @@ the focus."
   :after (eglot rust-mode)
   :hook
   (rust-mode . eglot-ensure))
+
+;;;;;;;;;;;
+;; gptel ;;
+;;;;;;;;;;;
+(use-package gptel
+  :preface
+  (defun qqq/gptel-reset ()
+    (interactive)
+    (kill-matching-buffers gptel-default-session nil t)
+    (call-interactively 'gptel))
+  (defun qqq/gptel-send ()
+    (interactive)
+    (when (eq evil-state 'normal)
+      (forward-char 1))
+    (gptel-send))
+  :custom
+  (gptel-host "@gptHost@")
+  (gptel-use-azure-openai t)
+  (gptel-azure-openai-api-version "2023-05-15")
+  (gptel-azure-openai-deployment "simaqian")
+  (gptel-model "gpt-3.5-turbo")
+  (gptel-default-mode 'org-mode)
+  :general
+  (qqq/local-leader
+    gptel-mode-map
+    "r" #'qqq/gptel-reset
+    "s" #'qqq/gptel-send
+    "p" #'gptel-system-prompt))
+
+(use-package auth-source
+  :custom
+  (auth-sources '("@authFile@")))
+

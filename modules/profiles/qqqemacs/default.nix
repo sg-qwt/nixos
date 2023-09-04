@@ -2,6 +2,12 @@ s@{ config, pkgs, sources, lib, self, ... }:
 lib.mkProfile s "qqqemacs"
   (
     let
+      gpt-host = "shijia.openai.azure.com";
+      init-el = pkgs.substituteAll {
+        src = ./init.el;
+        authFile = config.sops.templates.authinfo.path;
+        gptHost = gpt-host;
+      };
       myEmacs = (if config.myos.wayland.enable then pkgs.emacs29-pgtk else pkgs.emacs29);
       emacsWithPackages = (pkgs.emacsPackagesFor myEmacs).emacsWithPackages;
       qqqemacs = emacsWithPackages (epkgs:
@@ -69,6 +75,7 @@ lib.mkProfile s "qqqemacs"
           peep-dired
 
           yasnippet
+          yasnippet-capf
 
           ibuffer-vc
 
@@ -78,6 +85,16 @@ lib.mkProfile s "qqqemacs"
           hl-todo
 
           rust-mode
+
+          # TODO https://github.com/karthink/gptel/pull/104
+          (gptel.overrideAttrs (old: {
+            src = pkgs.fetchFromGitHub {
+              owner = "doctorguile";
+              repo = "gptel";
+              rev = "9a3311473eecd6df5ef7f58f8a863a3bc0cbcb38";
+              sha256 = "sha256-O+iaPOriNTrcb+aKJFUzf77+Emry7kqHsNrgsWC3iDo=";
+            };
+          }))
         ]) ++
 
         (with epkgs.elpaPackages; [
@@ -98,6 +115,12 @@ lib.mkProfile s "qqqemacs"
       # sudo mandb
       # this slows down builds
       # documentation.man.generateCaches = true; 
+
+      sops.secrets.openai-api-key.sopsFile = self + "/secrets/secrets.yaml";
+      sops.templates.authinfo.content = ''
+        machine ${gpt-host} login apikey password ${config.sops.placeholder.openai-api-key}
+      '';
+      sops.templates.authinfo.owner = config.myos.users.mainUser;
 
       myos.sdcv-with-dicts.enable = true;
 
@@ -142,7 +165,8 @@ lib.mkProfile s "qqqemacs"
           defaultEditor = true;
         };
 
-        xdg.configFile."emacs/init.el".source = ./init.el;
+        xdg.configFile."emacs/init.el".source = init-el;
+
         xdg.configFile."emacs/snippets" = {
           source = ./snippets;
           recursive = true;
