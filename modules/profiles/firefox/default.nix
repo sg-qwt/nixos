@@ -18,7 +18,7 @@ lib.mkProfile s "firefox" {
         windranger = {
           isDefault = true;
           extensions = with config.nur.repos.rycee.firefox-addons; [
-            ublock-origin
+            ublock-origin-lite
             protondb-for-steam
             steam-database
             metamask
