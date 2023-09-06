@@ -1,6 +1,6 @@
 s@{ config, pkgs, lib, self, ... }:
 let
-  inherit (config.myos.data) fqdn;
+  inherit (config.myos.data) fqdn openai;
   chatgpt-secret = {
     sopsFile = self + "/secrets/secrets.yaml";
     restartUnits = [ "matrix-chatgpt-bot.service" ];
@@ -9,11 +9,14 @@ in
 lib.mkProfile s "matrix-chatgpt" {
 
   sops.templates."matrix-chatgpt-extra-env".content = ''
-    OPENAI_API_KEY=${config.sops.placeholder."openai-api-key"}
+    OPENAI_API_KEY=${config.sops.placeholder."openai_key"}
     MATRIX_BOT_PASSWORD=${config.sops.placeholder."matrix-bot-password"}
     MATRIX_ACCESS_TOKEN=${config.sops.placeholder."matrix-bot-token"}
   '';
-  sops.secrets."openai-api-key" = chatgpt-secret;
+  sops.secrets."openai_key" = {
+    sopsFile = self + "/secrets/tfout.json";
+    restartUnits = [ "matrix-chatgpt-bot.service" ];
+  };
   sops.secrets."matrix-bot-password" = chatgpt-secret;
   sops.secrets."matrix-bot-token" = chatgpt-secret;
 
@@ -54,7 +57,7 @@ lib.mkProfile s "matrix-chatgpt" {
       MATRIX_RICH_TEXT = "true";
 
       OPENAI_AZURE = "true";
-      CHATGPT_REVERSE_PROXY = "https://shijia.openai.azure.com/openai/deployments/simaqian/chat/completions?api-version=2023-05-15";
+      CHATGPT_REVERSE_PROXY = "https://eastus.api.cognitive.microsoft.com/openai/deployments/${openai.deployment}/chat/completions?api-version=2023-05-15";
     };
     after = [ "dendrite.service" ];
     wantedBy = [ "multi-user.target" ];

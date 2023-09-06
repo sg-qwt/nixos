@@ -2,11 +2,13 @@ s@{ config, pkgs, sources, lib, self, ... }:
 lib.mkProfile s "qqqemacs"
   (
     let
-      gpt-host = "shijia.openai.azure.com";
+      inherit (config.myos.data) openai;
+      gpt-host = "eastus.api.cognitive.microsoft.com";
       init-el = pkgs.substituteAll {
         src = ./init.el;
         authFile = config.sops.templates.authinfo.path;
         gptHost = gpt-host;
+        gptDeployment = openai.deployment;
       };
       myEmacs = (if config.myos.wayland.enable then pkgs.emacs29-pgtk else pkgs.emacs29);
       emacsWithPackages = (pkgs.emacsPackagesFor myEmacs).emacsWithPackages;
@@ -116,9 +118,9 @@ lib.mkProfile s "qqqemacs"
       # this slows down builds
       # documentation.man.generateCaches = true; 
 
-      sops.secrets.openai-api-key.sopsFile = self + "/secrets/secrets.yaml";
+      sops.secrets.openai_key.sopsFile = self + "/secrets/tfout.json";
       sops.templates.authinfo.content = ''
-        machine ${gpt-host} login apikey password ${config.sops.placeholder.openai-api-key}
+        machine ${gpt-host} login apikey password ${config.sops.placeholder.openai_key}
       '';
       sops.templates.authinfo.owner = config.myos.users.mainUser;
 

@@ -1104,7 +1104,7 @@ the focus."
   (gptel-host "@gptHost@")
   (gptel-use-azure-openai t)
   (gptel-azure-openai-api-version "2023-05-15")
-  (gptel-azure-openai-deployment "simaqian")
+  (gptel-azure-openai-deployment "@gptDeployment@")
   (gptel-model "gpt-3.5-turbo")
   (gptel-default-mode 'org-mode)
   :general
