@@ -674,6 +674,37 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
   (cider-eldoc-display-for-symbol-at-point nil)
   (cider-use-xref nil)
   :preface
+  ;; portal
+  (defun portal.api/open ()
+    (interactive)
+    (cider-nrepl-sync-request:eval
+     "(do (ns user)
+          (require 'portal.api)
+          (portal.api/tap)
+          (def portal (portal.api/open {:portal.colors/theme :portal.colors/gruvbox})))"))
+  (defun portal.api/clear ()
+    (interactive)
+    (cider-nrepl-sync-request:eval "(portal.api/clear)"))
+  (defun portal.api/close ()
+    (interactive)
+    (cider-nrepl-sync-request:eval "(portal.api/close)"))
+
+  ;; systemic
+  (defun systemic/restart ()
+    "Restarts all systemic systems"
+    (interactive)
+    (cider-interactive-eval "(systemic.core/restart!)"))
+
+  (defun systemic/start ()
+    "Starts all systemic systems"
+    (interactive)
+    (cider-interactive-eval "(systemic.core/start!)"))
+
+  (defun systemic/stop ()
+    "Stops all systemic systems"
+    (interactive)
+    (cider-interactive-eval "(systemic.core/stop!)"))
+
   (defun qqq/cider-disable-completion ()
     "Use lsp completion instead of cider."
     (remove-hook 'completion-at-point-functions #'cider-complete-at-point t))
@@ -783,6 +814,16 @@ the focus."
     '(normal insert)
     cider-repl-mode-map
     "C-l" #'cider-repl-clear-buffer)
+
+  (qqq/local-leader
+    clojure-mode-map
+    :infix "a"
+    "p o" #'portal.api/open
+    "p c" #'portal.api/close
+    "p k" #'portal.api/clear
+    "s s" #'systemic/start
+    "s r" #'systemic/restart
+    "s k" #'systemic/stop)
 
   (qqq/local-leader
     clojure-mode-map
