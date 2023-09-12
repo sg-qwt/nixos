@@ -39,6 +39,26 @@
         },
         "version": "8501772997eae3ca4be3584ad4e93d448b0224e5"
     },
+    "metacubexd": {
+        "cargoLocks": null,
+        "date": "2023-09-12",
+        "extract": null,
+        "name": "metacubexd",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "MetaCubeX",
+            "repo": "metacubexd",
+            "rev": "2bb2ad9fa9bab3d27b3494d9df92c8a130f14659",
+            "sha256": "sha256-kWajuFOVHGZNCGDngpJphY/OthYFTRApkaqxerxTT/U=",
+            "type": "github"
+        },
+        "version": "2bb2ad9fa9bab3d27b3494d9df92c8a130f14659"
+    },
     "proton-ge-custom": {
         "cargoLocks": null,
         "date": null,

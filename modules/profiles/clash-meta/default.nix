@@ -9,7 +9,6 @@ let
   };
   host = "127.0.0.1";
   inherit (config.myos.data) ports;
-  yacd-url = "${host}:${toString ports.clash-meta-api}";
   fwmark = "0x238";
   nft-table = "clash";
   route-table = "8964";
@@ -55,7 +54,7 @@ in
       };
       sops.templates.clashm = {
         content = lib.generators.toYAML { }
-          (import ./clash.nix { inherit config; });
+          (import ./clash.nix { inherit config pkgs; });
         owner = config.users.users.clash-meta.name;
         group = config.users.users.clash-meta.group;
       };
@@ -95,11 +94,6 @@ in
           ];
           AmbientCapabilities = CapabilityBoundingSet;
         };
-      };
-
-      services.nginx.enable = true;
-      services.nginx.virtualHosts.localhost = {
-        root = "${(pkgs.my.yacd-meta.override {inherit yacd-url;})}";
       };
 
       environment.systemPackages = [ enable-tproxy disable-tproxy ];
