@@ -25,6 +25,18 @@
     };
     date = "2023-08-07";
   };
+  metacubexd = {
+    pname = "metacubexd";
+    version = "2bb2ad9fa9bab3d27b3494d9df92c8a130f14659";
+    src = fetchFromGitHub {
+      owner = "MetaCubeX";
+      repo = "metacubexd";
+      rev = "2bb2ad9fa9bab3d27b3494d9df92c8a130f14659";
+      fetchSubmodules = false;
+      sha256 = "sha256-kWajuFOVHGZNCGDngpJphY/OthYFTRApkaqxerxTT/U=";
+    };
+    date = "2023-09-12";
+  };
   proton-ge-custom = {
     pname = "proton-ge-custom";
     version = "GE-Proton8-4";

@@ -1,4 +1,4 @@
-{ config }:
+{ config, pkgs }:
 let
   inherit (config.myos.data) ports fqdn path;
 in
@@ -12,6 +12,8 @@ rec {
 
   external-controller = "0.0.0.0:${toString ports.clash-meta-api}";
   secret = config.sops.placeholder.clash-secret;
+
+  external-ui = "${pkgs.my.metacubexd}";
 
   log-level = "warning";
 
