@@ -1131,6 +1131,8 @@ the focus."
 ;; gptel ;;
 ;;;;;;;;;;;
 (use-package gptel
+  :hook
+  (gptel-mode . visual-line-mode)
   :preface
   (defun qqq/gptel-reset ()
     (interactive)
