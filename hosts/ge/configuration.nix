@@ -43,6 +43,8 @@
   myos.clash-meta.enable = true;
   myos.tailscale.enable = true;
 
+  myos.prometheus.enable = true;
+  myos.metrics.enable = true;
 
   services.blueman.enable = true;
 
