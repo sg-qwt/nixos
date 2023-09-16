@@ -16,15 +16,15 @@ lib.mkProfile s "metrics" {
         processes = { };
         system = { };
         systemd_units = { };
-        dns_query = {
-          servers = [
-            "1.1.1.1"
-            "8.8.8.8"
-          ];
-          domains = [ fqdn.edg ];
-          record_type = "A";
-          timeout = "2s";
-        };
+        # dns_query = {
+        #   servers = [
+        #     "1.1.1.1"
+        #     "8.8.8.8"
+        #   ];
+        #   domains = [ fqdn.edg ];
+        #   record_type = "A";
+        #   timeout = "2s";
+        # };
       };
       outputs = {
         prometheus_client = {

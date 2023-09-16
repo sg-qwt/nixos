@@ -17,6 +17,7 @@
 	"mautrix-slack": 29335,
 	"matrix-sliding-sync": 8050,
 	"telegraf-prometheus-client": 9373,
+	"chugou-prometheus-client": 9999,
 	"prometheus": 9390,
 	"rsshub": 1264,
 	"transmission": 9191,

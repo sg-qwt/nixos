@@ -23,6 +23,14 @@ lib.mkProfile s "prometheus" {
         ];
       }
       {
+        job_name = "chugou";
+        static_configs = [
+          {
+            targets = [ "localhost:${toString ports.chugou-prometheus-client}" ];
+          }
+        ];
+      }
+      {
         job_name = "metrics";
         static_configs = [
           {
