@@ -1,3 +1,4 @@
+# TODO seperate sensitive and nonsensitive tf output
 { tf, pkgs }:
 ''
   ${tf}/bin/tf apply -refresh-only -auto-approve

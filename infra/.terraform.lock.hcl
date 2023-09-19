@@ -8,6 +8,13 @@ provider "registry.terraform.io/cloudflare/cloudflare" {
   ]
 }
 
+provider "registry.terraform.io/grafana/grafana" {
+  version = "2.3.1"
+  hashes = [
+    "h1:PZ8nab7VWkO8NAN23HdxMXScg/U28cw0OzvjhNkPtKk=",
+  ]
+}
+
 provider "registry.terraform.io/hashicorp/azurerm" {
   version = "3.71.0"
   hashes = [
