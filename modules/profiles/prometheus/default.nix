@@ -3,10 +3,13 @@ let
   inherit (config.myos.data) ports fqdn path;
 in
 lib.mkProfile s "prometheus" {
+  sops.secrets.grafana-write-token = {
+    sopsFile = self + "/secrets/secrets.yaml";
+    owner = config.systemd.services.prometheus.serviceConfig.User;
+  };
+
   services.prometheus = {
     enable = true;
-    # webExternalUrl = "https://${config.networking.fqdn}/prom";
-    # listenAddress = "127.0.0.1";
     port = ports.prometheus;
     retentionTime = "7d";
     globalConfig = {
@@ -14,14 +17,6 @@ lib.mkProfile s "prometheus" {
       evaluation_interval = "1m";
     };
     scrapeConfigs = [
-      {
-        job_name = "prometheus";
-        static_configs = [
-          {
-            targets = [ "localhost:${toString ports.prometheus}" ];
-          }
-        ];
-      }
       {
         job_name = "chugou";
         static_configs = [
@@ -39,6 +34,17 @@ lib.mkProfile s "prometheus" {
         ];
       }
     ];
+
+    remoteWrite = [
+      {
+        url = "https://prometheus-prod-37-prod-ap-southeast-1.grafana.net/api/prom/push";
+        basic_auth = {
+          username = "1195522";
+          password_file = config.sops.secrets.grafana-write-token.path;
+        };
+      }
+    ];
+
     # rules = [
     #   (builtins.toJSON {
     #     groups = [{

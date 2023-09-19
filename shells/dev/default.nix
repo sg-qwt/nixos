@@ -6,6 +6,14 @@ let
     p.cloudflare
     p.tailscale
     p.time
+    (p.mkProvider {
+      hash = "sha256-annbjq27/KWUpV70NF9IGQywKzaCJL7tJLdMfd0JRs0=";
+      owner = "grafana";
+      repo = "terraform-provider-grafana";
+      rev = "v2.3.1";
+      homepage = "https://registry.terraform.io/providers/grafana/grafana/";
+      vendorHash = "sha256-b4Cu95U5woiXKe22oY966Aw8IdU7bJEEYTiAbIrl5jo=";
+    })
   ]));
   tf = (pkgs.writeShellScriptBin "tf" ''
     ${terraform}/bin/terraform -chdir=$FLAKE_INFRA_DIR $@

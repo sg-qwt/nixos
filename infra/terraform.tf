@@ -15,6 +15,10 @@ terraform {
     time = {
       source = "hashicorp/time"
     }
+
+    grafana = {
+      source = "grafana/grafana"
+    }
   }
 
   backend "azurerm" {
@@ -33,4 +37,8 @@ provider "cloudflare" {}
 
 provider "tailscale" {
   tailnet = "sg-qwt.github"
+}
+
+provider "grafana" {
+  alias = "cloud"
 }
