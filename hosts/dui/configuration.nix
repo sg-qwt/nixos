@@ -11,11 +11,16 @@ let edg = config.myos.data.fqdn.edg; in
     enable = true;
     profile = "reality";
   };
+
   myos.matrix = {
     enable = true;
     chatgpt-bot = true;
     slack-bot = false;
     sliding-sync = false;
+  };
+
+  myos.metrics = {
+    enable = true;
   };
 
   myos.attic-server.enable = true;
