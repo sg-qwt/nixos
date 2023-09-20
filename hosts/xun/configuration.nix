@@ -10,4 +10,5 @@ let edg = config.myos.data.fqdn.edg; in
     enable = true;
     profile = "sstls";
   };
+  myos.metrics.enable = true;
 }
