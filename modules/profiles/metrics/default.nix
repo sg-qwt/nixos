@@ -11,7 +11,8 @@ let
       }
     ];
   };
-in {
+in
+{
   options.myos.metrics = {
     enable = mkEnableOption "prometheus metrics";
 
