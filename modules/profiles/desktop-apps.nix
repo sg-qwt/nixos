@@ -22,8 +22,6 @@ lib.mkProfile s "desktop-apps"
       spotify
       dmlive
       my.libation
-
-      my.pop
     ];
   };
 }
