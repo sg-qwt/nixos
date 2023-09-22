@@ -21,9 +21,8 @@
   myos.fcitx.enable = true;
   myos.gnome = {
     enable = true;
-    wayland = false;
+    wayland = true;
   };
-
   # myos.ibus.enable = true;
 
   myos.tmux.enable = true;
