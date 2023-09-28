@@ -1161,3 +1161,16 @@ the focus."
   :custom
   (auth-sources '("@authFile@")))
 
+;;;;;;;;;;;;;;
+;; markdown ;;
+;;;;;;;;;;;;;;
+(use-package markdown-mode
+  :commands (markdown-mode gfm-mode)
+  :mode ("README\\.md\\'" . gfm-mode))
+
+;;;;;;;;;;;;;;;
+;; which-key ;;
+;;;;;;;;;;;;;;;
+(use-package which-key
+  :config
+  (which-key-mode))
