@@ -36,6 +36,8 @@ lib.mkProfile s "qqqemacs"
           clojure-mode-extra-font-locking
           cider
           cider-eval-sexp-fu
+
+          markdown-mode
         ]) ++
 
         (with epkgs.melpaPackages; [
@@ -104,6 +106,7 @@ lib.mkProfile s "qqqemacs"
           corfu
           nftables-mode
           jarchive
+          which-key
         ]));
       search-epkgs = pkgs.writeShellScriptBin "search-epkgs" ''
         (nix search nixpkgs#emacs.pkgs.melpaStablePackages $*
@@ -140,6 +143,9 @@ lib.mkProfile s "qqqemacs"
           # consult-ripgrep
           ripgrep
           (aspellWithDicts (ds: with ds; [ en ]))
+
+          # needed by markdown-mode
+          discount
 
           # needed by nov.el
           unzip
