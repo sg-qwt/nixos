@@ -689,6 +689,16 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
     (interactive)
     (cider-nrepl-sync-request:eval "(portal.api/close)"))
 
+  ;; clerk
+  (defun clerk/show ()
+    (interactive)
+    (when-let
+	((filename
+	  (buffer-file-name)))
+      (save-buffer)
+      (cider-interactive-eval
+       (concat "(nextjournal.clerk/show! \"" filename "\")"))))
+
   ;; systemic
   (defun systemic/restart ()
     "Restarts all systemic systems"
