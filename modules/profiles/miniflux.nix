@@ -16,6 +16,7 @@ lib.mkProfile s "miniflux" (
         LISTEN_ADDR = ":${toString ports.miniflux}";
         BASE_URL = "https://${fqdn.edg}${path.miniflux}";
         POLLING_FREQUENCY = "360";
+        CLEANUP_REMOVE_SESSIONS_DAYS = "1000";
       };
     };
 
@@ -25,21 +26,21 @@ lib.mkProfile s "miniflux" (
       };
     };
 
-    systemd.services.rsshub = {
-      wantedBy = [ "multi-user.target" ];
-      script = ''
-        ${pkgs.my.rsshub}/bin/rsshub
-      '';
+    # systemd.services.rsshub = {
+    #   wantedBy = [ "multi-user.target" ];
+    #   script = ''
+    #     ${pkgs.my.rsshub}/bin/rsshub
+    #   '';
 
-      environment = {
-        NO_LOGFILES = "true";
-        PORT = "${toString ports.rsshub}";
-      };
+    #   environment = {
+    #     NO_LOGFILES = "true";
+    #     PORT = "${toString ports.rsshub}";
+    #   };
 
-      serviceConfig = {
-        Restart = "on-failure";
-        DynamicUser = true;
-      };
-    };
+    #   serviceConfig = {
+    #     Restart = "on-failure";
+    #     DynamicUser = true;
+    #   };
+    # };
   }
 )
