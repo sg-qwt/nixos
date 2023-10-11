@@ -245,10 +245,12 @@ If the buffer doesn't exist, create it first."
     "l" #'global-command-log-mode)
 
   (qqq/leader
-    "t m" #'consult-minor-mode-menu
-    "t s" #'consult-theme
-    "t t" #'modus-themes-toggle
-    "t p" #'smartparens-mode)
+    :infix "t"
+    "m" #'consult-minor-mode-menu
+    "s" #'consult-theme
+    "t" #'modus-themes-toggle
+    "p" #'smartparens-mode
+    "w" #'visual-line-mode)
 
   ;;;;;;;;;;;;
   ;; search ;;
