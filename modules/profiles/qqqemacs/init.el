@@ -159,8 +159,8 @@ If the buffer doesn't exist, create it first."
 
 (use-package epg
   :config
-  ;; remove this after gnupg 2.4.x
-  ;; https://github.com/NixOS/nixpkgs/pull/245479
+  ;; TODO remove this after gnupg 2.4.x
+  ;; https://github.com/NixOS/nixpkgs/pull/265294
   (fset 'epg-wait-for-status 'ignore))
 
 (use-package evil

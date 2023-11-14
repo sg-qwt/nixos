@@ -26,7 +26,6 @@ lib.mkProfile s "desktop"
 
     networkmanager = {
       enable = true;
-      firewallBackend = "nftables";
     };
   };
 

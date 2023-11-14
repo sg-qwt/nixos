@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.myos.users;
+  state-version = config.system.stateVersion;
 in
 {
   options.myos.users = {
@@ -29,7 +30,7 @@ in
     users.users."${cfg.mainUser}" = {
       isNormalUser = true;
       extraGroups = [ "wheel" "networkmanager" "audio" "video" "docker" "systemd-journal" ] ++ cfg.extraGroups;
-      passwordFile = config.sops.secrets.me-password.path;
+      hashedPasswordFile = config.sops.secrets.me-password.path;
       openssh.authorizedKeys.keyFiles = [
         (self + "/resources/keys/ssh-me.pub")
       ];
@@ -41,7 +42,7 @@ in
     };
 
     home-manager.users."${cfg.mainUser}" = {
-      home.stateVersion = "22.11";
+      home.stateVersion = state-version;
       systemd.user.startServices = "sd-switch";
     };
   };

@@ -56,8 +56,21 @@ lib.mkProfile s "shell"
     programs.starship = {
       enable = true;
       enableBashIntegration = true;
+      settings = lib.mkMerge [
+        {
+          add_newline = true;
+          battery = {
+            disabled = true;
+          };
+          directory = {
+            home_symbol = "home";
+          };
+          nix_shell = {
+            heuristic = true;
+          };
+        }
+        (lib.importTOML "${pkgs.starship}/share/starship/presets/plain-text-symbols.toml")
+      ];
     };
-
-    xdg.configFile."starship.toml".source = ./starship.toml;
   };
 }
