@@ -31,11 +31,6 @@
 
     nur.url = "github:nix-community/NUR";
 
-    nixd = {
-      url = "github:nix-community/nixd";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     attic = {
       url = "github:zhaofengli/attic";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -62,7 +57,6 @@
 
         overlays = [
           self.overlays.default
-          nixd.overlays.default
           attic.overlays.default
           nvfetcher.overlays.default
         ];

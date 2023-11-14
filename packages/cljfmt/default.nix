@@ -2,9 +2,12 @@
 
 buildGraalvmNativeImage rec {
   pname = "cljfmt";
-  version = "0.10.6";
+  version = "0.11.2";
 
-  src = ./cljfmt-0.10.6-standalone.jar;
+  src = fetchurl {
+    url = "https://github.com/weavejester/cljfmt/releases/download/${version}/cljfmt-${version}-standalone.jar";
+    sha256 = "sha256-vEldQ7qV375mHMn3OUdn0FaPd+f/v9g+C+PuzbSTWtk=";
+  };
 
   extraNativeImageBuildArgs = [
     "--no-server"

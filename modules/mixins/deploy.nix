@@ -1,6 +1,6 @@
 { config, lib, pkgs, self, ... }:
 {
-  system.stateVersion = "22.11";
+  system.stateVersion = "23.11";
   nix.settings = {
     trusted-users = [ "@wheel" "deploy" ];
 
