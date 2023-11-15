@@ -4,44 +4,44 @@
       device = "/dev/nvme0n1";
       type = "disk";
       content = {
-        type = "table";
-        format = "gpt";
-        partitions = [
-          {
-            name = "ESP";
-            start = "1MiB";
-            end = "512MiB";
-            fs-type = "fat32";
-            bootable = true;
-            content = {
-              type = "filesystem";
-              format = "vfat";
-              mountpoint = "/boot";
-            };
-          }
-          {
-            name = "root";
-            start = "512MiB";
-            end = "100%";
-            content = {
-              type = "btrfs";
-              extraArgs = [ "--label nixos" "-f" ];
-              subvolumes = {
-                "/root" = {
-                  mountpoint = "/";
-                  mountOptions = [ "compress=zstd" "noatime" ];
-                };
-                "/home" = {
-                  mountOptions = [ "compress=zstd" "noatime" ];
-                };
-                "/nix" = {
-                  mountOptions = [ "compress=zstd" "noatime" ];
-                };
-                "/swap" = { };
+        type = "gpt";
+        partitions = {
+            ESP = {
+              start = "1M";
+              end = "512M";
+              fs-type = "fat32";
+              content = {
+                type = "filesystem";
+                format = "vfat";
+                mountpoint = "/boot";
               };
             };
-          }
-        ];
+            root = {
+              start = "512M";
+              size = "100%";
+              content = {
+                type = "btrfs";
+                extraArgs = [ "--label nixos" "-f" ];
+                subvolumes = {
+                  "/root" = {
+                    mountpoint = "/";
+                    mountOptions = [ "compress=zstd" "noatime" ];
+                  };
+                  "/home" = {
+                    mountpoint = "/home";
+                    mountOptions = [ "compress=zstd" "noatime" ];
+                  };
+                  "/nix" = {
+                    mountpoint = "/nix";
+                    mountOptions = [ "compress=zstd" "noatime" ];
+                  };
+                  "/swap" = {
+                    mountpoint = "/swap";
+                  };
+                };
+              };
+            };
+          };
       };
     };
   };
