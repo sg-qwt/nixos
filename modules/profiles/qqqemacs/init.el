@@ -1156,18 +1156,23 @@ the focus."
       (forward-char 1))
     (gptel-send))
   :custom
-  (gptel-host "@gptHost@")
-  (gptel-use-azure-openai t)
-  (gptel-azure-openai-api-version "2023-05-15")
-  (gptel-azure-openai-deployment "@gptDeployment@")
-  (gptel-model "gpt-3.5-turbo")
   (gptel-default-mode 'org-mode)
   :general
   (qqq/local-leader
     gptel-mode-map
     "r" #'qqq/gptel-reset
     "s" #'qqq/gptel-send
-    "p" #'gptel-system-prompt))
+    "p" #'gptel-system-prompt)
+  :config
+  (setq-default
+   gptel-backend
+   (gptel-make-azure
+    "azure"
+    :protocol "https"
+    :host "@gptHost@"
+    :endpoint "/openai/deployments/@gptDeployment@/chat/completions?api-version=2023-05-15"
+    :stream t
+    :models '("gpt-3.5-turbo"))))
 
 (use-package auth-source
   :custom

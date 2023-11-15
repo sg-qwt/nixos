@@ -90,15 +90,7 @@ lib.mkProfile s "qqqemacs"
 
           rust-mode
 
-          # TODO https://github.com/karthink/gptel/pull/104
-          (gptel.overrideAttrs (old: {
-            src = pkgs.fetchFromGitHub {
-              owner = "doctorguile";
-              repo = "gptel";
-              rev = "9a3311473eecd6df5ef7f58f8a863a3bc0cbcb38";
-              sha256 = "sha256-O+iaPOriNTrcb+aKJFUzf77+Emry7kqHsNrgsWC3iDo=";
-            };
-          }))
+          gptel
         ]) ++
 
         (with epkgs.elpaPackages; [
