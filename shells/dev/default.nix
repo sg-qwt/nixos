@@ -23,7 +23,7 @@ pkgs.mkShell {
   name = "nixos-dev";
   nativeBuildInputs = [
     pkgs.nvfetcher
-    pkgs.babashka
+    pkgs.my.babashka-bin
     pkgs.azure-cli
     pkgs.jq
     tf

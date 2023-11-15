@@ -12,7 +12,7 @@ lib.mkProfile s "clojure-dev"
   home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
     home.packages = with pkgs; [
       (clojure.override { inherit jdk; })
-      babashka-unwrapped
+      my.babashka-bin
       neil
       my.cljfmt
       clojure-lsp

@@ -2,7 +2,7 @@
 pkgs.mkShell {
   name = "update";
   nativeBuildInputs = with pkgs; [
-    babashka
+    my.babashka-bin
     nvfetcher
   ];
 }
