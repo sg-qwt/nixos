@@ -21,6 +21,40 @@
   # findmnt -no UUID -T /swap/swapfile
   boot.resumeDevice = "/dev/disk/by-uuid/8e30b445-751f-4af6-89e3-94ff2dcebf46";
 
+  fileSystems."/" =
+    {
+      device = "/dev/disk/by-uuid/8e30b445-751f-4af6-89e3-94ff2dcebf46";
+      fsType = "btrfs";
+      options = [ "subvol=root" "compress=zstd" "noatime" ];
+    };
+
+  fileSystems."/home" =
+    {
+      device = "/dev/disk/by-uuid/8e30b445-751f-4af6-89e3-94ff2dcebf46";
+      fsType = "btrfs";
+      options = [ "subvol=home" "compress=zstd" "noatime" ];
+    };
+
+  fileSystems."/nix" =
+    {
+      device = "/dev/disk/by-uuid/8e30b445-751f-4af6-89e3-94ff2dcebf46";
+      fsType = "btrfs";
+      options = [ "subvol=nix" "compress=zstd" "noatime" ];
+    };
+
+  fileSystems."/swap" =
+    {
+      device = "/dev/disk/by-uuid/8e30b445-751f-4af6-89e3-94ff2dcebf46";
+      fsType = "btrfs";
+      options = [ "subvol=swap" "nodatacow" "noatime" ];
+    };
+
+  fileSystems."/boot" =
+    {
+      device = "/dev/disk/by-uuid/5433-D79F";
+      fsType = "vfat";
+    };
+
   swapDevices = [{
     device = "/swap/swapfile";
     size = 1024 * 20;
