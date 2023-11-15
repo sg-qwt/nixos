@@ -3,7 +3,7 @@ lib.mkProfile s "qqqemacs"
   (
     let
       inherit (config.myos.data) openai;
-      gpt-host = "eastus.api.cognitive.microsoft.com";
+      gpt-host = "zaizhiwanwudev.openai.azure.com";
       init-el = pkgs.substituteAll {
         src = ./init.el;
         authFile = config.sops.templates.authinfo.path;

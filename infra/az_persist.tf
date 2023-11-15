@@ -37,6 +37,7 @@ resource "azurerm_shared_image_version" "nixos" {
   location            = azurerm_shared_image.nixos.location
   blob_uri            = data.azurerm_storage_blob.image_vhd.id
   storage_account_id  = data.azurerm_storage_account.persist.id
+  deletion_of_replicated_locations_enabled = true
 
   target_region {
     name                   = "southeastasia"
