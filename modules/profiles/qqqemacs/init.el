@@ -1157,6 +1157,7 @@ the focus."
     (gptel-send))
   :custom
   (gptel-default-mode 'org-mode)
+  (gptel-model "gpt-4")
   :general
   (qqq/local-leader
     gptel-mode-map
@@ -1170,9 +1171,9 @@ the focus."
     "azure"
     :protocol "https"
     :host "@gptHost@"
-    :endpoint "/openai/deployments/@gptDeployment@/chat/completions?api-version=2023-05-15"
+    :endpoint "/openai/deployments/@gptDeployment@/chat/completions?api-version=2023-07-01-preview"
     :stream t
-    :models '("gpt-3.5-turbo"))))
+    :models '("gpt-4"))))
 
 (use-package auth-source
   :custom
