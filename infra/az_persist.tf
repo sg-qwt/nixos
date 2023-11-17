@@ -30,13 +30,13 @@ resource "azurerm_shared_image" "nixos" {
 }
 
 resource "azurerm_shared_image_version" "nixos" {
-  name                = "0.0.1"
-  gallery_name        = azurerm_shared_image.nixos.gallery_name
-  image_name          = azurerm_shared_image.nixos.name
-  resource_group_name = azurerm_shared_image.nixos.resource_group_name
-  location            = azurerm_shared_image.nixos.location
-  blob_uri            = data.azurerm_storage_blob.image_vhd.id
-  storage_account_id  = data.azurerm_storage_account.persist.id
+  name                                     = "0.0.1"
+  gallery_name                             = azurerm_shared_image.nixos.gallery_name
+  image_name                               = azurerm_shared_image.nixos.name
+  resource_group_name                      = azurerm_shared_image.nixos.resource_group_name
+  location                                 = azurerm_shared_image.nixos.location
+  blob_uri                                 = data.azurerm_storage_blob.image_vhd.id
+  storage_account_id                       = data.azurerm_storage_account.persist.id
   deletion_of_replicated_locations_enabled = true
 
   target_region {

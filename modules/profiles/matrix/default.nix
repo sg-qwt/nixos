@@ -45,6 +45,7 @@ in
 
     services.postgresql = {
       enable = true;
+      package = pkgs.postgresql_14;
       authentication = lib.mkForce ''
         local all all trust
         host all all 127.0.0.1/32 trust

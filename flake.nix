@@ -101,7 +101,6 @@
           rsshub = pkgs.my.rsshub;
           pop = pkgs.my.pop;
           libation = pkgs.my.libation;
-          douyu-task = pkgs.my.douyu-task;
           babashka-bin = pkgs.my.babashka-bin;
         } //
         (import ./images.nix { inherit jovian nixpkgs system pkgs self; })
