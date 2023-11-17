@@ -1,4 +1,7 @@
 s@{ config, pkgs, lib, self, ... }:
+let
+  toYAML = lib.generators.toYAML { };
+in
 lib.mkProfile s "fcitx"
 {
   i18n.inputMethod = {
@@ -15,10 +18,21 @@ lib.mkProfile s "fcitx"
 
   home-manager.users."${config.myos.users.mainUser}" = {
     xdg.dataFile = {
-      "fcitx5/rime/luna_pinyin.custom.yaml".source =
-        (self + "/config/rime/luna_pinyin.custom.yaml");
-      "fcitx5/rime/luna_pinyin.extended.dict.yaml".source =
-        (self + "/config/rime/luna_pinyin.extended.dict.yaml");
+      "fcitx5/rime/luna_pinyin.custom.yaml".text = toYAML {
+        patch = {
+          "translator/dictionary" = "luna_pinyin.extended";
+        };
+      };
+      "fcitx5/rime/luna_pinyin.extended.dict.yaml".text = toYAML {
+        name = "luna_pinyin.extended";
+        version = "0.1";
+        sort = "by_weight";
+        use_preset_vocabulary = true;
+        import_tables = [
+          "luna_pinyin"
+          "zhwiki"
+        ];
+      };
     };
   };
 }
