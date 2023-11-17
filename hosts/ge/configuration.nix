@@ -98,8 +98,5 @@
       linux-manual
       man-pages
     ];
-
-
-    etc."sensors.d/it87.conf".source = (self + "/config/sensors/it87.conf");
   };
 }
