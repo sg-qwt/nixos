@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, ... }:
+{ config, lib, ... }:
 
 with lib;
 
@@ -26,16 +26,9 @@ in
     home-manager.users."${config.myos.users.mainUser}" = {
       programs.ssh = {
         enable = true;
+        compression = true;
         serverAliveInterval = 60;
         matchBlocks = match-blocks;
-        userKnownHostsFile =
-          let
-            knownHosts = pkgs.writeTextFile {
-              name = "known_hosts";
-              text = builtins.readFile (self + "/config/known_hosts");
-            };
-          in
-          "~/.ssh/known_hosts ${knownHosts}";
       };
     };
   };
