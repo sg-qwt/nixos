@@ -1,6 +1,6 @@
-{ lib, fetchFromGitHub, buildGoModule, olm, ... }:
+{ fetchFromGitHub, buildGoModule, ... }:
 
-let version = "v2.0.5"; in
+let version = "v3.0.0"; in
 buildGoModule {
   pname = "douyu-task";
   version = version;
@@ -8,10 +8,10 @@ buildGoModule {
     owner = "starudream";
     repo = "douyu-task";
     rev = version;
-    hash = "sha256-ir3SuByI2WRJ0bF15UrXHzt7nU9jkKJV5wuaAUl2EuM=";
+    hash = "sha256-P6L40VDBSbbG7orVstfIQQC9oXiibjjBs3LdFB3/SgQ=";
   };
 
-  vendorSha256 = "sha256-dXEWi7/Tv5xTB4bRo1quAFs36l2WvSepKVS/X1PK1OM=";
+  vendorSha256 = "sha256-PNM7istPAbk2xfdAWL71eAQS24TWE8gBvGufC8oHuU8=";
 
   doCheck = false;
 

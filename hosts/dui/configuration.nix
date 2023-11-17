@@ -14,7 +14,7 @@ let edg = config.myos.data.fqdn.edg; in
 
   myos.matrix = {
     enable = true;
-    chatgpt-bot = true;
+    chatgpt-bot = false;
     slack-bot = false;
     sliding-sync = false;
   };
@@ -26,6 +26,7 @@ let edg = config.myos.data.fqdn.edg; in
   myos.attic-server.enable = true;
   myos.miniflux.enable = true;
   myos.transmission.enable = true;
+  myos.dygift.enable = true;
 
   sops.secrets.cloudflare_token = {
     sopsFile = self + "/secrets/tfout.json";
