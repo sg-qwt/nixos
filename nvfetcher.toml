@@ -17,11 +17,6 @@ src.git = "https://github.com/MetaCubeX/metacubexd"
 src.branch = "gh-pages"
 fetch.github = "MetaCubeX/metacubexd"
 
-[jovian-nixos]
-src.git = "https://github.com/sg-qwt/Jovian-NixOS"
-src.branch = "devdev"
-fetch.github = "sg-qwt/Jovian-NixOS"
-
 [cape-yasnippet]
 src.git = "https://github.com/elken/cape-yasnippet"
 fetch.github = "elken/cape-yasnippet"
