@@ -16,7 +16,3 @@ fetch.github = "MetaCubeX/Yacd-meta"
 src.git = "https://github.com/MetaCubeX/metacubexd"
 src.branch = "gh-pages"
 fetch.github = "MetaCubeX/metacubexd"
-
-[cape-yasnippet]
-src.git = "https://github.com/elken/cape-yasnippet"
-fetch.github = "elken/cape-yasnippet"

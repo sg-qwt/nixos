@@ -20,15 +20,6 @@ lib.mkProfile s "qqqemacs"
               tree-sitter-yaml
               tree-sitter-typescript
             ]))
-
-          (epkgs.trivialBuild {
-            inherit (sources.cape-yasnippet) pname version src;
-            packageRequires = with epkgs; [
-              cape
-              yasnippet
-              cl-lib
-            ];
-          })
         ] ++
 
         (with epkgs.melpaStablePackages; [
