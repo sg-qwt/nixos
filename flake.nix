@@ -91,21 +91,11 @@
 
       # expose packages to flake here
       packages."${system}" = flake-utils.lib.flattenTree
-        ({
-          hello-custom = pkgs.my.hello-custom;
-          proton-ge = pkgs.my.proton-ge-custom;
-          gen-config = pkgs.my.gen-config;
-          matrix-chatgpt-bot = pkgs.my.matrix-chatgpt-bot;
-          mautrix-slack = pkgs.my.mautrix-slack;
-          cljfmt = pkgs.my.cljfmt;
-          rsshub = pkgs.my.rsshub;
-          pop = pkgs.my.pop;
-          libation = pkgs.my.libation;
-          babashka-bin = pkgs.my.babashka-bin;
-        } //
-        (import ./images.nix { inherit jovian nixpkgs system pkgs self; })
-        //
-        (import ./bb/scripts.nix { inherit pkgs self; }));
+        ((helpers.packages pkgs)
+          //
+          (import ./images.nix { inherit jovian nixpkgs system pkgs self; })
+          //
+          (import ./bb/scripts.nix { inherit pkgs self; }));
 
       devShells."${system}" =
         (helpers.shells { inherit pkgs self; } "dev");
