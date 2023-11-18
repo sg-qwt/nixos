@@ -1,4 +1,4 @@
-{ nixpkgs, system, self, pkgs, jovian }:
+{ nixpkgs, system, self, pkgs }:
 let
   mPath = p: { modulesPath, ... }: {
     imports = [ "${modulesPath}/${p}" ];
@@ -33,23 +33,6 @@ in
     inherit system;
     modules = [
       (mPath "installer/cd-dvd/installation-cd-graphical-gnome.nix")
-    ];
-  }).config.system.build.isoImage;
-
-  deck-minimal-image = (lib.nixosSystem {
-    inherit system;
-    specialArgs = {
-      inherit self;
-      pkgs = pkgs.extend (import "${jovian}/overlay.nix");
-    };
-    modules = [
-      "${jovian}/modules"
-      (mPath "installer/cd-dvd/installation-cd-minimal.nix")
-      ./modules/mixins/deploy.nix
-      ({ lib, config, ... }: {
-        jovian.devices.steamdeck.enable = true;
-        hardware.pulseaudio.enable = lib.mkForce false;
-      })
     ];
   }).config.system.build.isoImage;
 }

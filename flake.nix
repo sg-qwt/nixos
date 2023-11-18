@@ -5,6 +5,8 @@
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    flake-utils.url = "github:numtide/flake-utils";
+
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -14,8 +16,6 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    flake-utils.url = "github:numtide/flake-utils";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -38,6 +38,10 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
+    jovian = {
+      url = "github:Jovian-Experiments/Jovian-NixOS";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, ... }@inputs:
@@ -54,11 +58,11 @@
           self.overlays.default
           attic.overlays.default
           nvfetcher.overlays.default
+          jovian.overlays.default
         ];
       };
 
       sources = import ./_sources/generated.nix { inherit (pkgs) fetchurl fetchgit fetchFromGitHub dockerTools; };
-      jovian = sources.jovian-nixos.src;
       helpers = import ./lib/helpers.nix { inherit sources self nixpkgs; };
 
       mkOS = { name, p ? pkgs }: {
@@ -80,7 +84,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
             }
-          ] ++ (import (./hosts + "/${name}") { inherit inputs jovian; });
+          ] ++ (import (./hosts + "/${name}") { inherit inputs; });
         };
       };
 
@@ -93,7 +97,7 @@
       packages."${system}" = flake-utils.lib.flattenTree
         ((helpers.packages pkgs)
           //
-          (import ./images.nix { inherit jovian nixpkgs system pkgs self; })
+          (import ./images.nix { inherit nixpkgs system pkgs self; })
           //
           (import ./bb/scripts.nix { inherit pkgs self; }));
 
@@ -104,11 +108,7 @@
         builtins.foldl' (x: y: x // y) { }
           [
             (mkOS { name = "ge"; })
-            (mkOS
-              {
-                name = "zheng";
-                p = (pkgs.extend (import "${jovian}/overlay.nix"));
-              })
+            (mkOS { name = "zheng"; })
             (mkOS { name = "dui"; })
             (mkOS { name = "xun"; })
             (mkOS { name = "lei"; })

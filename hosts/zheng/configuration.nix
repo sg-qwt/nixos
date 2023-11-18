@@ -29,7 +29,6 @@ let user = config.myos.users.mainUser; in
       enable = true;
       autoStart = true;
       user = user;
-      desktopSession = "steam-wayland";
     };
   };
 
