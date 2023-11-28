@@ -108,7 +108,7 @@ lib.mkProfile s "qqqemacs"
       sops.templates.authinfo.content = ''
         machine ${gpt-host} login apikey password ${config.sops.placeholder.openai_key}
       '';
-      sops.templates.authinfo.owner = config.myos.users.mainUser;
+      sops.templates.authinfo.owner = config.myos.user.mainUser;
 
       myos.sdcv-with-dicts.enable = true;
 
@@ -145,7 +145,7 @@ lib.mkProfile s "qqqemacs"
         ];
       };
 
-      home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
+      myhome = { config, ... }: {
 
         systemd.user.services.emacs.Unit.X-RestartIfChanged = lib.mkForce true;
         systemd.user.services.emacs.Unit.X-Restart-Triggers = [ "${./init.el}" ];

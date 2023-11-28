@@ -3,7 +3,7 @@ lib.mkProfile s "desktop-apps"
 {
   myos.firefox.enable = true;
 
-  home-manager.users."${config.myos.users.mainUser}" = {
+  myhome = {
     programs.mpv = {
       enable = true;
       package = pkgs.wrapMpv pkgs.mpv-unwrapped { youtubeSupport = true; };

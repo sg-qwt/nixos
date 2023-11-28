@@ -1,7 +1,7 @@
 s@{ config, pkgs, lib, ... }:
 lib.mkProfile s "theme"
 {
-  home-manager.users."${config.myos.users.mainUser}" = rec {
+  myhome = rec {
     # home.pointerCursor = {
     #   name = "Adwaita";
     #   package = pkgs.gnome.adwaita-icon-theme;

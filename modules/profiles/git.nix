@@ -1,7 +1,7 @@
 s@{ config, pkgs, lib, ... }:
 lib.mkProfile s "git"
 {
-  home-manager.users."${config.myos.users.mainUser}" = {
+  myhome = {
     programs.git = {
       enable = true;
       userName = "無名氏";

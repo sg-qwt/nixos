@@ -6,7 +6,7 @@ lib.mkProfile s "docker" {
     backend = "docker";
     containers =
       let
-        username = "${config.myos.users.mainUser}";
+        username = "${config.myos.user.mainUser}";
         homepath = config.users.users."${username}".home;
       in
       {

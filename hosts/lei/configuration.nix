@@ -41,9 +41,7 @@
       '';
     };
 
-  myos.common.enable = true;
   myos.desktop.enable = true;
-  myos.users.enable = true;
   myos.fcitx.enable = true;
   myos.gnome = {
     enable = true;
