@@ -9,7 +9,7 @@ lib.mkProfile s "clojure-dev"
     package = jdk;
   };
 
-  home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
+  myhome = { config, ... }: {
     home.packages = with pkgs; [
       (clojure.override { inherit jdk; })
       my.babashka-bin

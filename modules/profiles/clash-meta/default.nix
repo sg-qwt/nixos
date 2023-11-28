@@ -111,7 +111,7 @@ in
         };
       };
 
-      home-manager.users."${config.myos.users.mainUser}" = {
+      myhome = {
 
         programs.bash.bashrcExtra = ''
           enable-proxy() {

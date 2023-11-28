@@ -4,7 +4,7 @@ let
   fxpkg = pkgs.firefox.override { cfg.enableTridactylNative = true; };
 in
 lib.mkProfile s "firefox" {
-  home-manager.users."${config.myos.users.mainUser}" = {
+  myhome = {
 
     xdg.configFile."tridactyl/tridactylrc".source = ./tridactylrc;
 

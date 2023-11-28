@@ -25,7 +25,7 @@ in
 
       displayManager.job.preStart = "sleep 5";
       displayManager.autoLogin.enable = true;
-      displayManager.autoLogin.user = "${config.myos.users.mainUser}";
+      displayManager.autoLogin.user = "${config.myos.user.mainUser}";
     };
 
     environment = {
@@ -42,7 +42,7 @@ in
     services.gnome.core-utilities.enable = false;
     services.gnome.gnome-keyring.enable = lib.mkForce false;
 
-    home-manager.users."${config.myos.users.mainUser}" = { config, lib, ... }: {
+    myhome = { config, lib, ... }: {
 
       dconf.settings = {
         "org/gnome/shell" = {

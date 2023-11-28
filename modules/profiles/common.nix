@@ -1,7 +1,5 @@
 s@{ config, pkgs, lib, inputs, self, ... }:
-with lib;
 let
-  cfg = config.myos.common;
   btrfsExist = (builtins.any
     (filesystem: filesystem.fsType == "btrfs")
     (lib.attrValues config.fileSystems));
@@ -11,11 +9,7 @@ in
     ../../modules/mixins/deploy.nix
   ];
 
-  options.myos.common = {
-    enable = mkEnableOption "base shared profile";
-  };
-
-  config = mkIf cfg.enable {
+  config = {
 
     system.configurationRevision = self.rev or self.dirtyRev or "dirty";
 

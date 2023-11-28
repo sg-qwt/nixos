@@ -5,7 +5,7 @@ with lib;
 let
   cfg = config.myos.ssh;
   data = config.myos.data;
-  username = config.myos.users.mainUser;
+  username = config.myos.user.mainUser;
   match-blocks =
     (builtins.foldl' (a: b: a // b) { }
       (map
@@ -23,7 +23,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home-manager.users."${config.myos.users.mainUser}" = {
+    myhome = {
       programs.ssh = {
         enable = true;
         compression = true;

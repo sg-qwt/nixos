@@ -51,7 +51,7 @@ lib.mkProfile s "gaming"
     ];
   };
 
-  home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
+  myhome = { config, ... }: {
     xdg.configFile."MangoHud/MangoHud.conf".source = (self + "/config/mangohud.conf");
   };
 }

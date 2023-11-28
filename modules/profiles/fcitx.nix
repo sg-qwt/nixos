@@ -16,7 +16,7 @@ lib.mkProfile s "fcitx"
     ];
   };
 
-  home-manager.users."${config.myos.users.mainUser}" = {
+  myhome = {
     xdg.dataFile = {
       "fcitx5/rime/luna_pinyin.custom.yaml".text = toYAML {
         patch = {

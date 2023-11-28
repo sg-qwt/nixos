@@ -7,7 +7,7 @@ lib.mkProfile s "shell"
     };
   };
 
-  home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
+  myhome = { config, ... }: {
     programs.fzf = {
       enable = true;
       enableBashIntegration = true;

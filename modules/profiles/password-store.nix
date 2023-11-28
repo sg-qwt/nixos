@@ -1,7 +1,7 @@
 s@{ config, pkgs, lib, ... }:
 lib.mkProfile s "password-store"
 {
-  home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
+  myhome = { config, ... }: {
 
     programs.password-store = {
       enable = true;

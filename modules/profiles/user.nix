@@ -1,15 +1,18 @@
-{ config, lib, pkgs, self, ... }:
+{ options, config, lib, self, ... }:
 
 with lib;
 
 let
-  cfg = config.myos.users;
+  cfg = config.myos.user;
   state-version = config.system.stateVersion;
 in
 {
-  options.myos.users = {
-    enable = mkEnableOption "Users config";
+  options.myhome = mkOption {
+    type = types.attrs;
+    default = { };
+  };
 
+  options.myos.user = {
     mainUser = mkOption {
       type = types.str;
       default = "me";
@@ -23,7 +26,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = {
 
     users.mutableUsers = false;
 
@@ -41,7 +44,9 @@ in
       neededForUsers = true;
     };
 
-    home-manager.users."${cfg.mainUser}" = {
+    home-manager.users."${cfg.mainUser}" = lib.mkAliasDefinitions options.myhome;
+
+    myhome = {
       home.stateVersion = state-version;
       systemd.user.startServices = "sd-switch";
     };

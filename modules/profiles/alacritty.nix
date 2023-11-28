@@ -1,7 +1,7 @@
 s@{ config, pkgs, lib, ... }:
 lib.mkProfile s "alacritty"
 {
-  home-manager.users."${config.myos.users.mainUser}" = {
+  myhome = {
     programs.alacritty = {
       enable = true;
       settings = {

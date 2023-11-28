@@ -3,7 +3,7 @@ lib.mkProfile s "gnupg" {
 
   services.pcscd.enable = true;
 
-  home-manager.users."${config.myos.users.mainUser}" = {
+  myhome = {
 
     programs.gpg = {
       enable = true;

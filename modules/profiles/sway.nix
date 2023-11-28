@@ -33,7 +33,7 @@ lib.mkProfile s "sway"
 
   xdg.portal.wlr.enable = true;
 
-  services.getty.autologinUser = "${config.myos.users.mainUser}";
+  services.getty.autologinUser = "${config.myos.user.mainUser}";
 
   environment = {
     loginShellInit = ''
@@ -57,7 +57,7 @@ lib.mkProfile s "sway"
 
   };
 
-  home-manager.users."${config.myos.users.mainUser}" = { config, ... }: {
+  myhome = { config, ... }: {
     xdg.configFile."sway/config".text = (import (self + "/config/sway.nix") { inherit config self; });
 
     xdg.configFile."waybar/config".source = (self + "/config/waybar/waybar.json");

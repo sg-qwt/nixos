@@ -4,7 +4,7 @@
 
 { config, lib, pkgs, ... }:
 
-let user = config.myos.users.mainUser; in
+let user = config.myos.user.mainUser; in
 {
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -12,12 +12,8 @@ let user = config.myos.users.mainUser; in
 
   networking.hostId = "a658e17d";
 
-  myos.common.enable = true;
   myos.desktop.enable = true;
-  myos.users = {
-    enable = true;
-    extraGroups = [ "input" ];
-  };
+  myos.user.extraGroups = [ "input" ];
   myos.shell.enable = true;
   myos.git.enable = true;
   myos.gnupg.enable = true;
