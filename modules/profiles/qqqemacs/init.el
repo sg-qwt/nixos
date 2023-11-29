@@ -673,6 +673,7 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
 
 (use-package cider
   :custom
+  (nrepl-use-ssh-fallback-for-remote-hosts t)
   (cider-eldoc-display-for-symbol-at-point nil)
   (cider-use-xref nil)
   :preface
@@ -1192,3 +1193,10 @@ the focus."
 (use-package which-key
   :config
   (which-key-mode))
+
+;;;;;;;;;;;
+;; tramp ;;
+;;;;;;;;;;;
+(use-package tramp
+  :config
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
