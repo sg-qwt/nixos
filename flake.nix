@@ -58,7 +58,6 @@
           self.overlays.default
           attic.overlays.default
           nvfetcher.overlays.default
-          jovian.overlays.default
         ];
       };
 
@@ -108,7 +107,10 @@
         builtins.foldl' (x: y: x // y) { }
           [
             (mkOS { name = "ge"; })
-            (mkOS { name = "zheng"; })
+            (mkOS {
+              name = "zheng";
+              p = (pkgs.extend jovian.overlays.default);
+            })
             (mkOS { name = "dui"; })
             (mkOS { name = "xun"; })
             (mkOS { name = "lei"; })

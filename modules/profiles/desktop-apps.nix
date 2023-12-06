@@ -16,8 +16,9 @@ lib.mkProfile s "desktop-apps"
 
     home.packages = with pkgs; [
       # browsers
-      chromium
-
+      (chromium.override {
+        commandLineArgs = "--gtk-version=4";
+      })
       # media
       spotify
       dmlive
