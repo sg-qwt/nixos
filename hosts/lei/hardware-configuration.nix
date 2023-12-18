@@ -13,52 +13,24 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
-  # sudo btrfs inspect-internal map-swapfile /swap/swapfile --resume-offset
-  boot.kernelParams = [
-    "mem_sleep_default=deep"
-    "resume_offset=2398698"
-  ];
-  # findmnt -no UUID -T /swap/swapfile
-  boot.resumeDevice = "/dev/disk/by-uuid/8e30b445-751f-4af6-89e3-94ff2dcebf46";
+  boot.kernelParams = [ ];
+
+  boot.supportedFilesystems = [ "bcachefs" ];
+  boot.kernelPackages = pkgs.linuxPackages_testing;
 
   fileSystems."/" =
     {
-      device = "/dev/disk/by-uuid/8e30b445-751f-4af6-89e3-94ff2dcebf46";
-      fsType = "btrfs";
-      options = [ "subvol=root" "compress=zstd" "noatime" ];
-    };
-
-  fileSystems."/home" =
-    {
-      device = "/dev/disk/by-uuid/8e30b445-751f-4af6-89e3-94ff2dcebf46";
-      fsType = "btrfs";
-      options = [ "subvol=home" "compress=zstd" "noatime" ];
-    };
-
-  fileSystems."/nix" =
-    {
-      device = "/dev/disk/by-uuid/8e30b445-751f-4af6-89e3-94ff2dcebf46";
-      fsType = "btrfs";
-      options = [ "subvol=nix" "compress=zstd" "noatime" ];
-    };
-
-  fileSystems."/swap" =
-    {
-      device = "/dev/disk/by-uuid/8e30b445-751f-4af6-89e3-94ff2dcebf46";
-      fsType = "btrfs";
-      options = [ "subvol=swap" "nodatacow" "noatime" ];
+      device = "/dev/disk/by-uuid/18e03623-55e4-4c5a-bc84-0acb419365aa";
+      fsType = "bcachefs";
     };
 
   fileSystems."/boot" =
     {
-      device = "/dev/disk/by-uuid/5433-D79F";
+      device = "/dev/disk/by-uuid/814D-952A";
       fsType = "vfat";
     };
 
-  swapDevices = [{
-    device = "/swap/swapfile";
-    size = 1024 * 20;
-  }];
+  swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
