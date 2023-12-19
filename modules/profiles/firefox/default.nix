@@ -1,7 +1,8 @@
 s@{ config, pkgs, lib, ... }:
 let
-  # TODO https://github.com/nix-community/home-manager/issues/4630
-  fxpkg = pkgs.firefox.override { cfg.enableTridactylNative = true; };
+  fxpkg = pkgs.firefox.override {
+    nativeMessagingHosts = [ pkgs.tridactyl-native ];
+  };
 in
 lib.mkProfile s "firefox" {
   myhome = {
