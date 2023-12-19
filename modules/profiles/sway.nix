@@ -1,77 +1,101 @@
 s@{ config, pkgs, lib, home-manager, self, ... }:
 lib.mkProfile s "sway"
 {
-  programs.sway = {
+  programs.dconf.enable = true;
+  myos.alacritty.enable = true;
+  myos.wayland.enable = true;
+
+  xdg.portal = {
     enable = true;
-    wrapperFeatures.base = true;
-    wrapperFeatures.gtk = true;
-    extraPackages = with pkgs; [
-      qt5.qtwayland
-      wl-clipboard
-      waybar
-      wofi
-      mako
-      grim
-      slurp
-      kanshi
-      xfce.xfce4-terminal
-    ];
+    wlr.enable = true;
+    config.common.default = "*";
   };
 
-  systemd.user.services.kanshi = {
-    description = "Kanshi output autoconfig ";
-    wantedBy = [ "graphical-session.target" ];
-    partOf = [ "graphical-session.target" ];
-    serviceConfig = {
-      ExecStart = ''
-        ${pkgs.kanshi}/bin/kanshi
-      '';
-      RestartSec = 5;
-      Restart = "always";
+  security.polkit.enable = true;
+  security.pam.services.swaylock = { };
+
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${lib.getExe pkgs.greetd.tuigreet} --asterisks --time --cmd sway";
+        user = config.myos.user.mainUser;
+      };
     };
   };
 
-  xdg.portal.wlr.enable = true;
+  myhome = { config, lib, ... }:
+    let
+      modifier = config.wayland.windowManager.sway.config.modifier;
+      status = lib.getExe config.programs.i3status-rust.package;
+      status-config = "${config.xdg.configHome}/i3status-rust/config-default.toml";
+      wallpaper = self + "/resources/wallpapers/wr.jpg";
+    in
+    {
+      gtk = {
+        enable = true;
+      };
 
-  services.getty.autologinUser = "${config.myos.user.mainUser}";
+      programs.i3status-rust = {
+        enable = true;
+      };
 
-  environment = {
-    loginShellInit = ''
-      if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
-        exec sway
-      fi
-    '';
+      wayland.windowManager.sway = {
+        enable = true;
+        systemd = {
+          enable = true;
+          xdgAutostart = true;
+        };
 
-    sessionVariables = {
-      MOZ_ENABLE_WAYLAND = "1";
+        wrapperFeatures = {
+          base = true;
+          gtk = true;
+        };
 
-      XDG_CURRENT_DESKTOP = "sway";
+        config = {
+          modifier = "Mod4";
+          terminal = lib.getExe config.programs.alacritty.package;
+          startup = [
+            { command = "firefox"; }
+          ];
+          gaps = {
+            inner = 5;
+            outer = 5;
+            smartGaps = true;
+          };
+          menu = "${lib.getExe pkgs.wofi} --show run | ${pkgs.findutils}/bin/xargs swaymsg exec --";
+          bars = [
+            { statusCommand = "${status} ${status-config}"; }
+          ];
+          keybindings = lib.mkOptionDefault { };
+          output = {
+            "*" = {
+              bg = "${wallpaper} fill";
+            };
+            eDP-1 = {
+              scale = "1.5";
+            };
+          };
+          input = {
+            "1:1:AT_Translated_Set_2_keyboard" = {
+              xkb_options = "ctrl:nocaps";
+            };
+            "1267:12624:ELAN0670:00_04F3:3150_Touchpad" = {
+              natural_scroll = "enabled";
+              tap = "enabled";
+            };
+          };
+        };
+      };
 
-      QT_QPA_PLATFORM = "wayland";
-      QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+      home.packages = with pkgs; [
+        wl-clipboard
+        # (writeShellScriptBin "switch-emacs"
+        #   (import (self + "/config/scripts/switch-emacs.nix") { }))
 
-      _JAVA_AWT_WM_NONREPARENTING = "1";
+        # (writeShellScriptBin "switch-terminal"
+        #   (import (self + "/config/scripts/switch-terminal.nix") { }))
 
-      # SDL_VIDEODRIVER = "wayland";
+      ];
     };
-
-  };
-
-  myhome = { config, ... }: {
-    xdg.configFile."sway/config".text = (import (self + "/config/sway.nix") { inherit config self; });
-
-    xdg.configFile."waybar/config".source = (self + "/config/waybar/waybar.json");
-    xdg.configFile."waybar/style.css".source = (self + "/config/waybar/style.css");
-
-    xdg.configFile."kanshi/config".source = (self + "/config/kanshi");
-
-    home.packages = with pkgs; [
-      (writeShellScriptBin "switch-emacs"
-        (import (self + "/config/scripts/switch-emacs.nix") { }))
-
-      (writeShellScriptBin "switch-terminal"
-        (import (self + "/config/scripts/switch-terminal.nix") { }))
-
-    ];
-  };
 }
