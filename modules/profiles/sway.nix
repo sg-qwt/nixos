@@ -30,9 +30,14 @@ lib.mkProfile s "sway"
       status = lib.getExe config.programs.i3status-rust.package;
       status-config = "${config.xdg.configHome}/i3status-rust/config-default.toml";
       wallpaper = self + "/resources/wallpapers/wr.jpg";
+      wpctl = "${pkgs.wireplumber}/bin/wpctl";
     in
     {
       gtk = {
+        enable = true;
+      };
+
+      services.mako = {
         enable = true;
       };
 
@@ -67,7 +72,13 @@ lib.mkProfile s "sway"
           bars = [
             { statusCommand = "${status} ${status-config}"; }
           ];
-          keybindings = lib.mkOptionDefault { };
+          keybindings = lib.mkOptionDefault {
+            "XF86AudioRaiseVolume" = "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 5%+";
+            "XF86AudioLowerVolume" = "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+            "XF86AudioMute" = "exec ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
+            "XF86MonBrightnessUp" = "exec ${lib.getExe pkgs.brightnessctl} set 5%+";
+            "XF86MonBrightnessDown" = "exec ${lib.getExe pkgs.brightnessctl} set 5%-";
+          };
           output = {
             "*" = {
               bg = "${wallpaper} fill";
@@ -86,9 +97,15 @@ lib.mkProfile s "sway"
             };
           };
         };
+
+        extraConfig = ''
+          for_window [app_id="pavucontrol"] floating enable
+          for_window [shell="xwayland"] title_format "[XWayland] %title"
+        '';
       };
 
       home.packages = with pkgs; [
+        pavucontrol
         wl-clipboard
         # (writeShellScriptBin "switch-emacs"
         #   (import (self + "/config/scripts/switch-emacs.nix") { }))
@@ -97,5 +114,17 @@ lib.mkProfile s "sway"
         #   (import (self + "/config/scripts/switch-terminal.nix") { }))
 
       ];
+
+      xdg.mimeApps = {
+        enable = true;
+        defaultApplications = {
+          "text/html" = "firefox.desktop";
+          "x-scheme-handler/http"  = "firefox.desktop";
+          "x-scheme-handler/https"  = "firefox.desktop";
+          "x-scheme-handler/about" = "firefox.desktop";
+          "x-scheme-handler/unknown" = "firefox.desktop";
+          "application/pdf" = "firefox.desktop";
+        };
+      };
     };
 }
