@@ -20,6 +20,7 @@
   };
 
   hardware.pulseaudio.enable = false;
+
   services.pipewire = {
     enable = true;
     alsa = {
@@ -41,24 +42,20 @@
       '';
     };
 
+  myos.sway.enable = true;
+
   myos.desktop.enable = true;
   myos.fcitx.enable = true;
-  myos.gnome = {
-    enable = true;
-    wayland = true;
-  };
 
   myos.tmux.enable = true;
   myos.qqqemacs.enable = true;
 
-  myos.alacritty.enable = true;
   myos.shell.enable = true;
   myos.git.enable = true;
   myos.ssh.enable = true;
   myos.gnupg.enable = true;
   myos.desktop-apps.enable = true;
   myos.tools.enable = true;
-  myos.theme.enable = true;
 
   myos.clash-meta.enable = true;
   myos.tailscale.enable = true;

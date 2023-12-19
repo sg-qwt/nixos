@@ -13,7 +13,6 @@ lib.mkProfile s "alacritty"
         };
         selection.save_to_clipboard = true;
         window = {
-          opacity = 0.8;
           dynamic_title = true;
           decorations = "full";
           dimensions = {
