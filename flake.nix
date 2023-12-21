@@ -96,9 +96,7 @@
       packages."${system}" = flake-utils.lib.flattenTree
         ((helpers.packages pkgs)
           //
-          (import ./images.nix { inherit nixpkgs system pkgs self; })
-          //
-          (import ./bb/scripts.nix { inherit pkgs self; }));
+          (import ./images.nix { inherit nixpkgs system pkgs self; }));
 
       devShells."${system}" =
         (helpers.shells { inherit pkgs self; } "dev");

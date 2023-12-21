@@ -5,13 +5,13 @@
     deps = with pkgs; [ nvfetcher ];
     source = (self + "/bb/update.clj");
   };
-  grab-shi = pkgs.my.write-bb {
-    name = "grab-shi";
-    source = (self + "/bb/shi.clj");
-    args = [ (self + "/resources/dicts/shi.txt") ];
-  };
-  deploy = pkgs.my.write-bb {
-    name = "deploy";
-    source = (self + "/bb/deploy.clj");
+
+  bento = pkgs.my.write-bb {
+    name = "bento";
+    deps = with pkgs; [ brightnessctl libnotify ];
+    source = (self + "/bb/bento.clj");
+    pre = ''
+      export SHI_DATA=${../resources/dicts/shi.txt}
+    '';
   };
 }

@@ -1,9 +1,10 @@
-{ pkgs, writeShellApplication, ... }:
-{ name, source, deps ? [ ], args ? [ ] }:
+{ pkgs, writeShellApplication, symlinkJoin, stdenv, ... }:
+{ name, source, deps ? [ ], pre ? "" }:
 writeShellApplication {
   inherit name;
   runtimeInputs = deps;
   text = ''
-    ${pkgs.my.babashka-bin}/bin/bb ${source} ${toString args} "$@"
+    ${pre}
+    ${pkgs.my.babashka-bin}/bin/bb ${source} "$@"
   '';
 }

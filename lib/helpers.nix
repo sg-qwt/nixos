@@ -41,10 +41,11 @@ rec {
             (builtins.attrNames (builtins.readDir (self + "/packages")))));
     };
 
-  packages = pkgs: (builtins.listToAttrs
-    (map (name: { name = name; value = pkgs.my."${name}"; })
-      (builtins.attrNames pkgs.my))
-  );
+  packages = pkgs:
+    (builtins.listToAttrs
+      (map (name: { name = name; value = pkgs.my."${name}"; })
+        (builtins.attrNames pkgs.my))) //
+    (import (self + "/bb/scripts.nix") { inherit pkgs self; });
 
   shells = args: default:
     let

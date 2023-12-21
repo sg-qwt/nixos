@@ -118,7 +118,7 @@ If the buffer doesn't exist, create it first."
   (emacs-startup . qqq/startup)
   :custom
   (inhibit-startup-screen t)
-  (initial-scratch-message (shell-command-to-string "grab-shi"))
+  (initial-scratch-message (shell-command-to-string "bento grab-shi"))
   (initial-major-mode 'emacs-lisp-mode))
 
 (use-package emacs

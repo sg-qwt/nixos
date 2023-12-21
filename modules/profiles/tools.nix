@@ -20,6 +20,6 @@ lib.mkProfile s "tools"
 
     jq
 
-    self.packages.x86_64-linux.deploy
+    self.packages.${pkgs.system}.bento
   ];
 }
