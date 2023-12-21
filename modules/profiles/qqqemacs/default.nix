@@ -141,7 +141,7 @@ lib.mkProfile s "qqqemacs"
             type = "Application";
             mimeTypes = [ "x-scheme-handler/org-protocol" ];
           })
-          self.packages.x86_64-linux.grab-shi
+          self.packages.${pkgs.system}.bento
         ];
       };
 

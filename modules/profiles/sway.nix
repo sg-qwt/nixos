@@ -31,6 +31,8 @@ lib.mkProfile s "sway"
       status-config = "${config.xdg.configHome}/i3status-rust/config-default.toml";
       wallpaper = self + "/resources/wallpapers/wr.jpg";
       wpctl = "${pkgs.wireplumber}/bin/wpctl";
+      bento = self.packages.${pkgs.system}.bento;
+      bento-bin = "${bento}/bin/bento";
     in
     {
       gtk = {
@@ -63,11 +65,6 @@ lib.mkProfile s "sway"
           startup = [
             { command = "firefox"; }
           ];
-          gaps = {
-            inner = 5;
-            outer = 5;
-            smartGaps = true;
-          };
           menu = "${lib.getExe pkgs.wofi} --show run | ${pkgs.findutils}/bin/xargs swaymsg exec --";
           bars = [
             { statusCommand = "${status} ${status-config}"; }
@@ -76,8 +73,8 @@ lib.mkProfile s "sway"
             "XF86AudioRaiseVolume" = "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 5%+";
             "XF86AudioLowerVolume" = "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 5%-";
             "XF86AudioMute" = "exec ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
-            "XF86MonBrightnessUp" = "exec ${lib.getExe pkgs.brightnessctl} set 5%+";
-            "XF86MonBrightnessDown" = "exec ${lib.getExe pkgs.brightnessctl} set 5%-";
+            "XF86MonBrightnessUp" = "exec ${bento-bin} brightness up";
+            "XF86MonBrightnessDown" = "exec ${bento-bin} brightness down";
           };
           output = {
             "*" = {
@@ -119,8 +116,8 @@ lib.mkProfile s "sway"
         enable = true;
         defaultApplications = {
           "text/html" = "firefox.desktop";
-          "x-scheme-handler/http"  = "firefox.desktop";
-          "x-scheme-handler/https"  = "firefox.desktop";
+          "x-scheme-handler/http" = "firefox.desktop";
+          "x-scheme-handler/https" = "firefox.desktop";
           "x-scheme-handler/about" = "firefox.desktop";
           "x-scheme-handler/unknown" = "firefox.desktop";
           "application/pdf" = "firefox.desktop";
