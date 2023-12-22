@@ -13,8 +13,9 @@ lib.mkProfile s "desktop-apps"
         "--gtk-version=4"
       ];
       extensions = [
-        { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # Vimium
-        { id = "knheggckgoiihginacbkhaalnibhilkk"; } # Notion
+        { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # vimium
+        { id = "knheggckgoiihginacbkhaalnibhilkk"; } # notion
+        { id = "bhhhlbepdkbapadjdnnojkbgioiodbic"; } # solflare-wallet
         {
           id = "dcpihecpambacapedldabdbpakmachpb";
           updateUrl = "https://raw.githubusercontent.com/iamadamdev/bypass-paywalls-chrome/master/src/updates/updates.xml";

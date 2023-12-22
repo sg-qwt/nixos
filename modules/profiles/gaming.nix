@@ -50,8 +50,4 @@ lib.mkProfile s "gaming"
           }))
     ];
   };
-
-  myhome = { config, ... }: {
-    xdg.configFile."MangoHud/MangoHud.conf".source = (self + "/config/mangohud.conf");
-  };
 }

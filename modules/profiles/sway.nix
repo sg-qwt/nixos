@@ -30,11 +30,14 @@ lib.mkProfile s "sway"
       modifier = config.wayland.windowManager.sway.config.modifier;
       status = lib.getExe config.programs.i3status-rust.package;
       swayr = lib.getExe config.programs.swayr.package;
+      pavucontrol = lib.getExe pkgs.pavucontrol;
       status-config = "${config.xdg.configHome}/i3status-rust/config-default.toml";
       wallpaper = self + "/resources/wallpapers/wr.jpg";
       wpctl = "${pkgs.wireplumber}/bin/wpctl";
       bento = self.packages.${pkgs.system}.bento;
       bento-bin = "${bento}/bin/bento";
+      curl = lib.getExe pkgs.curl;
+      jq = lib.getExe pkgs.jq;
 
       monitor = {
         main = "Dell Inc. DELL U2718QM MYPFK89J15HL";
@@ -65,6 +68,67 @@ lib.mkProfile s "sway"
 
       programs.i3status-rust = {
         enable = true;
+        bars.default = {
+          icons = "none";
+          theme = "plain";
+          blocks = [
+            {
+              block = "custom";
+              command = "${curl} --silent https://wttr.in/shanghai?format=+%C+%t";
+              hide_when_empty = true;
+              interval = 3000;
+              format = " $text ";
+            }
+            {
+              block = "custom";
+              command = "${curl} --silent https://api.coinbase.com/v2/prices/SOL-USD/spot | ${jq} -r .data.amount";
+              hide_when_empty = true;
+              interval = 300;
+              format = " SOL $text ";
+            }
+            {
+              block = "disk_space";
+              path = "/";
+              info_type = "available";
+              interval = 60;
+              warning = 20.0;
+              alert = 10.0;
+            }
+            {
+              block = "cpu";
+              interval = 5;
+            }
+            {
+              block = "memory";
+              format = " $icon $mem_total_used_percents.eng(w:2) ";
+            }
+            {
+              block = "sound";
+              click = [{
+                button = "left";
+                cmd = "${pavucontrol}";
+              }];
+            }
+            {
+              block = "net";
+              format = " WIFI $signal_strength $speed_down.eng(prefix:K) $speed_up.eng(prefix:K) ";
+              device = "wlp0s20f3";
+              interval = 5;
+            }
+            {
+              block = "battery";
+              format = " $icon $percentage ";
+              full_format = " $icon $percentage ";
+              empty_format = " $icon $percentage ";
+              device = "BAT0";
+            }
+            {
+              block = "time";
+              interval = 5;
+              format = " $timestamp.datetime(f:'%a %b %e %R') ";
+            }
+          ];
+        };
       };
 
       programs.wofi = {
@@ -182,14 +246,7 @@ lib.mkProfile s "sway"
       };
 
       home.packages = with pkgs; [
-        pavucontrol
         wl-clipboard
-        # (writeShellScriptBin "switch-emacs"
-        #   (import (self + "/config/scripts/switch-emacs.nix") { }))
-
-        # (writeShellScriptBin "switch-terminal"
-        #   (import (self + "/config/scripts/switch-terminal.nix") { }))
-
       ];
 
       xdg.mimeApps = {
