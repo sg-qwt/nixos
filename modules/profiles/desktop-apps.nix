@@ -4,6 +4,24 @@ lib.mkProfile s "desktop-apps"
   myos.firefox.enable = true;
 
   myhome = {
+
+    programs.chromium = {
+      enable = true;
+      package = pkgs.brave;
+      commandLineArgs = [
+        # TODO not working with brave
+        "--gtk-version=4"
+      ];
+      extensions = [
+        { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # Vimium
+        { id = "knheggckgoiihginacbkhaalnibhilkk"; } # Notion
+        {
+          id = "dcpihecpambacapedldabdbpakmachpb";
+          updateUrl = "https://raw.githubusercontent.com/iamadamdev/bypass-paywalls-chrome/master/src/updates/updates.xml";
+        }
+      ];
+    };
+
     programs.mpv = {
       enable = true;
       package = pkgs.wrapMpv pkgs.mpv-unwrapped { youtubeSupport = true; };
@@ -15,14 +33,10 @@ lib.mkProfile s "desktop-apps"
     };
 
     home.packages = with pkgs; [
-      # browsers
-      (chromium.override {
-        commandLineArgs = "--gtk-version=4";
-      })
       # media
       spotify
       dmlive
-      my.libation
+      libation
     ];
   };
 }

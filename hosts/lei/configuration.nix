@@ -12,6 +12,12 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 50;
+  };
+
   hardware.firmware = [ pkgs.sof-firmware ];
   hardware.opengl = {
     enable = true;

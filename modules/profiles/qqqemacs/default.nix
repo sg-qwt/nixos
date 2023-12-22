@@ -146,16 +146,6 @@ lib.mkProfile s "qqqemacs"
       };
 
       myhome = { config, ... }: {
-
-        systemd.user.services.emacs.Unit.X-RestartIfChanged = lib.mkForce true;
-        systemd.user.services.emacs.Unit.X-Restart-Triggers = [ "${./init.el}" ];
-        services.emacs = {
-          enable = true;
-          package = qqqemacs;
-          startWithUserSession = "graphical";
-          defaultEditor = true;
-        };
-
         xdg.configFile."emacs/init.el".source = init-el;
 
         xdg.configFile."emacs/snippets" = {
