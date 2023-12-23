@@ -82,6 +82,8 @@ lib.mkProfile s "qqqemacs"
           rust-mode
 
           gptel
+
+          edit-server
         ]) ++
 
         (with epkgs.elpaPackages; [

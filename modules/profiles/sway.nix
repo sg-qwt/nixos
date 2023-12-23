@@ -233,20 +233,43 @@ lib.mkProfile s "sway"
               natural_scroll = "enabled";
               tap = "enabled";
             };
+            "4152:6166:SteelSeries_SteelSeries_Rival_106_Gaming_Mouse" = {
+              accel_profile = "flat";
+            };
           };
+          assigns = {
+            "8" = [
+              { app_id = ""; title = "^Spotify"; }
+            ];
+            "9" = [
+              { app_id = "brave-browser"; title = "chat-web-"; }
+            ];
+          };
+          floating.criteria = [
+            { app_id = "pavucontrol"; }
+            { app_id = "blueman-manager"; }
+          ];
+          window.commands = [
+            {
+              criteria = { shell = "xwayland"; };
+              command = "title_format \"[XWayland] %title\"";
+            }
+            {
+              criteria = { app_id = "brave-browser"; title = "chat-web-"; };
+              command = "layout tabbed";
+            }
+          ];
         };
 
         extraConfig = ''
           bindswitch --reload --locked lid:on output ${monitor.internal} disable
           bindswitch --reload --locked lid:off output ${monitor.internal} enable
-
-          for_window [app_id="pavucontrol"] floating enable
-          for_window [shell="xwayland"] title_format "[XWayland] %title"
         '';
       };
 
       home.packages = with pkgs; [
         wl-clipboard
+        xdg-utils
       ];
 
       xdg.mimeApps = {
