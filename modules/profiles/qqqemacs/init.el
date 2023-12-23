@@ -1205,10 +1205,12 @@ the focus."
 ;; edit-with-emacs ;;
 ;;;;;;;;;;;;;;;;;;;;;
 (use-package edit-server
-  :commands edit-server-start
-  :init (if after-init-time
-	    (edit-server-start)
-	  (add-hook 'after-init-hook
-		    #'(lambda() (edit-server-start))))
-  :config (setq edit-server-new-frame-alist
-		'((name . "Edit with Emacs FRAME"))))
+  :if window-system
+  :hook (after-init . edit-server-start)
+  :general
+  (qqq/local-leader
+    edit-server-edit-mode-map
+    "c" #'edit-server-done
+    "k" #'edit-server-abort)
+  :config
+  (setq edit-server-new-frame-alist '((name . "Edit with Emacs FRAME"))))
