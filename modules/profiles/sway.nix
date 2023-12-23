@@ -185,7 +185,7 @@ lib.mkProfile s "sway"
           modifier = "Mod4";
           terminal = lib.getExe config.programs.alacritty.package;
           startup = [
-            { command = "firefox"; }
+            { command = "emacs"; }
           ];
           menu = "${lib.getExe config.programs.wofi.package}";
           bars = [
