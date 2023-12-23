@@ -1200,3 +1200,15 @@ the focus."
 (use-package tramp
   :config
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+
+;;;;;;;;;;;;;;;;;;;;;
+;; edit-with-emacs ;;
+;;;;;;;;;;;;;;;;;;;;;
+(use-package edit-server
+  :commands edit-server-start
+  :init (if after-init-time
+	    (edit-server-start)
+	  (add-hook 'after-init-hook
+		    #'(lambda() (edit-server-start))))
+  :config (setq edit-server-new-frame-alist
+		'((name . "Edit with Emacs FRAME"))))
