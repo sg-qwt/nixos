@@ -22,6 +22,10 @@
     {
       device = "/dev/disk/by-uuid/18e03623-55e4-4c5a-bc84-0acb419365aa";
       fsType = "bcachefs";
+      options = [
+        "fsck"
+        "fix_errors"
+      ];
     };
 
   fileSystems."/boot" =
