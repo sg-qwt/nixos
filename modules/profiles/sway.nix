@@ -31,6 +31,8 @@ lib.mkProfile s "sway"
       status = lib.getExe config.programs.i3status-rust.package;
       swayr = lib.getExe config.programs.swayr.package;
       pavucontrol = lib.getExe pkgs.pavucontrol;
+      grim = lib.getExe pkgs.grim;
+      slurp = lib.getExe pkgs.slurp;
       status-config = "${config.xdg.configHome}/i3status-rust/config-default.toml";
       wallpaper = self + "/resources/wallpapers/wr.jpg";
       wpctl = "${pkgs.wireplumber}/bin/wpctl";
@@ -200,6 +202,12 @@ lib.mkProfile s "sway"
             "${modifier}+Shift+Return" = "exec ${swayr} switch-to-app-or-urgent-or-lru-window --skip-lru-if-current-doesnt-match Alacritty || alacritty";
             "${modifier}+s" = "layout toggle split";
             "${modifier}+Tab" = "exec ${swayr} switch-window";
+            "Print" = ''
+              exec ${grim} \
+                -g \"$(${pkgs.slurp}/bin/slurp)\" \
+                - | ${pkgs.wl-clipboard}/bin/wl-copy
+            '';
+            "${modifier}+Print" = "exec ${grim} ${config.xdg.userDirs.pictures}/screenshot-$(date +\"%Y-%m-%d-%H-%M-%S\").png";
             "XF86AudioRaiseVolume" = "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 5%+";
             "XF86AudioLowerVolume" = "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 5%-";
             "XF86AudioMute" = "exec ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
