@@ -1,23 +1,26 @@
-s@{ config, pkgs, lib, ... }:
-
-let
-  make-webapp = name: app: (pkgs.makeDesktopItem {
-    inherit name;
-    desktopName =
-      (lib.strings.toUpper (builtins.substring 0 1 name)) +
-      (builtins.substring 1 (-1) name);
-    exec = "${pkgs.brave}/bin/brave --new-window --window-name=\"chat-web-${name}\" \"${app}\"";
-  });
-in
+s@{ pkgs, lib, ... }:
 lib.mkProfile s "desktop-apps"
 {
   myos.firefox.enable = true;
 
-  myhome = { config, ... }: {
+  myhome = { config, ... }:
+    let
+      browser = lib.getExe config.programs.chromium.package;
+      make-webapp = name: app: (pkgs.makeDesktopItem {
+        inherit name;
+        desktopName =
+          (lib.strings.toUpper (builtins.substring 0 1 name)) +
+          (builtins.substring 1 (-1) name);
+        exec = "${browser} --new-window --window-name=\"chat-web-${name}\" \"${app}\"";
+      });
+    in
+    {
 
     programs.chromium = {
       enable = true;
-      package = pkgs.brave;
+      package = (pkgs.my.brave.override {
+        commandLineArgs = "--gtk-version=4";
+      });
       extensions = [
         { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # vimium
         { id = "knheggckgoiihginacbkhaalnibhilkk"; } # notion-web-clipper
