@@ -1215,3 +1215,9 @@ the focus."
   :config
   (edit-server-start)
   (setq edit-server-new-frame-alist '((name . "Edit with Emacs FRAME"))))
+
+;;;;;;;;;;;;
+;; telega ;;
+;;;;;;;;;;;;
+(use-package telega
+  :commands (telega))

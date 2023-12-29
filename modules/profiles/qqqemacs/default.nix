@@ -84,6 +84,8 @@ lib.mkProfile s "qqqemacs"
           gptel
 
           edit-server
+
+          telega
         ]) ++
 
         (with epkgs.elpaPackages; [
