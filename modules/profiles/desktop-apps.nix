@@ -16,46 +16,46 @@ lib.mkProfile s "desktop-apps"
     in
     {
 
-    programs.chromium = {
-      enable = true;
-      package = (pkgs.my.brave.override {
-        commandLineArgs = "--gtk-version=4";
-      });
-      extensions = [
-        { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # vimium
-        { id = "knheggckgoiihginacbkhaalnibhilkk"; } # notion-web-clipper
-        { id = "bhhhlbepdkbapadjdnnojkbgioiodbic"; } # solflare-wallet
-        { id = "ljobjlafonikaiipfkggjbhkghgicgoh"; } # edit-with-emacs
-        { id = "kdbmhfkmnlmbkgbabkdealhhbfhlmmon"; } # steamdb
-        { id = "ngonfifpkpeefnhelnfdkficaiihklid"; } # protondb-for-steam
-        {
-          id = "dcpihecpambacapedldabdbpakmachpb";
-          updateUrl = "https://raw.githubusercontent.com/iamadamdev/bypass-paywalls-chrome/master/src/updates/updates.xml";
-        }
+      programs.chromium = {
+        enable = true;
+        package = (pkgs.my.brave.override {
+          commandLineArgs = "--gtk-version=4";
+        });
+        extensions = [
+          { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # vimium
+          { id = "knheggckgoiihginacbkhaalnibhilkk"; } # notion-web-clipper
+          { id = "bhhhlbepdkbapadjdnnojkbgioiodbic"; } # solflare-wallet
+          { id = "ljobjlafonikaiipfkggjbhkghgicgoh"; } # edit-with-emacs
+          { id = "kdbmhfkmnlmbkgbabkdealhhbfhlmmon"; } # steamdb
+          { id = "ngonfifpkpeefnhelnfdkficaiihklid"; } # protondb-for-steam
+          {
+            id = "dcpihecpambacapedldabdbpakmachpb";
+            updateUrl = "https://raw.githubusercontent.com/iamadamdev/bypass-paywalls-chrome/master/src/updates/updates.xml";
+          }
+        ];
+      };
+
+      programs.mpv = {
+        enable = true;
+        package = pkgs.wrapMpv pkgs.mpv-unwrapped { youtubeSupport = true; };
+        config = {
+          profile = "gpu-hq";
+          hwdec = "auto";
+          ytdl-raw-options = "cookies-from-browser=firefox";
+        };
+      };
+
+      home.packages = with pkgs; [
+        # media
+        spotify
+        dmlive
+        libation
+
+        # chat
+        (make-webapp "element" "https://app.element.io")
+        (make-webapp "slack" "https://app.slack.com/client")
+        (make-webapp "discord" "https://discord.com/app")
+        (make-webapp "telegram" "https://web.telegram.org")
       ];
     };
-
-    programs.mpv = {
-      enable = true;
-      package = pkgs.wrapMpv pkgs.mpv-unwrapped { youtubeSupport = true; };
-      config = {
-        profile = "gpu-hq";
-        hwdec = "auto";
-        ytdl-raw-options = "cookies-from-browser=firefox";
-      };
-    };
-
-    home.packages = with pkgs; [
-      # media
-      spotify
-      dmlive
-      libation
-
-      # chat
-      (make-webapp "element" "https://app.element.io")
-      (make-webapp "slack" "https://app.slack.com/client")
-      (make-webapp "discord" "https://discord.com/app")
-      (make-webapp "telegram" "https://web.telegram.org")
-    ];
-  };
 }

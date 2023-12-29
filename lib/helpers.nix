@@ -23,7 +23,7 @@ rec {
 
   addPatches = pkg: patches:
     pkg.overrideAttrs (old: {
-      patches = (old.patches or []) ++ patches;
+      patches = (old.patches or [ ]) ++ patches;
     });
 
   lib = nixpkgs.lib.extend (
