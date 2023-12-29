@@ -278,6 +278,7 @@ lib.mkProfile s "sway"
       home.packages = with pkgs; [
         wl-clipboard
         xdg-utils
+        wf-recorder
       ];
 
       xdg.mimeApps = {
