@@ -289,6 +289,7 @@ If the buffer doesn't exist, create it first."
   ;;;;;;;;;;;;
   (qqq/leader
     :infix "b"
+    "l" #'telega
     "c" #'gptel
     "t" #'multi-vterm-dedicated-toggle
     "i" #'ibuffer
@@ -1220,4 +1221,16 @@ the focus."
 ;; telega ;;
 ;;;;;;;;;;;;
 (use-package telega
-  :commands (telega))
+  :commands (telega)
+  :hook (telega-chat-mode . qqq/setup-telega-capf)
+  :preface
+  (defun qqq/setup-telega-capf ()
+    (require 'company)
+    (setq-local completion-at-point-functions
+		(mapcar
+		 #'cape-company-to-capf
+		 (append (list 'telega-company-emoji
+			       'telega-company-username
+			       'telega-company-hashtag)
+			 (when (telega-chat-bot-p telega-chatbuf--chat)
+			   '(telega-company-botcmd)))))))
