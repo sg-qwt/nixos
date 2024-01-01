@@ -46,6 +46,7 @@ lib.mkProfile s "qqqemacs"
           marginalia
           consult
           cape
+          company # for company backends
 
           command-log-mode
 
