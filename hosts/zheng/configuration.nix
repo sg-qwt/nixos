@@ -25,6 +25,7 @@ let user = config.myos.user.mainUser; in
       enable = true;
       autoStart = true;
       user = user;
+      desktopSession = "gamescope-wayland";
     };
   };
 

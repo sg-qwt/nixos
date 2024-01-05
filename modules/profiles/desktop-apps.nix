@@ -32,6 +32,14 @@ lib.mkProfile s "desktop-apps"
             id = "dcpihecpambacapedldabdbpakmachpb";
             updateUrl = "https://raw.githubusercontent.com/iamadamdev/bypass-paywalls-chrome/master/src/updates/updates.xml";
           }
+          {
+            id = "ibmfbeedhmhhmgmplmndbdoeejcnjpig";
+            crxPath = pkgs.fetchurl {
+              url = "https://github.com/Baldomo/open-in-mpv/releases/download/v2.1.0/chrome.crx";
+              sha256 = "OAKTpLzrrKXLH8kUHu4c1sLgu/SKikEt839vMxL9Gmg=";
+            };
+            version = "2.0.1";
+          }
         ];
       };
 
@@ -42,6 +50,7 @@ lib.mkProfile s "desktop-apps"
           profile = "gpu-hq";
           hwdec = "auto";
           ytdl-raw-options = "cookies-from-browser=firefox";
+          input-ipc-server = "/tmp/mpvsocket";
         };
       };
 

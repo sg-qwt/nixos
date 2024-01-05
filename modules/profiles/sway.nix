@@ -7,9 +7,13 @@ lib.mkProfile s "sway"
 
   xdg.portal = {
     enable = true;
+    xdgOpenUsePortal = true;
     wlr.enable = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-    config.sway.default = [ "wlr" "gtk" ];
+    config = {
+      common.default = [ "gtk" ];
+      sway.default = [ "wlr" "gtk" ];
+    };
   };
 
   security.polkit.enable = true;
@@ -172,6 +176,11 @@ lib.mkProfile s "sway"
       wayland.windowManager.sway = {
         enable = true;
 
+        # fix xdg-open with xdgOpenUsePortals
+        extraSessionCommands = ''
+          dbus-update-activation-environment --systemd --all
+        '';
+
         systemd = {
           enable = true;
           xdgAutostart = true;
@@ -279,17 +288,31 @@ lib.mkProfile s "sway"
         wl-clipboard
         xdg-utils
         wf-recorder
+        (open-in-mpv.override {
+          buildGoModule = args: buildGoModule (args // rec {
+            version = "07fc639b2882a9a68e539f0fc34b61e247c355fa";
+            src = fetchFromGitHub {
+              owner = "Baldomo";
+              repo = "open-in-mpv";
+              rev = version;
+              hash = "sha256-XkoXvSh5uu96isXc1at36mxSCPylHgMLN97qSpj2cyc=";
+            };
+            vendorHash = "sha256-G6GZO2+CfEAYcf7zBcqDa808A0eJjM8dq7+4VGZ+P4c=";
+          });
+        })
       ];
 
       xdg.mimeApps = {
         enable = true;
         defaultApplications = {
+          # nix shell nixpkgs#glib -c gio mime x-scheme-handler/mpv
+          "x-scheme-handler/mpv" = "open-in-mpv.desktop";
+          "application/pdf" = "brave.desktop";
           "text/html" = "brave.desktop";
           "x-scheme-handler/http" = "brave.desktop";
           "x-scheme-handler/https" = "brave.desktop";
           "x-scheme-handler/about" = "brave.desktop";
           "x-scheme-handler/unknown" = "brave.desktop";
-          "application/pdf" = "brave.desktop";
         };
       };
     };
