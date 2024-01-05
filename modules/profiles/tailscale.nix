@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, self, ... }:
+s@{ config, lib, self, ... }:
 lib.mkProfile s "tailscale" (
   let
     interface = "tailscale0";
@@ -9,37 +9,18 @@ lib.mkProfile s "tailscale" (
       enable = true;
       interfaceName = interface;
       port = port;
+      authKeyFile = config.sops.secrets.tailscale_tailnet_key.path;
+      openFirewall = true;
     };
     systemd.services.tailscaled.environment = {
       TS_NO_LOGS_NO_SUPPORT = "true";
     };
 
-    networking.firewall.allowedUDPPorts = [ port ];
     networking.firewall.trustedInterfaces = [ interface ];
-
-    systemd.services.tailscale-setup = {
-      script = ''
-        sleep 10
-
-        if tailscale status; then
-          echo "tailscale already up, skip"
-        else
-          echo "tailscale down, login using auth key"
-          tailscale up --auth-key "file:${config.sops.secrets.tailscale_tailnet_key.path}"
-        fi
-      '';
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-      };
-      path = [ config.services.tailscale.package ];
-      after = [ "tailscaled.service" ];
-      requiredBy = [ "tailscaled.service" ];
-    };
 
     sops.secrets.tailscale_tailnet_key = {
       sopsFile = self + "/secrets/tfout.json";
-      restartUnits = [ "tailscale-setup.service" ];
+      restartUnits = [ "tailscale-autoconnect.service" ];
     };
   }
 )
