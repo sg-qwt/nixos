@@ -1,4 +1,4 @@
-{ sources, self, nixpkgs }:
+{ self, nixpkgs }:
 rec {
   patchDesktop = pkgs: pkg: appName: from: to: lib.hiPrio
     (pkgs.runCommand "$patched-desktop-entry-for-${appName}" { }
@@ -41,7 +41,7 @@ rec {
             (pkgname:
               {
                 name = pkgname;
-                value = (prev.callPackage (self + "/packages/${pkgname}") (args // { nvsource = sources."${pkgname}"; }));
+                value = (prev.callPackage (self + "/packages/${pkgname}") args);
               })
             (builtins.attrNames (builtins.readDir (self + "/packages")))));
       sway-unwrapped = addPatches prev.sway-unwrapped [

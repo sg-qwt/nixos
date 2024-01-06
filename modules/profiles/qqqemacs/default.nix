@@ -1,4 +1,4 @@
-s@{ config, pkgs, sources, lib, self, ... }:
+s@{ config, pkgs, lib, self, ... }:
 lib.mkProfile s "qqqemacs"
   (
     let
