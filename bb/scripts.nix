@@ -2,7 +2,6 @@
 {
   ci-update = pkgs.my.write-bb {
     name = "myos-update";
-    deps = with pkgs; [ nvfetcher ];
     source = (self + "/bb/update.clj");
   };
 

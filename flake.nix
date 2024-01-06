@@ -30,12 +30,6 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
-    nvfetcher = {
-      url = "github:berberman/nvfetcher";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
-
     jovian = {
       url = "github:Jovian-Experiments/Jovian-NixOS";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -55,18 +49,16 @@
         overlays = [
           self.overlays.default
           attic.overlays.default
-          nvfetcher.overlays.default
         ];
       };
 
-      sources = import ./_sources/generated.nix { inherit (pkgs) fetchurl fetchgit fetchFromGitHub dockerTools; };
-      helpers = import ./lib/helpers.nix { inherit sources self nixpkgs; };
+      helpers = import ./lib/helpers.nix { inherit self nixpkgs; };
 
       mkOS = { name, p ? pkgs }: {
         ${name} = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = {
-            inherit home-manager self inputs sources;
+            inherit home-manager self inputs;
             pkgs = p;
             lib = helpers.lib;
           };

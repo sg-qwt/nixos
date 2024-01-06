@@ -8,16 +8,7 @@
   []
   (let [flake-out (-> (shell {:err :string} "nix flake update")
                       :err)
-        nv-out (-> (shell {:out :string} "nvfetcher")
-                   :out)
-        report (str "<pre># Update report\n"
-                    "# flake lock update\n"
-                    flake-out
-                    \newline
-                    "# nvfetcher update\n"
-                    nv-out
-                    \newline
-                    "</pre>")]
+        report (str "<pre># Update report\n" "# flake lock update\n" flake-out \newline "</pre>")]
     (when-let [output (System/getenv "GITHUB_OUTPUT")]
       (println ">>> setting summary")
       (spit output (str "report<<EOF\n" report "\nEOF") :append true))

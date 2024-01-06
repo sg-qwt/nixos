@@ -1,6 +1,5 @@
 { lib }:
 let
-
   cilib = import ../lib/ci-lib.nix;
   inherit (cilib) ghexpr runs-on steps;
 in
@@ -34,8 +33,8 @@ in
           name = "Create PR";
           uses = "peter-evans/create-pull-request@v5.0.2";
           "with" = {
-            commit-message = "auto: flake and nvfetcher update";
-            title = "Update flake.lock and nvfetcher sources";
+            commit-message = "auto: flake update";
+            title = "Update flake.lock sources";
             token = ghexpr "secrets.PAT";
             body = ghexpr "steps.update.outputs.report";
             branch = "ci-update";
