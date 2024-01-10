@@ -531,7 +531,9 @@ If the buffer doesn't exist, create it first."
   (setq display-line-numbers-type 'relative)
   (defcustom display-line-numbers-exempt-modes
     '(nov-mode
-      pdf-view-mode)
+      pdf-view-mode
+      telega-root-mode
+      telega-chat-mode)
     "Major modes on which to disable line numbers."
     :group 'display-line-numbers
     :type 'list
@@ -1067,7 +1069,7 @@ the focus."
 
 (use-package ibuffer-vc
   :hook (ibuffer . ibuffer-vc-set-filter-groups-by-vc-root)
-  :custom (ibuffer-vc-skip-if-remote 'nil)
+  :custom (ibuffer-vc-skip-if-remote nil)
   :config
   ;; include project local vterm, leave dedicated alone
   (setq ibuffer-vc-buffer-file-name-function
@@ -1223,6 +1225,8 @@ the focus."
 (use-package telega
   :commands (telega)
   :hook (telega-chat-mode . qqq/setup-telega-capf)
+  :custom
+  (telega-filter-custom-one-liners nil)
   :preface
   (defun qqq/setup-telega-capf ()
     (require 'company)
