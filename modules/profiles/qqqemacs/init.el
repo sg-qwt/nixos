@@ -1227,6 +1227,7 @@ the focus."
   :hook (telega-chat-mode . qqq/setup-telega-capf)
   :custom
   (telega-filter-custom-one-liners nil)
+  (telega-completing-read-function completing-read-function)
   :preface
   (defun qqq/setup-telega-capf ()
     (require 'company)
