@@ -22,6 +22,7 @@ lib.mkProfile s "transmission" {
 
   services.transmission = {
     enable = true;
+    webHome = pkgs.flood-for-transmission;
     credentialsFile = config.sops.templates.transmission-credentials.path;
     settings = {
       peer-port = ports.transmission-peer;
@@ -30,6 +31,10 @@ lib.mkProfile s "transmission" {
       rpc-authentication-required = true;
       rpc-whitelist-enabled = false;
       rpc-host-whitelist-enabled = false;
+      speed-limit-up-enabled = true;
+      speed-limit-up = 100;
+      speed-limit-down-enabled = true;
+      speed-limit-down = 10000;
     };
   };
 
