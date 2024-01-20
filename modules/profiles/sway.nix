@@ -205,7 +205,6 @@ lib.mkProfile s "sway"
               statusCommand = "${status} ${status-config}";
             }
           ];
-
           keybindings = lib.mkOptionDefault {
             "${modifier}+e" = "exec ${swayr} switch-to-app-or-urgent-or-lru-window --skip-lru-if-current-doesnt-match emacs || emacs";
             "${modifier}+Shift+Return" = "exec ${swayr} switch-to-app-or-urgent-or-lru-window --skip-lru-if-current-doesnt-match Alacritty || alacritty";
@@ -266,16 +265,19 @@ lib.mkProfile s "sway"
             { app_id = "pavucontrol"; }
             { app_id = "blueman-manager"; }
           ];
-          window.commands = [
-            {
-              criteria = { shell = "xwayland"; };
-              command = "title_format \"[XWayland] %title\"";
-            }
-            {
-              criteria = { app_id = "brave-browser"; title = "chat-web-"; };
-              command = "layout tabbed";
-            }
-          ];
+          window = {
+            titlebar = false;
+            commands = [
+              {
+                criteria = { shell = "xwayland"; };
+                command = "title_format \"[XWayland] %title\"";
+              }
+              {
+                criteria = { app_id = "brave-browser"; title = "chat-web-"; };
+                command = "layout tabbed";
+              }
+            ];
+          };
         };
 
         extraConfig = ''
