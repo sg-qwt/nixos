@@ -23,7 +23,7 @@ lib.mkProfile s "sway"
     enable = true;
     settings = {
       default_session = {
-        command = "${lib.getExe pkgs.greetd.tuigreet} --asterisks --time --cmd sway";
+        command = "${lib.getExe pkgs.greetd.tuigreet} --asterisks --time --cmd 'systemd-cat --identifier=sway sway'";
         user = config.myos.user.mainUser;
       };
     };
@@ -61,6 +61,10 @@ lib.mkProfile s "sway"
 
       gtk = {
         enable = true;
+        iconTheme = {
+          name = "Papirus-Dark";
+          package = pkgs.papirus-icon-theme;
+        };
       };
 
       services.mako = {
@@ -203,6 +207,9 @@ lib.mkProfile s "sway"
             {
               position = "bottom";
               statusCommand = "${status} ${status-config}";
+              extraConfig = ''
+                icon_theme ${config.gtk.iconTheme.name}
+              '';
             }
           ];
           keybindings = lib.mkOptionDefault {
