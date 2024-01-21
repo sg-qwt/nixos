@@ -3,6 +3,7 @@ lib.mkProfile s "tmux"
 {
   programs.tmux = {
     enable = true;
+    secureSocket = false;
     keyMode = "vi";
     baseIndex = 1;
     newSession = true;
