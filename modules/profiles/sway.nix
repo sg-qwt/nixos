@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, home-manager, self, ... }:
+s@{ config, pkgs, lib, self, ... }:
 lib.mkProfile s "sway"
 {
   programs.dconf.enable = true;
@@ -219,7 +219,7 @@ lib.mkProfile s "sway"
             "${modifier}+Tab" = "exec ${swayr} switch-window";
             "Print" = ''
               exec ${grim} \
-                -g \"$(${pkgs.slurp}/bin/slurp)\" \
+                -g \"$(${slurp})\" \
                 - | ${pkgs.wl-clipboard}/bin/wl-copy
             '';
             "${modifier}+Print" = "exec ${grim} ${config.xdg.userDirs.pictures}/screenshot-$(date +\"%Y-%m-%d-%H-%M-%S\").png";
@@ -234,20 +234,29 @@ lib.mkProfile s "sway"
             "*" = {
               bg = "${wallpaper} fill";
             };
-            "${monitor.internal}" = {
-              scale = "1.5";
-            };
-            # docked setup
             "${monitor.main}" = {
               resolution = "3840x2160";
               position = "0 0";
               scale = "2";
             };
-            "${monitor.side}" = {
-              resolution = "1920x1080";
+            "${monitor.internal}" = {
               position = "1920 0";
+              scale = "1.5";
             };
           };
+
+          workspaceOutputAssign = [
+            { workspace = "1"; output = monitor.main; }
+            { workspace = "2"; output = monitor.main; }
+            { workspace = "3"; output = monitor.main; }
+            { workspace = "4"; output = monitor.main; }
+            { workspace = "5"; output = monitor.main; }
+            { workspace = "6"; output = monitor.internal; }
+            { workspace = "7"; output = monitor.internal; }
+            { workspace = "8"; output = monitor.internal; }
+            { workspace = "9"; output = monitor.internal; }
+          ];
+
           input = {
             "1:1:AT_Translated_Set_2_keyboard" = {
               xkb_options = "ctrl:nocaps";
