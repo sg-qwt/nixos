@@ -28,6 +28,7 @@
 
   hardware.pulseaudio.enable = false;
 
+  services.fwupd.enable = true;
   services.pipewire = {
     enable = true;
     alsa = {
