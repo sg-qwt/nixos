@@ -27,8 +27,6 @@
   };
 
   hardware.pulseaudio.enable = false;
-
-  services.fwupd.enable = true;
   services.pipewire = {
     enable = true;
     alsa = {
@@ -38,17 +36,17 @@
     pulse.enable = true;
   };
 
-  systemd.services.thinkpad-fix-sound =
-    let targets = [ "suspend.target" "hibernate.target" "hybrid-sleep.target" "suspend-then-hibernate.target" ]; in
-    {
-      description = "Fix the sound on X1";
-      path = [ pkgs.alsaTools ];
-      wantedBy = [ "sound.target" ] ++ targets;
-      after = [ "sound.target" "graphical.target" "multi-user.target" ] ++ targets;
-      script = ''
-        hda-verb /dev/snd/hwC0D0 0x1d SET_PIN_WIDGET_CONTROL 0x0
-      '';
+  services.acpid = {
+    enable = true;
+    handlers = {
+      headphone-fix-noise = {
+        event = "jack/headphone HEADPHONE plug";
+        action = "${pkgs.alsaTools}/bin/hda-verb /dev/snd/hwC0D0 0x1d SET_PIN_WIDGET_CONTROL 0x0";
+      };
     };
+  };
+
+  services.fwupd.enable = true;
 
   myos.sway.enable = true;
 
