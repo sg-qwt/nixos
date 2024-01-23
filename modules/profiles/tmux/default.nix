@@ -7,11 +7,15 @@ lib.mkProfile s "tmux"
     keyMode = "vi";
     baseIndex = 1;
     newSession = true;
-    shortcut = "a";
     historyLimit = 10000;
     terminal = "tmux-256color";
     customPaneNavigationAndResize = true;
     extraConfig = ''
+      unbind C-b
+      set -g prefix C-a
+      bind C-a send-prefix
+      bind Tab last-window
+
       bind | split-window -h
       bind - split-window -v
 
