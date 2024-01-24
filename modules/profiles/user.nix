@@ -32,7 +32,7 @@ in
 
     users.users."${cfg.mainUser}" = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "networkmanager" "audio" "video" "docker" "systemd-journal" ] ++ cfg.extraGroups;
+      extraGroups = [ "wheel" "networkmanager" "audio" "video" "systemd-journal" ] ++ cfg.extraGroups;
       hashedPasswordFile = config.sops.secrets.me-password.path;
       openssh.authorizedKeys.keyFiles = [
         (self + "/resources/keys/ssh-me.pub")
