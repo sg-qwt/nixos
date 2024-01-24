@@ -2,6 +2,7 @@ s@{ config, pkgs, lib, inputs, self, ... }:
 lib.mkProfile s "docker" {
   virtualisation.docker.enable = true;
 
+  myos.user.extraGroups = [ "docker" ];
   virtualisation.oci-containers = {
     backend = "docker";
     containers =
