@@ -48,7 +48,7 @@ lib.mkProfile s "sway"
       monitor = {
         main = "Dell Inc. DELL U2718QM MYPFK89J15HL";
         side = "ICD Inc GX259F Unknown";
-        internal = "eDP-1";
+        internal = "California Institute of Technology 0x1303 Unknown";
       };
     in
     {
@@ -236,11 +236,10 @@ lib.mkProfile s "sway"
             };
             "${monitor.main}" = {
               resolution = "3840x2160";
-              position = "0 0";
               scale = "2";
             };
             "${monitor.internal}" = {
-              position = "1920 0";
+              resolution = "2160x1350";
               scale = "1.5";
             };
           };
@@ -300,6 +299,32 @@ lib.mkProfile s "sway"
           bindswitch --reload --locked lid:on output ${monitor.internal} disable
           bindswitch --reload --locked lid:off output ${monitor.internal} enable
         '';
+      };
+
+      services.kanshi = {
+        enable = true;
+        profiles = {
+          undocked = {
+            outputs = [
+              {
+                criteria = "${monitor.internal}";
+                position = "0,0";
+              }
+            ];
+          };
+          docked = {
+            outputs = [
+              {
+                criteria = "${monitor.main}";
+                position = "0,0";
+              }
+              {
+                criteria = "${monitor.internal}";
+                position = "1920,0";
+              }
+            ];
+          };
+        };
       };
 
       home.packages = with pkgs; [
