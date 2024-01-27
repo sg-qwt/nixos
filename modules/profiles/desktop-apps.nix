@@ -11,7 +11,7 @@ lib.mkProfile s "desktop-apps"
         desktopName =
           (lib.strings.toUpper (builtins.substring 0 1 name)) +
           (builtins.substring 1 (-1) name);
-        exec = "${browser} --new-window --window-name=\"chat-web-${name}\" \"${app}\"";
+        exec = "${browser} --new-window --app=\"${app}\"";
       });
     in
     {

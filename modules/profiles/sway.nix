@@ -272,9 +272,6 @@ lib.mkProfile s "sway"
             "8" = [
               { app_id = ""; title = "^Spotify"; }
             ];
-            "9" = [
-              { app_id = "brave-browser"; title = "chat-web-"; }
-            ];
           };
           floating.criteria = [
             { app_id = "pavucontrol"; }
@@ -288,7 +285,7 @@ lib.mkProfile s "sway"
                 command = "title_format \"[XWayland] %title\"";
               }
               {
-                criteria = { app_id = "brave-browser"; title = "chat-web-"; };
+                criteria = { app_id = "^brave-(?!browser).*"; };
                 command = "layout tabbed";
               }
             ];
