@@ -138,14 +138,6 @@ lib.mkProfile s "qqqemacs"
           # needed by nov.el
           unzip
 
-          (makeDesktopItem {
-            name = "org-protocol";
-            exec = "emacsclient --create-frame %u";
-            comment = "Org Protocol";
-            desktopName = "org-protocol";
-            type = "Application";
-            mimeTypes = [ "x-scheme-handler/org-protocol" ];
-          })
           self.packages.${pkgs.system}.bento
         ];
       };
