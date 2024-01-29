@@ -226,6 +226,7 @@ If the buffer doesn't exist, create it first."
 
   (qqq/leader
     :infix "c"
+    "" '(:ignore t :wk "comment")
     "l" #'comment-line
     "b" #'comment-box
     "r" #'comment-or-uncomment-region
@@ -233,6 +234,7 @@ If the buffer doesn't exist, create it first."
 
   (qqq/leader
     :infix "h"
+    "" '(:ignore t :wk "help")
     "s" #'describe-symbol
     "k" #'describe-key
     "K" #'describe-keymap
@@ -246,6 +248,7 @@ If the buffer doesn't exist, create it first."
 
   (qqq/leader
     :infix "t"
+    "" '(:ignore t :wk "toggle")
     "m" #'consult-minor-mode-menu
     "s" #'consult-theme
     "t" #'modus-themes-toggle
@@ -257,6 +260,7 @@ If the buffer doesn't exist, create it first."
   ;;;;;;;;;;;;
   (qqq/leader
     :infix "s"
+    "" '(:ignore t :wk "search")
     "c" #'evil-ex-nohighlight
     "b" #'consult-line
     "p" #'consult-ripgrep)
@@ -266,6 +270,7 @@ If the buffer doesn't exist, create it first."
   ;;;;;;;;;;;;;
   (qqq/leader
     :infix "p"
+    "" '(:ignore t :wk "project")
     "p" #'project-switch-project
     "l" #'project-switch-project
     "T" #'(lambda ()
@@ -278,6 +283,7 @@ If the buffer doesn't exist, create it first."
   ;;;;;;;;;;
   (qqq/leader
     :infix "m"
+    "" '(:ignore t :wk "myos")
     "b" #'(lambda ()
 	    "Build current host"
 	    (interactive) (qqq/system.build (system-name)))
@@ -289,6 +295,7 @@ If the buffer doesn't exist, create it first."
   ;;;;;;;;;;;;
   (qqq/leader
     :infix "b"
+    "" '(:ignore t :wk "buffer")
     "l" #'telega
     "c" #'gptel
     "t" #'multi-vterm-dedicated-toggle
@@ -305,6 +312,7 @@ If the buffer doesn't exist, create it first."
   ;;;;;;;;;;
   (qqq/leader
     :infix "f"
+    "" '(:ignore t :wk "file")
     "r" #'qqq/rename-current-buffer-file
     "f" #'find-file
     "p" #'project-find-file
