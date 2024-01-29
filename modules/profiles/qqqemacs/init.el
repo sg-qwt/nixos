@@ -147,6 +147,8 @@ If the buffer doesn't exist, create it first."
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
 
+  (server-start)
+
   ;;;;;;;;;;
   ;; font ;;
   ;;;;;;;;;;

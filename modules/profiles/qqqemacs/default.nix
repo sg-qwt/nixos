@@ -157,6 +157,8 @@ lib.mkProfile s "qqqemacs"
           source = ./snippets;
           recursive = true;
         };
+
+        home.sessionVariables.EDITOR = "emacsclient -t";
       };
     }
   )
