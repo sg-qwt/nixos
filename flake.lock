@@ -26,6 +26,56 @@
         "type": "github"
       }
     },
+    "chugou": {
+      "inputs": {
+        "clojure-nix-locker": "clojure-nix-locker",
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": "treefmt-nix"
+      },
+      "locked": {
+        "lastModified": 1706559132,
+        "narHash": "sha256-dhyVQZOwuqBcLrdUxy2ylSFYJycAu7JR/4ac7hyRwko=",
+        "owner": "sg-qwt",
+        "repo": "chugou",
+        "rev": "5f5bdbcfa4fb8870ccdaeb633d4233f6316e0988",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sg-qwt",
+        "repo": "chugou",
+        "type": "github"
+      }
+    },
+    "clojure-nix-locker": {
+      "inputs": {
+        "flake-utils": [
+          "chugou",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "chugou",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1690395402,
+        "narHash": "sha256-CgbSNEzZwputkS6HpZbBe8uaBTjttlpPNvDqJrw0Foc=",
+        "owner": "bevuta",
+        "repo": "clojure-nix-locker",
+        "rev": "e2b0e4b043197b8d63e39c37333054689427a997",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bevuta",
+        "repo": "clojure-nix-locker",
+        "type": "github"
+      }
+    },
     "crane": {
       "inputs": {
         "flake-compat": [
@@ -219,13 +269,14 @@
     "root": {
       "inputs": {
         "attic": "attic",
+        "chugou": "chugou",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "jovian": "jovian",
         "nixpkgs": "nixpkgs",
         "nur": "nur",
         "sops-nix": "sops-nix",
-        "treefmt-nix": "treefmt-nix"
+        "treefmt-nix": "treefmt-nix_2"
       }
     },
     "rust-overlay": {
@@ -292,6 +343,27 @@
       }
     },
     "treefmt-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "chugou",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1706111218,
+        "narHash": "sha256-ueC4DvzFzN9Ft3kLSv8g6uuT3Ghz+jZ7UlGQFPZxBrg=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "23f601bfdef75e21fe8854e24a043bb642201794",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "treefmt-nix_2": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
