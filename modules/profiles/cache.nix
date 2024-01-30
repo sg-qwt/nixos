@@ -1,10 +1,11 @@
-s@{ config, pkgs, lib, inputs, self, ... }:
+s@{ config, lib, self, ... }:
 let
-  inherit (config.myos.data) fqdn ports;
+  inherit (config.myos.data) fqdn;
 in
 lib.mkProfile s "cache" {
   sops.secrets.attic-hello-token = {
     sopsFile = self + "/secrets/secrets.yaml";
+    restartUnits = [ "nix-daemon.service" ];
   };
 
   sops.templates.netrc.content = ''
@@ -24,4 +25,23 @@ lib.mkProfile s "cache" {
     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     "hello:1i/LXgtEDpGmjTelurlADkaoFZdBP55NBJMxL2swzLY="
   ];
+
+  sops.secrets.github-pat = {
+    sopsFile = self + "/secrets/secrets.yaml";
+    restartUnits = [ "nix-daemon.service" ];
+  };
+
+  users.groups.nix-access-tokens = { };
+  sops.templates.nix-extra-config = {
+    content = ''
+      extra-access-tokens = github.com=${config.sops.placeholder.github-pat}
+    '';
+    mode = "0440";
+    group = config.users.groups.nix-access-tokens.name;
+  };
+  myos.user.extraGroups = [ config.users.groups.nix-access-tokens.name ];
+
+  nix.extraOptions = ''
+    !include ${config.sops.templates.nix-extra-config.path}
+  '';
 }
