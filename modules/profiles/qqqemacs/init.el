@@ -108,17 +108,14 @@ If the buffer doesn't exist, create it first."
   (minibuffer-depth-indicate-mode 1))
 
 (use-package startup
-  :preface
-  (defun qqq/startup ()
-    (with-current-buffer "*scratch*"
-      (goto-char (point-max))
-      (insert (concat "\n;; Emacs startup time: "
-		      (format "%d packages loaded in %s" (length package-activated-list) (emacs-init-time))))))
-  :hook
-  (emacs-startup . qqq/startup)
+  :no-require t
   :custom
   (inhibit-startup-screen t)
-  (initial-scratch-message (shell-command-to-string "bento grab-shi"))
+  (initial-scratch-message
+   (concat
+    (shell-command-to-string "bento grab-shi")
+    "\n;; Emacs startup time: "
+    (format "%d packages loaded in %s" (length package-activated-list) (emacs-init-time))))
   (initial-major-mode 'emacs-lisp-mode))
 
 (use-package emacs
