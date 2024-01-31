@@ -7,7 +7,7 @@ jobs:
     - name: Install Nix
       uses: cachix/install-nix-action@v25
       with:
-        github_access_token: ${{ secrets.GITHUB_TOKEN }}
+        github_access_token: ${{ secrets.PAT }}
     - id: update
       name: Update
       run: 'nix run .#ci-update

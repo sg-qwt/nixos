@@ -14,7 +14,7 @@ rec {
       name = "Install Nix";
       uses = "cachix/install-nix-action@v25";
       "with" = {
-        github_access_token = ghexpr "secrets.GITHUB_TOKEN";
+        github_access_token = ghexpr "secrets.PAT";
       };
     };
 
