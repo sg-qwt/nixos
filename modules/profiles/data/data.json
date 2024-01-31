@@ -21,7 +21,8 @@
 	"prometheus-node-exporter": 9383,
 	"rsshub": 1264,
 	"transmission": 9191,
-	"transmission-peer": 51513
+	"transmission-peer": 51513,
+	"chugou": 8888
     },
     "fqdn":{
 	"edg": "edgerunners.eu.org"
