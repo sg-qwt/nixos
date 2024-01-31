@@ -20,3 +20,10 @@ creation_rules:
     key_groups:
     - pgp:
       - *main
+  - path_regex: chugou\.yaml$
+    key_groups:
+    - age:
+      - *lei
+      - *dui
+      pgp:
+      - *main

@@ -38,11 +38,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1706559132,
-        "narHash": "sha256-dhyVQZOwuqBcLrdUxy2ylSFYJycAu7JR/4ac7hyRwko=",
+        "lastModified": 1706696093,
+        "narHash": "sha256-78qpzo1P/YTsgYrwYSYtfGw0j0yjtANlunQcPDqoOPY=",
         "owner": "sg-qwt",
         "repo": "chugou",
-        "rev": "5f5bdbcfa4fb8870ccdaeb633d4233f6316e0988",
+        "rev": "95fbca78e32e93625c782dcc8ced976300b0df42",
         "type": "github"
       },
       "original": {
