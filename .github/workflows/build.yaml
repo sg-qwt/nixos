@@ -38,7 +38,7 @@ jobs:
         || (github.event.pull_request.head.repo.full_name == github.repository) ||
         (github.event_name == 'push') }}
       name: Install Nix
-      uses: cachix/install-nix-action@v22
+      uses: cachix/install-nix-action@v25
       with:
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
     - if: ${{ (github.event.inputs.host == 'all') || (matrix.host == github.event.inputs.host)
@@ -72,7 +72,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
     - name: Install Nix
-      uses: cachix/install-nix-action@v22
+      uses: cachix/install-nix-action@v25
       with:
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Eval Host ${{ matrix.host }}
@@ -94,9 +94,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
     - name: Install Nix
-      uses: cachix/install-nix-action@v22
+      uses: cachix/install-nix-action@v25
       with:
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Flake Meta
+      run: nix flake metadata github:sg-qwt/chugou
     - name: Flake Check
       run: nix flake check --verbose --print-build-logs
 name: Build
