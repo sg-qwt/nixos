@@ -5,7 +5,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
     - name: Install Nix
-      uses: cachix/install-nix-action@v22
+      uses: cachix/install-nix-action@v25
       with:
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
     - id: update
@@ -18,9 +18,9 @@ jobs:
       with:
         body: ${{ steps.update.outputs.report }}
         branch: ci-update
-        commit-message: 'auto: flake and nvfetcher update'
+        commit-message: 'auto: flake update'
         delete-branch: true
-        title: Update flake.lock and nvfetcher sources
+        title: Update flake.lock sources
         token: ${{ secrets.PAT }}
 name: Update
 'on':

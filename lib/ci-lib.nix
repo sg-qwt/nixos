@@ -12,7 +12,7 @@ rec {
 
     install-nix = {
       name = "Install Nix";
-      uses = "cachix/install-nix-action@v22";
+      uses = "cachix/install-nix-action@v25";
       "with" = {
         github_access_token = ghexpr "secrets.GITHUB_TOKEN";
       };
