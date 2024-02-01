@@ -13,8 +13,6 @@ in
       tag = "vless-in";
       listen = "::";
       listen_port = ports.reality;
-      proxy_protocol = false;
-      # proxy_protocol_accept_no_header = true;
       users = [
         {
           uuid = config.sops.placeholder.sing-vless-uuid;
