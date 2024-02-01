@@ -1,7 +1,7 @@
 { config, lib, inputs, self, ... }:
 with lib;
 let
-  inherit (config.myos.data) ports;
+  inherit (config.myos.data) ports fqdn;
   cfg = config.myos.chugou;
 in
 {
@@ -23,6 +23,14 @@ in
       enable = true;
       webPort = ports.chugou;
       credentialsFile = config.sops.secrets.chugou-env.path;
+    };
+
+    services.nginx.virtualHosts."chugou.${fqdn.edg}" = {
+      forceSSL = true;
+      useACMEHost = "edg";
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:${toString ports.chugou}";
+      };
     };
   };
 }

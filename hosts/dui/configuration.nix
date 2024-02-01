@@ -26,6 +26,8 @@ let edg = config.myos.data.fqdn.edg; in
   myos.transmission.enable = true;
   myos.dygift.enable = true;
 
+  myos.chugou.enable = true;
+
   sops.secrets.cloudflare_token = {
     sopsFile = self + "/secrets/tfout.json";
   };
