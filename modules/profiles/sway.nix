@@ -40,8 +40,7 @@ lib.mkProfile s "sway"
       status-config = "${config.xdg.configHome}/i3status-rust/config-default.toml";
       wallpaper = self + "/resources/wallpapers/wr.jpg";
       wpctl = "${pkgs.wireplumber}/bin/wpctl";
-      bento = self.packages.${pkgs.system}.bento;
-      bento-bin = "${bento}/bin/bento";
+      bento = lib.getExe self.packages.${pkgs.system}.bento;
       curl = lib.getExe pkgs.curl;
       jq = lib.getExe pkgs.jq;
 
@@ -148,8 +147,8 @@ lib.mkProfile s "sway"
           allow_images = false;
           insensitive = true;
           key_left = "Control_L-h";
-          key_down = "Control_L-j";
-          key_up = "Control_L-k";
+          key_down = "Down,Control_L-j";
+          key_up = "Up,Control_L-k";
           key_right = "Control_L-l";
         };
       };
@@ -226,8 +225,9 @@ lib.mkProfile s "sway"
             "XF86AudioRaiseVolume" = "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 5%+";
             "XF86AudioLowerVolume" = "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 5%-";
             "XF86AudioMute" = "exec ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
-            "XF86MonBrightnessUp" = "exec ${bento-bin} brightness up";
-            "XF86MonBrightnessDown" = "exec ${bento-bin} brightness down";
+            "XF86MonBrightnessUp" = "exec ${bento} brightness up";
+            "XF86MonBrightnessDown" = "exec ${bento} brightness down";
+            "${modifier}+Shift+p" = "exec ${bento} power-menu";
           };
 
           output = {
