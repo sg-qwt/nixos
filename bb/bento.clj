@@ -91,6 +91,22 @@
        (str/join \newline)
        (println)))
 
+(def power-menu
+  {:suspend "systemctl suspend" :reboot "systemctl reboot" :poweroff "systemctl poweroff"})
+
+(defn run-menu
+  []
+  (let [entries (->> power-menu
+                     keys
+                     (map name)
+                     (str/join "\n"))
+        result (-> (shell {:out :string} (format "echo '%s'" entries))
+                   (shell {:out :string} "wofi --dmenu --cache-file /dev/null")
+                   :out
+                   str/trim
+                   keyword)]
+    (shell (power-menu result))))
+
 (def spec
   [[:host {:desc "Host to deploy." :default (my-host) :coerce :keyword}]
    [:list-hosts {:desc "List all available hosts" :alias :l :coerce boolean}]
@@ -100,6 +116,7 @@
   [{:cmds ["deploy"] :fn deploy :args->opts [:host :list-hosts]}
    {:cmds ["brightness" "up"] :fn (fn [_] (change-brightness :up))}
    {:cmds ["brightness" "down"] :fn (fn [_] (change-brightness :down))}
-   {:cmds ["grab-shi"] :fn (fn [_] (grab-shi (System/getenv "SHI_DATA")))}])
+   {:cmds ["grab-shi"] :fn (fn [_] (grab-shi (System/getenv "SHI_DATA")))}
+   {:cmds ["power-menu"] :fn (fn [_] (run-menu))}])
 
 (cli/dispatch table *command-line-args* {:spec spec})
