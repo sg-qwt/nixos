@@ -29,5 +29,6 @@ lib.mkProfile s "clojure-dev"
 
     home.sessionVariables.CLJ_CONFIG = "${config.xdg.configHome}/clojure";
     xdg.configFile."clojure/deps.edn".source = ./deps.edn;
+    xdg.configFile."clojure-lsp/config.edn".source = ./config.edn;
   };
 }

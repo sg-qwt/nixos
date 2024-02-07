@@ -12,6 +12,16 @@ lib.mkProfile s "qqqemacs"
       };
       myEmacs = (if config.myos.wayland.enable then pkgs.emacs29-pgtk else pkgs.emacs29);
       emacsWithPackages = (pkgs.emacsPackagesFor myEmacs).emacsWithPackages;
+      jsonrpc-latest = pkgs.emacsPackages.elpaBuild {
+        pname = "jsonrpc";
+        ename = "jsonrpc";
+        version = "1.0.24";
+        src = pkgs.fetchurl {
+          url = "https://elpa.gnu.org/devel/jsonrpc-1.0.24.0.20240121.142806.tar";
+          sha256 = "RTBz5cgmZmVaxI/oGvb+753iOFXdj20k4yvoF815oTs=";
+        };
+        packageRequires = [ myEmacs ];
+      };
       qqqemacs = emacsWithPackages (epkgs:
         [
           (epkgs.treesit-grammars.with-grammars
@@ -20,6 +30,26 @@ lib.mkProfile s "qqqemacs"
               tree-sitter-yaml
               tree-sitter-typescript
             ]))
+
+          (pkgs.emacsPackages.elpaBuild {
+            pname = "eglot";
+            ename = "eglot";
+            version = "1.17.0.20240204.100650";
+            src = pkgs.fetchurl {
+              url = "https://elpa.gnu.org/devel/eglot-1.17.0.20240204.100650.tar";
+              sha256 = "C04IFB4ExpAtG4oAfHyWD73ipWyyp7ymiE++EviVmEk=";
+            };
+            packageRequires = with epkgs; [
+              myEmacs
+              eldoc
+              external-completion
+              flymake
+              jsonrpc-latest
+              project
+              seq
+              xref
+            ];
+          })
         ] ++
 
         (with epkgs.melpaStablePackages; [
