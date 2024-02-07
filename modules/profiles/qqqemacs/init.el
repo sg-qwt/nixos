@@ -1013,9 +1013,18 @@ the focus."
   (add-to-list 'eglot-server-programs '((nix-mode) "nil")))
 
 (use-package eglot-clojure-config
+  :preface
+  ;; snippets borrowed from Clojurian slack to fix eglot echo doc arities
+  (defun qqq/switch-eldoc-eglot-fns ()
+    (when (derived-mode-p 'clojure-mode 'clojurescript-mode 'clojurec-mode)
+      (remove-hook 'eldoc-documentation-functions #'eglot-hover-eldoc-function t)
+      (remove-hook 'eldoc-documentation-functions #'eglot-signature-eldoc-function t)
+      (add-hook 'eldoc-documentation-functions #'eglot-signature-eldoc-function -99 t)
+      (add-hook 'eldoc-documentation-functions #'eglot-hover-eldoc-function -99 t)))
   :no-require t
   :after (eglot clojure-mode)
   :hook
+  (eglot-managed-mode . qqq/switch-eldoc-eglot-fns)
   (clojure-mode . eglot-ensure)
   (clojurescript-mode . eglot-ensure)
   (clojurec-mode . eglot-ensure))
