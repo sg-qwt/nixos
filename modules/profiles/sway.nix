@@ -199,12 +199,20 @@ lib.mkProfile s "sway"
 
         config = {
           workspaceAutoBackAndForth = true;
+
           modifier = "Mod4";
+
           terminal = lib.getExe config.programs.alacritty.package;
+
           startup = [
             { command = "emacs"; }
-          ];
+          ] ++ (lib.optional config.services.kanshi.enable
+            # workaround for https://github.com/emersion/kanshi/issues/43
+            { command = "systemctl --user restart kanshi.service"; always = true; }
+          );
+
           menu = "${lib.getExe config.programs.wofi.package}";
+
           bars = [
             {
               position = "bottom";
@@ -214,6 +222,7 @@ lib.mkProfile s "sway"
               '';
             }
           ];
+
           keybindings = lib.mkOptionDefault {
             "${modifier}+e" = "exec ${swayr} switch-to-app-or-urgent-or-lru-window --skip-lru-if-current-doesnt-match emacs || emacs";
             "${modifier}+Shift+Return" = "exec ${swayr} switch-to-app-or-urgent-or-lru-window --skip-lru-if-current-doesnt-match Alacritty || alacritty";
@@ -295,10 +304,11 @@ lib.mkProfile s "sway"
           };
         };
 
-        extraConfig = ''
-          bindswitch --reload --locked lid:on output ${monitor.internal} disable
-          bindswitch --reload --locked lid:off output ${monitor.internal} enable
-        '';
+        extraConfig =
+          lib.strings.concatLines [
+            "bindswitch --reload --locked lid:on output \"${monitor.internal}\" disable"
+            "bindswitch --reload --locked lid:off output \"${monitor.internal}\" enable"
+          ];
       };
 
       services.kanshi = {
