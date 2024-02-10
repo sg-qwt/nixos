@@ -306,8 +306,8 @@ lib.mkProfile s "sway"
 
         extraConfig =
           lib.strings.concatLines [
-            "bindswitch --reload --locked lid:on output \"${monitor.internal}\" disable"
-            "bindswitch --reload --locked lid:off output \"${monitor.internal}\" enable"
+            "bindswitch --reload --locked lid:on output \"'${monitor.internal}'\" disable"
+            "bindswitch --reload --locked lid:off output \"'${monitor.internal}'\" enable"
           ];
       };
 
