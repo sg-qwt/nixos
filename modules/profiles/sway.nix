@@ -49,6 +49,14 @@ lib.mkProfile s "sway"
         side = "ICD Inc GX259F Unknown";
         internal = "California Institute of Technology 0x1303 Unknown";
       };
+
+      queryCoin = symbol: {
+        block = "custom";
+        command = "${curl} --silent https://api.coinbase.com/v2/prices/${symbol}-USD/spot | ${jq} -r .data.amount";
+        hide_when_empty = true;
+        interval = 300;
+        format = " ${symbol} $text ";
+      };
     in
     {
       home.pointerCursor = {
@@ -88,13 +96,8 @@ lib.mkProfile s "sway"
               interval = 3000;
               format = " $text ";
             }
-            {
-              block = "custom";
-              command = "${curl} --silent https://api.coinbase.com/v2/prices/SOL-USD/spot | ${jq} -r .data.amount";
-              hide_when_empty = true;
-              interval = 300;
-              format = " SOL $text ";
-            }
+            (queryCoin "BTC")
+            (queryCoin "SOL")
             {
               block = "disk_space";
               path = "/";
