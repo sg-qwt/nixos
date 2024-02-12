@@ -57,7 +57,19 @@ lib.mkProfile s "desktop-apps"
       home.packages = with pkgs; [
         # media
         spotify
-        dmlive
+        (dmlive.overrideAttrs (oldAttrs: rec {
+          version = "5.3.2";
+          src = pkgs.fetchFromGitHub {
+            owner = "THMonster";
+            repo = "dmlive";
+            rev = "3736d83ac0920de78ac82fe331bc6b16dc72b5cd"; # no tag
+            hash = "sha256-3agUeAv6Nespn6GNw4wmy8HNPQ0VIgZAMnKiV/myKbA=";
+          };
+          cargoDeps = oldAttrs.cargoDeps.overrideAttrs (_: {
+            inherit src;
+            outputHash = "sha256-66rkD4K55DLArn0a1QkxtbRCqkTxTTHPffIEeXOhQJE=";
+          });
+        }))
         libation
 
         # chat
