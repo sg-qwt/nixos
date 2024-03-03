@@ -27,9 +27,3 @@ creation_rules:
       - *dui
       pgp:
       - *main
-  - path_regex: temp\.yaml$
-    key_groups:
-    - age:
-      - *dui
-      pgp:
-      - *main

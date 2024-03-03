@@ -46,17 +46,6 @@ let edg = config.myos.data.fqdn.edg; in
   };
   users.users.nginx.extraGroups = [ config.users.groups.acme.name ];
 
-  sops.secrets.letter = {
-    sopsFile = self + "/secrets/temp.yaml";
-    path = "/var/www/letter/index.html";
-    owner = "nginx";
-    group = "nginx";
-  };
-  sops.secrets.letter-pass = {
-    sopsFile = self + "/secrets/temp.yaml";
-    mode = "0444";
-  };
-
   services.nginx = {
     enable = true;
     recommendedTlsSettings = true;
@@ -64,21 +53,6 @@ let edg = config.myos.data.fqdn.edg; in
     recommendedGzipSettings = true;
     recommendedProxySettings = true;
     virtualHosts = {
-      "letter.${edg}" = {
-        forceSSL = true;
-        useACMEHost = "edg";
-        locations."/" = {
-
-          root = "/var/www/letter";
-
-          extraConfig = ''
-            auth_basic "my dear secret";
-            auth_basic_user_file ${config.sops.secrets.letter-pass.path};
-            disable_symlinks off;
-          '';
-        };
-      };
-
       "${edg}" = {
         forceSSL = true;
         useACMEHost = "edg";
@@ -86,7 +60,6 @@ let edg = config.myos.data.fqdn.edg; in
         locations."/" = {
           root = pkgs.writeTextDir "index.html" "Hello world!";
         };
-
       };
 
       "_" = {
