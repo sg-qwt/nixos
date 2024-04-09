@@ -3,6 +3,10 @@ lib.mkProfile s "desktop-apps"
 {
   myos.firefox.enable = true;
 
+  # file manager
+  services.gvfs.enable = true;
+  programs.thunar.enable = true;
+
   myhome = { config, ... }:
     let
       browser = lib.getExe config.programs.chromium.package;
