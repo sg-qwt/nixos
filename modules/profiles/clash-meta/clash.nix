@@ -154,7 +154,7 @@ rec {
     ];
 
   rules = [
-    "DOMAIN-SUFFIX,${fqdn.edg},DIRECT"
+    # "DOMAIN-SUFFIX,${fqdn.edg},DIRECT"
     "GEOSITE,category-ads-all,REJECT"
     "GEOSITE,openai,select"
     "GEOSITE,geolocation-cn,DIRECT"
