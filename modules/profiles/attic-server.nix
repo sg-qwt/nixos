@@ -51,9 +51,7 @@ lib.mkProfile s "attic-server" (
       ensureUsers = [
         {
           name = "atticd";
-          ensurePermissions = {
-            "DATABASE atticd" = "ALL PRIVILEGES";
-          };
+          ensureDBOwnership = true;
         }
       ];
     };

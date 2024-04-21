@@ -24,9 +24,8 @@ lib.mkProfile s "gnupg" {
       enable = true;
       enableSshSupport = true;
       sshKeys = [ "5DA83E8DA781EFD4F4E5B5D6886B1E6B279152DF" ];
-      pinentryFlavor = null;
+      pinentryPackage = pkgs.my.wayprompt;
       extraConfig = ''
-        pinentry-program ${pkgs.my.wayprompt}/bin/pinentry-wayprompt
         allow-emacs-pinentry
         allow-loopback-pinentry
       '';

@@ -5,7 +5,6 @@
 { config, pkgs, ... }:
 
 {
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelPatches = [ ];
 
   # Use the systemd-boot EFI boot loader.

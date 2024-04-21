@@ -76,6 +76,7 @@ in
 
       systemd.services.clash-meta = {
         description = "Clash Meta daemon service";
+        wants = [ "network-online.target" ];
         after = [ "network-online.target" ];
         wantedBy = [ "multi-user.target" ];
         script = "exec ${pkgs.clash-meta}/bin/clash-meta -d ${cfg.stateDir}";

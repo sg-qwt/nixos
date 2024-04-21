@@ -59,9 +59,9 @@ stdenv.mkDerivation {
   installFlags = [ "DESTDIR=$(out)" ];
 
   meta = with lib; {
+    mainProgram = "pinentry-wayprompt";
     homepage = "https://git.sr.ht/~leon_plickat/wayprompt";
     description = "multi-purpose prompt tool for Wayland";
     license = licenses.gpl3;
-    maintainers = with maintainers; [ ];
   };
 }

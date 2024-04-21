@@ -10,12 +10,12 @@ let edg = config.myos.data.fqdn.edg; in
     profile = "reality";
   };
 
-  myos.matrix = {
+  services.postgresql = {
     enable = true;
-    chatgpt-bot = false;
-    slack-bot = false;
-    sliding-sync = false;
+    package = pkgs.postgresql_15;
   };
+
+  myos.matrix.enable = false;
 
   myos.metrics = {
     enable = true;

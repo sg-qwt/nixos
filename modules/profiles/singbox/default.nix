@@ -60,6 +60,7 @@ in
 
       systemd.services.singbox = {
         description = "singbox server daemon service";
+        wants = [ "network-online.target" ];
         after = [ "network-online.target" ];
         wantedBy = [ "multi-user.target" ];
         restartTriggers = [

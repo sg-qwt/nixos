@@ -37,7 +37,6 @@
 
     chugou = {
       url = "github:sg-qwt/chugou";
-      inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
   };
@@ -54,7 +53,6 @@
 
         overlays = [
           self.overlays.default
-          attic.overlays.default
         ];
       };
 

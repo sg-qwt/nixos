@@ -50,7 +50,6 @@ mkYarnPackage rec {
   meta = with lib; {
     description = "Talk to ChatGPT via any Matrix client";
     homepage = "https://github.com/matrixgpt/matrix-chatgpt-bot";
-    license = licenses.agpl3;
-    maintainers = with maintainers; [ ];
+    license = licenses.agpl3Only;
   };
 }
