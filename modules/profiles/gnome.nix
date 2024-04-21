@@ -16,16 +16,18 @@ in
 
     myos.wayland.enable = config.myos.gnome.wayland;
 
+    services.displayManager = {
+      preStart = "sleep 5";
+      autoLogin.enable = true;
+      autoLogin.user = "${config.myos.user.mainUser}";
+    };
+
     services.xserver = {
       enable = true;
       displayManager.gdm.autoSuspend = false;
       displayManager.gdm.enable = true;
       displayManager.gdm.wayland = config.myos.gnome.wayland;
       desktopManager.gnome.enable = true;
-
-      displayManager.job.preStart = "sleep 5";
-      displayManager.autoLogin.enable = true;
-      displayManager.autoLogin.user = "${config.myos.user.mainUser}";
     };
 
     environment = {

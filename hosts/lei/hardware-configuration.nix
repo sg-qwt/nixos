@@ -16,7 +16,7 @@
   boot.kernelParams = [ ];
 
   boot.supportedFilesystems = [ "bcachefs" ];
-  boot.kernelPackages = pkgs.linuxPackages_testing;
+  boot.kernelPackages = pkgs.linuxPackages_6_8;
 
   fileSystems."/" =
     {

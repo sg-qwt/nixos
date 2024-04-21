@@ -111,9 +111,7 @@ lib.mkProfile s name {
     ensureUsers = [
       {
         name = name;
-        ensurePermissions = {
-          "DATABASE \"${name}\"" = "ALL PRIVILEGES";
-        };
+        ensureDBOwnership = true;
       }
     ];
   };

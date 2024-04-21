@@ -1066,7 +1066,7 @@ the focus."
   :preface
   (defun qqq/eglot-capf ()
     (setq-local completion-at-point-functions
-		(list (cape-super-capf
+		(list (cape-capf-super
 		       (cape-capf-buster #'eglot-completion-at-point)
 		       #'yasnippet-capf
 		       #'cape-file)))))
@@ -1078,7 +1078,7 @@ the focus."
   :preface
   (defun qqq/setup-elisp ()
     (setq-local completion-at-point-functions
-		(list (cape-super-capf
+		(list (cape-capf-super
 		       #'elisp-completion-at-point
 		       #'cape-dabbrev)
 		      #'cape-file))))

@@ -29,6 +29,7 @@ lib.mkProfile s "dygift" {
   };
 
   systemd.services.dygift = {
+    wants = [ "network-online.target" ];
     after = [ "network-online.target" ];
     wantedBy = [ "multi-user.target" ];
     restartTriggers = [

@@ -45,10 +45,22 @@ rec {
               })
             (builtins.attrNames (builtins.readDir (self + "/packages")))));
       sway-unwrapped = addPatches prev.sway-unwrapped [
+        # text_input: Implement input-method popups
         # https://github.com/swaywm/sway/pull/7226
-        (prev.fetchpatch {
-          url = "https://github.com/swaywm/sway/commit/d1c6e44886d1047b3aa6ff6aaac383eadd72f36a.patch";
-          hash = "sha256-LsCoK60FKp3d8qopGtrbCFXofxHT+kOv1e1PiLSyvsA=";
+        (prev.fetchpatch rec {
+          name = "0001-text_input-Implement-input-method-popups.patch";
+          url = "https://aur.archlinux.org/cgit/aur.git/plain/${name}?h=sway-im&id=b8434b3ad9e8c6946dbf7b14b0f7ef5679452b94";
+          hash = "sha256-A+rBaWMWs616WllVoo21AJaf9lxg/oCG0b9tHLfuJII=";
+        })
+        (prev.fetchpatch rec {
+          name = "0002-chore-fractal-scale-handle.patch";
+          url = "https://aur.archlinux.org/cgit/aur.git/plain/${name}?h=sway-im&id=b8434b3ad9e8c6946dbf7b14b0f7ef5679452b94";
+          hash = "sha256-YOFm0A4uuRSuiwnvF9xbp8Wl7oGicFGnq61vLegqJ0E=";
+        })
+        (prev.fetchpatch rec {
+          name = "0003-chore-left_pt-on-method-popup.patch";
+          url = "https://aur.archlinux.org/cgit/aur.git/plain/${name}?h=sway-im&id=b8434b3ad9e8c6946dbf7b14b0f7ef5679452b94";
+          hash = "sha256-PzhQBRpyB1WhErn05UBtBfaDW5bxnQLRKWu8jy7dEiM=";
         })
       ];
     };

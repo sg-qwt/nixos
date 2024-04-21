@@ -341,18 +341,7 @@ lib.mkProfile s "sway"
         wl-clipboard
         xdg-utils
         wf-recorder
-        (open-in-mpv.override {
-          buildGoModule = args: buildGoModule (args // rec {
-            version = "07fc639b2882a9a68e539f0fc34b61e247c355fa";
-            src = fetchFromGitHub {
-              owner = "Baldomo";
-              repo = "open-in-mpv";
-              rev = version;
-              hash = "sha256-XkoXvSh5uu96isXc1at36mxSCPylHgMLN97qSpj2cyc=";
-            };
-            vendorHash = "sha256-G6GZO2+CfEAYcf7zBcqDa808A0eJjM8dq7+4VGZ+P4c=";
-          });
-        })
+        open-in-mpv
       ];
 
       xdg.mimeApps = {
