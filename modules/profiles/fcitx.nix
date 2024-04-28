@@ -30,6 +30,14 @@ lib.mkProfile s "fcitx"
   };
 
   myhome = {
+    gtk = {
+      gtk3.extraConfig = {
+        gtk-im-module = "fcitx";
+      };
+      gtk4.extraConfig = {
+        gtk-im-module = "fcitx";
+      };
+    };
     xdg.dataFile = {
       "fcitx5/rime/luna_pinyin.custom.yaml".text = toYAML {
         patch = {
