@@ -9,7 +9,7 @@ lib.mkProfile s "desktop-apps"
 
   myhome = { config, ... }:
     let
-      brave-pkg = (pkgs.brave.override {commandLineArgs = "--gtk-version=4";});
+      brave-pkg = (pkgs.brave.override { commandLineArgs = "--gtk-version=4"; });
       browser = lib.getExe config.programs.chromium.package;
       make-webapp = name: app: (pkgs.makeDesktopItem {
         inherit name;
