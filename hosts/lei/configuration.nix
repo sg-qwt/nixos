@@ -65,6 +65,8 @@
   myos.clash-meta.enable = true;
   myos.tailscale.enable = true;
 
+  myos.container.enable = true;
+
   services.blueman.enable = true;
 
   hardware.bluetooth = {

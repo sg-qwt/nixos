@@ -1,10 +1,15 @@
 s@{ config, pkgs, lib, inputs, self, ... }:
-lib.mkProfile s "docker" {
-  virtualisation.docker.enable = true;
+lib.mkProfile s "container" {
+  virtualisation.containers.enable = true;
 
-  myos.user.extraGroups = [ "docker" ];
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+    defaultNetwork.settings.dns_enabled = true;
+  };
+
   virtualisation.oci-containers = {
-    backend = "docker";
+    backend = "podman";
     containers =
       let
         username = "${config.myos.user.mainUser}";
