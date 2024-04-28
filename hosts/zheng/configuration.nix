@@ -32,7 +32,6 @@ let user = config.myos.user.mainUser; in
   services.getty.autologinUser = user;
 
   hardware.pulseaudio.enable = false;
-  myos.protonge.enable = true;
 
   hardware.bluetooth = {
     enable = true;
