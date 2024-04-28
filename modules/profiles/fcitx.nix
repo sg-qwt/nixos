@@ -1,46 +1,35 @@
 s@{ config, pkgs, lib, self, ... }:
 let
   toYAML = lib.generators.toYAML { };
-  toINI = lib.generators.toINI { };
 in
 lib.mkProfile s "fcitx"
 {
   i18n.inputMethod = {
     enabled = "fcitx5";
-    fcitx5.addons = with pkgs; [
-      (fcitx5-rime.override {
-        rimeDataPkgs = [
-          rime-data
-          my.rime-pinyin-zhwiki
-        ];
-      })
-    ];
+    fcitx5 = {
+      waylandFrontend = true;
+      addons = with pkgs; [
+        (fcitx5-rime.override {
+          rimeDataPkgs = [
+            rime-data
+            my.rime-pinyin-zhwiki
+          ];
+        })
+      ];
+      settings.inputMethod = {
+        "Groups/0" = {
+          "Name" = "Default";
+          "Default Layout" = "us";
+          "DefaultIM" = "rime";
+        };
+        "Groups/0/Items/0"."Name" = "keyboard-us";
+        "Groups/0/Items/1"."Name" = "rime";
+        "GroupOrder"."0" = "Default";
+      };
+    };
   };
 
   myhome = {
-    xdg.configFile = {
-      "fcitx5/profile" = {
-        force = true;
-        text = toINI {
-          "Groups/0" = {
-            Name = "Default";
-            "Default Layout" = "us";
-            DefaultIM = "rime";
-          };
-          "Groups/0/Items/0" = {
-            Name = "keyboard-us";
-            Layout = "";
-          };
-          "Groups/0/Items/1" = {
-            Name = "rime";
-            Layout = "";
-          };
-          GroupOrder = {
-            "0" = "Default";
-          };
-        };
-      };
-    };
     xdg.dataFile = {
       "fcitx5/rime/luna_pinyin.custom.yaml".text = toYAML {
         patch = {
