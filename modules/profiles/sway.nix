@@ -149,10 +149,10 @@ lib.mkProfile s "sway"
           show = "drun,run";
           allow_images = false;
           insensitive = true;
-          key_left = "Control_L-h";
-          key_down = "Down,Control_L-j";
-          key_up = "Up,Control_L-k";
-          key_right = "Control_L-l";
+          key_left = "Ctrl-h";
+          key_down = "Down,Ctrl-j";
+          key_up = "Up,Ctrl-k";
+          key_right = "Ctrl-l";
         };
       };
 
