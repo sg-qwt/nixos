@@ -1067,7 +1067,7 @@ the focus."
   (defun qqq/eglot-capf ()
     (setq-local completion-at-point-functions
 		(list (cape-capf-super
-		       (cape-capf-buster #'eglot-completion-at-point)
+		       #'eglot-completion-at-point
 		       #'yasnippet-capf
 		       #'cape-file)))))
 
