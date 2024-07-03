@@ -1,6 +1,7 @@
 s@{ config, pkgs, lib, self, ... }:
 lib.mkProfile s "sway"
 {
+  services.dbus.implementation = "broker";
   programs.dconf.enable = true;
   myos.alacritty.enable = true;
   myos.wayland.enable = true;
@@ -182,14 +183,10 @@ lib.mkProfile s "sway"
       wayland.windowManager.sway = {
         enable = true;
 
-        # fix xdg-open with xdgOpenUsePortals
-        extraSessionCommands = ''
-          dbus-update-activation-environment --systemd --all
-        '';
-
         systemd = {
           enable = true;
           xdgAutostart = true;
+          variables = [ "--all" ];
         };
 
         wrapperFeatures = {
@@ -313,17 +310,19 @@ lib.mkProfile s "sway"
 
       services.kanshi = {
         enable = true;
-        profiles = {
-          undocked = {
-            outputs = [
+        settings = [
+          {
+            profile.name = "undocked";
+            profile.outputs = [
               {
                 criteria = "${monitor.internal}";
                 position = "0,0";
               }
             ];
-          };
-          docked = {
-            outputs = [
+          }
+          {
+            profile.name = "docked";
+            profile.outputs = [
               {
                 criteria = "${monitor.main}";
                 position = "0,0";
@@ -333,8 +332,8 @@ lib.mkProfile s "sway"
                 position = "1920,0";
               }
             ];
-          };
-        };
+          }
+        ];
       };
 
       home.packages = with pkgs; [
