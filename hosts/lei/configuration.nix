@@ -18,8 +18,10 @@
   };
 
   hardware.firmware = [ pkgs.sof-firmware ];
-  hardware.graphics = {
+  hardware.opengl = {
     enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
     extraPackages = [ pkgs.intel-media-driver ];
   };
 

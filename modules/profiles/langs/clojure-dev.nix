@@ -14,7 +14,7 @@ lib.mkProfile s "clojure-dev"
       (clojure.override { inherit jdk; })
       my.babashka-bin
       neil
-      cljfmt
+      my.cljfmt
       clojure-lsp
     ];
 
