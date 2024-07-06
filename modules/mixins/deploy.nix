@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, ... }:
+{ lib, pkgs, pkgs-latest, self, ... }:
 {
   system.stateVersion = "23.11";
 
@@ -19,6 +19,7 @@
     auto-optimise-store = true;
   };
 
+  programs.ssh.package = pkgs-latest.openssh;
   services.openssh = {
     enable = true;
     settings = {
