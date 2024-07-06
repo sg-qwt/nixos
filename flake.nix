@@ -3,7 +3,9 @@
 
   inputs = {
 
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/66adc1e47f8784803f2deb6cacd5e07264ec2d5c";
+
+    nixpkgs-latest.url = "github:nixos/nixpkgs/nixos-unstable";
 
     flake-utils.url = "github:numtide/flake-utils";
 
@@ -56,6 +58,11 @@
         ];
       };
 
+      pkgs-latest = import nixpkgs-latest {
+        inherit system;
+        config.allowUnfree = true;
+      };
+
       helpers = import ./lib/helpers.nix { inherit self nixpkgs; };
 
       mkOS = { name, p ? pkgs }: {
@@ -67,6 +74,7 @@
             lib = helpers.lib;
           };
           modules = [
+            { _module.args.pkgs-latest = pkgs-latest; }
             attic.nixosModules.atticd
             nur.nixosModules.nur
             home-manager.nixosModules.home-manager
@@ -84,6 +92,7 @@
       treefmt-eval = (inputs.treefmt-nix.lib.evalModule pkgs ./lib/treefmt.nix);
     in
     {
+
       overlays.default = (helpers.default-overlays { inherit inputs; });
 
       # expose packages to flake here
