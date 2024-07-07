@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, self, ... }:
+s@{ pkgs-latest, pkgs, lib, ... }:
 lib.mkProfile s "shell"
 {
   environment = {
@@ -55,6 +55,7 @@ lib.mkProfile s "shell"
 
     programs.starship = {
       enable = true;
+      package = pkgs-latest.starship;
       enableBashIntegration = true;
       settings = lib.mkMerge [
         {
@@ -69,7 +70,7 @@ lib.mkProfile s "shell"
             heuristic = true;
           };
         }
-        (lib.importTOML "${pkgs.starship}/share/starship/presets/plain-text-symbols.toml")
+        (lib.importTOML "${config.programs.starship.package}/share/starship/presets/plain-text-symbols.toml")
       ];
     };
   };
