@@ -69,7 +69,7 @@ rec {
     (builtins.listToAttrs
       (map (name: { name = name; value = pkgs.my."${name}"; })
         (builtins.attrNames pkgs.my))) //
-    (import (self + "/bb/scripts.nix") { inherit pkgs self; });
+    (import (self + "/bb/scripts.nix") { inherit lib pkgs self; });
 
   shells = args: default:
     let
