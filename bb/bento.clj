@@ -13,7 +13,7 @@
       str/trim
       keyword))
 
-(def host-ids (str/split (or (System/getenv "MYOS_HOSTS") (name (my-host))) #":"))
+(def host-ids (str/split (System/getenv "MYOS_BENTO_HOSTS") #":"))
 
 (def fqdn-suffix ".h.edgerunners.eu.org")
 (def user "deploy")
@@ -104,7 +104,7 @@
   [{:cmds ["deploy"] :fn deploy :args->opts [:host :list-hosts]}
    {:cmds ["brightness" "up"] :fn (fn [_] (change-brightness :up))}
    {:cmds ["brightness" "down"] :fn (fn [_] (change-brightness :down))}
-   {:cmds ["grab-shi"] :fn (fn [_] (grab-shi (System/getenv "SHI_DATA")))}
+   {:cmds ["grab-shi"] :fn (fn [_] (grab-shi (System/getenv "MYOS_BENTO_SHI_DATA")))}
    {:cmds ["power-menu"] :fn (fn [_] (run-menu))}])
 
 (cli/dispatch table *command-line-args* {:spec spec})

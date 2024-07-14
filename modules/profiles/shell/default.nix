@@ -1,10 +1,9 @@
-s@{ pkgs-latest, pkgs, lib, self, ... }:
+s@{ pkgs-latest, pkgs, lib, ... }:
 lib.mkProfile s "shell"
 {
   myhome = { config, ... }: {
     home.sessionVariables = {
       MYOS_FLAKE = "$HOME/nixos";
-      MYOS_HOSTS = (lib.concatStringsSep ":" (builtins.attrNames self.nixosConfigurations));
     };
 
     programs.fzf = {
