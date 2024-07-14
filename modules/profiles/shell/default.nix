@@ -1,13 +1,12 @@
-s@{ pkgs-latest, pkgs, lib, ... }:
+s@{ pkgs-latest, pkgs, lib, self, ... }:
 lib.mkProfile s "shell"
 {
-  environment = {
-    variables = {
-      MYOS_FLAKE = "$HOME/nixos";
-    };
-  };
-
   myhome = { config, ... }: {
+    home.sessionVariables = {
+      MYOS_FLAKE = "$HOME/nixos";
+      MYOS_HOSTS = (lib.concatStringsSep ":" (builtins.attrNames self.nixosConfigurations));
+    };
+
     programs.fzf = {
       enable = true;
       enableBashIntegration = true;

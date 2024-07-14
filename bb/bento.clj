@@ -2,7 +2,6 @@
   (:require
    [babashka.cli :as cli]
    [babashka.process :as bp :refer [shell]]
-   [cheshire.core :as json]
    [clojure.string :as str]))
 
 (def flake (or (System/getenv "MYOS_FLAKE") "github:sg-qwt/nixos"))
@@ -14,18 +13,7 @@
       str/trim
       keyword))
 
-(defn get-hosts
-  [flake]
-  (-> (shell {:out :string}
-             (format "nix eval %s#nixosConfigurations --apply builtins.attrNames --json" flake))
-      :out
-      json/parse-string
-      vec))
-
-(defmacro def-host-ids [] (let [flake-hosts (get-hosts flake)] `(def ~'host-ids ~flake-hosts)))
-
-(declare host-ids)
-(def-host-ids)
+(def host-ids (str/split (or (System/getenv "MYOS_HOSTS") (name (my-host))) #":"))
 
 (def fqdn-suffix ".h.edgerunners.eu.org")
 (def user "deploy")
