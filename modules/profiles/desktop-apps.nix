@@ -46,8 +46,12 @@ lib.mkProfile s "desktop-apps"
           { id = "kdbmhfkmnlmbkgbabkdealhhbfhlmmon"; } # steamdb
           { id = "ngonfifpkpeefnhelnfdkficaiihklid"; } # protondb-for-steam
           {
-            id = "dcpihecpambacapedldabdbpakmachpb";
-            updateUrl = "https://raw.githubusercontent.com/iamadamdev/bypass-paywalls-chrome/master/src/updates/updates.xml";
+            id = "lkbebcjgcmobigpeffafkodonchffocl";
+            crxPath = pkgs.fetchurl {
+              url = "https://github.com/bpc-clone/bpc_updates/releases/download/latest/bypass-paywalls-chrome-clean-3.7.5.0.crx";
+              sha256 = "xWoU6oqPBBIXFWMlmnIIHq2Rc33ZdELRrnIVfzU2FK4=";
+            };
+            version = "3.7.5";
           }
           {
             id = "ibmfbeedhmhhmgmplmndbdoeejcnjpig";
