@@ -92,6 +92,8 @@
       treefmt-eval = (inputs.treefmt-nix.lib.evalModule pkgs ./lib/treefmt.nix);
     in
     {
+      # expose for nix repl usage only
+      inherit self;
 
       overlays.default = (helpers.default-overlays { inherit inputs; });
 
