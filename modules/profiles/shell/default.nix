@@ -25,10 +25,6 @@ lib.mkProfile s "shell"
         source ${pkgs.complete-alias}/bin/complete_alias
 
         complete -F _complete_alias "''${!BASH_ALIASES[@]}"
-
-        if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
-          source ${./emacs-vterm-bash.sh}
-        fi
       '';
 
       historyControl = [

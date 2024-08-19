@@ -10,6 +10,7 @@ in
     inherit system;
     specialArgs = { inherit pkgs self; };
     modules = [
+      { _module.args.pkgs-latest = pkgs; }
       (mPath "virtualisation/azure-image.nix")
       ./modules/mixins/deploy.nix
       ./modules/mixins/azurebase.nix

@@ -129,15 +129,14 @@ lib.mkProfile s "qqqemacs"
           qqqemacs
 
           search-epkgs
-          # consult-ripgrep
-          ripgrep
+
+          ripgrep # consult-ripgrep
+
           (aspellWithDicts (ds: with ds; [ en ]))
 
-          # needed by markdown-mode
-          discount
+          discount # markdown-mode
 
-          # needed by nov.el
-          unzip
+          unzip # nov.el
 
           self.packages.${pkgs.system}.bento
         ];
@@ -152,6 +151,12 @@ lib.mkProfile s "qqqemacs"
         };
 
         home.sessionVariables.EDITOR = "emacsclient -t";
+
+        programs.bash.initExtra = ''
+          if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+            source ${pkgs.emacsPackages.vterm}/share/emacs/site-lisp/elpa/vterm-*/etc/emacs-vterm-bash.sh
+          fi
+        '';
       };
     }
   )
