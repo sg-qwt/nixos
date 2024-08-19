@@ -48,10 +48,10 @@ lib.mkProfile s "desktop-apps"
           {
             id = "lkbebcjgcmobigpeffafkodonchffocl";
             crxPath = pkgs.fetchurl {
-              url = "https://github.com/bpc-clone/bpc_updates/releases/download/latest/bypass-paywalls-chrome-clean-3.7.5.0.crx";
-              sha256 = "xWoU6oqPBBIXFWMlmnIIHq2Rc33ZdELRrnIVfzU2FK4=";
+              url = "https://gitflic.ru/project/magnolia1234/bpc_uploads/blob/raw?file=bypass-paywalls-chrome-clean-3.8.0.0.crx";
+              sha256 = "B3H2gR0ktSS+Ridp/wzegR5FnerZLkrYRiSWFyGsx9w=";
             };
-            version = "3.7.5";
+            version = "3.8.0";
           }
           {
             id = "ibmfbeedhmhhmgmplmndbdoeejcnjpig";
