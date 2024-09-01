@@ -45,6 +45,7 @@ lib.mkProfile s "desktop-apps"
           { id = "ljobjlafonikaiipfkggjbhkghgicgoh"; } # edit-with-emacs
           { id = "kdbmhfkmnlmbkgbabkdealhhbfhlmmon"; } # steamdb
           { id = "ngonfifpkpeefnhelnfdkficaiihklid"; } # protondb-for-steam
+          { id = "gebbhagfogifgggkldgodflihgfeippi"; } # return-youtube-dislike
           {
             id = "lkbebcjgcmobigpeffafkodonchffocl";
             crxPath = pkgs.fetchurl {
