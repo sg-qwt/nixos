@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, self, ... }:
+s@{ pkgs-latest, lib, self, ... }:
 lib.mkProfile s "gnupg" {
 
   services.pcscd.enable = true;
@@ -24,7 +24,7 @@ lib.mkProfile s "gnupg" {
       enable = true;
       enableSshSupport = true;
       sshKeys = [ "5DA83E8DA781EFD4F4E5B5D6886B1E6B279152DF" ];
-      pinentryPackage = pkgs.my.wayprompt;
+      pinentryPackage = pkgs-latest.wayprompt;
       extraConfig = ''
         allow-emacs-pinentry
         allow-loopback-pinentry
