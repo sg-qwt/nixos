@@ -15,13 +15,8 @@
   networking.hostId = "2aaaac5b";
 
   myos.desktop.enable = true;
-  # myos.sway.enable = true;
+  myos.sway.enable = true;
   myos.fcitx.enable = true;
-  myos.gnome = {
-    enable = true;
-    wayland = true;
-  };
-  # myos.ibus.enable = true;
 
   myos.tmux.enable = true;
   myos.gaming.enable = true;
@@ -35,15 +30,14 @@
   myos.gnupg.enable = true;
   myos.desktop-apps.enable = true;
   myos.tools.enable = true;
-  myos.theme.enable = true;
 
   myos.clash-meta.enable = true;
   myos.tailscale.enable = true;
 
-  myos.metrics = {
-    enable = true;
-    chugou = true;
-  };
+  # myos.metrics = {
+  #   enable = true;
+  #   chugou = true;
+  # };
 
   services.blueman.enable = true;
 
