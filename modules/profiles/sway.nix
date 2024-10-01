@@ -39,10 +39,13 @@ lib.mkProfile s "sway"
       slurp = lib.getExe pkgs.slurp;
       status-config = "${config.xdg.configHome}/i3status-rust/config-default.toml";
       wallpaper = self + "/resources/wallpapers/wr.jpg";
-      wpctl = "${pkgs.wireplumber}/bin/wpctl";
+      wpctl = lib.getExe' pkgs.wireplumber "wpctl";
       bento = lib.getExe self.packages.${pkgs.system}.bento;
       curl = lib.getExe pkgs.curl;
       jq = lib.getExe pkgs.jq;
+      swaylock = lib.getExe config.programs.swaylock.package;
+      loginctl = lib.getExe' pkgs.systemd "loginctl";
+      wl-copy = lib.getExe' pkgs.wl-clipboard "wl-copy";
 
       monitor = {
         main = "Dell Inc. DELL U2718QM MYPFK89J15HL";
@@ -231,7 +234,7 @@ lib.mkProfile s "sway"
             "Print" = ''
               exec ${grim} \
                 -g \"$(${slurp})\" \
-                - | ${pkgs.wl-clipboard}/bin/wl-copy
+                - | ${wl-copy}
             '';
             "${modifier}+Print" = "exec ${grim} ${config.xdg.userDirs.pictures}/screenshot-$(date +\"%Y-%m-%d-%H-%M-%S\").png";
             "XF86AudioRaiseVolume" = "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 5%+";
@@ -309,6 +312,38 @@ lib.mkProfile s "sway"
             "bindswitch --reload --locked lid:on output \"'${monitor.internal}'\" disable"
             "bindswitch --reload --locked lid:off output \"'${monitor.internal}'\" enable"
           ];
+      };
+
+      programs.swaylock = {
+        enable = true;
+        settings = {
+          show-failed-attempts = true;
+          daemonize = true;
+          image = "${wallpaper}";
+          scaling = "fill";
+        };
+      };
+
+      services = {
+        swayidle = {
+          enable = true;
+          timeouts = [
+            {
+              timeout = 3600;
+              command = "systemctl suspend";
+            }
+          ];
+          events = [
+            {
+              event = "lock";
+              command = swaylock;
+            }
+            {
+              event = "before-sleep";
+              command = "${loginctl} lock-session";
+            }
+          ];
+        };
       };
 
       services.kanshi = {
