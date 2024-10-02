@@ -318,6 +318,7 @@ lib.mkProfile s "sway"
         enable = true;
         settings = {
           show-failed-attempts = true;
+          ignore-empty-password = true;
           daemonize = true;
           image = "${wallpaper}";
           scaling = "fill";
