@@ -5,8 +5,6 @@
 { config, pkgs, self, ... }:
 
 {
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelPatches = [ ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -62,10 +60,8 @@
   #   pulse.enable = true;
   # };
 
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
   };
 
   environment = {

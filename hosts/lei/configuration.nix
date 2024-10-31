@@ -18,10 +18,8 @@
   };
 
   hardware.firmware = [ pkgs.sof-firmware ];
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
     extraPackages = [ pkgs.intel-media-driver ];
   };
 
@@ -40,7 +38,7 @@
     handlers = {
       headphone-fix-noise = {
         event = "jack/headphone HEADPHONE plug";
-        action = "${pkgs.alsaTools}/bin/hda-verb /dev/snd/hwC0D0 0x1d SET_PIN_WIDGET_CONTROL 0x0";
+        action = "${pkgs.alsa-tools}/bin/hda-verb /dev/snd/hwC0D0 0x1d SET_PIN_WIDGET_CONTROL 0x0";
       };
     };
   };

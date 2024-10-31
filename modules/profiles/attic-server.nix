@@ -18,7 +18,7 @@ lib.mkProfile s "attic-server" (
     services.atticd = {
       enable = true;
 
-      credentialsFile = config.sops.templates.atticd-credentials.path;
+      environmentFile = config.sops.templates.atticd-credentials.path;
 
       settings = {
         listen = listen-addr;

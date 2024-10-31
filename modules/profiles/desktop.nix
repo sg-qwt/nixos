@@ -9,7 +9,7 @@ lib.mkProfile s "desktop"
       jetbrains-mono
       lxgw-wenkai
       noto-fonts
-      noto-fonts-cjk
+      noto-fonts-cjk-sans
       noto-fonts-emoji
       hanazono
     ];
