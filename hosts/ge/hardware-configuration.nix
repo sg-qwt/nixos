@@ -16,56 +16,18 @@
     options it87 ignore_resource_conflict=1
   '';
 
-  fileSystems."/" =
-    {
-      device = "/dev/nvme0n1p3";
-      fsType = "btrfs";
-      options = [ "subvol=root" "compress=zstd" "noatime" ];
-    };
-
-  fileSystems."/home" =
-    {
-      device = "/dev/nvme0n1p3";
-      fsType = "btrfs";
-      options = [ "subvol=home" "compress=zstd" "noatime" ];
-    };
-
-  fileSystems."/home/me/.cache" =
-    {
-      device = "/dev/nvme0n1p3";
-      fsType = "btrfs";
-      options = [ "subvol=userdata/cache" "compress=zstd" "noatime" ];
-    };
-
-  fileSystems."/home/me/Downloads" =
-    {
-      device = "/dev/nvme0n1p3";
-      fsType = "btrfs";
-      options = [ "subvol=userdata/downloads" "compress=zstd" "noatime" ];
-    };
-
-  fileSystems."/home/me/.local/share/Steam" =
-    {
-      device = "/dev/nvme0n1p3";
-      fsType = "btrfs";
-      options = [ "subvol=userdata/steam" "compress=zstd" "noatime" ];
-    };
-
-  fileSystems."/nix" =
-    {
-      device = "/dev/nvme0n1p3";
-      fsType = "btrfs";
-      options = [ "subvol=nix" "compress=zstd" "noatime" ];
-    };
-
   fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-uuid/A218-480E";
+    { device = "/dev/disk/by-uuid/8FB7-D051";
       fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
     };
 
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/6b5c6135-985d-43fd-84d0-a9212cdfe319"; }];
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/66676a5c-a315-46fb-a6b4-ba1ddd64ac10";
+      fsType = "bcachefs";
+    };
+
+  swapDevices = [ ];
 
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
