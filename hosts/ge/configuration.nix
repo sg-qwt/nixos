@@ -5,7 +5,7 @@
 { config, pkgs, self, ... }:
 
 {
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelPatches = [ ];
 
   # Use the systemd-boot EFI boot loader.
@@ -19,7 +19,7 @@
   myos.fcitx.enable = true;
 
   myos.tmux.enable = true;
-  myos.gaming.enable = true;
+  myos.gaming.enable = false;
 
   myos.qqqemacs.enable = true;
 
@@ -66,12 +66,6 @@
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
-    # extraPackages = with pkgs; [
-    #   amdvlk
-    # ];
-    # extraPackages32 = with pkgs; [
-    #   driversi686Linux.amdvlk
-    # ];
   };
 
   environment = {
