@@ -1,9 +1,0 @@
-sanitize tridactyllocal tridactylsync
-
-set newtab about:blank
-set smoothscroll true
-
-unbind <C-f>
-
-bind --mode=ex <C-j> ex.next_completion
-bind --mode=ex <C-k> ex.prev_completion

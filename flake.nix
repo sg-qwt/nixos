@@ -3,7 +3,7 @@
 
   inputs = {
 
-    nixpkgs.url = "github:nixos/nixpkgs/66adc1e47f8784803f2deb6cacd5e07264ec2d5c";
+    nixpkgs.url = "github:nixos/nixpkgs/807e9154dcb16384b1b765ebe9cd2bba2ac287fd";
 
     nixpkgs-latest.url = "github:nixos/nixpkgs/nixos-unstable";
 
@@ -22,14 +22,6 @@
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nur.url = "github:nix-community/NUR";
-
-    attic = {
-      url = "github:zhaofengli/attic";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
     };
 
     jovian = {
@@ -75,8 +67,6 @@
           };
           modules = [
             { _module.args.pkgs-latest = pkgs-latest; }
-            attic.nixosModules.atticd
-            nur.nixosModules.nur
             home-manager.nixosModules.home-manager
             sops-nix.nixosModules.sops
             { networking.hostName = name; }

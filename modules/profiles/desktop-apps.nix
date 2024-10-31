@@ -1,8 +1,6 @@
 s@{ pkgs, lib, ... }:
 lib.mkProfile s "desktop-apps"
 {
-  myos.firefox.enable = true;
-
   # file manager
   services.gvfs.enable = true;
   programs.thunar.enable = true;
@@ -67,7 +65,6 @@ lib.mkProfile s "desktop-apps"
 
       programs.mpv = {
         enable = true;
-        package = pkgs.wrapMpv pkgs.mpv-unwrapped { youtubeSupport = true; };
         config = {
           profile = "gpu-hq";
           hwdec = "auto";
@@ -77,6 +74,8 @@ lib.mkProfile s "desktop-apps"
       };
 
       home.packages = with pkgs; [
+        firefox
+
         # media
         spotify
         dmlive
