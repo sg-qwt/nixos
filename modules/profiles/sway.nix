@@ -30,7 +30,7 @@ lib.mkProfile s "sway"
     };
   };
 
-  myhome = { config, lib, ... }:
+  myhome = { config, lib, osConfig, ... }:
     let
       modifier = config.wayland.windowManager.sway.config.modifier;
       status = lib.getExe config.programs.i3status-rust.package;
@@ -47,6 +47,8 @@ lib.mkProfile s "sway"
       swaylock = lib.getExe config.programs.swaylock.package;
       loginctl = lib.getExe' pkgs.systemd "loginctl";
       wl-copy = lib.getExe' pkgs.wl-clipboard "wl-copy";
+      fcitx5 = lib.getExe' osConfig.i18n.inputMethod.package "fcitx5";
+      blueman-applet = lib.getExe' pkgs.blueman "blueman-applet";
 
       monitor = {
         main = "Dell Inc. DELL U2718QM MYPFK89J15HL";
@@ -188,7 +190,7 @@ lib.mkProfile s "sway"
 
         systemd = {
           enable = true;
-          xdgAutostart = true;
+          xdgAutostart = false;
           variables = [ "--all" ];
         };
 
@@ -209,6 +211,10 @@ lib.mkProfile s "sway"
           ] ++ (lib.optional config.services.kanshi.enable
             # workaround for https://github.com/emersion/kanshi/issues/43
             { command = "systemctl --user restart kanshi.service"; always = true; }
+          ) ++ (lib.optional osConfig.services.blueman.enable
+            { command = "${blueman-applet}"; always = true; }
+          ) ++ (lib.optional osConfig.i18n.inputMethod.enable
+            { command = "${fcitx5} -d --replace"; always = true; }
           );
 
           menu = "${lib.getExe config.programs.wofi.package}";
