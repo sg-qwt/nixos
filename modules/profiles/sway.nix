@@ -129,23 +129,23 @@ lib.mkProfile s "sway"
             }
             {
               block = "net";
-              format = " WIFI $signal_strength $speed_down.eng(prefix:K) $speed_up.eng(prefix:K) ";
-              device = "wlp0s20f3";
+              format = " {$ssid $signal_strength|Wired} $speed_down.eng(prefix:K) $speed_up.eng(prefix:K) ";
               interval = 5;
-            }
-            {
-              block = "battery";
-              format = " $icon $percentage ";
-              full_format = " $icon $percentage ";
-              empty_format = " $icon $percentage ";
-              device = "BAT0";
             }
             {
               block = "time";
               interval = 5;
               format = " $timestamp.datetime(f:'%a %b %e %R') ";
             }
-          ];
+          ] ++ (lib.optionals (osConfig.networking.hostName == "lei") [
+              {
+                block = "battery";
+                format = " $icon $percentage ";
+                full_format = " $icon $percentage ";
+                empty_format = " $icon $percentage ";
+                device = "BAT0";
+              }
+          ]);
         };
       };
 
