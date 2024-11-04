@@ -7,7 +7,7 @@ lib.mkProfile s "desktop-apps"
 
   myhome = { config, ... }:
     let
-      brave-pkg = (pkgs.brave.override { commandLineArgs = "--gtk-version=4"; });
+      brave-pkg = (pkgs.brave.override { commandLineArgs = "--enable-wayland-ime --wayland-text-input-version=3"; });
       browser = lib.getExe config.programs.chromium.package;
       make-webapp = name: app: (pkgs.makeDesktopItem {
         inherit name;
@@ -21,21 +21,7 @@ lib.mkProfile s "desktop-apps"
 
       programs.chromium = {
         enable = true;
-        package =
-          (pkgs.symlinkJoin {
-            name = "brave";
-            meta.mainProgram = "brave";
-            paths = [ brave-pkg ];
-            buildInputs = [ pkgs.makeWrapper ];
-            postBuild = ''
-              wrapProgram $out/bin/brave \
-                --set GTK_IM_MODULE "fcitx"
-
-              for desktop in "$out/share/applications/"*".desktop"; do
-                sed -i "s|${brave-pkg}|$out|g" "$desktop"
-              done
-            '';
-          });
+        package = brave-pkg;
         extensions = [
           { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # vimium
           { id = "knheggckgoiihginacbkhaalnibhilkk"; } # notion-web-clipper
