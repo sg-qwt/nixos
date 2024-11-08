@@ -26,7 +26,6 @@ lib.mkProfile s "desktop-apps"
           { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # vimium
           { id = "knheggckgoiihginacbkhaalnibhilkk"; } # notion-web-clipper
           { id = "bhhhlbepdkbapadjdnnojkbgioiodbic"; } # solflare-wallet
-          { id = "ljobjlafonikaiipfkggjbhkghgicgoh"; } # edit-with-emacs
           { id = "kdbmhfkmnlmbkgbabkdealhhbfhlmmon"; } # steamdb
           { id = "ngonfifpkpeefnhelnfdkficaiihklid"; } # protondb-for-steam
           { id = "gebbhagfogifgggkldgodflihgfeippi"; } # return-youtube-dislike
