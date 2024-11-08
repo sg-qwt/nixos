@@ -1,16 +1,20 @@
-s@{ pkgs-latest, pkgs, lib, ... }:
+s@{ config, pkgs-latest, pkgs, lib, self, ... }:
+let
+  me = config.myos.user.mainUser;
+  me-sops = {
+    sopsFile = self + "/secrets/secrets.yaml";
+    owner = config.users.users.${me}.name;
+    group = config.users.users.${me}.group;
+  };
+in
 lib.mkProfile s "shell"
 {
-  myhome = { config, ... }: {
+  sops.secrets.atuin-key = me-sops;
+  sops.secrets.atuin-session = me-sops;
+
+  myhome = { config, osConfig, ... }: {
     home.sessionVariables = {
       MYOS_FLAKE = "$HOME/nixos";
-    };
-
-    programs.fzf = {
-      enable = true;
-      enableBashIntegration = true;
-      defaultCommand = "${pkgs.ripgrep}/bin/rg --files";
-      defaultOptions = [ "--bind ctrl-l:accept" ];
     };
 
     programs.zoxide = {
@@ -36,8 +40,6 @@ lib.mkProfile s "shell"
       shellAliases = {
         gpr = "git pull --rebase";
         gl = "git log --decorate --oneline --graph";
-        # wg-up = "sudo systemctl start wg-quick-wg0.service";
-        # wg-down = "sudo systemctl stop wg-quick-wg0.service";
         rebuild = "sudo nixos-rebuild switch --flake $MYOS_FLAKE";
         nfc = "nix flake check";
         nf = "nix fmt";
@@ -67,5 +69,22 @@ lib.mkProfile s "shell"
         (lib.importTOML "${config.programs.starship.package}/share/starship/presets/plain-text-symbols.toml")
       ];
     };
+
+    programs.atuin = {
+      enable = true;
+      flags = [ "--disable-up-arrow" ];
+      settings = {
+        key_path = osConfig.sops.secrets.atuin-key.path;
+        session_path = osConfig.sops.secrets.atuin-session.path;
+        update_check = false;
+        auto_sync = true;
+        sync_frequency = "1h";
+        search_mode = "fuzzy";
+        enter_accept = false;
+        sync.records = true;
+        dotfiles.enabled = true;
+      };
+    };
+
   };
 }
