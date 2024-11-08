@@ -1246,21 +1246,6 @@ the focus."
   :config
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
-;;;;;;;;;;;;;;;;;;;;;
-;; edit-with-emacs ;;
-;;;;;;;;;;;;;;;;;;;;;
-(use-package edit-server
-  :if window-system
-  :demand t
-  :general
-  (qqq/local-leader
-    edit-server-edit-mode-map
-    "c" #'edit-server-done
-    "k" #'edit-server-abort)
-  :config
-  (edit-server-start)
-  (setq edit-server-new-frame-alist '((name . "Edit with Emacs FRAME"))))
-
 ;;;;;;;;;;;;
 ;; telega ;;
 ;;;;;;;;;;;;
