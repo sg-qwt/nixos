@@ -6,14 +6,7 @@ let
     p.cloudflare
     p.tailscale
     p.time
-    (p.mkProvider {
-      hash = "sha256-annbjq27/KWUpV70NF9IGQywKzaCJL7tJLdMfd0JRs0=";
-      owner = "grafana";
-      repo = "terraform-provider-grafana";
-      rev = "v2.3.1";
-      homepage = "https://registry.terraform.io/providers/grafana/grafana/";
-      vendorHash = "sha256-b4Cu95U5woiXKe22oY966Aw8IdU7bJEEYTiAbIrl5jo=";
-    })
+    p.grafana
   ]));
   tf = (pkgs.writeShellScriptBin "tf" ''
     ${terraform}/bin/terraform -chdir=$FLAKE_INFRA_DIR $@
@@ -40,7 +33,8 @@ pkgs.mkShell {
     alias tfp="tf plan"
     alias tfa="tf apply -auto-approve"
 
-    rm $FLAKE_INFRA_DIR/.terraform.lock.hcl
+
+    [ -f $FLAKE_INFRA_DIR/.terraform.lock.hcl ] && rm $FLAKE_INFRA_DIR/.terraform.lock.hcl
     tf init -upgrade 
 
     set +a

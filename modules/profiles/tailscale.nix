@@ -20,7 +20,7 @@ lib.mkProfile s "tailscale" (
 
     sops.secrets.tailscale_tailnet_key = {
       sopsFile = self + "/secrets/tfout.json";
-      restartUnits = [ "tailscale-autoconnect.service" ];
+      restartUnits = [ "tailscaled-autoconnect.service" ];
     };
   }
 )

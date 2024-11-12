@@ -30,7 +30,7 @@
   myos.tools.enable = true;
 
   myos.clash-meta.enable = true;
-  myos.tailscale.enable = false;
+  myos.tailscale.enable = true;
 
   # myos.metrics = {
   #   enable = true;

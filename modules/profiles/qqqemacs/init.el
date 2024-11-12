@@ -295,7 +295,6 @@ If the buffer doesn't exist, create it first."
   (qqq/leader
     :infix "b"
     "" '(:ignore t :wk "buffer")
-    "l" #'telega
     "c" #'gptel
     "t" #'multi-vterm-dedicated-toggle
     "i" #'ibuffer
@@ -564,9 +563,7 @@ If the buffer doesn't exist, create it first."
   (setq display-line-numbers-type 'relative)
   (defcustom display-line-numbers-exempt-modes
     '(nov-mode
-      pdf-view-mode
-      telega-root-mode
-      telega-chat-mode)
+      pdf-view-mode)
     "Major modes on which to disable line numbers."
     :group 'display-line-numbers
     :type 'list
@@ -1203,7 +1200,7 @@ the focus."
     (gptel-send))
   :custom
   (gptel-default-mode 'org-mode)
-  (gptel-model "gpt-4")
+  (gptel-model 'gpt-4o)
   :general
   (qqq/local-leader
     gptel-mode-map
@@ -1245,24 +1242,3 @@ the focus."
 (use-package tramp
   :config
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
-
-;;;;;;;;;;;;
-;; telega ;;
-;;;;;;;;;;;;
-(use-package telega
-  :commands (telega)
-  :hook (telega-chat-mode . qqq/setup-telega-capf)
-  :custom
-  (telega-filter-custom-one-liners nil)
-  (telega-completing-read-function completing-read-function)
-  :preface
-  (defun qqq/setup-telega-capf ()
-    (require 'company)
-    (setq-local completion-at-point-functions
-		(mapcar
-		 #'cape-company-to-capf
-		 (append (list 'telega-company-emoji
-			       'telega-company-username
-			       'telega-company-hashtag)
-			 (when (telega-chat-bot-p telega-chatbuf--chat)
-			   '(telega-company-botcmd)))))))
