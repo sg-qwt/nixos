@@ -7,14 +7,13 @@ resource "azurerm_cognitive_deployment" "shuqi" {
   name                 = local.openai.deployment
   cognitive_account_id = data.azurerm_cognitive_account.acc.id
 
-  model {
-    format  = "OpenAI"
-    name    = "gpt-4"
-    version = "0613"
+  sku {
+    name = "Standard"
   }
 
-  scale {
-    type = "Standard"
+  model {
+    format  = "OpenAI"
+    name    = "gpt-4o"
   }
 }
 
