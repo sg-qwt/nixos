@@ -9,6 +9,7 @@ resource "azurerm_cognitive_deployment" "shuqi" {
 
   sku {
     name = "Standard"
+    capacity = 30
   }
 
   model {
