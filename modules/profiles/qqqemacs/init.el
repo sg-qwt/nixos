@@ -1214,9 +1214,9 @@ the focus."
     "azure"
     :protocol "https"
     :host "@gptHost@"
-    :endpoint "/openai/deployments/@gptDeployment@/chat/completions?api-version=2023-07-01-preview"
+    :endpoint "/openai/deployments/@gptDeployment@/chat/completions?api-version=2024-10-21"
     :stream t
-    :models '("gpt-4"))))
+    :models '("gpt-4o"))))
 
 (use-package auth-source
   :custom
