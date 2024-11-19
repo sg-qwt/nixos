@@ -10,12 +10,12 @@ lib.mkProfile s "tmux"
     historyLimit = 10000;
     terminal = "tmux-256color";
     customPaneNavigationAndResize = true;
+    shortcut = "a";
     extraConfig = ''
-      unbind C-b
-      set -g prefix C-a
-      bind C-a send-prefix
       bind Tab last-window
 
+      unbind '"'
+      unbind %
       bind | split-window -h
       bind - split-window -v
 
@@ -50,8 +50,6 @@ lib.mkProfile s "tmux"
       set -g visual-activity on
 
       # Remap vi style copy and paste
-      unbind [
-      bind C-[ copy-mode
       unbind p
       bind p paste-buffer
       bind-key -T copy-mode-vi v send-keys -X begin-selection
