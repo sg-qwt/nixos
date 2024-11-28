@@ -46,27 +46,22 @@ rec {
             (builtins.attrNames (builtins.readDir (self + "/packages")))));
 
       # TODO https://github.com/NixOS/nixpkgs/pull/356133
-      nixVersions = prev.nixVersions.extend (
-        _: nPrev: {
-          nix_2_24_sysroot =
-            (nPrev.nix_2_24.overrideAttrs (old: {
-              patches = (old.patches or [ ]) ++ [
-                ./nix-local-overlay-store-regex.patch
-              ];
-            })).override
-              {
-                # TODO(jared): delete when https://github.com/NixOS/nixpkgs/pull/356133 is on nixos-unstable
-                curl = final.curl.overrideAttrs (old: {
-                  patches = (old.patches or [ ]) ++ [
-                    (final.fetchpatch {
-                      url = "https://raw.githubusercontent.com/NixOS/nixpkgs/d508b59825a6c86aa0ba5eedc72042bfbe97e791/pkgs/by-name/cu/curlMinimal/fix-netrc-regression.patch";
-                      hash = "sha256-/0MnDxsurz9BGhuf+57XXdWH0WKfexeRuKRD8deRl4Q=";
-                    })
-                  ];
-                });
-              };
-        }
-      );
+      nix = prev.nix.override (old: {
+        curl = prev.curl.overrideAttrs (oldAttrs: {
+          patches = (oldAttrs.patches or []) ++ [
+            # https://github.com/curl/curl/issues/15496
+            (prev.fetchpatch {
+              url = "https://github.com/curl/curl/commit/f5c616930b5cf148b1b2632da4f5963ff48bdf88.patch";
+              hash = "sha256-FlsAlBxAzCmHBSP+opJVrZG8XxWJ+VP2ro4RAl3g0pQ=";
+            })
+            # https://github.com/curl/curl/issues/15513
+            (prev.fetchpatch {
+              url = "https://github.com/curl/curl/commit/0cdde0fdfbeb8c35420f6d03fa4b77ed73497694.patch";
+              hash = "sha256-WP0zahMQIx9PtLmIDyNSJICeIJvN60VzJGN2IhiEYv0=";
+            })
+          ];
+        });
+      });
     };
 
   packages = pkgs:

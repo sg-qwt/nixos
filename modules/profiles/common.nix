@@ -35,7 +35,7 @@ in
     };
 
     nix = {
-      package = pkgs.nixVersions.stable;
+      # package = pkgs.nixVersions.stable;
 
       registry.nixpkgs.flake = inputs.nixpkgs;
       registry.myos.flake = self;
