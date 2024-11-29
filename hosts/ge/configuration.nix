@@ -65,6 +65,9 @@
     enable32Bit = true;
   };
 
+  programs.adb.enable = true;
+  users.users.me.extraGroups = ["adbusers"];
+
   environment = {
     sessionVariables = {
       RADV_PERFTEST = "sam";
