@@ -7,6 +7,8 @@
 	use-package-compute-statistics t
 	debug-on-error t))
 
+(setq user-emacs-directory "~/.config/emacs/")
+
 (use-package qqqdefun
   :no-require t
   :preface
@@ -84,13 +86,6 @@ If the buffer doesn't exist, create it first."
 		   (call-interactively #'projectile-invalidate-cache))
 		 (message "File '%s' successfully renamed to '%s'" name (file-name-nondirectory new-name)))))))))
 
-(use-package modus-themes
-  :custom
-  (modus-themes-bold-constructs t)
-  :config
-  (setq modus-themes-common-palette-overrides modus-themes-preset-overrides-intense)
-  (load-theme 'modus-operandi t))
-
 (use-package autorevert
   :custom
   (global-auto-revert-non-file-buffers t)
@@ -144,7 +139,13 @@ If the buffer doesn't exist, create it first."
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
 
-  (server-start)
+  ;;;;;;;;;;;
+  ;; theme ;;
+  ;;;;;;;;;;;
+  (require-theme 'modus-themes)
+  (setq modus-themes-bold-constructs t)
+  (setq modus-themes-common-palette-overrides modus-themes-preset-overrides-intense)
+  (load-theme 'modus-operandi)
 
   ;;;;;;;;;;
   ;; font ;;
@@ -155,6 +156,10 @@ If the buffer doesn't exist, create it first."
       (set-fontset-font (frame-parameter nil 'font) charset
 			(font-spec :family "LXGW WenKai Mono"
 				   :size (if (eq window-system 'x) 28 14))))))
+
+(use-package server
+  :config
+  (unless (server-running-p) (server-start)))
 
 (use-package epg
   :config
@@ -1042,7 +1047,8 @@ the focus."
     "TAB"
     "<tab>")
   :custom
-  (yas-snippet-dirs `(,(concat user-emacs-directory "snippets")))
+  (yas-snippet-dirs `(,(concat user-emacs-directory "snippets")
+		      ,(getenv "QQQ_SNIPPETS")))
   :config
   (yas-global-mode 1))
 
@@ -1213,14 +1219,14 @@ the focus."
    (gptel-make-azure
     "azure"
     :protocol "https"
-    :host "@gptHost@"
-    :endpoint "/openai/deployments/@gptDeployment@/chat/completions?api-version=2024-10-21"
+    :host "zaizhiwanwudev.openai.azure.com"
+    :endpoint "/openai/deployments/shuqi/chat/completions?api-version=2024-10-21"
     :stream t
     :models '("gpt-4o"))))
 
 (use-package auth-source
   :custom
-  (auth-sources '("@authFile@")))
+  (auth-sources '("/run/secrets/rendered/authinfo")))
 
 ;;;;;;;;;;;;;;
 ;; markdown ;;

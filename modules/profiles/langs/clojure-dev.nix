@@ -12,10 +12,9 @@ lib.mkProfile s "clojure-dev"
   myhome = { config, ... }: {
     home.packages = with pkgs; [
       (clojure.override { inherit jdk; })
-      my.babashka-bin
+      babashka-unwrapped
       neil
       cljfmt
-      clojure-lsp
     ];
 
     programs.bash.bashrcExtra = ''
