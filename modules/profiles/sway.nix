@@ -41,7 +41,7 @@ lib.mkProfile s "sway"
       status-config = "${config.xdg.configHome}/i3status-rust/config-default.toml";
       wallpaper = self + "/resources/wallpapers/wr.jpg";
       wpctl = lib.getExe' pkgs.wireplumber "wpctl";
-      bento = lib.getExe self.packages.${pkgs.system}.bento;
+      bento = lib.getExe' self.packages.${pkgs.system}.bbscripts "bento";
       curl = lib.getExe pkgs.curl;
       jq = lib.getExe pkgs.jq;
       swaylock = lib.getExe config.programs.swaylock.package;

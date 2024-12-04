@@ -2,105 +2,7 @@ s@{ config, pkgs, lib, self, ... }:
 lib.mkProfile s "qqqemacs"
   (
     let
-      inherit (config.myos.data) openai;
       gpt-host = "zaizhiwanwudev.openai.azure.com";
-      init-el = pkgs.substituteAll {
-        src = ./init.el;
-        authFile = config.sops.templates.authinfo.path;
-        gptHost = gpt-host;
-        gptDeployment = openai.deployment;
-      };
-      myEmacs = (if config.myos.wayland.enable then pkgs.emacs29-pgtk else pkgs.emacs29);
-      emacsWithPackages = (pkgs.emacsPackagesFor myEmacs).emacsWithPackages;
-      qqqemacs = emacsWithPackages (epkgs:
-        [
-          (epkgs.treesit-grammars.with-grammars
-            (grammars: with grammars;
-            [
-              tree-sitter-yaml
-              tree-sitter-typescript
-            ]))
-        ] ++
-
-        (with epkgs.melpaStablePackages; [
-          clojure-mode
-          clojure-mode-extra-font-locking
-          cider
-          cider-eval-sexp-fu
-
-          markdown-mode
-        ]) ++
-
-        (with epkgs.melpaPackages; [
-          # TODO remove after emacs 30
-          modus-themes
-
-          avy
-          evil
-          evil-surround
-          evil-collection
-          evil-org
-          general
-
-          orderless
-          marginalia
-          consult
-          cape
-          company # for company backends
-
-          command-log-mode
-
-          magit
-
-          nix-mode
-          hcl-mode
-
-          org-roam
-
-          embark
-          embark-consult
-          wgrep
-
-          smartparens
-          evil-cleverparens
-
-          pdf-tools
-          nov
-
-          # TODO replacde with dired-preview
-          peep-dired
-
-          yasnippet
-          yasnippet-capf
-
-          ibuffer-vc
-
-          vterm
-          multi-vterm
-
-          hl-todo
-
-          rust-mode
-
-          gptel
-
-          edit-server
-        ]) ++
-
-        (with epkgs.elpaPackages; [
-          eglot
-          vertico
-          corfu
-          nftables-mode
-          jarchive
-          which-key
-        ]));
-      search-epkgs = pkgs.writeShellScriptBin "search-epkgs" ''
-        (nix search nixpkgs#emacs.pkgs.melpaStablePackages $*
-        nix search nixpkgs#emacs.pkgs.melpaPackages $*
-        nix search nixpkgs#emacs.pkgs.elpaPackages $*
-        nix search nixpkgs#emacs.pkgs.orgPackages $*) 2> /dev/null
-      '';
     in
     {
       # sudo mkdir -p /var/cache/man/nixos
@@ -119,35 +21,15 @@ lib.mkProfile s "qqqemacs"
       myos.langs = {
         clojure = true;
         rust = true;
-        nix = true;
       };
 
       environment = {
-        systemPackages = with pkgs; [
-          qqqemacs
-
-          search-epkgs
-
-          ripgrep # consult-ripgrep
-
-          (aspellWithDicts (ds: with ds; [ en ]))
-
-          discount # markdown-mode
-
-          unzip # nov.el
-
-          self.packages.${pkgs.system}.bento
+        systemPackages = [
+          self.packages.${pkgs.system}.qqqemacs
         ];
       };
 
       myhome = { config, ... }: {
-        xdg.configFile."emacs/init.el".source = init-el;
-
-        xdg.configFile."emacs/snippets" = {
-          source = ./snippets;
-          recursive = true;
-        };
-
         home.sessionVariables.EDITOR = "emacsclient -t";
 
         programs.bash.initExtra = ''
@@ -158,3 +40,5 @@ lib.mkProfile s "qqqemacs"
       };
     }
   )
+
+  

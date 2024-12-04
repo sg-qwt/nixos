@@ -41,7 +41,7 @@ rec {
             (pkgname:
               {
                 name = pkgname;
-                value = (prev.callPackage (self + "/packages/${pkgname}") args);
+                value = (prev.callPackage (self + "/packages/${pkgname}") (args // { inherit self; }));
               })
             (builtins.attrNames (builtins.readDir (self + "/packages")))));
 
@@ -67,8 +67,7 @@ rec {
   packages = pkgs:
     (builtins.listToAttrs
       (map (name: { name = name; value = pkgs.my."${name}"; })
-        (builtins.attrNames pkgs.my))) //
-    (import (self + "/bb/scripts.nix") { inherit lib pkgs self; });
+        (builtins.attrNames pkgs.my)));
 
   shells = args: default:
     let
