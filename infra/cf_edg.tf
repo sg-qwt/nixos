@@ -11,18 +11,18 @@ locals {
 resource "cloudflare_record" "root" {
   for_each = {
     a = {
-      name  = "@"
-      type  = "A"
+      name    = "@"
+      type    = "A"
       content = module.az_dui.ipv4
     }
     aaaa = {
-      name  = "@"
-      type  = "AAAA"
+      name    = "@"
+      type    = "AAAA"
       content = module.az_dui.ipv6
     }
     catch = {
-      name  = "*"
-      type  = "CNAME"
+      name    = "*"
+      type    = "CNAME"
       content = local.fqdn.edg
     }
   }

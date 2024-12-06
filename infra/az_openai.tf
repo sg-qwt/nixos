@@ -8,13 +8,13 @@ resource "azurerm_cognitive_deployment" "shuqi" {
   cognitive_account_id = data.azurerm_cognitive_account.acc.id
 
   sku {
-    name = "Standard"
+    name     = "Standard"
     capacity = 30
   }
 
   model {
-    format  = "OpenAI"
-    name    = "gpt-4o"
+    format = "OpenAI"
+    name   = "gpt-4o"
   }
 }
 

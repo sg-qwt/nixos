@@ -138,13 +138,13 @@ lib.mkProfile s "sway"
               format = " $timestamp.datetime(f:'%a %b %e %R') ";
             }
           ] ++ (lib.optionals (osConfig.networking.hostName == "lei") [
-              {
-                block = "battery";
-                format = " $icon $percentage ";
-                full_format = " $icon $percentage ";
-                empty_format = " $icon $percentage ";
-                device = "BAT0";
-              }
+            {
+              block = "battery";
+              format = " $icon $percentage ";
+              full_format = " $icon $percentage ";
+              empty_format = " $icon $percentage ";
+              device = "BAT0";
+            }
           ]);
         };
       };

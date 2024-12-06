@@ -6,10 +6,10 @@ let
     [
       (epkgs.treesit-grammars.with-grammars
         (grammars: with grammars;
-          [
-            tree-sitter-yaml
-            tree-sitter-typescript
-          ]))
+        [
+          tree-sitter-yaml
+          tree-sitter-typescript
+        ]))
     ] ++
 
     (with epkgs.melpaStablePackages; [
