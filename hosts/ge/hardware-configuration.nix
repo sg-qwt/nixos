@@ -18,13 +18,15 @@
   '';
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/8FB7-D051";
+    {
+      device = "/dev/disk/by-uuid/8FB7-D051";
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/66676a5c-a315-46fb-a6b4-ba1ddd64ac10";
+    {
+      device = "/dev/disk/by-uuid/66676a5c-a315-46fb-a6b4-ba1ddd64ac10";
       fsType = "bcachefs";
     };
 

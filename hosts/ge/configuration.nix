@@ -66,7 +66,7 @@
   };
 
   programs.adb.enable = true;
-  users.users.me.extraGroups = ["adbusers"];
+  users.users.me.extraGroups = [ "adbusers" ];
 
   environment = {
     sessionVariables = {
