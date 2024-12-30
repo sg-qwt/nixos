@@ -6,6 +6,7 @@ lib.mkProfile s "sway"
   myos.alacritty.enable = true;
   myos.wayland.enable = true;
 
+  xdg.autostart.enable = lib.mkForce false;
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
