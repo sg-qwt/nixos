@@ -3,7 +3,7 @@
 
   inputs = {
 
-    nixpkgs.url = "github:nixos/nixpkgs/23e89b7da85c3640bbc2173fe04f4bd114342367";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     nixpkgs-latest.url = "github:nixos/nixpkgs/nixos-unstable";
 
@@ -59,22 +59,22 @@
 
       mkOS = { name, p ? pkgs }: {
         ${name} = nixpkgs.lib.nixosSystem {
-          inherit system;
           specialArgs = {
             inherit home-manager self inputs;
-            pkgs = p;
             lib = helpers.lib;
           };
           modules = [
-            { _module.args.pkgs-latest = pkgs-latest; }
-            home-manager.nixosModules.home-manager
-            sops-nix.nixosModules.sops
-            { networking.hostName = name; }
-            { imports = helpers.profile-list; }
+            nixpkgs.nixosModules.readOnlyPkgs
             {
+              _module.args.pkgs-latest = pkgs-latest;
+              nixpkgs.pkgs = p;
+              networking.hostName = name;
+              imports = helpers.profile-list;
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
             }
+            home-manager.nixosModules.home-manager
+            sops-nix.nixosModules.sops
           ] ++ (import (./hosts + "/${name}") { inherit inputs; });
         };
       };

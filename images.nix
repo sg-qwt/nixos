@@ -7,10 +7,13 @@ let
 in
 {
   azure-image = (lib.nixosSystem {
-    inherit system;
-    specialArgs = { inherit pkgs self; };
+    specialArgs = { inherit self; };
     modules = [
-      { _module.args.pkgs-latest = pkgs; }
+      nixpkgs.nixosModules.readOnlyPkgs
+      {
+        _module.args.pkgs-latest = pkgs;
+        nixpkgs.pkgs = pkgs;
+      }
       (mPath "virtualisation/azure-image.nix")
       ./modules/mixins/deploy.nix
       ./modules/mixins/azurebase.nix
