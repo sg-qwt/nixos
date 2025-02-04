@@ -30,8 +30,6 @@ let user = config.myos.user.mainUser; in
 
   services.getty.autologinUser = user;
 
-  hardware.pulseaudio.enable = false;
-
   hardware.bluetooth = {
     enable = true;
     package = pkgs.bluez;
