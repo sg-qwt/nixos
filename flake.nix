@@ -68,6 +68,7 @@
             {
               _module.args.pkgs-latest = pkgs-latest;
               nixpkgs.pkgs = p;
+              nixpkgs.overlays = nixpkgs.lib.mkForce p.overlays;
               networking.hostName = name;
               imports = helpers.profile-list;
               home-manager.useGlobalPkgs = true;
