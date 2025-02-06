@@ -46,6 +46,16 @@ rec {
             (builtins.attrNames (builtins.readDir (self + "/packages")))));
     };
 
+  jovian-overlay =
+    (final: prev: {
+      gamescope-session = prev.gamescope-session.override {
+        steam = prev.steam.override (old: {
+          extraPkgs =
+            pkgs: (if old ? extraPkgs then old.extraPkgs pkgs else [ ]) ++ [ pkgs.noto-fonts-cjk-sans ];
+        });
+      };
+    });
+
   packages = pkgs:
     (builtins.listToAttrs
       (map (name: { name = name; value = pkgs.my."${name}"; })

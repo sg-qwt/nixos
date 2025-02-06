@@ -2,7 +2,6 @@
   description = "NixOS configuration";
 
   inputs = {
-
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     nixpkgs-latest.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -98,24 +97,15 @@
         (helpers.shells { inherit pkgs self; } "dev");
 
       nixosConfigurations =
-        let
-          p1 = pkgs.extend jovian.overlays.default;
-          p2 = p1.extend (final: prev: {
-            gamescope-session = prev.gamescope-session.override {
-              steam = prev.steam.override (old: {
-                extraPkgs =
-                  pkgs: (if old ? extraPkgs then old.extraPkgs pkgs else [ ]) ++ [ pkgs.noto-fonts-cjk-sans ];
-                extraEnv = { TZ = "Asia/Shanghai"; };
-              });
-            };
-          });
-        in
         builtins.foldl' (x: y: x // y) { }
           [
             (mkOS { name = "ge"; })
             (mkOS {
               name = "zheng";
-              p = p2;
+              p = pkgs.appendOverlays [
+                jovian.overlays.default
+                helpers.jovian-overlay
+              ];
             })
             (mkOS { name = "dui"; })
             (mkOS { name = "xun"; })
