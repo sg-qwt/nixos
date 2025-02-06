@@ -2,14 +2,13 @@
 {
   imports = [
     "${modulesPath}/virtualisation/azure-common.nix"
+    "${modulesPath}/virtualisation/azure-image.nix"
   ];
+
+  virtualisation.azureImage = {
+    vmGeneration = "v2";
+  };
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.growPartition = true;
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-label/ESP";
-    fsType = "vfat";
-  };
 }
