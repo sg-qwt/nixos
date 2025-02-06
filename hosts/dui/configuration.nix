@@ -15,8 +15,6 @@ let edg = config.myos.data.fqdn.edg; in
     package = pkgs.postgresql_15;
   };
 
-  myos.matrix.enable = false;
-
   myos.metrics = {
     enable = true;
   };

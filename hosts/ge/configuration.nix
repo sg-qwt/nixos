@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, self, ... }:
+{ config, pkgs, self, lib, ... }:
 
 {
 
@@ -12,9 +12,7 @@
 
   networking.hostId = "2aaaac5b";
 
-  myos.desktop.enable = true;
   myos.sway.enable = true;
-  myos.fcitx.enable = true;
 
   myos.tmux.enable = true;
   myos.gaming.enable = false;
@@ -37,28 +35,6 @@
   #   chugou = true;
   # };
 
-  services.blueman.enable = true;
-
-  hardware.bluetooth = {
-    enable = true;
-    package = pkgs.bluez;
-    settings = {
-      General = {
-        Experimental = true;
-      };
-    };
-  };
-
-  # # Enable sound. Wayland only
-  # hardware.pulseaudio.enable = false;
-  # services.pipewire = {
-  #   enable = true;
-  #   alsa = {
-  #     enable = true;
-  #     support32Bit = true;
-  #   };
-  #   pulse.enable = true;
-  # };
 
   hardware.graphics = {
     enable = true;

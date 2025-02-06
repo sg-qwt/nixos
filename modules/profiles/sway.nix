@@ -1,6 +1,10 @@
 s@{ config, pkgs, lib, self, ... }:
 lib.mkProfile s "sway"
 {
+  myos.desktop.enable = true;
+  myos.fcitx.enable = true;
+  services.blueman.enable = true;
+
   services.dbus.implementation = "broker";
   programs.dconf.enable = true;
   myos.alacritty.enable = true;

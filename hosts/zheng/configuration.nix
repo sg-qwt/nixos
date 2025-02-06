@@ -30,16 +30,6 @@ let user = config.myos.user.mainUser; in
 
   services.getty.autologinUser = user;
 
-  hardware.bluetooth = {
-    enable = true;
-    package = pkgs.bluez;
-    settings = {
-      General = {
-        Experimental = true;
-      };
-    };
-  };
-
   environment.systemPackages = with pkgs; [
     steamdeck-firmware
   ];

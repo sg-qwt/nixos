@@ -23,16 +23,6 @@
     extraPackages = [ pkgs.intel-media-driver ];
   };
 
-  hardware.pulseaudio.enable = false;
-  services.pipewire = {
-    enable = true;
-    alsa = {
-      enable = true;
-      support32Bit = true;
-    };
-    pulse.enable = true;
-  };
-
   services.acpid = {
     enable = true;
     handlers = {
@@ -46,9 +36,6 @@
   services.fwupd.enable = true;
 
   myos.sway.enable = true;
-
-  myos.desktop.enable = true;
-  myos.fcitx.enable = true;
 
   myos.tmux.enable = true;
   myos.qqqemacs.enable = true;
@@ -64,16 +51,4 @@
   myos.tailscale.enable = true;
 
   myos.container.enable = true;
-
-  services.blueman.enable = true;
-
-  hardware.bluetooth = {
-    enable = true;
-    package = pkgs.bluez;
-    settings = {
-      General = {
-        Experimental = true;
-      };
-    };
-  };
 }
