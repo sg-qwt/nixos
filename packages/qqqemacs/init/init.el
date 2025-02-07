@@ -379,7 +379,8 @@ If the buffer doesn't exist, create it first."
 		     :in-place t)))
   :general
   (qqq/leader
-    "g s" #'magit-status)
+    "g s" #'magit-status
+    "g f" #'magit-log-buffer-file)
   (qqq/local-leader
     git-commit-mode-map
     "g" #'qqq/gptel-commit-summary)
