@@ -13,7 +13,7 @@ rec {
   external-controller = "0.0.0.0:${toString ports.clash-meta-api}";
   secret = config.sops.placeholder.clash-secret;
 
-  external-ui = "${pkgs.my.metacubexd}";
+  external-ui = "${pkgs.metacubexd}";
 
   log-level = "warning";
 
