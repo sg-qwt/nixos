@@ -300,7 +300,11 @@ If the buffer doesn't exist, create it first."
   (qqq/leader
     :infix "b"
     "" '(:ignore t :wk "buffer")
-    "c" #'gptel
+    "c" #'(lambda ()
+	    "Switch to gptel chat buffer"
+	    (interactive)
+	    (switch-to-buffer
+	     (gptel "*gptel*")))
     "t" #'multi-vterm-dedicated-toggle
     "i" #'ibuffer
     "b" #'consult-buffer
@@ -1198,8 +1202,9 @@ the focus."
   :preface
   (defun qqq/gptel-reset ()
     (interactive)
-    (kill-matching-buffers gptel-default-session nil t)
-    (call-interactively 'gptel))
+    (kill-buffer (current-buffer))
+    (switch-to-buffer
+     (gptel "*gptel*")))
   (defun qqq/gptel-send ()
     (interactive)
     (when (eq evil-state 'normal)
@@ -1207,7 +1212,6 @@ the focus."
     (gptel-send))
   :custom
   (gptel-default-mode 'org-mode)
-  (gptel-model 'gpt-4o)
   :general
   (qqq/local-leader
     gptel-mode-map
@@ -1215,7 +1219,14 @@ the focus."
     "s" #'qqq/gptel-send
     "p" #'gptel-system-prompt)
   :config
-  (setq-default
+  (gptel-make-openai "github"
+    :host "models.inference.ai.azure.com"
+    :key (lambda() (gptel-api-key-from-auth-source "models.inference.ai.azure.com"))
+    :endpoint "/chat/completions"
+    :stream t
+    :models '(DeepSeek-R1))
+  (setq
+   gptel-model 'gpt-4o
    gptel-backend
    (gptel-make-azure
     "azure"
@@ -1223,7 +1234,7 @@ the focus."
     :host "zaizhiwanwudev.openai.azure.com"
     :endpoint "/openai/deployments/shuqi/chat/completions?api-version=2024-10-21"
     :stream t
-    :models '("gpt-4o"))))
+    :models '(gpt-4o))))
 
 (use-package auth-source
   :custom

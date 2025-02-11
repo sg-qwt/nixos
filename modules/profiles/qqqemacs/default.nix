@@ -3,6 +3,7 @@ lib.mkProfile s "qqqemacs"
   (
     let
       gpt-host = "zaizhiwanwudev.openai.azure.com";
+      github-ai = "models.inference.ai.azure.com";
     in
     {
       # sudo mkdir -p /var/cache/man/nixos
@@ -11,8 +12,10 @@ lib.mkProfile s "qqqemacs"
       # documentation.man.generateCaches = true; 
 
       sops.secrets.openai_key.sopsFile = self + "/secrets/tfout.json";
+      sops.secrets.github-ai-pat.sopsFile = self + "/secrets/secrets.yaml";
       sops.templates.authinfo.content = ''
         machine ${gpt-host} login apikey password ${config.sops.placeholder.openai_key}
+        machine ${github-ai} login apikey password ${config.sops.placeholder.github-ai-pat}
       '';
       sops.templates.authinfo.owner = config.myos.user.mainUser;
 
