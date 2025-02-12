@@ -2,8 +2,10 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
-
+{ config, pkgs, lib, ... }:
+let
+  systemctl = lib.getExe' config.systemd.package "systemctl";
+in
 {
   boot.kernelPatches = [ ];
 
@@ -51,4 +53,8 @@
   myos.tailscale.enable = true;
 
   myos.container.enable = true;
+
+  services.udev.extraRules = ''
+    SUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity}=="[0-5]", RUN+="${systemctl} poweroff"
+  '';
 }
