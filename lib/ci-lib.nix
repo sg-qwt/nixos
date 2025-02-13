@@ -7,12 +7,12 @@ rec {
   steps = {
     checkout = {
       name = "Checkout";
-      uses = "actions/checkout@v3";
+      uses = "actions/checkout@v4.2.2";
     };
 
     install-nix = {
       name = "Install Nix";
-      uses = "cachix/install-nix-action@v25";
+      uses = "cachix/install-nix-action@v30";
       "with" = {
         github_access_token = ghexpr "secrets.PAT";
       };
@@ -51,7 +51,7 @@ rec {
 
     setup-attic-cache = {
       name = "Setup Attic Cache";
-      uses = "icewind1991/attic-action@v1.1.1";
+      uses = "icewind1991/attic-action@v1.2.1";
       "with" = {
         name = "hello";
         instance = "https://attic.edgerunners.eu.org";
