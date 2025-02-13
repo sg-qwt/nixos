@@ -33,19 +33,19 @@ jobs:
         || (github.event.pull_request.head.repo.full_name == github.repository) ||
         (github.event_name == 'push') }}
       name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4.2.2
     - if: ${{ (github.event.inputs.host == 'all') || (matrix.host == github.event.inputs.host)
         || (github.event.pull_request.head.repo.full_name == github.repository) ||
         (github.event_name == 'push') }}
       name: Install Nix
-      uses: cachix/install-nix-action@v25
+      uses: cachix/install-nix-action@v30
       with:
         github_access_token: ${{ secrets.PAT }}
     - if: ${{ (github.event.inputs.host == 'all') || (matrix.host == github.event.inputs.host)
         || (github.event.pull_request.head.repo.full_name == github.repository) ||
         (github.event_name == 'push') }}
       name: Setup Attic Cache
-      uses: icewind1991/attic-action@v1.1.1
+      uses: icewind1991/attic-action@v1.2.1
       with:
         authToken: ${{ secrets.ATTIC_HELLO_TOKEN }}
         instance: https://attic.edgerunners.eu.org
@@ -72,9 +72,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4.2.2
     - name: Install Nix
-      uses: cachix/install-nix-action@v25
+      uses: cachix/install-nix-action@v30
       with:
         github_access_token: ${{ secrets.PAT }}
     - name: Eval Host ${{ matrix.host }}
@@ -94,9 +94,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4.2.2
     - name: Install Nix
-      uses: cachix/install-nix-action@v25
+      uses: cachix/install-nix-action@v30
       with:
         github_access_token: ${{ secrets.PAT }}
     - name: Flake Check
