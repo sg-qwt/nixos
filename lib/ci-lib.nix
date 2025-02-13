@@ -62,7 +62,7 @@ rec {
     build-host = h: {
       name = "Build Host ${h}";
       run = ''
-        nix run github:Mic92/nix-fast-build -- --skip-cached --no-nom --flake ".#nixosConfigurations.${h}.config.system.build.toplevel"
+        nix run nixpkgs#nix-fast-build -- --skip-cached --no-nom --flake ".#nixosConfigurations.${h}.config.system.build.toplevel"
       '';
     };
   };
