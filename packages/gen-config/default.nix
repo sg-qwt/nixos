@@ -1,4 +1,4 @@
-{ inputs, lib, writeText, writeScriptBin, pkgs, ... }:
+{ inputs, lib, writeText, writeShellScriptBin, pkgs, ... }:
 let
   genfile = { dest, settings }:
     if (lib.strings.hasSuffix "yaml" (lib.strings.toLower dest)) then
@@ -32,7 +32,7 @@ let
       ))
     ];
 in
-writeScriptBin "gen-config"
+writeShellScriptBin "gen-config"
   (lib.strings.concatLines (
     [
       ''
