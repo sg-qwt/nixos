@@ -54,8 +54,10 @@ jobs:
         || (github.event.pull_request.head.repo.full_name == github.repository) ||
         (github.event_name == 'push') }}
       name: Build Host ${{ matrix.host }}
-      run: "nix build --print-build-logs .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel\
-        \ \n"
+      run: 'nix run github:Mic92/nix-fast-build -- --skip-cached --no-nom --flake
+        ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel"
+
+        '
     strategy:
       fail-fast: false
       matrix:
