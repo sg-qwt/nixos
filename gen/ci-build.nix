@@ -1,7 +1,8 @@
-{ lib }:
+{ lib, self }:
 let
   cilib = import ../lib/ci-lib.nix;
-  inherit (cilib) ghexpr ors runs-on steps hosts;
+  hosts = (builtins.attrNames self.nixosConfigurations);
+  inherit (cilib) ghexpr ors runs-on steps;
   if-clause =
     ghexpr
       (ors [
