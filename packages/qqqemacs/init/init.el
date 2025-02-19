@@ -985,17 +985,11 @@ the focus."
 	  (make-directory dir t)))
       ret)))
 
-(use-package peep-dired
-  :custom
-  (peep-dired-cleanup-on-disable t)
+(use-package dired-preview
+  :demand t
   :general
   (general-def dired-mode-map
-    [remap dired-do-print] 'peep-dired)
-  (general-def
-    '(normal)
-    peep-dired-mode-map
-    "j" #'peep-dired-next-file
-    "k" #'peep-dired-prev-file))
+    [remap dired-do-print] 'dired-preview-mode))
 
 ;;;;;;;;;;;
 ;; eglot ;;
