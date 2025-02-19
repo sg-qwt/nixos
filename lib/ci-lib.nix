@@ -3,7 +3,6 @@ rec {
   ands = exprs: builtins.concatStringsSep " && " exprs;
   ghexpr = v: "\${{ ${v} }}";
   runs-on = "ubuntu-latest";
-  hosts = (builtins.attrNames (builtins.readDir ../hosts));
   steps = {
     checkout = {
       name = "Checkout";

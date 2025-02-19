@@ -1,4 +1,4 @@
-{ inputs, lib, writeText, writeShellScriptBin, pkgs, ... }:
+{ lib, writeText, writeShellScriptBin, pkgs, self, ... }:
 let
   genfile = { dest, settings }:
     if (lib.strings.hasSuffix "yaml" (lib.strings.toLower dest)) then
@@ -6,11 +6,11 @@ let
     else
       writeText "out.json" (builtins.toJSON settings);
 
-  files = (builtins.attrNames (builtins.readDir "${inputs.self}/gen"));
+  files = (builtins.attrNames (builtins.readDir "${self}/gen"));
 
   scripts =
     lib.pipe files [
-      (map (file: import "${inputs.self}/gen/${file}" { inherit lib; }))
+      (map (file: import "${self}/gen/${file}" { inherit lib self; }))
       (map (aset:
         {
           dest = aset._gentarget;
