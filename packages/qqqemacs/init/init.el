@@ -973,16 +973,17 @@ the focus."
   (dired-listing-switches "-alh")
   (dired-recursive-copies 'always)
   :config
-  (defadvice dired-mark-read-file-name
-      (after rv:dired-create-dir-when-needed
-	     (prompt dir op-symbol arg files &optional default) activate)
-    (when (member op-symbol '(copy move))
-      (let ((directory-name (if (< 1 (length files))
-				ad-return-value
-			      (file-name-directory ad-return-value))))
-	(when (and (not (file-directory-p directory-name))
-		   (y-or-n-p (format "directory %s doesn't exist, create it?" directory-name)))
-	  (make-directory directory-name t))))))
+  ;; create missing dir on file move or copy
+  (define-advice dired-mark-read-file-name
+      (:around (func &rest args) ask-to-make-dir)
+    (let* ((ret (apply func args))
+	   (dir (file-name-directory ret))
+	   (op-symbol (nth 2 args)))
+      (when (member op-symbol '(copy move))
+	(when (and (not (file-directory-p dir))
+		   (y-or-n-p (format "Directory %s does not exist. Create it?" dir)))
+	  (make-directory dir t)))
+      ret)))
 
 (use-package peep-dired
   :custom
