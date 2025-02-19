@@ -99,7 +99,7 @@
       nixosConfigurations =
         builtins.foldl' (x: y: x // y) { }
           [
-            (mkOS { name = "ge"; })
+            (mkOS { name = "lei"; })
             (mkOS {
               name = "zheng";
               p = pkgs.appendOverlays [
@@ -109,7 +109,6 @@
             })
             (mkOS { name = "dui"; })
             (mkOS { name = "xun"; })
-            (mkOS { name = "lei"; })
           ];
 
       formatter."${system}" = treefmt-eval.config.build.wrapper;
