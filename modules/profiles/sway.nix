@@ -259,7 +259,7 @@ lib.mkProfile s "sway"
             };
             "${monitor.main}" = {
               resolution = "3840x2160";
-              scale = "2";
+              scale = "2.0";
             };
             "${monitor.internal}" = {
               resolution = "2160x1350";
@@ -364,6 +364,7 @@ lib.mkProfile s "sway"
               {
                 criteria = "${monitor.internal}";
                 position = "0,0";
+                scale = 1.5;
               }
             ];
           }
@@ -373,10 +374,12 @@ lib.mkProfile s "sway"
               {
                 criteria = "${monitor.main}";
                 position = "0,0";
+                scale = 2.0;
               }
               {
                 criteria = "${monitor.internal}";
                 position = "1920,0";
+                scale = 1.5;
               }
             ];
           }
