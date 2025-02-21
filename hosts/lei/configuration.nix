@@ -22,7 +22,11 @@ in
   hardware.firmware = [ pkgs.sof-firmware ];
   hardware.graphics = {
     enable = true;
-    extraPackages = [ pkgs.intel-media-driver ];
+    extraPackages = with pkgs; [
+      intel-media-driver
+      intel-compute-runtime
+      vpl-gpu-rt
+    ];
   };
 
   services.acpid = {
