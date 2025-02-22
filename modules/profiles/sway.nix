@@ -103,6 +103,9 @@ lib.mkProfile s "sway"
       # output_name = monitor.headless;
       output_name = 2;
       credentials_file = config.sops.templates.sunshine-cred.path;
+      # https://github.com/orgs/LizardByte/discussions/70
+      audio_sink = "sink-none";
+      virtual_sink = "sink-none";
     };
     applications = {
       apps = [
