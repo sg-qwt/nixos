@@ -12,6 +12,11 @@ in
     default = { };
   };
 
+  options.myhomecfg = lib.mkOption {
+    type = with lib.types; attrsOf anything;
+    default = { };
+  };
+
   options.myos.user = {
     mainUser = mkOption {
       type = types.str;
@@ -45,6 +50,8 @@ in
     };
 
     home-manager.users."${cfg.mainUser}" = lib.mkAliasDefinitions options.myhome;
+
+    myhomecfg = config.home-manager.users."${cfg.mainUser}";
 
     myhome = {
       home.stateVersion = state-version;
