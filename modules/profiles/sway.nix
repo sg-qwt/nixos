@@ -1,4 +1,39 @@
 s@{ config, pkgs, lib, self, ... }:
+let
+  modifier = "Mod4";
+  systemctl = lib.getExe' config.systemd.package "systemctl";
+  swaymsg = lib.getExe' config.myhomecfg.wayland.windowManager.sway.package "swaymsg";
+  status = lib.getExe config.myhomecfg.programs.i3status-rust.package;
+  swayr = lib.getExe config.myhomecfg.programs.swayr.package;
+  pavucontrol = lib.getExe pkgs.pavucontrol;
+  grim = lib.getExe pkgs.grim;
+  slurp = lib.getExe pkgs.slurp;
+  status-config = "${config.myhomecfg.xdg.configHome}/i3status-rust/config-default.toml";
+  wallpaper = self + "/resources/wallpapers/wr.jpg";
+  wpctl = lib.getExe' pkgs.wireplumber "wpctl";
+  bento = lib.getExe' self.packages.${pkgs.system}.bbscripts "bento";
+  curl = lib.getExe pkgs.curl;
+  jq = lib.getExe pkgs.jq;
+  swaylock = lib.getExe config.myhomecfg.programs.swaylock.package;
+  loginctl = lib.getExe' pkgs.systemd "loginctl";
+  wl-copy = lib.getExe' pkgs.wl-clipboard "wl-copy";
+  fcitx5 = lib.getExe config.i18n.inputMethod.package;
+  blueman-applet = lib.getExe' pkgs.blueman "blueman-applet";
+
+  monitor = {
+    main = "Dell Inc. DELL U2718QM MYPFK89J15HL";
+    internal = "California Institute of Technology 0x1303 Unknown";
+    headless = "HEADLESS-1";
+  };
+
+  queryCoin = symbol: {
+    block = "custom";
+    command = "${curl} --silent https://api.coinbase.com/v2/prices/${symbol}-USD/spot | ${jq} -r .data.amount";
+    hide_when_empty = true;
+    interval = 300;
+    format = " ${symbol} $text ";
+  };
+in
 lib.mkProfile s "sway"
 {
   myos.desktop.enable = true;
@@ -35,40 +70,57 @@ lib.mkProfile s "sway"
     };
   };
 
+  sops.secrets.sunshine-pass = {
+    sopsFile = self + "/secrets/secrets.yaml";
+  };
+
+  sops.secrets.sunshine-salt = {
+    sopsFile = self + "/secrets/secrets.yaml";
+  };
+
+  sops.templates.sunshine-cred = {
+    content = builtins.toJSON {
+      username = config.myos.user.mainUser;
+      password = config.sops.placeholder.sunshine-pass;
+      salt = config.sops.placeholder.sunshine-salt;
+    };
+    owner = config.myos.user.mainUser;
+  };
+
+  services.sunshine = {
+    enable = true;
+    # package = (lib.addPatches pkgs.sunshine [
+    #   (pkgs.fetchpatch {
+    #     url = "https://github.com/LizardByte/Sunshine/pull/2885.patch";
+    #     hash = "sha256-bMFmnHGosFOfStbeTBHxdfkYHDZFoWytMuZ9+O6W0LQ=";
+    #   })
+    # ]);
+    autoStart = false;
+    capSysAdmin = true;
+    openFirewall = true;
+    settings = {
+      # TODO wait https://github.com/LizardByte/Sunshine/pull/2885
+      # output_name = monitor.headless;
+      output_name = 2;
+      credentials_file = config.sops.templates.sunshine-cred.path;
+    };
+    applications = {
+      apps = [
+        {
+          name = "tablet monitor";
+          auto-detach = "true";
+          prep-cmd = [
+            {
+              do = "${swaymsg} output HEADLESS-1 enable";
+              undo = "${swaymsg} output HEADLESS-1 disable";
+            }
+          ];
+        }
+      ];
+    };
+  };
+
   myhome = { config, lib, osConfig, ... }:
-    let
-      modifier = config.wayland.windowManager.sway.config.modifier;
-      status = lib.getExe config.programs.i3status-rust.package;
-      swayr = lib.getExe config.programs.swayr.package;
-      pavucontrol = lib.getExe pkgs.pavucontrol;
-      grim = lib.getExe pkgs.grim;
-      slurp = lib.getExe pkgs.slurp;
-      status-config = "${config.xdg.configHome}/i3status-rust/config-default.toml";
-      wallpaper = self + "/resources/wallpapers/wr.jpg";
-      wpctl = lib.getExe' pkgs.wireplumber "wpctl";
-      bento = lib.getExe' self.packages.${pkgs.system}.bbscripts "bento";
-      curl = lib.getExe pkgs.curl;
-      jq = lib.getExe pkgs.jq;
-      swaylock = lib.getExe config.programs.swaylock.package;
-      loginctl = lib.getExe' pkgs.systemd "loginctl";
-      wl-copy = lib.getExe' pkgs.wl-clipboard "wl-copy";
-      fcitx5 = lib.getExe' osConfig.i18n.inputMethod.package "fcitx5";
-      blueman-applet = lib.getExe' pkgs.blueman "blueman-applet";
-
-      monitor = {
-        main = "Dell Inc. DELL U2718QM MYPFK89J15HL";
-        side = "ICD Inc GX259F Unknown";
-        internal = "California Institute of Technology 0x1303 Unknown";
-      };
-
-      queryCoin = symbol: {
-        block = "custom";
-        command = "${curl} --silent https://api.coinbase.com/v2/prices/${symbol}-USD/spot | ${jq} -r .data.amount";
-        hide_when_empty = true;
-        interval = 300;
-        format = " ${symbol} $text ";
-      };
-    in
     {
       home.pointerCursor = {
         package = pkgs.adwaita-icon-theme;
@@ -205,17 +257,19 @@ lib.mkProfile s "sway"
         };
 
         config = {
+          inherit modifier;
+
           workspaceAutoBackAndForth = true;
 
-          modifier = "Mod4";
 
           terminal = lib.getExe config.programs.alacritty.package;
 
           startup = [
             { command = "emacs"; }
+            { command = "\"${swaymsg} create_output; ${swaymsg} output ${monitor.headless} disable\""; }
           ] ++ (lib.optional config.services.kanshi.enable
             # workaround for https://github.com/emersion/kanshi/issues/43
-            { command = "systemctl --user restart kanshi.service"; always = true; }
+            { command = "${systemctl} --user restart kanshi.service"; always = true; }
           ) ++ (lib.optional osConfig.services.blueman.enable
             { command = "${blueman-applet}"; always = true; }
           ) ++ (lib.optional osConfig.i18n.inputMethod.enable
@@ -265,6 +319,10 @@ lib.mkProfile s "sway"
               resolution = "2160x1350";
               scale = "1.5";
             };
+            "${monitor.headless}" = {
+              resolution = "2800x1752@60Hz";
+              scale = "2.0";
+            };
           };
 
           workspaceOutputAssign = [
@@ -276,7 +334,7 @@ lib.mkProfile s "sway"
             { workspace = "6"; output = monitor.internal; }
             { workspace = "7"; output = monitor.internal; }
             { workspace = "8"; output = monitor.internal; }
-            { workspace = "9"; output = monitor.internal; }
+            { workspace = "9"; output = monitor.headless; }
           ];
 
           input = {
@@ -339,7 +397,7 @@ lib.mkProfile s "sway"
           timeouts = [
             {
               timeout = 3600;
-              command = "systemctl suspend";
+              command = "${systemctl} suspend";
             }
           ];
           events = [
@@ -366,6 +424,10 @@ lib.mkProfile s "sway"
                 position = "0,0";
                 scale = 1.5;
               }
+              {
+                criteria = "${monitor.headless}";
+                status = "disable";
+              }
             ];
           }
           {
@@ -380,6 +442,10 @@ lib.mkProfile s "sway"
                 criteria = "${monitor.internal}";
                 position = "1920,0";
                 scale = 1.5;
+              }
+              {
+                criteria = "${monitor.headless}";
+                status = "disable";
               }
             ];
           }
