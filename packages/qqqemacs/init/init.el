@@ -1069,8 +1069,10 @@ the focus."
   :preface
   (defun qqq/eglot-capf ()
     (setq-local completion-at-point-functions
+		;; TODO figure out how to dedup eglot and cider
 		(list (cape-capf-super
 		       #'eglot-completion-at-point
+		       #'cider-complete-at-point
 		       #'yasnippet-capf
 		       #'cape-file)))))
 
