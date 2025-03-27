@@ -48,8 +48,6 @@ in
       neededForUsers = true;
     };
 
-    myhomecfg = config.home-manager.users."${cfg.mainUser}";
-
     myhome = {
       home.stateVersion = state-version;
       systemd.user.startServices = "sd-switch";
