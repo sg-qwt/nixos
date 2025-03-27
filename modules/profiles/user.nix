@@ -7,10 +7,9 @@ let
   state-version = config.system.stateVersion;
 in
 {
-  options.myhome = mkOption {
-    type = types.attrs;
-    default = { };
-  };
+  imports = [
+    (lib.mkAliasOptionModule [ "myhome" ] [ "home-manager" "users" cfg.mainUser ])
+  ];
 
   options.myhomecfg = lib.mkOption {
     type = with lib.types; attrsOf anything;
@@ -48,8 +47,6 @@ in
       sopsFile = self + "/secrets/secrets.yaml";
       neededForUsers = true;
     };
-
-    home-manager.users."${cfg.mainUser}" = lib.mkAliasDefinitions options.myhome;
 
     myhomecfg = config.home-manager.users."${cfg.mainUser}";
 
