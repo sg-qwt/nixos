@@ -75,13 +75,7 @@ let
       corfu
       nftables-mode
       jarchive
-      (dired-preview.overrideAttrs (old: {
-        version = "0.4.0";
-        src = pkgs.fetchurl {
-          url = "https://elpa.gnu.org/packages/dired-preview-0.4.0.tar";
-          sha256 = "9HySQYFGsuM6XORsOqkQUk7zekeBkcbyEKjXDN7bQNs=";
-        };
-      }))
+      dired-preview
     ]));
 
   deps = with pkgs; [
