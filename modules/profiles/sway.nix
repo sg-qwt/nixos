@@ -2,19 +2,20 @@ s@{ config, pkgs, lib, self, ... }:
 let
   modifier = "Mod4";
   systemctl = lib.getExe' config.systemd.package "systemctl";
-  swaymsg = lib.getExe' config.myhomecfg.wayland.windowManager.sway.package "swaymsg";
-  status = lib.getExe config.myhomecfg.programs.i3status-rust.package;
-  swayr = lib.getExe config.myhomecfg.programs.swayr.package;
+  myhomecfg = config.home-manager.users."${config.myos.user.mainUser}";
+  swaymsg = lib.getExe' myhomecfg.wayland.windowManager.sway.package "swaymsg";
+  status = lib.getExe myhomecfg.programs.i3status-rust.package;
+  swayr = lib.getExe myhomecfg.programs.swayr.package;
   pavucontrol = lib.getExe pkgs.pavucontrol;
   grim = lib.getExe pkgs.grim;
   slurp = lib.getExe pkgs.slurp;
-  status-config = "${config.myhomecfg.xdg.configHome}/i3status-rust/config-default.toml";
+  status-config = "${myhomecfg.xdg.configHome}/i3status-rust/config-default.toml";
   wallpaper = self + "/resources/wallpapers/wr.jpg";
   wpctl = lib.getExe' pkgs.wireplumber "wpctl";
   bento = lib.getExe' self.packages.${pkgs.system}.bbscripts "bento";
   curl = lib.getExe pkgs.curl;
   jq = lib.getExe pkgs.jq;
-  swaylock = lib.getExe config.myhomecfg.programs.swaylock.package;
+  swaylock = lib.getExe myhomecfg.programs.swaylock.package;
   loginctl = lib.getExe' pkgs.systemd "loginctl";
   wl-copy = lib.getExe' pkgs.wl-clipboard "wl-copy";
   fcitx5 = lib.getExe config.i18n.inputMethod.package;
