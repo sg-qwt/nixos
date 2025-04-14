@@ -13,8 +13,8 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
-  boot.kernelParams = [ ];
-
+  boot.kernelParams = [ "mem_sleep_default=s2idle" ];
+  boot.kernelPatches = [ ];
   boot.supportedFilesystems = [ "bcachefs" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
