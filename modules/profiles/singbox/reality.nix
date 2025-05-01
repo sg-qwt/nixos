@@ -15,7 +15,7 @@ in
       listen_port = ports.reality;
       users = [
         {
-          uuid = config.sops.placeholder.sing-vless-uuid;
+          uuid = config.vaultix.placeholder.sing-vless-uuid;
           flow = "xtls-rprx-vision";
         }
       ];
@@ -28,7 +28,7 @@ in
             server = server;
             server_port = ports.https;
           };
-          private_key = config.sops.placeholder.sing-reality-private;
+          private_key = config.vaultix.placeholder.sing-reality-private;
           short_id = [
             "fdb1"
           ];

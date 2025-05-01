@@ -3,10 +3,6 @@
 with lib;
 let
   cfg = config.myos.singbox;
-  sops-sing = {
-    sopsFile = self + "/secrets/secrets.yaml";
-    restartUnits = [ "singbox.service" ];
-  };
   cap = [
     "CAP_NET_RAW"
     "CAP_NET_ADMIN"
@@ -32,11 +28,11 @@ in
 
   config = mkIf cfg.enable
     {
-      sops.secrets.sing-shadow = sops-sing;
-      sops.secrets.sing-shadow-tls = sops-sing;
-      sops.secrets.sing-vless-uuid = sops-sing;
-      sops.secrets.sing-reality-private = sops-sing;
-      sops.templates.singbox = {
+      vaultix.secrets.sing-shadow = { };
+      vaultix.secrets.sing-shadow-tls = { };
+      vaultix.secrets.sing-vless-uuid = { };
+      vaultix.secrets.sing-reality-private = { };
+      vaultix.templates.singbox = {
         content = builtins.toJSON
           (import (./. + "/${toString cfg.profile}.nix") { inherit config; });
       };
@@ -64,13 +60,13 @@ in
         after = [ "network-online.target" ];
         wantedBy = [ "multi-user.target" ];
         restartTriggers = [
-          config.sops.templates.singbox.content
+          config.vaultix.templates.singbox.content
         ];
         serviceConfig = {
           DynamicUser = true;
           StateDirectory = "singbox";
           LoadCredential = [
-            "config:${config.sops.templates.singbox.path}"
+            "config:${config.vaultix.templates.singbox.path}"
           ];
           ExecStart = "${pkgs.sing-box}/bin/sing-box run -c %d/config -D $STATE_DIRECTORY";
           CapabilityBoundingSet = cap;

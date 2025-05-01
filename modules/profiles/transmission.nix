@@ -4,26 +4,21 @@ let
 in
 lib.mkProfile s "transmission" {
 
-  sops.secrets.trans-user = {
-    sopsFile = self + "/secrets/secrets.yaml";
-  };
-  sops.secrets.trans-pass = {
-    sopsFile = self + "/secrets/secrets.yaml";
-  };
-
-  sops.templates.transmission-credentials.content = builtins.toJSON {
-    rpc-username = config.sops.placeholder.trans-user;
-    rpc-password = config.sops.placeholder.trans-pass;
+  vaultix.secrets.trans-user = { };
+  vaultix.secrets.trans-pass = { };
+  vaultix.templates.transmission-credentials.content = builtins.toJSON {
+    rpc-username = config.vaultix.placeholder.trans-user;
+    rpc-password = config.vaultix.placeholder.trans-pass;
   };
 
   systemd.services.transmission.restartTriggers = [
-    config.sops.templates.transmission-credentials.content
+    config.vaultix.templates.transmission-credentials.content
   ];
 
   services.transmission = {
     enable = true;
     webHome = pkgs.flood-for-transmission;
-    credentialsFile = config.sops.templates.transmission-credentials.path;
+    credentialsFile = config.vaultix.templates.transmission-credentials.path;
     settings = {
       peer-port = ports.transmission-peer;
       rpc-port = ports.transmission;

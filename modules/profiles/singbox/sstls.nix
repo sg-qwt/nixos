@@ -14,7 +14,7 @@ in
       listen = "127.0.0.1";
       network = "tcp";
       method = "2022-blake3-aes-128-gcm";
-      password = config.sops.placeholder.sing-shadow;
+      password = config.vaultix.placeholder.sing-shadow;
     }
     {
       type = "shadowtls";
@@ -25,7 +25,7 @@ in
       users = [
         {
           name = "sstls";
-          password = config.sops.placeholder.sing-shadow-tls;
+          password = config.vaultix.placeholder.sing-shadow-tls;
         }
       ];
       handshake = {

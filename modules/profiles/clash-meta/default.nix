@@ -3,10 +3,6 @@
 with lib;
 let
   cfg = config.myos.clash-meta;
-  sops-clash = {
-    sopsFile = self + "/secrets/secrets.yaml";
-    restartUnits = [ "clash-meta.service" ];
-  };
   host = "127.0.0.1";
   inherit (config.myos.data) ports;
   fwmark = "0x238";
@@ -38,21 +34,15 @@ in
 
   config = mkIf cfg.enable
     {
-      sops.secrets.sspass = sops-clash;
-      sops.secrets.wgteam = sops-clash;
-      sops.secrets.sing-shadow = sops-clash;
-      sops.secrets.sing-shadow-tls = sops-clash;
-      sops.secrets.sing-vless-uuid = sops-clash;
-      sops.secrets.clash-secret = sops-clash;
-      sops.secrets.dui_ipv4 = {
-        sopsFile = self + "/secrets/tfout.json";
-        restartUnits = [ "clash-meta.service" ];
-      };
-      sops.secrets.xun_ipv4 = {
-        sopsFile = self + "/secrets/tfout.json";
-        restartUnits = [ "clash-meta.service" ];
-      };
-      sops.templates.clashm = {
+      vaultix.secrets.sspass = { };
+      vaultix.secrets.wgteam = { };
+      vaultix.secrets.sing-shadow = { };
+      vaultix.secrets.sing-shadow-tls = { };
+      vaultix.secrets.sing-vless-uuid = { };
+      vaultix.secrets.clash-secret = { };
+      vaultix.secrets.dui-ipv4 = { };
+      vaultix.secrets.xun-ipv4 = { };
+      vaultix.templates.clashm = {
         content = lib.generators.toYAML { }
           (import ./clash.nix { inherit config pkgs; });
         owner = config.users.users.clash-meta.name;
@@ -69,7 +59,7 @@ in
 
       systemd.tmpfiles.rules = [
         "d '${cfg.stateDir}' 0750 clash-meta clash-meta - -"
-        "L+ '${cfg.stateDir}/config.yaml' - - - - ${config.sops.templates.clashm.path}"
+        "L+ '${cfg.stateDir}/config.yaml' - - - - ${config.vaultix.templates.clashm.path}"
         "L+ '${cfg.stateDir}/Country.mmdb' - - - - ${pkgs.dbip-country-lite}/share/dbip/dbip-country-lite.mmdb"
         "L+ '${cfg.stateDir}/GeoSite.dat' - - - - ${pkgs.v2ray-domain-list-community}/share/v2ray/geosite.dat"
       ];
@@ -81,7 +71,7 @@ in
         wantedBy = [ "multi-user.target" ];
         script = "exec ${pkgs.clash-meta}/bin/clash-meta -d ${cfg.stateDir}";
         restartTriggers = [
-          config.sops.templates.clashm.content
+          config.vaultix.templates.clashm.content
         ];
         serviceConfig = rec {
           User = "clash-meta";

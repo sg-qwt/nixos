@@ -6,8 +6,6 @@ lib.mkProfile s "tools"
 
     unrar
 
-    sops
-
     wget
 
     vim

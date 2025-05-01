@@ -6,19 +6,16 @@ lib.mkProfile s "attic-server" (
     host-addr = "attic.${fqdn.edg}";
   in
   {
-    sops.secrets.atticd-token = {
-      sopsFile = self + "/secrets/secrets.yaml";
-      restartUnits = [ "atticd.service" ];
-    };
+    vaultix.secrets.atticd-token = { };
 
-    sops.templates.atticd-credentials.content = ''
-      ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64=${config.sops.placeholder.atticd-token}
+    vaultix.templates.atticd-credentials.content = ''
+      ATTIC_SERVER_TOKEN_HS256_SECRET_BASE64=${config.vaultix.placeholder.atticd-token}
     '';
 
     services.atticd = {
       enable = true;
 
-      environmentFile = config.sops.templates.atticd-credentials.path;
+      environmentFile = config.vaultix.templates.atticd-credentials.path;
 
       settings = {
         listen = listen-addr;

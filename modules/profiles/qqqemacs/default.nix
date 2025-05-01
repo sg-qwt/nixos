@@ -11,13 +11,15 @@ lib.mkProfile s "qqqemacs"
       # this slows down builds
       # documentation.man.generateCaches = true; 
 
-      sops.secrets.openai_key.sopsFile = self + "/secrets/tfout.json";
-      sops.secrets.github-ai-pat.sopsFile = self + "/secrets/secrets.yaml";
-      sops.templates.authinfo.content = ''
-        machine ${gpt-host} login apikey password ${config.sops.placeholder.openai_key}
-        machine ${github-ai} login apikey password ${config.sops.placeholder.github-ai-pat}
-      '';
-      sops.templates.authinfo.owner = config.myos.user.mainUser;
+      vaultix.secrets.openai-key = { };
+      vaultix.secrets.github-ai-pat = { };
+      vaultix.templates.authinfo = {
+        content = ''
+          machine ${gpt-host} login apikey password ${config.vaultix.placeholder.openai-key}
+          machine ${github-ai} login apikey password ${config.vaultix.placeholder.github-ai-pat}
+        '';
+        owner = config.myos.user.mainUser;
+      };
 
       myos.sdcv-with-dicts.enable = true;
 

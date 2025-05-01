@@ -1,16 +1,15 @@
 s@{ config, pkgs-latest, pkgs, lib, self, ... }:
 let
   me = config.myos.user.mainUser;
-  me-sops = {
-    sopsFile = self + "/secrets/secrets.yaml";
+  me-secret = {
     owner = config.users.users.${me}.name;
     group = config.users.users.${me}.group;
   };
 in
 lib.mkProfile s "shell"
 {
-  sops.secrets.atuin-key = me-sops;
-  sops.secrets.atuin-session = me-sops;
+  vaultix.secrets.atuin-key = me-secret;
+  vaultix.secrets.atuin-session = me-secret;
 
   myhome = { config, osConfig, ... }: {
     home.sessionVariables = {
@@ -75,8 +74,8 @@ lib.mkProfile s "shell"
       enable = true;
       flags = [ "--disable-up-arrow" ];
       settings = {
-        key_path = osConfig.sops.secrets.atuin-key.path;
-        session_path = osConfig.sops.secrets.atuin-session.path;
+        key_path = osConfig.vaultix.secrets.atuin-key.path;
+        session_path = osConfig.vaultix.secrets.atuin-session.path;
         update_check = false;
         auto_sync = true;
         sync_frequency = "1h";
