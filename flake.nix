@@ -13,8 +13,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
+    vaultix = {
+      url = "github:milieuim/vaultix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -56,7 +56,7 @@
 
       helpers = import ./lib/helpers.nix { inherit self nixpkgs; };
 
-      mkOS = { name, p ? pkgs }: {
+      mkOS = { name, hostPubkey, p ? pkgs }: {
         ${name} = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit home-manager self inputs;
@@ -64,6 +64,8 @@
           };
           modules = [
             nixpkgs.nixosModules.readOnlyPkgs
+            home-manager.nixosModules.home-manager
+            vaultix.nixosModules.default
             {
               _module.args.pkgs-latest = pkgs-latest;
               nixpkgs.pkgs = p;
@@ -72,9 +74,8 @@
               imports = helpers.profile-list;
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              vaultix.settings.hostPubkey = hostPubkey;
             }
-            home-manager.nixosModules.home-manager
-            sops-nix.nixosModules.sops
           ] ++ (import (./hosts + "/${name}") { inherit inputs; });
         };
       };
@@ -84,6 +85,14 @@
     {
       # expose for nix repl usage only
       inherit self;
+
+      vaultix = vaultix.configure {
+        nodes = self.nixosConfigurations;
+        identity = self + "/resources/keys/age-yubikey-identity-main.txt";
+        extraRecipients = [ "age1yubikey1q0mllu8l3pf4fynhye98u308ppk9tjx7aawvzhhqwvrn878nmcsfcwj37nf" ];
+        extraPackages = [ pkgs.age-plugin-yubikey ];
+        defaultSecretDirectory = "./secrets";
+      };
 
       overlays.default = (helpers.default-overlays { inherit inputs; });
 
@@ -99,16 +108,26 @@
       nixosConfigurations =
         builtins.foldl' (x: y: x // y) { }
           [
-            (mkOS { name = "lei"; })
+            (mkOS {
+              name = "lei";
+              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJPEOZdevyeP6Cj+9RFSNhqrLJykepW8xDypHsx4SyuK";
+            })
             (mkOS {
               name = "zheng";
+              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINpWTwJQ7923qsxZGWjxQrl8Bx6/+pdZDsiz0dg1akxz";
               p = pkgs.appendOverlays [
                 jovian.overlays.default
                 helpers.jovian-overlay
               ];
             })
-            (mkOS { name = "dui"; })
-            (mkOS { name = "xun"; })
+            (mkOS {
+              name = "dui";
+              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMHAA+mRHaJRlE/uUSQ0u294miRtW+8KreHcuYLZiyI9";
+            })
+            (mkOS {
+              name = "xun";
+              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIII6WKVvmjwmCNWPn/6ReFvGBCUj7O2do2wiYNQGXnjX";
+            })
           ];
 
       formatter."${system}" = treefmt-eval.config.build.wrapper;

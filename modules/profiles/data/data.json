@@ -3,14 +3,12 @@
 	"https": 443,
 	"reality": 9989,
 	"ss1": 2952,
-	"ss2": 8964,
 	"sstls": 8989,
 	"clash-meta-mixed": 7891,
 	"clash-tproxy": 7893,
 	"clash-meta-api": 9091,
 	"clash-dns": 1053,
 	"dendrite": 8008,
-	"miniflux": 8018,
 	"tailscaled": 41641,
 	"atticd": 8040,
 	"default-ssl": 8443,
@@ -27,8 +25,6 @@
 	"edg": "edgerunners.eu.org"
     },
     "path": {
-	"ss2": "/mopi",
-	"miniflux": "/flux",
 	"metrics": "/metrics",
 	"transmission": "/trans"
     },

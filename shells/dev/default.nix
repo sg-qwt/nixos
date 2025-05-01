@@ -1,6 +1,7 @@
 { pkgs, self }:
 let
-  tfenv = self + "/secrets/tf.env";
+  tfenv = self + "/secrets/tf-infra.env.age";
+  id = self + "/resources/keys/age-yubikey-identity-main.txt";
   terraform = (pkgs.terraform.withPlugins (p: [
     p.azurerm
     p.cloudflare
@@ -19,8 +20,11 @@ pkgs.mkShell {
     pkgs.azure-cli
     pkgs.jq
     tf
-    (pkgs.writeShellScriptBin "update-tfout"
-      (import ./tfout.nix { inherit tf pkgs; }))
+    pkgs.rage
+    pkgs.age-plugin-yubikey
+    #TODO fix tfout with age
+    # (pkgs.writeShellScriptBin "update-tfout"
+    #   (import ./tfout.nix { inherit tf pkgs; }))
   ];
   shellHook = ''
     set -a
@@ -28,7 +32,7 @@ pkgs.mkShell {
     export FLAKE_HOME=$(${pkgs.git}/bin/git rev-parse --show-toplevel)
     export FLAKE_INFRA_DIR="$FLAKE_HOME/infra"
     export FLAKE_SECRET_DIR="$FLAKE_HOME/secrets"
-    source <(${pkgs.sops}/bin/sops --decrypt ${tfenv})
+    source <(rage --decrypt ${tfenv} --identity ${id})
 
     alias tfp="tf plan"
     alias tfa="tf apply -auto-approve"

@@ -71,31 +71,21 @@ lib.mkProfile s "sway"
     };
   };
 
-  sops.secrets.sunshine-pass = {
-    sopsFile = self + "/secrets/secrets.yaml";
-  };
+  
+  vaultix.secrets.sunshine-pass = { };
+  vaultix.secrets.sunshine-salt = { };
 
-  sops.secrets.sunshine-salt = {
-    sopsFile = self + "/secrets/secrets.yaml";
-  };
-
-  sops.templates.sunshine-cred = {
+  vaultix.templates.sunshine-cred = {
     content = builtins.toJSON {
       username = config.myos.user.mainUser;
-      password = config.sops.placeholder.sunshine-pass;
-      salt = config.sops.placeholder.sunshine-salt;
+      password = config.vaultix.placeholder.sunshine-pass;
+      salt = config.vaultix.placeholder.sunshine-salt;
     };
     owner = config.myos.user.mainUser;
   };
 
   services.sunshine = {
     enable = true;
-    # package = (lib.addPatches pkgs.sunshine [
-    #   (pkgs.fetchpatch {
-    #     url = "https://github.com/LizardByte/Sunshine/pull/2885.patch";
-    #     hash = "sha256-bMFmnHGosFOfStbeTBHxdfkYHDZFoWytMuZ9+O6W0LQ=";
-    #   })
-    # ]);
     autoStart = false;
     capSysAdmin = true;
     openFirewall = true;
@@ -103,10 +93,8 @@ lib.mkProfile s "sway"
       # TODO wait https://github.com/LizardByte/Sunshine/pull/2885
       # output_name = monitor.headless;
       output_name = 2;
-      credentials_file = config.sops.templates.sunshine-cred.path;
-      # https://github.com/orgs/LizardByte/discussions/70
-      audio_sink = "sink-none";
-      virtual_sink = "sink-none";
+      credentials_file = config.vaultix.templates.sunshine-cred.path;
+      stream_audio = "disabled";
     };
     applications = {
       apps = [
@@ -459,11 +447,11 @@ lib.mkProfile s "sway"
       home.packages = with pkgs; [
         wl-clipboard
         xdg-utils
-        # https://github.com/NixOS/nixpkgs/pull/353362
-        # wf-recorder
+        wf-recorder
         open-in-mpv
       ];
 
+      xdg.configFile."mimeapps.list".force = true;
       xdg.mimeApps = {
         enable = true;
         defaultApplications = {

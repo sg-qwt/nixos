@@ -21,8 +21,7 @@ in
 
   config = mkIf cfg.enable {
 
-    sops.secrets.grafana-write-token = {
-      sopsFile = self + "/secrets/secrets.yaml";
+    vaultix.secrets.grafana-write-token = {
       owner = config.systemd.services.prometheus.serviceConfig.User;
     };
 
@@ -64,7 +63,7 @@ in
           url = "https://prometheus-prod-37-prod-ap-southeast-1.grafana.net/api/prom/push";
           basic_auth = {
             username = "1195522";
-            password_file = config.sops.secrets.grafana-write-token.path;
+            password_file = config.vaultix.secrets.grafana-write-token.path;
           };
         }
       ];

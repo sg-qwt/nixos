@@ -11,7 +11,7 @@ rec {
   ipv6 = false;
 
   external-controller = "0.0.0.0:${toString ports.clash-meta-api}";
-  secret = config.sops.placeholder.clash-secret;
+  secret = config.vaultix.placeholder.clash-secret;
 
   external-ui = "${pkgs.metacubexd}";
 
@@ -61,7 +61,7 @@ rec {
       port = 2408;
       ip = "172.16.0.2";
       ipv6 = "2606:4700:110:8410:f35c:f27f:d43e:b299";
-      private-key = config.sops.placeholder.wgteam;
+      private-key = config.vaultix.placeholder.wgteam;
       public-key = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
       udp = true;
       mtu = 1420;
@@ -70,9 +70,9 @@ rec {
     {
       name = "vless";
       type = "vless";
-      server = config.sops.placeholder.dui_ipv4;
+      server = config.vaultix.placeholder.dui-ipv4;
       port = ports.https;
-      uuid = config.sops.placeholder.sing-vless-uuid;
+      uuid = config.vaultix.placeholder.sing-vless-uuid;
       network = "tcp";
       tls = true;
       udp = true;
@@ -87,33 +87,20 @@ rec {
     {
       name = "sstls";
       type = "ss";
-      server = config.sops.placeholder.xun_ipv4;
+      server = config.vaultix.placeholder.xun-ipv4;
       port = ports.sstls;
       cipher = "2022-blake3-aes-128-gcm";
-      password = config.sops.placeholder.sing-shadow;
+      password = config.vaultix.placeholder.sing-shadow;
       plugin = "shadow-tls";
       client-fingerprint = "chrome";
       plugin-opts = {
         host = config.myos.singbox.sni2;
-        password = config.sops.placeholder.sing-shadow-tls;
+        password = config.vaultix.placeholder.sing-shadow-tls;
         version = 3;
       };
     }
   ];
 
-  # proxy-providers = {
-  #   # mumbai = {
-  #   #   type = "http";
-  #   #   url = config.sops.placeholder.clash-provider-mumbai;
-  #   #   interval = 3600;
-  #   #   path = "mumbai.yaml";
-  #   #   health-check = {
-  #   #     enable = true;
-  #   #     interval = 600;
-  #   #     url = "http://www.gstatic.com/generate_204";
-  #   #   };
-  #   # };
-  # };
   proxy-providers = { };
 
   proxy-groups =

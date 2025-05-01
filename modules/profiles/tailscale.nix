@@ -5,11 +5,13 @@ lib.mkProfile s "tailscale" (
     port = config.myos.data.ports.tailscaled;
   in
   {
+    vaultix.secrets.tailscale-tailnet-key = { };
+
     services.tailscale = {
       enable = true;
       interfaceName = interface;
       port = port;
-      authKeyFile = config.sops.secrets.tailscale_tailnet_key.path;
+      authKeyFile = config.vaultix.secrets.tailscale-tailnet-key.path;
       openFirewall = true;
     };
     systemd.services.tailscaled.environment = {
@@ -17,10 +19,5 @@ lib.mkProfile s "tailscale" (
     };
 
     networking.firewall.trustedInterfaces = [ interface ];
-
-    sops.secrets.tailscale_tailnet_key = {
-      sopsFile = self + "/secrets/tfout.json";
-      restartUnits = [ "tailscaled-autoconnect.service" ];
-    };
   }
 )

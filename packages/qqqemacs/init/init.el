@@ -1235,7 +1235,7 @@ the focus."
 
 (use-package auth-source
   :custom
-  (auth-sources '("/run/secrets/rendered/authinfo")))
+  (auth-sources '("/run/vaultix/authinfo")))
 
 ;;;;;;;;;;;;;;
 ;; markdown ;;

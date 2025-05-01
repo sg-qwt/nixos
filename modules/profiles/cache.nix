@@ -3,17 +3,14 @@ let
   inherit (config.myos.data) fqdn;
 in
 lib.mkProfile s "cache" {
-  sops.secrets.attic-hello-token = {
-    sopsFile = self + "/secrets/secrets.yaml";
-    restartUnits = [ "nix-daemon.service" ];
-  };
 
-  sops.templates.netrc.content = ''
+  vaultix.secrets.attic-hello-token = { };
+  vaultix.templates.netrc.content = ''
     machine attic.${fqdn.edg}
-    password ${config.sops.placeholder.attic-hello-token}
+    password ${config.vaultix.placeholder.attic-hello-token}
   '';
 
-  nix.settings.netrc-file = config.sops.templates.netrc.path;
+  nix.settings.netrc-file = config.vaultix.templates.netrc.path;
 
   nix.settings.substituters = [
     "https://cache.nixos.org?priority=20"
@@ -26,15 +23,13 @@ lib.mkProfile s "cache" {
     "hello:1i/LXgtEDpGmjTelurlADkaoFZdBP55NBJMxL2swzLY="
   ];
 
-  sops.secrets.github-pat = {
-    sopsFile = self + "/secrets/secrets.yaml";
-    restartUnits = [ "nix-daemon.service" ];
-  };
+  vaultix.secrets.github-pat = { };
 
   users.groups.nix-access-tokens = { };
-  sops.templates.nix-extra-config = {
+
+  vaultix.templates.nix-extra-config = {
     content = ''
-      extra-access-tokens = github.com=${config.sops.placeholder.github-pat}
+      extra-access-tokens = github.com=${config.vaultix.placeholder.github-pat}
     '';
     mode = "0440";
     group = config.users.groups.nix-access-tokens.name;
@@ -42,6 +37,6 @@ lib.mkProfile s "cache" {
   myos.user.extraGroups = [ config.users.groups.nix-access-tokens.name ];
 
   nix.extraOptions = ''
-    !include ${config.sops.templates.nix-extra-config.path}
+    !include ${config.vaultix.templates.nix-extra-config.path}
   '';
 }

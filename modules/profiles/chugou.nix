@@ -14,15 +14,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    sops.secrets.chugou-env = {
-      sopsFile = self + "/secrets/chugou.yaml";
-      restartUnits = [ "chugou.service" ];
-    };
+    vaultix.secrets.chugou-env = { };
 
     services.chugou = {
       enable = true;
       webPort = ports.chugou;
-      credentialsFile = config.sops.secrets.chugou-env.path;
+      credentialsFile = config.vaultix.secrets.chugou-env.path;
     };
 
     services.nginx.virtualHosts."chugou.${fqdn.edg}" = {

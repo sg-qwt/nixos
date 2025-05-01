@@ -1,6 +1,6 @@
 { lib, pkgs, pkgs-latest, self, ... }:
 {
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.11";
 
   nix.settings = {
     trusted-users = [ "@wheel" "deploy" ];
@@ -17,6 +17,8 @@
     log-lines = 25;
     auto-optimise-store = true;
   };
+
+  services.userborn.enable = true;
 
   programs.ssh.package = pkgs-latest.openssh;
   services.openssh = {

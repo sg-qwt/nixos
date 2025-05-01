@@ -13,11 +13,6 @@ in
 
     system.configurationRevision = self.rev or self.dirtyRev or "dirty";
 
-    sops = {
-      age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-      gnupg.sshKeyPaths = [ ];
-    };
-
     time.timeZone = "Asia/Shanghai";
 
     i18n = {
