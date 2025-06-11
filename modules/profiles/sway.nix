@@ -71,7 +71,7 @@ lib.mkProfile s "sway"
     };
   };
 
-  
+
   vaultix.secrets.sunshine-pass = { };
   vaultix.secrets.sunshine-salt = { };
 
