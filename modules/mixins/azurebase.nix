@@ -11,4 +11,6 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  services.cloud-init.settings.ssh_deletekeys = lib.mkForce false;
 }
