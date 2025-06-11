@@ -122,11 +122,11 @@
             })
             (mkOS {
               name = "dui";
-              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMHAA+mRHaJRlE/uUSQ0u294miRtW+8KreHcuYLZiyI9";
+              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJLftJ5dhUg+HMKxqwMlUswnpQtPVdYFDxbD6YB58kGp";
             })
             (mkOS {
               name = "xun";
-              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIII6WKVvmjwmCNWPn/6ReFvGBCUj7O2do2wiYNQGXnjX";
+              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHIJkTioxExX+AHexbppyfFKJAhMfJe7js0f2QfSvJec";
             })
           ];
 

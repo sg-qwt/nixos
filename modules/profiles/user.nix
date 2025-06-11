@@ -38,9 +38,7 @@ in
       isNormalUser = true;
       extraGroups = [ "wheel" "networkmanager" "audio" "video" "systemd-journal" ] ++ cfg.extraGroups;
       hashedPasswordFile = config.vaultix.secrets.me-password.path;
-      openssh.authorizedKeys.keyFiles = [
-        (self + "/resources/keys/ssh-me.pub")
-      ];
+      openssh.authorizedKeys.keys = config.myos.data.openssh-keys;
     };
 
     vaultix.secrets.me-password = { };

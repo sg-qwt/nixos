@@ -1,4 +1,4 @@
-{ lib, pkgs, pkgs-latest, self, ... }:
+{ lib, pkgs, pkgs-latest, self, config, ... }:
 {
   system.stateVersion = "24.11";
 
@@ -21,9 +21,11 @@
   services.userborn.enable = true;
 
   programs.ssh.package = pkgs-latest.openssh;
+
   services.openssh = {
     enable = true;
     settings = {
+      PubkeyAuthOptions = "verify-required";
       X11Forwarding = false;
       KbdInteractiveAuthentication = false;
       PasswordAuthentication = false;
@@ -54,9 +56,7 @@
   users.groups.deploy = { };
   users.users.deploy = {
     isSystemUser = true;
-    openssh.authorizedKeys.keyFiles = [
-      (self + "/resources/keys/ssh-me.pub")
-    ];
+    openssh.authorizedKeys.keys = config.myos.data.openssh-keys;
     group = "deploy";
     shell = pkgs.bash;
   };
