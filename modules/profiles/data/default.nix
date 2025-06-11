@@ -9,7 +9,11 @@
     let
       data-json = lib.importJSON ./data.json;
       hosts = (builtins.attrNames self.nixosConfigurations);
-      data = data-json // { hosts = hosts; };
+      openssh-keys = [
+        "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIK9vRLHnJ+stWj636G27/Xp06+Q1jsV4vks/bDNOD9dKAAAABHNzaDo= main"
+        "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIEAj84opeeWFMY1yxMzG3WvUVRxVhfxeauPEX6zuMWiyAAAABHNzaDo= backup"
+      ];
+      data = data-json // { inherit hosts openssh-keys; };
     in
     {
       assertions = [
