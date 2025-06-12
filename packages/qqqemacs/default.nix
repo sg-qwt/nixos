@@ -1,4 +1,4 @@
-{ lib, pkgs, emacs30-pgtk, emacsPackagesFor, ... }:
+{ lib, pkgs, emacs30-pgtk, emacsPackagesFor, self, ... }:
 let
   emacsWithPackages = (emacsPackagesFor emacs30-pgtk).emacsWithPackages;
 
@@ -67,6 +67,8 @@ let
       rust-mode
 
       gptel
+
+      age
     ]) ++
 
     (with epkgs.elpaPackages; [
@@ -85,6 +87,10 @@ let
     (aspellWithDicts (ds: with ds; [ en ]))
     my.bbscripts
 
+    # age.el
+    rage
+    age-plugin-yubikey
+
     # lsp
     nil
     clojure-lsp
@@ -97,6 +103,9 @@ pkgs.symlinkJoin {
   postBuild = ''
     wrapProgram $out/bin/emacs \
       --set QQQ_SNIPPETS ${./snippets} \
+      --set QQQ_AGE_RECIPIENTS ${self + "/resources/keys/recipients.txt"} \
+      --set QQQ_AGE_IDENTITY ${self + "/resources/keys/age-yubikey-identity-main.txt"} \
+      --set PINENTRY_PROGRAM ${lib.getExe pkgs.pinentry-qt} \
       --prefix PATH : ${lib.makeBinPath deps} \
       --add-flags --init-directory=${./init}
   '';

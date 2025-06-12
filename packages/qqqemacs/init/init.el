@@ -1257,3 +1257,14 @@ the focus."
 (use-package tramp
   :config
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+
+;;;;;;;;;;;;
+;; age.el ;;
+;;;;;;;;;;;;
+(use-package age
+  :custom
+  (age-program "rage")
+  (age-default-identity (getenv "QQQ_AGE_IDENTITY"))
+  (age-default-recipient (getenv "QQQ_AGE_RECIPIENTS"))
+  :config
+  (age-file-enable))
