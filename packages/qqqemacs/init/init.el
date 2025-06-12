@@ -161,12 +161,6 @@ If the buffer doesn't exist, create it first."
   :config
   (unless (server-running-p) (server-start)))
 
-(use-package epg
-  :config
-  ;; TODO remove this after gnupg 2.4.x
-  ;; https://github.com/NixOS/nixpkgs/pull/265294
-  (fset 'epg-wait-for-status 'ignore))
-
 (use-package evil
   :demand t
   :hook

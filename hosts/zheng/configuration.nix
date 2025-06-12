@@ -15,7 +15,6 @@ let user = config.myos.user.mainUser; in
   myos.desktop.enable = true;
   myos.user.extraGroups = [ "input" ];
   myos.git.enable = true;
-  myos.gnupg.enable = true;
   myos.tailscale.enable = true;
 
   jovian = {

@@ -110,7 +110,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   admin_ssh_key {
     username   = "me"
-    public_key = file("../resources/keys/ssh-me.pub")
+    public_key = "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIK9vRLHnJ+stWj636G27/Xp06+Q1jsV4vks/bDNOD9dKAAAABHNzaDo= main"
   }
 
   boot_diagnostics {

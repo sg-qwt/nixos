@@ -47,7 +47,6 @@ in
   myos.shell.enable = true;
   myos.git.enable = true;
   myos.ssh.enable = true;
-  myos.gnupg.enable = true;
   myos.desktop-apps.enable = true;
   myos.tools.enable = true;
 
