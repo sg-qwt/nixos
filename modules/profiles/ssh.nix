@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ pkgs, config, lib, ... }:
 
 with lib;
 
@@ -23,6 +23,16 @@ in
   };
 
   config = mkIf cfg.enable {
+
+    # for yubikey PIV
+    services.pcscd.enable = true;
+
+    programs.ssh = {
+      startAgent = true;
+      enableAskPassword = true;
+      askPassword = lib.getExe' pkgs.wayprompt "wayprompt-ssh-askpass";
+    };
+
     myhome = {
       programs.ssh = {
         enable = true;
