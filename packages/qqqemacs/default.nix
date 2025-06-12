@@ -42,8 +42,6 @@ let
       nix-mode
       hcl-mode
 
-      org-roam
-
       embark
       embark-consult
       wgrep

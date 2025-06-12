@@ -349,7 +349,7 @@ If the buffer doesn't exist, create it first."
     (consult-buffer))
   :custom
   (consult-narrow-key "<")
-  (consult-preview-excluded-files '(".*\\.gpg$")))
+  (consult-preview-excluded-files '(".*\\.gpg$" ".*\\.age$")))
 
 (use-package orderless
   :custom
@@ -444,64 +444,20 @@ If the buffer doesn't exist, create it first."
 (use-package typescript-ts-mode
   :mode "\\.ts\\'")
 
-(use-package org-roam
+(use-package org
   :preface
-  (defun qqq/orm-capture-p ()
+  (defun qqq/garden-upload ()
+    "Sync garden to git."
     (interactive)
-    (org-roam-capture- :goto nil :keys "p" :node (org-roam-node-create)))
-  (defun qqq/orm-upload ()
-    "Sync roam db to git."
-    (interactive)
-    (let ((default-directory org-roam-directory))
+    (let ((default-directory qqq/garden-dir))
       (magit-call-git "pull" "--rebase" "--autostash")
       (magit-call-git "add" "--all")
       (magit-call-git "commit" "-m" (concat "auto: " (current-time-string)))
       (magit-call-git "push")))
-  :demand t
   :general
   (qqq/leader
     :infix "o"
-    "u" #'qqq/orm-upload
-    "s" #'org-roam-db-sync
-    "f" #'org-roam-node-find
-    "i" #'org-roam-node-insert
-    "t" #'org-roam-buffer-toggle
-    "c" #'org-roam-capture
-    "p" #'qqq/orm-capture-p)
-  :custom
-  (epa-file-encrypt-to "77EEFB04BFD81826")
-  (epa-file-select-keys "auto")
-  (org-directory qqq/garden-dir)
-  (org-roam-directory qqq/garden-dir)
-  (org-roam-file-exclude-regexp "templates/")
-  (org-roam-database-connector 'sqlite-builtin)
-  :config
-  (setq org-roam-capture-new-node-hook nil)
-  (setq org-roam-capture-templates
-	'(("d" "default" plain "%?"
-	   :target (file+head "%<%Y%m%d%H%M%S>.org.gpg" "#+title: ${title}\n")
-	   :unnarrowed t)
-	  ("p" "pass" entry
-	   (file "templates/pass.org")
-	   :target (file "pass.org.gpg")
-	   :empty-lines 1)))
-  (setq org-roam-capture-ref-templates
-	'(("b" "bookmark" entry
-	   (file "templates/bookmark.org")
-	   :target (file "bookmark.org.gpg")
-	   :empty-lines 1)))
-
-  (require 'org-roam-protocol)
-  (add-to-list 'display-buffer-alist
-	       '("\\*org-roam\\*"
-		 (display-buffer-in-direction)
-		 (direction . right)
-		 (window-width . 0.33)
-		 (window-height . fit-window-to-buffer)))
-  (advice-add 'org-roam-capture--finalize :around #'qqq/disable-yornp))
-
-(use-package org
-  :general
+    "u" #'qqq/garden-upload)
   (qqq/local-leader
     org-capture-mode-map
     "c" #'org-capture-finalize
