@@ -97,10 +97,7 @@
       overlays.default = (helpers.default-overlays { inherit inputs; });
 
       # expose packages to flake here
-      packages."${system}" = flake-utils.lib.flattenTree
-        ((helpers.packages pkgs)
-          //
-          (import ./images.nix { inherit nixpkgs system pkgs self; }));
+      packages."${system}" = flake-utils.lib.flattenTree (helpers.packages pkgs);
 
       devShells."${system}" =
         (helpers.shells { inherit pkgs self; } "dev");
