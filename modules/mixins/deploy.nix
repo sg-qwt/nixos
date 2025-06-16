@@ -20,8 +20,6 @@
 
   services.userborn.enable = true;
 
-  programs.ssh.package = pkgs-latest.openssh;
-
   services.openssh = {
     enable = true;
     settings = {
