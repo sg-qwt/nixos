@@ -3,9 +3,9 @@ let
   systemctl = lib.getExe' config.systemd.package "systemctl";
 in
 {
-  services.asusd = {
-    enable = true;
-    enableUserService = true;
+  services = {
+    power-profiles-daemon.enable = true;
+    asusd.enable = true;
   };
 
   services.fwupd.enable = true;
@@ -22,7 +22,7 @@ in
   myos.tools.enable = true;
 
   myos.clash-meta.enable = true;
-  myos.tailscale.enable = true;
+  myos.tailscale.enable = false;
   myos.android.enable = true;
 
   myos.container.enable = true;
