@@ -125,6 +125,10 @@
               name = "xun";
               hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHIJkTioxExX+AHexbppyfFKJAhMfJe7js0f2QfSvJec";
             })
+            (mkOS {
+              name = "li";
+              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKSl/HCw7Q0+t0Ji8PjXuPezLnF9EwHbZLkcsalHhAWF";
+            })
           ];
 
       formatter."${system}" = treefmt-eval.config.build.wrapper;
