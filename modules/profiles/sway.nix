@@ -332,10 +332,11 @@ lib.mkProfile s "sway"
           ];
 
           input = {
-            "1:1:AT_Translated_Set_2_keyboard" = {
+            "type:keyboard" = {
+              xkb_layout = "us";
               xkb_options = "ctrl:nocaps";
             };
-            "1267:12624:ELAN0670:00_04F3:3150_Touchpad" = {
+            "type:touchpad" = {
               natural_scroll = "enabled";
               tap = "enabled";
             };
