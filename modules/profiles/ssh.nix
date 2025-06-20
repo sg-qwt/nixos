@@ -30,7 +30,6 @@ in
     programs.ssh = {
       startAgent = true;
       enableAskPassword = true;
-      askPassword = lib.getExe' pkgs.wayprompt "wayprompt-ssh-askpass";
     };
 
     myhome = {
