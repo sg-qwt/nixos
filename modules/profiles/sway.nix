@@ -237,6 +237,8 @@ lib.mkProfile s "sway"
       wayland.windowManager.sway = {
         enable = true;
 
+        extraOptions = [ "--unsupported-gpu" ];
+
         systemd = {
           enable = true;
           xdgAutostart = false;
