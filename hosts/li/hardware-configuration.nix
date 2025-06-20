@@ -15,7 +15,11 @@
       availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "usbhid" "sd_mod" "rtsx_pci_sdmmc" ];
       kernelModules = [ ];
     };
-    kernelParams = [ "amd_pstate=active" ];
+    kernelParams = [
+      "acpi_backlight=native"
+
+      "amd_pstate=active"
+    ];
     kernelModules = [ "kvm-amd" ];
     blacklistedKernelModules = [ "nouveau" ];
     extraModulePackages = [ ];
