@@ -26,25 +26,7 @@ resource "tailscale_acl" "acl" {
   })
 }
 
-resource "tailscale_tailnet_key" "tailnet_key" {
-  reusable      = true
-  ephemeral     = false
-  preauthorized = true
-  tags          = [local.nixos_tag]
-
-  lifecycle {
-    replace_triggered_by = [
-      time_static.rotate_monthly
-    ]
-  }
-}
-
 data "tailscale_devices" "all" {
-}
-
-output "tailscale_tailnet_key" {
-  value     = tailscale_tailnet_key.tailnet_key.key
-  sensitive = true
 }
 
 locals {

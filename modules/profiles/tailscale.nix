@@ -12,8 +12,15 @@ lib.mkProfile s "tailscale" (
       interfaceName = interface;
       port = port;
       authKeyFile = config.vaultix.secrets.tailscale-tailnet-key.path;
+      authKeyParameters = {
+        ephemeral = false;
+        preauthorized = true;
+      };
       openFirewall = true;
       extraDaemonFlags = [ "--no-logs-no-support" ];
+      extraUpFlags = [
+        "--advertise-tags=tag:nixos"
+      ];
     };
 
     networking.firewall.trustedInterfaces = [ interface ];
