@@ -13,9 +13,7 @@ lib.mkProfile s "tailscale" (
       port = port;
       authKeyFile = config.vaultix.secrets.tailscale-tailnet-key.path;
       openFirewall = true;
-    };
-    systemd.services.tailscaled.environment = {
-      TS_NO_LOGS_NO_SUPPORT = "true";
+      extraDaemonFlags = [ "--no-logs-no-support" ];
     };
 
     networking.firewall.trustedInterfaces = [ interface ];
