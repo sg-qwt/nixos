@@ -131,11 +131,11 @@ lib.mkProfile s "sway"
 
       services.mako = {
         enable = true;
-        defaultTimeout = 5000;
-        ignoreTimeout = true;
-        extraConfig = ''
-          max-history=500
-        '';
+        settings = {
+          default-timeout = 5000;
+          ignore-timeout = true;
+          max-history = 500;
+        };
       };
 
       programs.i3status-rust = {
