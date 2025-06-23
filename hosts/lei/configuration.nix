@@ -51,7 +51,7 @@ in
   myos.tools.enable = true;
 
   myos.clash-meta.enable = true;
-  myos.tailscale.enable = true;
+  myos.tailscale.enable = false;
   myos.android.enable = true;
 
   myos.container.enable = true;

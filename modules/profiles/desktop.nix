@@ -17,7 +17,10 @@ lib.mkProfile s "desktop"
 
   networking = {
     useDHCP = lib.mkDefault true;
-    firewall.enable = true;
+    firewall = {
+      enable = true;
+      checkReversePath = "loose";
+    };
 
     nftables = {
       enable = true;

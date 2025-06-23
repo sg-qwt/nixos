@@ -4,38 +4,17 @@ with lib;
 let
   cfg = config.myos.clash-meta;
   host = "127.0.0.1";
+  interface = "mihomo0";
   inherit (config.myos.data) ports;
-  fwmark = "0x238";
-  nft-table = "clash";
-  route-table = "8964";
-  disable-tproxy = pkgs.writeShellApplication {
-    name = "disable-tproxy";
-    runtimeInputs = with pkgs; [ nftables iproute2 ];
-    text = (import ./disable-tproxy.nix
-      { inherit fwmark nft-table route-table; });
-  };
-  enable-tproxy = pkgs.writeShellApplication {
-    name = "enable-tproxy";
-    runtimeInputs = with pkgs; [ nftables iproute2 ];
-    text = (import ./enable-tproxy.nix
-      { inherit fwmark ports nft-table route-table; });
-  };
 in
 {
   options.myos.clash-meta = {
     enable = mkEnableOption "clash meta";
-
-    stateDir = mkOption {
-      type = types.str;
-      default = "/var/lib/clash-meta";
-      description = lib.mdDoc "The state directory.";
-    };
   };
 
   config = mkIf cfg.enable
     {
       vaultix.secrets.sspass = { };
-      vaultix.secrets.wgteam = { };
       vaultix.secrets.sing-shadow = { };
       vaultix.secrets.sing-shadow-tls = { };
       vaultix.secrets.sing-vless-uuid = { };
@@ -44,53 +23,22 @@ in
       vaultix.secrets.xun-ipv4 = { };
       vaultix.templates.clashm = {
         content = lib.generators.toYAML { }
-          (import ./clash.nix { inherit config pkgs; });
-        owner = config.users.users.clash-meta.name;
-        group = config.users.users.clash-meta.group;
+          (import ./clash.nix { inherit config pkgs interface; });
       };
 
-      users.users.clash-meta = {
-        isSystemUser = true;
-        group = "clash-meta";
-        description = "Clash Meta daemon user";
-        home = cfg.stateDir;
-      };
-      users.groups.clash-meta = { };
+      networking.firewall.trustedInterfaces = [ interface ];
 
-      systemd.tmpfiles.rules = [
-        "d '${cfg.stateDir}' 0750 clash-meta clash-meta - -"
-        "L+ '${cfg.stateDir}/config.yaml' - - - - ${config.vaultix.templates.clashm.path}"
-        "L+ '${cfg.stateDir}/Country.mmdb' - - - - ${pkgs.dbip-country-lite}/share/dbip/dbip-country-lite.mmdb"
-        "L+ '${cfg.stateDir}/GeoSite.dat' - - - - ${pkgs.v2ray-domain-list-community}/share/v2ray/geosite.dat"
+      services.mihomo = {
+        enable = true;
+        configFile = config.vaultix.templates.clashm.path;
+        webui = pkgs.metacubexd;
+        tunMode = true;
+      };
+
+      systemd.services.mihomo.serviceConfig.ExecStartPre = [
+        "${pkgs.coreutils}/bin/ln -sf ${pkgs.v2ray-geoip}/share/v2ray/geoip.dat /var/lib/private/mihomo/GeoIP.dat"
+        "${pkgs.coreutils}/bin/ln -sf ${pkgs.v2ray-domain-list-community}/share/v2ray/geosite.dat /var/lib/private/mihomo/GeoSite.dat"
       ];
-
-      systemd.services.clash-meta = {
-        description = "Clash Meta daemon service";
-        wants = [ "network-online.target" ];
-        after = [ "network-online.target" ];
-        wantedBy = [ "multi-user.target" ];
-        script = "exec ${pkgs.clash-meta}/bin/clash-meta -d ${cfg.stateDir}";
-        restartTriggers = [
-          config.vaultix.templates.clashm.content
-        ];
-        serviceConfig = rec {
-          User = "clash-meta";
-          Restart = "on-failure";
-          ExecStartPre = "${disable-tproxy}/bin/disable-tproxy";
-          WorkingDirectory = cfg.stateDir;
-          CapabilityBoundingSet = [
-            "CAP_NET_BIND_SERVICE"
-            "CAP_NET_ADMIN"
-            "CAP_NET_RAW"
-          ];
-          AmbientCapabilities = CapabilityBoundingSet;
-        };
-        environment = {
-          SAFE_PATHS = "${pkgs.metacubexd}";
-        };
-      };
-
-      environment.systemPackages = [ enable-tproxy disable-tproxy ];
 
       programs.proxychains = {
         enable = true;
