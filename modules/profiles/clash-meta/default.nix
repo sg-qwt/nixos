@@ -85,6 +85,9 @@ in
           ];
           AmbientCapabilities = CapabilityBoundingSet;
         };
+        environment = {
+          SAFE_PATHS = "${pkgs.metacubexd}";
+        };
       };
 
       environment.systemPackages = [ enable-tproxy disable-tproxy ];
