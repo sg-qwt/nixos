@@ -12,7 +12,7 @@ rec {
 
   mode = "rule";
   find-process-mode = "strict";
-  geodata-mode = true ;
+  geodata-mode = true;
   global-client-fingerprint = "chrome";
 
   profile = {
