@@ -22,10 +22,43 @@ let
   blueman-applet = lib.getExe' pkgs.blueman "blueman-applet";
 
   monitor = {
-    main = "Dell Inc. DELL U2718QM MYPFK89J15HL";
-    internal = "California Institute of Technology 0x1303 Unknown";
-    headless = "HEADLESS-1";
+    main =
+      {
+        "lei" =
+          {
+            id = "Dell Inc. DELL U2718QM MYPFK89J15HL";
+            resolution = "3840x2160";
+            scale = 2.0;
+          };
+        "li" =
+          {
+            id = "eDP-2";
+            resolution = "2560x1600@165Hz";
+            scale = 1.6;
+          };
+      }."${config.networking.hostName}";
+    internal = {
+      id = "California Institute of Technology 0x1303 Unknown";
+      resolution = "2160x1350";
+      scale = 1.5;
+    };
+    headless = {
+      id = "HEADLESS-1";
+      resolution = "2800x1752@60Hz";
+      scale = 2.0;
+    };
   };
+
+  createSwayOutput = monitor: name:
+    let
+      m = monitor."${name}";
+    in
+    {
+      "${m.id}" = {
+        resolution = m.resolution;
+        scale = lib.strings.floatToString m.scale;
+      };
+    };
 
   queryCoin = symbol: {
     block = "custom";
@@ -260,7 +293,7 @@ lib.mkProfile s "sway"
 
           startup = [
             { command = "emacs"; }
-            { command = "\"${swaymsg} create_output; ${swaymsg} output ${monitor.headless} disable\""; }
+            { command = "\"${swaymsg} create_output; ${swaymsg} output ${monitor.headless.id} disable\""; }
           ] ++ (lib.optional config.services.kanshi.enable
             # workaround for https://github.com/emersion/kanshi/issues/43
             { command = "${systemctl} --user restart kanshi.service"; always = true; }
@@ -305,30 +338,20 @@ lib.mkProfile s "sway"
             "*" = {
               bg = "${wallpaper} fill";
             };
-            "${monitor.main}" = {
-              resolution = "3840x2160";
-              scale = "2.0";
-            };
-            "${monitor.internal}" = {
-              resolution = "2160x1350";
-              scale = "1.5";
-            };
-            "${monitor.headless}" = {
-              resolution = "2800x1752@60Hz";
-              scale = "2.0";
-            };
-          };
+          } // (createSwayOutput monitor "main")
+          // (createSwayOutput monitor "internal")
+          // (createSwayOutput monitor "headless");
 
           workspaceOutputAssign = [
-            { workspace = "1"; output = monitor.main; }
-            { workspace = "2"; output = monitor.main; }
-            { workspace = "3"; output = monitor.main; }
-            { workspace = "4"; output = monitor.main; }
-            { workspace = "5"; output = monitor.main; }
-            { workspace = "6"; output = monitor.internal; }
-            { workspace = "7"; output = monitor.internal; }
-            { workspace = "8"; output = monitor.internal; }
-            { workspace = "9"; output = monitor.headless; }
+            { workspace = "1"; output = monitor.main.id; }
+            { workspace = "2"; output = monitor.main.id; }
+            { workspace = "3"; output = monitor.main.id; }
+            { workspace = "4"; output = monitor.main.id; }
+            { workspace = "5"; output = monitor.main.id; }
+            { workspace = "6"; output = monitor.internal.id; }
+            { workspace = "7"; output = monitor.internal.id; }
+            { workspace = "8"; output = monitor.internal.id; }
+            { workspace = "9"; output = monitor.headless.id; }
           ];
 
           input = {
@@ -370,8 +393,8 @@ lib.mkProfile s "sway"
 
         extraConfig =
           lib.strings.concatLines [
-            "bindswitch --reload --locked lid:on output \"'${monitor.internal}'\" disable"
-            "bindswitch --reload --locked lid:off output \"'${monitor.internal}'\" enable"
+            "bindswitch --reload --locked lid:on output \"'${monitor.internal.id}'\" disable"
+            "bindswitch --reload --locked lid:off output \"'${monitor.internal.id}'\" enable"
           ];
       };
 
@@ -415,12 +438,12 @@ lib.mkProfile s "sway"
             profile.name = "undocked";
             profile.outputs = [
               {
-                criteria = "${monitor.internal}";
+                criteria = "${monitor.internal.id}";
                 position = "0,0";
-                scale = 1.5;
+                scale = monitor.internal.scale;
               }
               {
-                criteria = "${monitor.headless}";
+                criteria = "${monitor.headless.id}";
                 status = "disable";
               }
             ];
@@ -429,17 +452,17 @@ lib.mkProfile s "sway"
             profile.name = "docked";
             profile.outputs = [
               {
-                criteria = "${monitor.main}";
+                criteria = monitor.main.id;
                 position = "0,0";
-                scale = 2.0;
+                scale = monitor.main.scale;
               }
               {
-                criteria = "${monitor.internal}";
+                criteria = monitor.internal.id;
                 position = "1920,0";
-                scale = 1.5;
+                scale = monitor.internal.scale;
               }
               {
-                criteria = "${monitor.headless}";
+                criteria = monitor.headless.id;
                 status = "disable";
               }
             ];
