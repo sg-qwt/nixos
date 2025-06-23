@@ -1,39 +1,64 @@
-{ config, pkgs }:
+{ config, pkgs, interface }:
 let
   inherit (config.myos.data) ports fqdn path;
 in
 rec {
   mixed-port = ports.clash-meta-mixed;
-  tproxy-port = ports.clash-tproxy;
-
+  ipv6 = true;
   allow-lan = false;
-
-  ipv6 = false;
-
   external-controller = "0.0.0.0:${toString ports.clash-meta-api}";
   secret = config.vaultix.placeholder.clash-secret;
-
-  external-ui = "${pkgs.metacubexd}";
-
   log-level = "warning";
 
   mode = "rule";
+  find-process-mode = "strict";
+  geodata-mode = true ;
+  global-client-fingerprint = "chrome";
+
+  profile = {
+    store-selected = true;
+    store-fake-ip = true;
+  };
 
   sniffer = {
     enable = true;
+    sniff = {
+      HTTP = {
+        ports = [ 80 "8080-8880" ];
+        override-destination = true;
+      };
+      TLS = {
+        ports = [ 443 8443 ];
+      };
+      QUIC = {
+        ports = [ 443 8443 ];
+      };
+    };
+  };
+
+  tun = {
+    enable = true;
+    stack = "mixed";
+    device = interface;
+    dns-hijack = [
+      "any:53"
+      "tcp://any:53"
+    ];
+    auto-route = true;
+    auto-redirect = true;
+    auto-detect-interface = true;
   };
 
   dns = {
     enable = true;
-    ipv6 = false;
-    listen = "0.0.0.0:${toString ports.clash-dns}";
-
-    enhanced-mode = "redir-host";
-    # fake-ip-range = "198.18.0.1/16";
-
-    default-nameserver = [
-      "223.5.5.5"
-      "114.114.114.114"
+    ipv6 = true;
+    use-hosts = true;
+    enhanced-mode = "fake-ip";
+    respect-rules = true;
+    fake-ip-filter = [
+      "*"
+      "+.lan"
+      "+.local"
     ];
 
     nameserver = [
@@ -41,32 +66,22 @@ rec {
       "tls://1.0.0.1#select"
     ];
 
+    proxy-server-nameserver = [
+      "https://doh.pub/dns-query"
+    ];
     nameserver-policy = {
-      "geosite:cn" = [
-        "114.114.114.114"
+      "geosite:cn,private" = [
         "https://doh.pub/dns-query"
         "https://dns.alidns.com/dns-query"
       ];
-
+      "geosite:geolocation-!cn" = [
+        "https://dns.cloudflare.com/dns-query"
+        "https://dns.google/dns-query"
+      ];
     };
-
-    use-hosts = true;
   };
 
   proxies = [
-    {
-      name = "wgteam";
-      type = "wireguard";
-      server = "engage.cloudflareclient.com";
-      port = 2408;
-      ip = "172.16.0.2";
-      ipv6 = "2606:4700:110:8410:f35c:f27f:d43e:b299";
-      private-key = config.vaultix.placeholder.wgteam;
-      public-key = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
-      udp = true;
-      mtu = 1420;
-      # dialer-proxy = "vless";
-    }
     {
       name = "vless";
       type = "vless";
