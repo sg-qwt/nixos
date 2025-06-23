@@ -64,6 +64,7 @@ jobs:
         host:
         - dui
         - lei
+        - li
         - xun
         - zheng
   check-eval-host:
@@ -86,6 +87,7 @@ jobs:
         host:
         - dui
         - lei
+        - li
         - xun
         - zheng
   check-flake-and-formatter:
@@ -113,6 +115,7 @@ name: Build
         options:
         - dui
         - lei
+        - li
         - xun
         - zheng
         - all
