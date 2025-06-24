@@ -32,7 +32,7 @@ let
           };
         "li" =
           {
-            id = "eDP-2";
+            id = "Thermotrex Corporation TL140ADXP02-0 Unknown";
             resolution = "2560x1600@165Hz";
             scale = 1.6;
           };
@@ -219,7 +219,8 @@ lib.mkProfile s "sway"
               interval = 5;
               format = " $timestamp.datetime(f:'%a %b %e %R') ";
             }
-          ] ++ (lib.optionals (osConfig.networking.hostName == "lei") [
+          ] ++ (lib.optionals
+            ((osConfig.networking.hostName == "lei") || (osConfig.networking.hostName == "li")) [
             {
               block = "battery";
               format = " $icon $percentage ";
