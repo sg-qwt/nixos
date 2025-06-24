@@ -127,7 +127,7 @@
             })
             (mkOS {
               name = "li";
-              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKSl/HCw7Q0+t0Ji8PjXuPezLnF9EwHbZLkcsalHhAWF";
+              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFxduWDt3Qli+3gTUd4/3/qbVqy+wyNrqTxZhV/7/7eV";
             })
           ];
 

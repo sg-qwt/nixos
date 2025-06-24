@@ -52,14 +52,14 @@
 
   fileSystems."/" =
     {
-      device = "/dev/disk/by-uuid/091c05e6-1b85-41bc-b319-c80cb5c08d97";
+      device = "/dev/disk/by-uuid/d220b16d-b8d7-4fa2-9042-aaa023d7b071";
       fsType = "bcachefs";
     };
   specialisation.fsck.configuration.fileSystems."/".options = [ "fsck" "fix_errors" ];
 
   fileSystems."/boot" =
     {
-      device = "/dev/disk/by-uuid/B337-9405";
+      device = "/dev/disk/by-uuid/09C1-138C";
       fsType = "vfat";
     };
 
