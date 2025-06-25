@@ -376,6 +376,7 @@ lib.mkProfile s "sway"
           floating.criteria = [
             { app_id = "pavucontrol"; }
             { app_id = "blueman-manager"; }
+            { title = "OpenSSH Authentication Passphrase request"; }
           ];
           window = {
             titlebar = false;

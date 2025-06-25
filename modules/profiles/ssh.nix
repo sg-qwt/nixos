@@ -30,6 +30,7 @@ in
     programs.ssh = {
       startAgent = true;
       enableAskPassword = true;
+      askPassword = lib.getExe pkgs.lxqt.lxqt-openssh-askpass;
     };
 
     myhome = {
