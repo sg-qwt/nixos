@@ -46,6 +46,7 @@ lib.mkProfile s "shell"
         nd = "nix develop";
         pass = "head -c20 < /dev/random | base64";
         tm = "tmux new-session -A -s main";
+        pb = "curl -F 'c=@-' 'https://fars.ee/'";
       };
     };
 
