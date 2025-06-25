@@ -5,10 +5,28 @@ lib.mkProfile s "desktop-apps"
   services.gvfs.enable = true;
   programs.thunar.enable = true;
 
+  programs.chromium = {
+    extensions = [
+      "dbepggeogbaibhgnhhndojpepiihcmeb" # vimium
+      "knheggckgoiihginacbkhaalnibhilkk" # notion-web-clipper
+      "bhhhlbepdkbapadjdnnojkbgioiodbic" # solflare-wallet
+      "kdbmhfkmnlmbkgbabkdealhhbfhlmmon" # steamdb
+      "ngonfifpkpeefnhelnfdkficaiihklid" # protondb-for-steam
+      "gebbhagfogifgggkldgodflihgfeippi" # return-youtube-dislike
+    ];
+  };
+
   myhome = { config, ... }:
     let
-      brave-pkg = (pkgs.brave.override { commandLineArgs = "--enable-wayland-ime --wayland-text-input-version=3"; });
-      browser = lib.getExe config.programs.chromium.package;
+      brave-pkg = (pkgs.brave.override {
+        commandLineArgs = [
+          "--enable-wayland-ime"
+          "--wayland-text-input-version=3"
+          "--enable-features=WaylandLinuxDrmSyncobj"
+          "--password-store=basic"
+        ];
+      });
+      browser = lib.getExe brave-pkg;
       make-webapp = name: app: (pkgs.makeDesktopItem {
         inherit name;
         desktopName =
@@ -18,36 +36,6 @@ lib.mkProfile s "desktop-apps"
       });
     in
     {
-
-      programs.chromium = {
-        enable = true;
-        package = brave-pkg;
-        extensions = [
-          { id = "dbepggeogbaibhgnhhndojpepiihcmeb"; } # vimium
-          { id = "knheggckgoiihginacbkhaalnibhilkk"; } # notion-web-clipper
-          { id = "bhhhlbepdkbapadjdnnojkbgioiodbic"; } # solflare-wallet
-          { id = "kdbmhfkmnlmbkgbabkdealhhbfhlmmon"; } # steamdb
-          { id = "ngonfifpkpeefnhelnfdkficaiihklid"; } # protondb-for-steam
-          { id = "gebbhagfogifgggkldgodflihgfeippi"; } # return-youtube-dislike
-          {
-            id = "lkbebcjgcmobigpeffafkodonchffocl";
-            crxPath = pkgs.fetchurl {
-              url = "https://gitflic.ru/project/magnolia1234/bpc_uploads/blob/raw?file=bypass-paywalls-chrome-clean-3.8.0.0.crx";
-              sha256 = "B3H2gR0ktSS+Ridp/wzegR5FnerZLkrYRiSWFyGsx9w=";
-            };
-            version = "3.8.0";
-          }
-          {
-            id = "ibmfbeedhmhhmgmplmndbdoeejcnjpig";
-            crxPath = pkgs.fetchurl {
-              url = "https://github.com/Baldomo/open-in-mpv/releases/download/v2.1.0/chrome.crx";
-              sha256 = "OAKTpLzrrKXLH8kUHu4c1sLgu/SKikEt839vMxL9Gmg=";
-            };
-            version = "2.0.1";
-          }
-        ];
-      };
-
       programs.mpv = {
         enable = true;
         config = {
@@ -59,6 +47,7 @@ lib.mkProfile s "desktop-apps"
       };
 
       home.packages = with pkgs; [
+        brave-pkg
         firefox
 
         # media
