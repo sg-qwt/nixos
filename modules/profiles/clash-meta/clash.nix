@@ -47,6 +47,9 @@ rec {
     auto-route = true;
     auto-redirect = true;
     auto-detect-interface = true;
+    exclude-interface = [
+      config.services.tailscale.interfaceName
+    ];
   };
 
   dns = {
@@ -59,6 +62,8 @@ rec {
       "*"
       "+.lan"
       "+.local"
+      "+.tailscale.com"
+      "+.tailscale.io"
     ];
 
     nameserver = [
