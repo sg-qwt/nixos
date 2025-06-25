@@ -362,6 +362,7 @@ lib.mkProfile s "sway"
             "type:touchpad" = {
               natural_scroll = "enabled";
               tap = "enabled";
+              drag_lock = "disabled";
             };
             "4152:6166:SteelSeries_SteelSeries_Rival_106_Gaming_Mouse" = {
               accel_profile = "flat";
