@@ -35,10 +35,16 @@ in
         tunMode = true;
       };
 
-      systemd.services.mihomo.serviceConfig.ExecStartPre = [
-        "${pkgs.coreutils}/bin/ln -sf ${pkgs.v2ray-geoip}/share/v2ray/geoip.dat /var/lib/private/mihomo/GeoIP.dat"
-        "${pkgs.coreutils}/bin/ln -sf ${pkgs.v2ray-domain-list-community}/share/v2ray/geosite.dat /var/lib/private/mihomo/GeoSite.dat"
-      ];
+      systemd.services.mihomo = {
+        restartTriggers = [
+          config.vaultix.templates.clashm.content
+        ];
+        serviceConfig.ExecStartPre = [
+          "${pkgs.coreutils}/bin/ln -sf ${pkgs.v2ray-geoip}/share/v2ray/geoip.dat /var/lib/private/mihomo/GeoIP.dat"
+          "${pkgs.coreutils}/bin/ln -sf ${pkgs.v2ray-domain-list-community}/share/v2ray/geosite.dat /var/lib/private/mihomo/GeoSite.dat"
+        ];
+      };
+
 
       programs.proxychains = {
         enable = true;
