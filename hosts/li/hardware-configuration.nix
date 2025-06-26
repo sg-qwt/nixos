@@ -1,5 +1,7 @@
 { config, lib, pkgs, modulesPath, ... }:
-
+let
+  systemctl = lib.getExe' config.systemd.package "systemctl";
+in
 {
   imports =
     [
@@ -43,12 +45,27 @@
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
+  services.fwupd.enable = true;
+
+  services.udev = {
+    enable = true;
+    # fixes mic mute button
+    extraHwdb = ''
+      evdev:name:*:dmi:bvn*:bvr*:bd*:svnASUS*:pn*:*
+      KEYBOARD_KEY_ff31007c=f20
+    '';
+    extraRules = ''
+      ACTION=="add", SUBSYSTEM=="usb", TEST=="power/autosuspend", ATTR{idVendor}=="0b05", ATTR{idProduct}=="19b6", ATTR{power/autosuspend}="-1"
+      ACTION=="add|change", SUBSYSTEM=="usb", ATTR{idVendor}=="0b05", ATTR{idProduct}=="193b", ATTR{power/wakeup}="disabled"
+      SUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity}=="[0-5]", RUN+="${systemctl} poweroff"
+    '';
+  };
+
   zramSwap = {
     enable = true;
     algorithm = "lz4";
     memoryPercent = 50;
   };
-
 
   fileSystems."/" =
     {

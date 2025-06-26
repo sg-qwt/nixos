@@ -83,7 +83,7 @@
       treefmt-eval = (inputs.treefmt-nix.lib.evalModule pkgs ./lib/treefmt.nix);
     in
     {
-      # expose for nix repl usage only
+      # expose nix repl usage only
       inherit self;
 
       vaultix = vaultix.configure {
