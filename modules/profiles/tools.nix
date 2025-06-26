@@ -19,5 +19,7 @@ lib.mkProfile s "tools"
     jq
 
     self.packages.${pkgs.system}.bbscripts
+
+    my.rage
   ];
 }
