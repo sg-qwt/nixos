@@ -18,6 +18,7 @@ in
       kernelModules = [ ];
     };
     kernelParams = [
+      "nowatchdog"
       "acpi_backlight=native"
 
       "amd_pstate=active"
