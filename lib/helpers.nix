@@ -26,10 +26,12 @@ rec {
       patches = (old.patches or [ ]) ++ patches;
     });
 
+  mylibs = {
+    inherit mkProfile patchDesktop addPatches;
+  };
+
   lib = nixpkgs.lib.extend (
-    final: prev: {
-      inherit mkProfile patchDesktop addPatches;
-    }
+    final: prev: mylibs
   );
 
   default-overlays =
@@ -44,6 +46,7 @@ rec {
                 value = (prev.callPackage (self + "/packages/${pkgname}") (args // { inherit self; }));
               })
             (builtins.attrNames (builtins.readDir (self + "/packages")))));
+      inherit mylibs;
     };
 
   jovian-overlay =
