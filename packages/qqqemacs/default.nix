@@ -85,9 +85,8 @@ let
     (aspellWithDicts (ds: with ds; [ en ]))
     my.bbscripts
 
-    # age.el
-    rage
-    age-plugin-yubikey
+    # rage with yubikey plugin
+    my.rage
 
     # lsp
     nil
@@ -103,7 +102,6 @@ pkgs.symlinkJoin {
       --set QQQ_SNIPPETS ${./snippets} \
       --set QQQ_AGE_RECIPIENTS ${self + "/resources/keys/recipients.txt"} \
       --set QQQ_AGE_IDENTITY ${self + "/resources/keys/age-yubikey-identity-main.txt"} \
-      --set PINENTRY_PROGRAM ${lib.getExe pkgs.pinentry-qt} \
       --prefix PATH : ${lib.makeBinPath deps} \
       --add-flags --init-directory=${./init}
   '';
