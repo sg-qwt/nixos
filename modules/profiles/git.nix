@@ -9,7 +9,8 @@ lib.mkProfile s "git"
 
       signing = {
         signByDefault = false;
-        key = "77EEFB04BFD81826";
+        format = "ssh";
+        key = "key::${builtins.elemAt config.myos.data.openssh-keys 0}";
       };
 
       lfs.enable = false;
