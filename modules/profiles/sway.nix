@@ -22,13 +22,13 @@ let
   blueman-applet = lib.getExe' pkgs.blueman "blueman-applet";
 
   monitor = {
-    main =
+    internal =
       {
         "lei" =
           {
-            id = "Dell Inc. DELL U2718QM MYPFK89J15HL";
-            resolution = "3840x2160";
-            scale = 2.0;
+            id = "California Institute of Technology 0x1303 Unknown";
+            resolution = "2160x1350";
+            scale = 1.5;
           };
         "li" =
           {
@@ -37,10 +37,10 @@ let
             scale = 1.6;
           };
       }."${config.networking.hostName}";
-    internal = {
-      id = "California Institute of Technology 0x1303 Unknown";
-      resolution = "2160x1350";
-      scale = 1.5;
+    main = {
+      id = "Dell Inc. DELL U2718QM MYPFK89J15HL";
+      resolution = "3840x2160@60Hz";
+      scale = 2.0;
     };
     headless = {
       id = "HEADLESS-1";
@@ -271,6 +271,9 @@ lib.mkProfile s "sway"
       wayland.windowManager.sway = {
         enable = true;
         extraOptions = [ "--unsupported-gpu" ];
+        extraSessionCommands =''
+          export WLR_DRM_DEVICES=$(realpath /dev/dri/by-path/pci-0000:65:00.0-card)
+        '';
 
         systemd = {
           enable = true;
@@ -395,8 +398,8 @@ lib.mkProfile s "sway"
 
         extraConfig =
           lib.strings.concatLines [
-            "bindswitch --reload --locked lid:on output \"'${monitor.internal.id}'\" disable"
-            "bindswitch --reload --locked lid:off output \"'${monitor.internal.id}'\" enable"
+            "bindswitch --reload --locked lid:on output eDP-1 disable"
+            "bindswitch --reload --locked lid:off output eDP-1 enable"
           ];
       };
 
