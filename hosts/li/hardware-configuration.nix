@@ -19,9 +19,10 @@ in
     };
     kernelParams = [
       "nowatchdog"
-      "acpi_backlight=native"
-
       "amd_pstate=active"
+      "i915.enable_dpcd_backlight=1"
+      "nvidia.NVreg_EnableBacklightHandler=0"
+      "nvidia.NVReg_RegistryDwords=EnableBrightnessControl=0"
     ];
     kernelModules = [ "kvm-amd" ];
     blacklistedKernelModules = [ "nouveau" ];
@@ -31,16 +32,34 @@ in
   };
 
   hardware = {
-    graphics.enable = true;
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+    amdgpu.initrd.enable = true;
+
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+
     nvidia = {
       modesetting.enable = true;
-      powerManagement.enable = true;
+      powerManagement = {
+        enable = true;
+        finegrained = true;
+      };
       open = true;
       nvidiaSettings = true;
       dynamicBoost.enable = true;
 
       package = config.boot.kernelPackages.nvidiaPackages.latest;
+      prime = {
+        offload = {
+          enable = true;
+          enableOffloadCmd = true;
+        };
+        amdgpuBusId = "PCI:101:0:0";
+        nvidiaBusId = "PCI:1:0:0";
+      };
     };
   };
 
