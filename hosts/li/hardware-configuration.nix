@@ -48,6 +48,8 @@ in
 
   services.fwupd.enable = true;
 
+  services.logind.powerKey = "suspend";
+
   services.udev = {
     enable = true;
     # fixes mic mute button
