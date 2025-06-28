@@ -64,6 +64,7 @@ rec {
       "+.local"
       "+.tailscale.com"
       "+.tailscale.io"
+      "+.pool.ntp.org"
     ];
 
     nameserver = [
@@ -165,6 +166,7 @@ rec {
     "AND,((DOMAIN-SUFFIX,${fqdn.edg}),(DST-PORT,22)),DIRECT"
     "DOMAIN-SUFFIX,cm.steampowered.com,DIRECT"
     "DOMAIN-SUFFIX,steamserver.net,DIRECT"
+    "DOMAIN-SUFFIX,steamchina.com,DIRECT"
     "GEOSITE,category-ads-all,REJECT"
     "GEOSITE,openai,select"
     "GEOSITE,geolocation-cn,DIRECT"
