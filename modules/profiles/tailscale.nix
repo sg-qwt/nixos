@@ -23,6 +23,8 @@ lib.mkProfile s "tailscale" (
       ];
     };
 
+    systemd.services.tailscaled-autoconnect.serviceConfig.Type = lib.mkForce "exec";
+
     networking.firewall.trustedInterfaces = [ interface ];
   }
 )
