@@ -43,6 +43,19 @@ lib.mkProfile s "desktop"
       support32Bit = true;
     };
     pulse.enable = true;
+    extraConfig.pipewire = {
+      "99-disable-bell"."context.properties"."module.x11.bell" = false;
+    };
+    wireplumber.extraConfig."99-hdmi-fix"."monitor.alsa.rules" = [
+      {
+        matches = [ { "node.name" = "alsa_output.pci-0000_65_00.1.hdmi-stereo-extra2"; } ];
+        actions.update-props = {
+          "api.alsa.period-size" = 256;
+          "api.alsa.headroom" = 1024;
+          "session.suspend-timeout-seconds" = 0;
+        };
+      }
+    ];
   };
 
   hardware.bluetooth = {
