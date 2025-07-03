@@ -120,6 +120,23 @@ rec {
         version = 3;
       };
     }
+    {
+      name = "warpfront";
+      type = "wireguard";
+      server = "engage.cloudflareclient.com";
+      port = 2408;
+      ip = "172.16.0.2/32";
+      ipv6 = "2606:4700:110:8917:8d18:1f95:291e:3c2e/128";
+      private-key = config.vaultix.placeholder.warp-key;
+      public-key = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
+      udp = true;
+      mtu = 1280;
+      remote-dns-resolve = true;
+      dns = [
+        "https://dns.cloudflare.com/dns-query"
+      ];
+      dialer-proxy = "vless";
+    }
   ];
 
   proxy-providers = { };
