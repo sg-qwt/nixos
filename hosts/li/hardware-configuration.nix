@@ -68,7 +68,7 @@ in
     "nvidia"
   ];
 
-  services.fwupd.enable = true;
+  services.fwupd.enable = false;
 
   services.logind = {
     powerKey = "suspend";
