@@ -18,6 +18,7 @@ in
       vaultix.secrets.sing-shadow = { };
       vaultix.secrets.sing-shadow-tls = { };
       vaultix.secrets.sing-vless-uuid = { };
+      vaultix.secrets.warp-key = { };
       vaultix.secrets.clash-secret = { };
       vaultix.secrets.dui-ipv4 = { };
       vaultix.secrets.xun-ipv4 = { };
