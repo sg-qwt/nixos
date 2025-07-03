@@ -10,7 +10,7 @@ lib.mkProfile s "gaming"
     enable = true;
     capSysNice = true;
     env = {
-      MANGOHUD_CONFIGFILE = myhomecfg.xdg.configFile."MangoHud/MangoHud.conf".target;
+      MANGOHUD_CONFIGFILE = "${myhomecfg.xdg.configHome}/MangoHud/MangoHud.conf";
     };
   };
 
