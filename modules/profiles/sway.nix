@@ -271,7 +271,7 @@ lib.mkProfile s "sway"
       wayland.windowManager.sway = {
         enable = true;
         extraOptions = [ "--unsupported-gpu" ];
-        extraSessionCommands =''
+        extraSessionCommands = ''
           export WLR_DRM_DEVICES=$(realpath /dev/dri/by-path/pci-0000:65:00.0-card)
         '';
 
@@ -414,26 +414,24 @@ lib.mkProfile s "sway"
         };
       };
 
-      services = {
-        swayidle = {
-          enable = true;
-          timeouts = [
-            {
-              timeout = 3600;
-              command = "${systemctl} suspend";
-            }
-          ];
-          events = [
-            {
-              event = "lock";
-              command = swaylock;
-            }
-            {
-              event = "before-sleep";
-              command = "${loginctl} lock-session";
-            }
-          ];
-        };
+      services.swayidle = {
+        enable = true;
+        timeouts = [
+          {
+            timeout = 3600;
+            command = "${systemctl} suspend";
+          }
+        ];
+        events = [
+          {
+            event = "lock";
+            command = swaylock;
+          }
+          {
+            event = "before-sleep";
+            command = "${loginctl} lock-session";
+          }
+        ];
       };
 
       services.kanshi = {

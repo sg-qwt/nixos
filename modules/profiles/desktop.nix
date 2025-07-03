@@ -48,7 +48,7 @@ lib.mkProfile s "desktop"
     };
     wireplumber.extraConfig."99-hdmi-fix"."monitor.alsa.rules" = [
       {
-        matches = [ { "node.name" = "alsa_output.pci-0000_65_00.1.hdmi-stereo-extra2"; } ];
+        matches = [{ "node.name" = "alsa_output.pci-0000_65_00.1.hdmi-stereo-extra2"; }];
         actions.update-props = {
           "api.alsa.period-size" = 256;
           "api.alsa.headroom" = 1024;
