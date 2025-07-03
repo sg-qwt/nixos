@@ -70,7 +70,12 @@ in
 
   services.fwupd.enable = true;
 
-  services.logind.powerKey = "suspend";
+  services.logind = {
+    powerKey = "suspend";
+    lidSwitch = "ignore";
+    lidSwitchExternalPower = "ignore";
+    lidSwitchDocked = "ignore";
+  };
 
   services.udev = {
     enable = true;
