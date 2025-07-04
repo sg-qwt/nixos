@@ -50,8 +50,8 @@ lib.mkProfile s "desktop"
       {
         matches = [{ "node.name" = "alsa_output.pci-0000_65_00.1.hdmi-stereo-extra2"; }];
         actions.update-props = {
-          "api.alsa.period-size" = 256;
-          "api.alsa.headroom" = 1024;
+          "api.alsa.period-size" = 2048;
+          "api.alsa.headroom" = 8192;
           "session.suspend-timeout-seconds" = 0;
         };
       }
