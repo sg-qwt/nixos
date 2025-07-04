@@ -127,7 +127,7 @@ lib.mkProfile s "desktop-apps"
         config = {
           profile = "gpu-hq";
           hwdec = "auto";
-          ytdl-raw-options = "cookies-from-browser=firefox";
+          ytdl-raw-options = "cookies-from-browser=brave";
           input-ipc-server = "/tmp/mpvsocket";
         };
       };
