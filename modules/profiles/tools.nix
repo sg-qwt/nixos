@@ -10,7 +10,7 @@ lib.mkProfile s "tools"
 
     vim
 
-    htop
+    bottom
 
     pciutils
 
