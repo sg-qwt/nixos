@@ -3,11 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-patcher.url = "github:gepbird/nixpkgs-patcher";
-    nixpkgs-patch-fcitx = {
-      url = "https://github.com/NixOS/nixpkgs/pull/417815.diff";
-      flake = false;
-    };
 
     nixpkgs-latest.url = "github:nixos/nixpkgs/nixos-unstable";
 
@@ -62,7 +57,7 @@
       helpers = import ./lib/helpers.nix { inherit self nixpkgs; };
 
       mkOS = { name, hostPubkey, p ? pkgs }: {
-        ${name} = nixpkgs-patcher.lib.nixosSystem {
+        ${name} = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit home-manager self inputs;
             lib = helpers.lib;
@@ -72,7 +67,6 @@
             home-manager.nixosModules.home-manager
             vaultix.nixosModules.default
             {
-              nixpkgsPatcher.nixpkgs = inputs.nixpkgs;
               _module.args.pkgs-latest = pkgs-latest;
               nixpkgs.pkgs = p;
               nixpkgs.overlays = nixpkgs.lib.mkForce p.overlays;
