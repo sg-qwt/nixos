@@ -209,6 +209,33 @@
         "type": "github"
       }
     },
+    "nixpkgs-patch-fcitx": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-nA+TJIGk+SZoHH8ptBclN+zbELrYieodeGXeI7R206Q=",
+        "type": "file",
+        "url": "https://github.com/NixOS/nixpkgs/pull/417815.diff"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/NixOS/nixpkgs/pull/417815.diff"
+      }
+    },
+    "nixpkgs-patcher": {
+      "locked": {
+        "lastModified": 1750881771,
+        "narHash": "sha256-akLjappCXzfloplv7r6mtrWzXxdBHlzP3pA69uMt7UU=",
+        "owner": "gepbird",
+        "repo": "nixpkgs-patcher",
+        "rev": "6f7036ca9a501f40a0b22e5e6ca3b8cf74ae3cf2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gepbird",
+        "repo": "nixpkgs-patcher",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1750365781,
@@ -233,6 +260,8 @@
         "jovian": "jovian",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-latest": "nixpkgs-latest",
+        "nixpkgs-patch-fcitx": "nixpkgs-patch-fcitx",
+        "nixpkgs-patcher": "nixpkgs-patcher",
         "treefmt-nix": "treefmt-nix_2",
         "vaultix": "vaultix"
       }
