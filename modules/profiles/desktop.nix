@@ -29,6 +29,7 @@ lib.mkProfile s "desktop"
 
     networkmanager = {
       enable = true;
+      wifi.backend = "iwd";
     };
   };
 

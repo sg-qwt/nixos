@@ -4,12 +4,15 @@ with lib;
 let
   cfg = config.myos.clash-meta;
   host = "127.0.0.1";
-  interface = "mihomo0";
   inherit (config.myos.data) ports;
 in
 {
   options.myos.clash-meta = {
     enable = mkEnableOption "clash meta";
+    interface = mkOption {
+      type = types.str;
+      default = "mihomo0";
+    };
   };
 
   config = mkIf cfg.enable
@@ -24,10 +27,13 @@ in
       vaultix.secrets.xun-ipv4 = { };
       vaultix.templates.clashm = {
         content = lib.generators.toYAML { }
-          (import ./clash.nix { inherit config pkgs interface; });
+          (import ./clash.nix {
+            inherit config pkgs;
+            interface = cfg.interface;
+          });
       };
 
-      networking.firewall.trustedInterfaces = [ interface ];
+      networking.firewall.trustedInterfaces = [ cfg.interface ];
 
       services.mihomo = {
         enable = true;
