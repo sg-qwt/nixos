@@ -32,6 +32,11 @@
       url = "github:sg-qwt/chugou";
       inputs.flake-utils.follows = "flake-utils";
     };
+
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, ... }@inputs:
@@ -66,6 +71,7 @@
             nixpkgs.nixosModules.readOnlyPkgs
             home-manager.nixosModules.home-manager
             vaultix.nixosModules.default
+            nix-index-database.nixosModules.nix-index
             {
               _module.args.pkgs-latest = pkgs-latest;
               nixpkgs.pkgs = p;

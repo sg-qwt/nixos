@@ -22,4 +22,6 @@ lib.mkProfile s "tools"
 
     my.rage
   ];
+
+  programs.nix-index-database.comma.enable = true;
 }
