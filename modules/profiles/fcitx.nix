@@ -1,4 +1,4 @@
-s@{ pkgs, pkgs-latest, lib, ... }:
+s@{ pkgs, lib, ... }:
 lib.mkProfile s "fcitx"
 {
   i18n.inputMethod = {
@@ -6,9 +6,9 @@ lib.mkProfile s "fcitx"
     type = "fcitx5";
     fcitx5 = {
       waylandFrontend = true;
-      addons = [
-        pkgs.fcitx5-chinese-addons
-        pkgs-latest.fcitx5-pinyin-zhwiki
+      addons = with pkgs; [
+        fcitx5-chinese-addons
+        fcitx5-pinyin-zhwiki
       ];
       ignoreUserConfig = true;
       settings = {

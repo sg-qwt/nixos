@@ -84,7 +84,10 @@
     in
     {
       # expose nix repl usage only
-      inherit self;
+      repl = {
+        inherit self pkgs;
+        lib = helpers.lib;
+      };
 
       vaultix = vaultix.configure {
         nodes = self.nixosConfigurations;

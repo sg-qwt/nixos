@@ -211,8 +211,20 @@ lib.mkProfile s "sway"
             }
             {
               block = "net";
-              format = " {$ssid $signal_strength|Wired} $speed_down.eng(prefix:K) $speed_up.eng(prefix:K) ";
+              device = "${osConfig.myos.clash-meta.interface}";
+              format = " VPN ";
+              missing_format = "";
               interval = 5;
+            }
+            {
+              block = "net";
+              device = "wlan0";
+              format = " {$ssid $signal_strength} $speed_down.eng(prefix:K) $speed_up.eng(prefix:K) ";
+              interval = 5;
+              click = [{
+                button = "left";
+                cmd = "alacritty -e nmtui";
+              }];
             }
             {
               block = "time";
