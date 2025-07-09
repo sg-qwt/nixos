@@ -315,7 +315,7 @@ lib.mkProfile s "sway"
           ) ++ (lib.optional osConfig.services.blueman.enable
             { command = "${blueman-applet}"; always = true; }
           ) ++ (lib.optional osConfig.i18n.inputMethod.enable
-            { command = "${fcitx5} -d --replace"; always = true; }
+            { command = "systemd-cat --identifier=fcitx5 ${fcitx5} -d --replace"; always = true; }
           );
 
           menu = "${lib.getExe config.programs.wofi.package}";
