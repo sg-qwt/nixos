@@ -115,10 +115,6 @@
         builtins.foldl' (x: y: x // y) { }
           [
             (mkOS {
-              name = "lei";
-              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJPEOZdevyeP6Cj+9RFSNhqrLJykepW8xDypHsx4SyuK";
-            })
-            (mkOS {
               name = "zheng";
               hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINpWTwJQ7923qsxZGWjxQrl8Bx6/+pdZDsiz0dg1akxz";
               p = pkgs.appendOverlays [
