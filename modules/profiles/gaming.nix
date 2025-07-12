@@ -66,6 +66,11 @@ lib.mkProfile s "gaming"
         toggle_hud_position = "F11";
       };
     };
+
+    xdg.dataFile."Steam/steam_dev.cfg".text = ''
+      unShaderBackgroundProcessingThreads 8
+    '';
+
   };
 
   # controller
