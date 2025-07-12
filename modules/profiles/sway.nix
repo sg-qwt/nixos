@@ -22,21 +22,11 @@ let
   blueman-applet = lib.getExe' pkgs.blueman "blueman-applet";
 
   monitor = {
-    internal =
-      {
-        "lei" =
-          {
-            id = "California Institute of Technology 0x1303 Unknown";
-            resolution = "2160x1350";
-            scale = 1.5;
-          };
-        "li" =
-          {
-            id = "Thermotrex Corporation TL140ADXP02-0 Unknown";
-            resolution = "2560x1600@165Hz";
-            scale = 1.6;
-          };
-      }."${config.networking.hostName}";
+    internal = {
+      id = "Thermotrex Corporation TL140ADXP02-0 Unknown";
+      resolution = "2560x1600@165Hz";
+      scale = 1.6;
+    };
     main = {
       id = "Dell Inc. DELL U2718QM MYPFK89J15HL";
       resolution = "3840x2160@60Hz";
@@ -231,8 +221,6 @@ lib.mkProfile s "sway"
               interval = 5;
               format = " $timestamp.datetime(f:'%a %b %e %R') ";
             }
-          ] ++ (lib.optionals
-            ((osConfig.networking.hostName == "lei") || (osConfig.networking.hostName == "li")) [
             {
               block = "battery";
               format = " $icon $percentage ";
@@ -240,7 +228,7 @@ lib.mkProfile s "sway"
               empty_format = " $icon $percentage ";
               device = "BAT0";
             }
-          ]);
+          ];
         };
       };
 
