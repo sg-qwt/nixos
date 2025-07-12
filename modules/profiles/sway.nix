@@ -316,6 +316,8 @@ lib.mkProfile s "sway"
             { command = "${blueman-applet}"; always = true; }
           ) ++ (lib.optional osConfig.i18n.inputMethod.enable
             { command = "systemd-cat --identifier=fcitx5 ${fcitx5} -d --replace"; always = true; }
+          ) ++ (lib.optional osConfig.hardware.logitech.wireless.enableGraphical
+            { command = "solaar --window=hide --battery-icons=symbolic"; always = true; }
           );
 
           menu = "${lib.getExe config.programs.wofi.package}";
