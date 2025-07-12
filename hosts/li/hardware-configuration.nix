@@ -41,6 +41,11 @@ in
       enable32Bit = true;
     };
 
+    logitech.wireless = {
+      enable = true;
+      enableGraphical = true;
+    };
+
     nvidia = {
       modesetting.enable = true;
       powerManagement = {
