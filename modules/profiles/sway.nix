@@ -21,6 +21,8 @@ let
   fcitx5 = lib.getExe config.i18n.inputMethod.package;
   blueman-applet = lib.getExe' pkgs.blueman "blueman-applet";
   start-sway = "systemd-cat --identifier=sway sway";
+  pgrep = lib.getExe' pkgs.procps "pgrep";
+  solaar = lib.getExe pkgs.solaar;
 
   monitor = {
     internal = {
@@ -309,7 +311,7 @@ lib.mkProfile s "sway"
           ) ++ (lib.optional osConfig.i18n.inputMethod.enable
             { command = "systemd-cat --identifier=fcitx5 ${fcitx5} -d --replace"; always = true; }
           ) ++ (lib.optional osConfig.hardware.logitech.wireless.enableGraphical
-            { command = "solaar --window=hide --battery-icons=symbolic"; }
+            { command = "${pgrep} solaar > /dev/null || ${solaar} --window=hide --battery-icons=symbolic"; always = true; }
           );
 
           menu = "${lib.getExe config.programs.wofi.package}";
