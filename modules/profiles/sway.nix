@@ -20,6 +20,7 @@ let
   wl-copy = lib.getExe' pkgs.wl-clipboard "wl-copy";
   fcitx5 = lib.getExe config.i18n.inputMethod.package;
   blueman-applet = lib.getExe' pkgs.blueman "blueman-applet";
+  start-sway = "systemd-cat --identifier=sway sway";
 
   monitor = {
     internal = {
@@ -87,9 +88,12 @@ lib.mkProfile s "sway"
   services.greetd = {
     enable = true;
     settings = {
-      default_session = {
-        command = "${lib.getExe pkgs.greetd.tuigreet} --asterisks --time --cmd 'systemd-cat --identifier=sway sway'";
+      initial_session = {
+        command = start-sway;
         user = config.myos.user.mainUser;
+      };
+      default_session = {
+        command = "${lib.getExe pkgs.greetd.tuigreet} --asterisks --time --cmd '${start-sway}'";
       };
     };
   };
@@ -305,7 +309,7 @@ lib.mkProfile s "sway"
           ) ++ (lib.optional osConfig.i18n.inputMethod.enable
             { command = "systemd-cat --identifier=fcitx5 ${fcitx5} -d --replace"; always = true; }
           ) ++ (lib.optional osConfig.hardware.logitech.wireless.enableGraphical
-            { command = "solaar --window=hide --battery-icons=symbolic"; always = true; }
+            { command = "solaar --window=hide --battery-icons=symbolic"; }
           );
 
           menu = "${lib.getExe config.programs.wofi.package}";
