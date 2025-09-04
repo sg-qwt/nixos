@@ -74,5 +74,5 @@ lib.mkProfile s "gaming"
   };
 
   # controller
-  # hardware.xone.enable = true;
+  hardware.xone.enable = true;
 }
