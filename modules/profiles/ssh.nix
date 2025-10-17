@@ -7,6 +7,20 @@ let
   data = config.myos.data;
   username = config.myos.user.mainUser;
   match-blocks =
+    {
+      "*" = {
+        forwardAgent = false;
+        addKeysToAgent = "no";
+        compression = true;
+        serverAliveInterval = 60;
+        serverAliveCountMax = 3;
+        hashKnownHosts = false;
+        userKnownHostsFile = "~/.ssh/known_hosts";
+        controlMaster = "no";
+        controlPath = "~/.ssh/master-%r@%n:%p";
+        controlPersist = "no";
+      };
+    } //
     (builtins.foldl' (a: b: a // b) { }
       (map
         (host: {
@@ -36,8 +50,7 @@ in
     myhome = {
       programs.ssh = {
         enable = true;
-        compression = true;
-        serverAliveInterval = 60;
+        enableDefaultConfig = false;
         matchBlocks = match-blocks;
       };
     };

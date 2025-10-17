@@ -76,10 +76,12 @@ in
   services.fwupd.enable = false;
 
   services.logind = {
-    powerKey = "suspend";
-    lidSwitch = "ignore";
-    lidSwitchExternalPower = "ignore";
-    lidSwitchDocked = "ignore";
+    settings.Login = {
+      HandleLidSwitchDocked = "ignore";
+      HandleLidSwitchExternalPower = "ignore";
+      HandlePowerKey = "suspend";
+      HandleLidSwitch = "ignore";
+    };
   };
 
   services.udev = {

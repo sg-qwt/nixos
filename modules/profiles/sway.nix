@@ -95,7 +95,7 @@ lib.mkProfile s "sway"
         user = config.myos.user.mainUser;
       };
       default_session = {
-        command = "${lib.getExe pkgs.greetd.tuigreet} --asterisks --time --cmd '${start-sway}'";
+        command = "${lib.getExe pkgs.tuigreet} --asterisks --time --cmd '${start-sway}'";
       };
     };
   };
