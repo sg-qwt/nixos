@@ -375,6 +375,8 @@ If the buffer doesn't exist, create it first."
       (gptel-request user-prompt
 		     :stream t
 		     :in-place t)))
+  :custom
+  (magit-diff-visit-prefer-worktree t)
   :general
   (qqq/leader
     "g s" #'magit-status
@@ -1179,7 +1181,7 @@ the focus."
     "azure"
     :protocol "https"
     :host "zaizhiwanwudev.openai.azure.com"
-    :endpoint "/openai/deployments/shuqi/chat/completions?api-version=2024-10-21"
+    :endpoint "/openai/deployments/shuqi/chat/completions?api-version=2025-01-01-preview"
     :stream t
     :models '(gpt-4o))))
 
@@ -1218,3 +1220,12 @@ the focus."
   (age-default-recipient (getenv "QQQ_AGE_RECIPIENTS"))
   :config
   (age-file-enable))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Editor Code Assistant (ECA) ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(use-package eca
+  :commands (eca)
+  :custom
+  (eca-custom-command `(,(getenv "QQQ_ECA_PATH") "server"))
+  (eca-extra-args '("--log-level" "debug")))

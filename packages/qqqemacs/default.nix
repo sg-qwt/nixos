@@ -65,6 +65,15 @@ let
       rust-mode
 
       gptel
+      (eca.overrideAttrs (old: rec {
+        version = "20251016.1700";
+        src = pkgs.fetchFromGitHub {
+          owner = "editor-code-assistant";
+          repo = "eca-emacs";
+          rev = "26bd0b199e1e58c197ab9333183d8b3a8a5fde1e";
+          hash = "sha256-zBjqpaaEhfKwCWq1sB/TWm+qqtz0v/mHEdHFdNZy/hE=";
+        };
+      }))
 
       age
     ]) ++
@@ -102,6 +111,7 @@ pkgs.symlinkJoin {
       --set QQQ_SNIPPETS ${./snippets} \
       --set QQQ_AGE_RECIPIENTS ${self + "/resources/keys/recipients.txt"} \
       --set QQQ_AGE_IDENTITY ${self + "/resources/keys/age-yubikey-identity-main.txt"} \
+      --set QQQ_ECA_PATH ${lib.getExe pkgs.my.eca} \
       --prefix PATH : ${lib.makeBinPath deps} \
       --add-flags --init-directory=${./init}
   '';
