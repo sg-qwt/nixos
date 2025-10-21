@@ -1,6 +1,6 @@
 { config, pkgs, interface }:
 let
-  inherit (config.myos.data) ports fqdn path;
+  inherit (config.myos.data) ports fqdn path dui-ipv4 xun-ipv4;
 in
 rec {
   mixed-port = ports.clash-meta-mixed;
@@ -91,7 +91,7 @@ rec {
     {
       name = "vless";
       type = "vless";
-      server = config.vaultix.placeholder.dui-ipv4;
+      server = dui-ipv4;
       port = ports.https;
       uuid = config.vaultix.placeholder.sing-vless-uuid;
       network = "tcp";
@@ -108,7 +108,7 @@ rec {
     {
       name = "sstls";
       type = "ss";
-      server = config.vaultix.placeholder.xun-ipv4;
+      server = xun-ipv4;
       port = ports.sstls;
       cipher = "2022-blake3-aes-128-gcm";
       password = config.vaultix.placeholder.sing-shadow;

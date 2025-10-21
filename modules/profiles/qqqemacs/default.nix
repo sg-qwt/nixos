@@ -2,7 +2,7 @@ s@{ config, pkgs, lib, self, ... }:
 lib.mkProfile s "qqqemacs"
   (
     let
-      gpt-host = "zaizhiwanwudev.openai.azure.com";
+      gpt-host = "${config.myos.data.az-anu-domain}.openai.azure.com";
       github-ai = "models.inference.ai.azure.com";
     in
     {
@@ -44,19 +44,15 @@ lib.mkProfile s "qqqemacs"
         xdg.configFile."eca/config.json" = {
           text = builtins.toJSON {
             defaultBehavior = "plan";
-            defaultModel = "azure/gpt-4o";
+            defaultModel = "azure/gpt-5-mini";
             providers = {
               azure = {
-                api = "openai-chat";
+                api = "openai-responses";
                 url = "https://${gpt-host}";
                 keyEnv = "ECA_AZ_OPENAI_KEY";
-                completionUrlRelativePath = "/openai/deployments/shuqi/chat/completions?api-version=2025-01-01-preview";
+                completionUrlRelativePath = "/openai/v1/responses";
                 models = {
-                  gpt-4o = {
-                    extraPayload = {
-                      max_completion_tokens = 16000;
-                    };
-                  };
+                  gpt-5-mini = { };
                 };
               };
             };

@@ -109,8 +109,9 @@ resource "azurerm_linux_virtual_machine" "vm" {
   disable_password_authentication = true
 
   admin_ssh_key {
-    username   = "me"
-    public_key = "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIK9vRLHnJ+stWj636G27/Xp06+Q1jsV4vks/bDNOD9dKAAAABHNzaDo= main"
+    username = "me"
+    # no longer used
+    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDZI2D+3uQ1sKAttjgNyk0A/E/KhJiGHfHAlAa8gOvS+VNVeBm7grDPP2DDMRcwS0HT7hbXY3v+L5zplnDXCMRNmXdnJVg4wDbxt6HbtJm2o3QJAqj7njPFn7FcG8B5yvgwIWzsl3nYO9n+UPL/f/WDVWEYQGUW5xrA+/n07zEFeFGQAE4F3i/qGWn8kSqIXPYz1aaBLqN+9+6pAVuf6dDWSdqRnGJEymsO1mVvprrjlU3Wja+pA/JIT28pVqqKWk/R20rJUm2eT1WIceHo+PlBW/8kz/YJUhzAOgu2iqolkrJng6HFNBKdhq/sC9PLcbrml3hx8peFahRSxqnz8//D20NBzDjk6ThJAEZOYw9tlJxQexsDDP1pgtB1TZI+GS+7z9LdUV+MJjP6po46EX/qG2fm7XHKPl5vBDO0+lxEDqrIUftAv3tEtlhqbVDcPx+0MxH3UGd3b2UwuvB0CYckHvj2TRAh2PuH4TMGTZrbRy5RdwvsObg6ijOOlM1eQWNv/LjjXRz8SYd1pReSjZhywFcmUDyJcEAgi7C4wTKxzCuO1lkcTs3l2/n+dvy4J4izDGEkbZHvWStJ0tqe0oXb9KoCONyFAMmtsmYQCtXaaXa1uDmOcAUEk256aD5vDzmzUafewOqTxr492ZAQ3RBmWqphabJeuMP7Jw3z/keWpQ== cardno:18 182 344"
   }
 
   boot_diagnostics {

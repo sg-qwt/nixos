@@ -1,14 +1,14 @@
-data "cloudflare_zones" "edg" {
-  filter {
+data "cloudflare_zone" "edg" {
+  filter = {
     name = local.fqdn.edg
   }
 }
 
 locals {
-  edg_zone_id = one(data.cloudflare_zones.edg.zones[*].id)
+  edg_zone_id = data.cloudflare_zone.edg.zone_id
 }
 
-resource "cloudflare_record" "root" {
+resource "cloudflare_dns_record" "root" {
   for_each = {
     a = {
       name    = "@"
@@ -27,42 +27,44 @@ resource "cloudflare_record" "root" {
     }
   }
 
-  allow_overwrite = true
-  zone_id         = local.edg_zone_id
-  name            = each.value.name
-  content         = each.value.content
-  type            = each.value.type
-  proxied         = false
+  zone_id = local.edg_zone_id
+  name    = each.value.name
+  content = each.value.content
+  type    = each.value.type
+  proxied = false
+  ttl     = 1
 }
 
-resource "cloudflare_record" "dui_h" {
+resource "cloudflare_dns_record" "dui_h" {
   name    = "dui.h"
   type    = "A"
   content = module.az_dui.ipv4
   zone_id = local.edg_zone_id
   proxied = false
+  ttl     = 1
 }
 
-resource "cloudflare_record" "xun_h" {
+resource "cloudflare_dns_record" "xun_h" {
   name    = "xun.h"
   type    = "A"
   content = module.az_xun.ipv4
   zone_id = local.edg_zone_id
   proxied = false
+  ttl     = 1
 }
 
-resource "cloudflare_record" "edg_ts_h" {
+resource "cloudflare_dns_record" "edg_ts_h" {
   for_each = local.ts_nixos_devices
   name     = "${each.key}.h"
   type     = "A"
   content  = each.value
   zone_id  = local.edg_zone_id
   proxied  = false
+  ttl      = 1
 }
 
 resource "cloudflare_email_routing_settings" "edg" {
   zone_id = local.edg_zone_id
-  enabled = true
 }
 
 variable "fw_email" { type = string }
@@ -72,13 +74,12 @@ resource "cloudflare_email_routing_catch_all" "all" {
   name    = "forward all"
   enabled = true
 
-  matcher {
+  matchers = [{
     type = "all"
-  }
+  }]
 
-  action {
+  actions = [{
     type  = "forward"
     value = [var.fw_email]
-  }
+  }]
 }
-
