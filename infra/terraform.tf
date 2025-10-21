@@ -16,6 +16,10 @@ terraform {
       source = "hashicorp/time"
     }
 
+    random = {
+      source = "hashicorp/random"
+    }
+
     grafana = {
       source = "grafana/grafana"
     }

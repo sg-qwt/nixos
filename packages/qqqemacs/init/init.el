@@ -1168,22 +1168,16 @@ the focus."
     "s" #'qqq/gptel-send
     "p" #'gptel-system-prompt)
   :config
-  (gptel-make-openai "github"
-    :host "models.inference.ai.azure.com"
-    :key (lambda() (gptel-api-key-from-auth-source "models.inference.ai.azure.com"))
-    :endpoint "/chat/completions"
-    :stream t
-    :models '(DeepSeek-R1))
   (setq
-   gptel-model 'gpt-4o
+   gptel-model 'gpt-5-mini
    gptel-backend
    (gptel-make-azure
     "azure"
     :protocol "https"
-    :host "zaizhiwanwudev.openai.azure.com"
-    :endpoint "/openai/deployments/shuqi/chat/completions?api-version=2025-01-01-preview"
+    :host "anufoundry39254.openai.azure.com"
+    :endpoint "/openai/v1/chat/completions"
     :stream t
-    :models '(gpt-4o))))
+    :models '(gpt-5-mini))))
 
 (use-package auth-source
   :custom
@@ -1228,4 +1222,8 @@ the focus."
   :commands (eca)
   :custom
   (eca-custom-command `(,(getenv "QQQ_ECA_PATH") "server"))
-  (eca-extra-args '("--log-level" "debug")))
+  (eca-extra-args '("--log-level" "debug"))
+  (eca-chat-diff-tool 'smerge)
+  :general
+  (general-def 'normal eca-chat-mode-map
+    [remap markdown-cycle] 'eca-chat--key-pressed-tab))

@@ -26,8 +26,5 @@
     "path": {
 	"metrics": "/metrics",
 	"transmission": "/trans"
-    },
-    "openai": {
-	"deployment": "shuqi"
     }
 }

@@ -23,8 +23,6 @@ in
       vaultix.secrets.sing-vless-uuid = { };
       vaultix.secrets.warp-key = { };
       vaultix.secrets.clash-secret = { };
-      vaultix.secrets.dui-ipv4 = { };
-      vaultix.secrets.xun-ipv4 = { };
       vaultix.templates.clashm = {
         content = lib.generators.toYAML { }
           (import ./clash.nix {
