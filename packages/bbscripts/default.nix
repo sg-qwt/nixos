@@ -5,6 +5,10 @@ let
     {
       makeWrapperArgs = [
         "--set"
+        "BABASHKA_CLASSPATH"
+        "\"\""
+
+        "--set"
         "MYOS_BENTO_HOSTS"
         "${hosts}"
 
