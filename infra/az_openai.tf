@@ -40,7 +40,7 @@ resource "azurerm_cognitive_deployment" "anu_gpt5_mini" {
 
   sku {
     name     = "GlobalStandard"
-    capacity = 50
+    capacity = 200
   }
 
   model {
