@@ -29,7 +29,7 @@ lib.mkProfile s "qqqemacs"
         postBuild = ''
           wrapProgram $out/bin/eca \
             --add-flags "--config-file ${eca-config}"
-          '';
+        '';
       });
 
       eca-bin = lib.getExe' my-eca "eca";
@@ -81,7 +81,7 @@ lib.mkProfile s "qqqemacs"
               wrapProgram $out/bin/emacs \
                 --set QQQ_ECA_PATH ${eca-bin} \
                 --set QQQ_AUTHINFO ${config.vaultix.templates.authinfo.path}
-              '';
+            '';
           })
         ];
       };
