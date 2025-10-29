@@ -97,12 +97,13 @@
         lib = helpers.lib;
       };
 
-      vaultix = vaultix.configure {
+      vaultix = vaultix.configure rec {
         nodes = self.nixosConfigurations;
         identity = self + "/resources/keys/age-yubikey-identity-main.txt";
         extraRecipients = [ "age1yubikey1q0mllu8l3pf4fynhye98u308ppk9tjx7aawvzhhqwvrn878nmcsfcwj37nf" ];
         extraPackages = [ pkgs.age-plugin-yubikey ];
         defaultSecretDirectory = "./caveman";
+        cache = "${defaultSecretDirectory}/cache";
       };
 
       overlays.default = (helpers.default-overlays { inherit inputs; });
