@@ -3,7 +3,36 @@ lib.mkProfile s "qqqemacs"
   (
     let
       gpt-host = "${config.myos.data.az-anu-domain}.openai.azure.com";
-      github-ai = "models.inference.ai.azure.com";
+      json = pkgs.formats.json { };
+
+      eca-config = json.generate "eca-config.json" {
+        defaultBehavior = "agent";
+        defaultModel = "azure/gpt-5-mini";
+        netrcFile = config.vaultix.templates.eca-netrc.path;
+        providers = {
+          azure = {
+            api = "openai-responses";
+            url = "https://${gpt-host}";
+            completionUrlRelativePath = "/openai/v1/responses";
+            keyRc = "${gpt-host}";
+            models = {
+              gpt-5-mini = { };
+            };
+          };
+        };
+      };
+
+      my-eca = (pkgs.symlinkJoin {
+        name = "myeca";
+        paths = [ self.packages.${pkgs.system}.eca ];
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/eca \
+            --add-flags "--config-file ${eca-config}"
+          '';
+      });
+
+      eca-bin = lib.getExe' my-eca "eca";
     in
     {
       # sudo mkdir -p /var/cache/man/nixos
@@ -16,7 +45,6 @@ lib.mkProfile s "qqqemacs"
       vaultix.templates.authinfo = {
         content = ''
           machine ${gpt-host} login apikey password ${config.vaultix.placeholder.openai-key}
-          machine ${github-ai} login apikey password ${config.vaultix.placeholder.github-ai-pat}
         '';
         owner = config.myos.user.mainUser;
       };
@@ -32,37 +60,36 @@ lib.mkProfile s "qqqemacs"
         rust = true;
       };
 
+      vaultix.secrets.eca-openai-key = { };
+
+      vaultix.templates.eca-netrc = {
+        content = ''
+          machine ${gpt-host}
+          password ${config.vaultix.placeholder.eca-openai-key}
+        '';
+        owner = config.myos.user.mainUser;
+      };
+
       environment = {
         systemPackages = [
-          self.packages.${pkgs.system}.qqqemacs
+          my-eca
+          (pkgs.symlinkJoin {
+            name = "qqqemacs";
+            paths = [ self.packages.${pkgs.system}.qqqemacs ];
+            nativeBuildInputs = [ pkgs.makeWrapper ];
+            postBuild = ''
+              wrapProgram $out/bin/emacs \
+                --set QQQ_ECA_PATH ${eca-bin} \
+                --set QQQ_AUTHINFO ${config.vaultix.templates.authinfo.path}
+              '';
+          })
         ];
       };
 
       myhome = { config, osConfig, ... }: {
         home.sessionVariables.EDITOR = "emacsclient -t";
 
-        xdg.configFile."eca/config.json" = {
-          text = builtins.toJSON {
-            defaultBehavior = "plan";
-            defaultModel = "azure/gpt-5-mini";
-            providers = {
-              azure = {
-                api = "openai-responses";
-                url = "https://${gpt-host}";
-                keyEnv = "ECA_AZ_OPENAI_KEY";
-                completionUrlRelativePath = "/openai/v1/responses";
-                models = {
-                  gpt-5-mini = { };
-                };
-              };
-            };
-          };
-        };
-
         programs.bash.initExtra = ''
-
-          export ECA_AZ_OPENAI_KEY="$(cat ${osConfig.vaultix.secrets.eca-openai-key.path})"
-
           if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
             source ${pkgs.emacsPackages.vterm}/share/emacs/site-lisp/elpa/vterm-*/etc/emacs-vterm-bash.sh
           fi

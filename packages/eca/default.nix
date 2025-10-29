@@ -2,15 +2,14 @@
 
 buildGraalvmNativeImage (finalAttrs: {
   pname = "eca";
-  version = "0.70.6";
+  version = "0.75.0";
 
   src = fetchurl {
     url = "https://github.com/editor-code-assistant/eca/releases/download/${finalAttrs.version}/eca.jar";
-    hash = "sha256-pZ/44ikMlaPl3Qo6jRLQNZXsk2BtF08CyugQKhB7AvE=";
+    hash = "sha256-FO1WDY1XlQIhPjZbcrTgnqrRXOnikOMpYU2QBcOMlHE=";
   };
 
   extraNativeImageBuildArgs = [
-    "-H:+ReportExceptionStackTraces"
     "--no-fallback"
     "--native-image-info"
     "--features=clj_easy.graal_build_time.InitClojureClasses"

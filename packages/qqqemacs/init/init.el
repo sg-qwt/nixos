@@ -1181,7 +1181,7 @@ the focus."
 
 (use-package auth-source
   :custom
-  (auth-sources '("/run/vaultix/authinfo")))
+  (auth-sources `(,(getenv "QQQ_AUTHINFO"))))
 
 ;;;;;;;;;;;;;;
 ;; markdown ;;
@@ -1221,8 +1221,7 @@ the focus."
 (use-package eca
   :commands (eca)
   :custom
-  (eca-custom-command `(,(getenv "QQQ_ECA_PATH") "server"))
-  (eca-extra-args '("--log-level" "debug"))
+  (eca-custom-command `(,(getenv "QQQ_ECA_PATH") "--log-level" "debug" "server"))
   (eca-chat-diff-tool 'smerge)
   :general
   (general-def 'normal eca-chat-mode-map
