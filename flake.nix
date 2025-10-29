@@ -37,6 +37,8 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    self.submodules = true;
   };
 
   outputs = { self, ... }@inputs:
@@ -100,7 +102,7 @@
         identity = self + "/resources/keys/age-yubikey-identity-main.txt";
         extraRecipients = [ "age1yubikey1q0mllu8l3pf4fynhye98u308ppk9tjx7aawvzhhqwvrn878nmcsfcwj37nf" ];
         extraPackages = [ pkgs.age-plugin-yubikey ];
-        defaultSecretDirectory = "./secrets";
+        defaultSecretDirectory = "./caveman";
       };
 
       overlays.default = (helpers.default-overlays { inherit inputs; });
