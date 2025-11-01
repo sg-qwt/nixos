@@ -90,9 +90,11 @@ lib.mkProfile s "qqqemacs"
         home.sessionVariables.EDITOR = "emacsclient -t";
 
         programs.bash.initExtra = ''
+
           if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
             source ${pkgs.emacsPackages.vterm}/share/emacs/site-lisp/elpa/vterm-*/etc/emacs-vterm-bash.sh
           fi
+
         '';
       };
     }

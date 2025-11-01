@@ -1220,9 +1220,32 @@ the focus."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package eca
   :commands (eca)
+  :preface
+  (defun qqq/eca-chat-flyspell-setup ()
+    "Enable Flyspell during typing and disable on submit in `eca-chat-mode`."
+    (when (derived-mode-p 'eca-chat-mode)
+      ;; Disable Flyspell when submitting prompts
+      (add-hook 'pre-command-hook
+		(lambda ()
+		  (when (and (memq this-command '(eca-chat--key-pressed-return
+						  eca-chat-send-prompt-at-chat))
+			     flyspell-mode)
+		    (flyspell-mode -1)))
+		nil t)
+      ;; Re-enable Flyspell when typing
+      (add-hook 'pre-command-hook
+		(lambda ()
+		  (when (and (eq this-command 'self-insert-command)
+			     (not flyspell-mode))
+		    (flyspell-mode 1)))
+		nil t)))
+  :hook
+  (eca-chat-mode . qqq/eca-chat-flyspell-setup)
+  (prog-mode . eca-completion-mode)
   :custom
   (eca-custom-command `(,(getenv "QQQ_ECA_PATH") "--log-level" "debug" "server"))
   (eca-chat-diff-tool 'smerge)
+  (eca-chat-use-side-window nil)
   :general
   (general-def 'normal eca-chat-mode-map
     [remap markdown-cycle] 'eca-chat--key-pressed-tab))
