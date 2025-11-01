@@ -39,7 +39,7 @@ lib.mkProfile s "shell"
       shellAliases = {
         gpr = "git pull --rebase";
         gl = "git log --decorate --oneline --graph";
-        rebuild = "sudo nixos-rebuild switch --flake $MYOS_FLAKE";
+        rebuild = "nixos-rebuild switch --sudo --flake $MYOS_FLAKE";
         nfc = "nix flake check";
         nf = "nix fmt";
         ns = "nix shell";
