@@ -306,7 +306,8 @@ If the buffer doesn't exist, create it first."
     "s" #'qqq/scratch-buffer-other-window
     "m" #'qqq/switch-to-message
     "p" #'qqq/consult-buffer-p
-    "d" #'kill-current-buffer)
+    "d" #'kill-current-buffer
+    "l" #'evil-switch-to-windows-last-buffer)
 
   ;;;;;;;;;;
   ;; file ;;
