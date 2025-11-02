@@ -1,6 +1,11 @@
 s@{ pkgs, lib, ... }:
 let
   search-url = "https://www.google.co.uk";
+  search-code = shortcut: language: {
+    name = "${language} Code";
+    shortcut = "${shortcut}";
+    url = "https://github.com/search?q={searchTerms}+NOT+is%3Afork+language%3A\"${language}\"&type=code";
+  };
 in
 lib.mkProfile s "desktop-apps"
 {
@@ -43,10 +48,12 @@ lib.mkProfile s "desktop-apps"
       NewTabPageLocation = search-url;
 
       SiteSearchSettings = [
+        (search-code "nc" "Nix")
+        (search-code "ec" "Emacs+Lisp")
         {
-          name = "Nix Code";
-          shortcut = "nc";
-          url = "https://github.com/search?q={searchTerms}+NOT+is%3Afork+language%3ANix&type=code";
+          name = "Clojure Code";
+          shortcut = "cc";
+          url = "https://github.com/search?q={searchTerms}+NOT+is%3Afork+language%3AClojure+OR+language%3Aedn&type=code";
         }
         {
           name = "NixOS Packages";
