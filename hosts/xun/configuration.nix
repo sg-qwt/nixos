@@ -1,5 +1,5 @@
 { config, lib, pkgs, modulesPath, self, ... }:
-let edg = config.myos.data.fqdn.edg; in
+let edg = self.shared-data.fqdn.edg; in
 {
   networking.firewall.enable = false;
 

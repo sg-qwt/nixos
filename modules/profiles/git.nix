@@ -1,4 +1,4 @@
-s@{ config, pkgs, lib, ... }:
+s@{ config, pkgs, lib, self, ... }:
 lib.mkProfile s "git"
 {
   vaultix.secrets.caveman-token = { };
@@ -18,7 +18,7 @@ lib.mkProfile s "git"
       signing = {
         signByDefault = false;
         format = "ssh";
-        key = "key::${builtins.elemAt config.myos.data.openssh-keys 0}";
+        key = "key::${builtins.elemAt self.shared-data.openssh-keys 0}";
       };
 
       lfs.enable = false;

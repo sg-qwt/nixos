@@ -1,7 +1,7 @@
 { config, lib, inputs, self, ... }:
 with lib;
 let
-  inherit (config.myos.data) ports fqdn;
+  inherit (self.shared-data) ports fqdn;
   cfg = config.myos.chugou;
 in
 {

@@ -4,7 +4,7 @@ with lib;
 let
   cfg = config.myos.clash-meta;
   host = "127.0.0.1";
-  inherit (config.myos.data) ports;
+  inherit (self.shared-data) ports;
 in
 {
   options.myos.clash-meta = {
@@ -26,7 +26,7 @@ in
       vaultix.templates.clashm = {
         content = lib.generators.toYAML { }
           (import ./clash.nix {
-            inherit config pkgs;
+            inherit config pkgs self;
             interface = cfg.interface;
           });
       };

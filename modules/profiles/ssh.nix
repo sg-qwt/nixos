@@ -1,10 +1,10 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, lib, self, ... }:
 
 with lib;
 
 let
   cfg = config.myos.ssh;
-  data = config.myos.data;
+  data = self.shared-data;
   username = config.myos.user.mainUser;
   match-blocks =
     {

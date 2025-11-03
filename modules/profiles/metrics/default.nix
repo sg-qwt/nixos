@@ -1,7 +1,7 @@
 s@{ config, pkgs, lib, self, ... }:
 with lib;
 let
-  inherit (config.myos.data) ports fqdn path;
+  inherit (self.shared-data) ports fqdn path;
   cfg = config.myos.metrics;
   chugou = {
     job_name = "chugou";

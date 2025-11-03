@@ -1,6 +1,6 @@
-{ config, pkgs, interface }:
+{ config, pkgs, interface, self }:
 let
-  inherit (config.myos.data) ports fqdn path dui-ipv4 xun-ipv4;
+  inherit (self.shared-data) ports fqdn path dui-ipv4 xun-ipv4;
 in
 rec {
   mixed-port = ports.clash-meta-mixed;
@@ -106,22 +106,7 @@ rec {
       client-fingerprint = "chrome";
     }
     {
-      name = "sstls";
-      type = "ss";
-      server = xun-ipv4;
-      port = ports.sstls;
-      cipher = "2022-blake3-aes-128-gcm";
-      password = config.vaultix.placeholder.sing-shadow;
-      plugin = "shadow-tls";
-      client-fingerprint = "chrome";
-      plugin-opts = {
-        host = config.myos.singbox.sni2;
-        password = config.vaultix.placeholder.sing-shadow-tls;
-        version = 3;
-      };
-    }
-    {
-      name = "warpfront";
+      name = "vless-warp";
       type = "wireguard";
       server = "engage.cloudflareclient.com";
       port = 2408;
@@ -136,6 +121,21 @@ rec {
         "https://dns.cloudflare.com/dns-query"
       ];
       dialer-proxy = "vless";
+    }
+    {
+      name = "sstls";
+      type = "ss";
+      server = xun-ipv4;
+      port = ports.sstls;
+      cipher = "2022-blake3-aes-128-gcm";
+      password = config.vaultix.placeholder.sing-shadow;
+      client-fingerprint = "chrome";
+      plugin = "shadow-tls";
+      plugin-opts = {
+        host = config.myos.singbox.sni2;
+        password = config.vaultix.placeholder.sing-shadow-tls;
+        version = 3;
+      };
     }
   ];
 

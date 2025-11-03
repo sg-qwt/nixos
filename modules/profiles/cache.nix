@@ -1,6 +1,6 @@
 s@{ config, lib, self, ... }:
 let
-  inherit (config.myos.data) fqdn;
+  inherit (self.shared-data) fqdn;
 in
 lib.mkProfile s "cache" {
 

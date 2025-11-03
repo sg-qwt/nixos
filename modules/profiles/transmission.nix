@@ -1,6 +1,6 @@
 s@{ config, pkgs, lib, self, ... }:
 let
-  inherit (config.myos.data) ports fqdn path;
+  inherit (self.shared-data) ports fqdn path;
 in
 lib.mkProfile s "transmission" {
 

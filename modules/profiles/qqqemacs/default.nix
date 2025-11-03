@@ -2,7 +2,7 @@ s@{ config, pkgs, lib, self, ... }:
 lib.mkProfile s "qqqemacs"
   (
     let
-      gpt-host = "${config.myos.data.az-anu-domain}.openai.azure.com";
+      gpt-host = "${self.shared-data.az-anu-domain}.openai.azure.com";
       json = pkgs.formats.json { };
 
       eca-config = json.generate "eca-config.json" {

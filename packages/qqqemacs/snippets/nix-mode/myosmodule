@@ -7,7 +7,7 @@ s@{ config, pkgs, lib,  self, ... }:
 with lib;
 let
   cfg = config.myos.$1;
-  inherit (config.myos.data) ports;
+  inherit (self.shared-data) ports;
 in
 {
   options.myos.$1 = {

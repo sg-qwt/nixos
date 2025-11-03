@@ -8,7 +8,7 @@ let
     "CAP_NET_ADMIN"
     "CAP_NET_BIND_SERVICE"
   ];
-  inherit (config.myos.data) ports;
+  inherit (self.shared-data) ports;
 in
 {
   options.myos.singbox = {
@@ -22,7 +22,7 @@ in
     };
     sni2 = mkOption {
       type = types.str;
-      default = "www.bing.com";
+      default = "cloud.tencent.com";
     };
   };
 
@@ -34,7 +34,7 @@ in
       vaultix.secrets.sing-reality-private = { };
       vaultix.templates.singbox = {
         content = builtins.toJSON
-          (import (./. + "/${toString cfg.profile}.nix") { inherit config; });
+          (import (./. + "/${toString cfg.profile}.nix") { inherit config self; });
       };
 
       services.nginx.defaultSSLListenPort = ports.default-ssl;

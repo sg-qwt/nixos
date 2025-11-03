@@ -2,7 +2,7 @@ s@{ config, lib, self, ... }:
 lib.mkProfile s "tailscale" (
   let
     interface = "tailscale0";
-    port = config.myos.data.ports.tailscaled;
+    port = self.shared-data.ports.tailscaled;
   in
   {
     vaultix.secrets.tailscale-tailnet-key = { };

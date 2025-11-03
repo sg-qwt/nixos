@@ -72,4 +72,11 @@ rec {
             (builtins.attrNames (builtins.readDir (self + "/shells")))));
     in
     devshells // { default = devshells."${default}"; };
+
+  shared-data =
+    (lib.importJSON (self + "/resources/shared-data/data.json")) //
+    (lib.importJSON (self + "/resources/shared-data/tfo.json")) //
+    {
+      hosts = (builtins.attrNames self.nixosConfigurations);
+    };
 }

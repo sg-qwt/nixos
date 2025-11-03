@@ -1,7 +1,7 @@
-{ config }:
+{ config, self }:
 let
   server = config.myos.singbox.sni;
-  inherit (config.myos.data) ports;
+  inherit (self.shared-data) ports;
 in
 {
   log = {

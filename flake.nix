@@ -97,8 +97,10 @@
         lib = helpers.lib;
       };
 
+      shared-data = helpers.shared-data;
+
       vaultix = vaultix.configure rec {
-        nodes = self.nixosConfigurations;
+        nodes = builtins.removeAttrs self.nixosConfigurations [ "azbase" ];
         identity = self + "/resources/keys/age-yubikey-identity-main.txt";
         extraRecipients = [ "age1yubikey1q0mllu8l3pf4fynhye98u308ppk9tjx7aawvzhhqwvrn878nmcsfcwj37nf" ];
         extraPackages = [ pkgs.age-plugin-yubikey ];
@@ -131,12 +133,28 @@
             })
             (mkOS {
               name = "xun";
-              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHIJkTioxExX+AHexbppyfFKJAhMfJe7js0f2QfSvJec";
+              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHMytlKhUyTAqKE3T9IkpEl7qheowlRdojUJaxdnIVj8";
             })
             (mkOS {
               name = "li";
               hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFxduWDt3Qli+3gTUd4/3/qbVqy+wyNrqTxZhV/7/7eV";
             })
+            {
+              azbase = (nixpkgs.lib.nixosSystem {
+                specialArgs = {
+                  inherit self;
+                };
+                modules = [
+                  nixpkgs.nixosModules.readOnlyPkgs
+                  {
+                    _module.args.pkgs-latest = pkgs-latest;
+                    nixpkgs.pkgs = pkgs;
+                  }
+                  ./modules/mixins/deploy.nix
+                  ./modules/mixins/azurebase.nix
+                ];
+              });
+            }
           ];
 
       formatter."${system}" = treefmt-eval.config.build.wrapper;

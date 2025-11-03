@@ -1,7 +1,7 @@
-{ config }:
+{ config, self }:
 let
   detour = "shadowsocks-in";
-  inherit (config.myos.data) ports;
+  inherit (self.shared-data) ports;
 in
 {
   log = {
@@ -32,6 +32,7 @@ in
         server = config.myos.singbox.sni2;
         server_port = 443;
       };
+      wildcard_sni = "authed";
     }
   ];
 }
