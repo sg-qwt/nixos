@@ -4,6 +4,7 @@ lib.mkProfile s "qqqemacs"
     let
       gpt-host = "${self.shared-data.az-anu-domain}.openai.azure.com";
       json = pkgs.formats.json { };
+      trafilatura = lib.getExe pkgs.python3Packages.trafilatura;
 
       eca-config = json.generate "eca-config.json" {
         defaultBehavior = "agent";
@@ -17,6 +18,23 @@ lib.mkProfile s "qqqemacs"
             keyRc = "${gpt-host}";
             models = {
               gpt-5-mini = { };
+            };
+          };
+        };
+        customTools = {
+          web-fetch = {
+            description = "Fetches the content of a URL and returns it in Markdown format.";
+            command = "${trafilatura} --output-format=markdown -u {{url}}";
+            schema = {
+              properties = {
+                url = {
+                  type = "string";
+                  description = "The URL to fetch content from.";
+                };
+              };
+              required = [
+                "url"
+              ];
             };
           };
         };
