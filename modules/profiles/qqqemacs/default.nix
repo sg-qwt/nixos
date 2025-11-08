@@ -2,6 +2,12 @@ s@{ config, pkgs, lib, self, ... }:
 lib.mkProfile s "qqqemacs"
   (
     let
+      npx = lib.getExe' pkgs.nodejs "npx";
+      # TODO proper build this npm
+      brave-mcp = pkgs.writeShellScriptBin "brave-search-mcp" ''
+        export PATH="${pkgs.nodejs}/bin:$PATH"
+        exec ${npx} -y @brave/brave-search-mcp-server --brave-api-key "$(cat ${config.vaultix.secrets.brave-search-key.path})" "$@"
+      '';
       gpt-host = "${self.shared-data.az-anu-domain}.openai.azure.com";
       json = pkgs.formats.json { };
       trafilatura = lib.getExe pkgs.python3Packages.trafilatura;
@@ -38,6 +44,12 @@ lib.mkProfile s "qqqemacs"
             };
           };
         };
+        mcpServers = {
+          brave-search = {
+            command = "${lib.getExe brave-mcp}";
+            args = [ ];
+          };
+        };
       };
 
       my-eca = (pkgs.symlinkJoin {
@@ -68,6 +80,10 @@ lib.mkProfile s "qqqemacs"
       };
 
       vaultix.secrets.eca-openai-key = {
+        owner = config.myos.user.mainUser;
+      };
+
+      vaultix.secrets.brave-search-key = {
         owner = config.myos.user.mainUser;
       };
 
