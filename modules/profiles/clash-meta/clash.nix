@@ -162,6 +162,14 @@ rec {
       })
 
       (build-group {
+        name = "poly";
+        type = "select";
+        proxies = [
+          "sstls"
+        ];
+      })
+
+      (build-group {
         name = "auto";
         type = "url-test";
         proxies = custom-pxs;
@@ -184,6 +192,7 @@ rec {
     "DOMAIN-SUFFIX,cm.steampowered.com,DIRECT"
     "DOMAIN-SUFFIX,steamserver.net,DIRECT"
     "DOMAIN-SUFFIX,steamchina.com,DIRECT"
+    "DOMAIN-SUFFIX,polymarket.com,poly"
     "GEOSITE,category-ads-all,REJECT"
     "GEOSITE,openai,select"
     "GEOSITE,geolocation-cn,DIRECT"

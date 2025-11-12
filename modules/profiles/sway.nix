@@ -424,12 +424,14 @@ lib.mkProfile s "sway"
 
       services.swayidle = {
         enable = true;
-        timeouts = [
-          {
-            timeout = 3600;
-            command = "${systemctl} suspend";
-          }
-        ];
+
+        # timeouts = [
+        #   {
+        #     timeout = 3600;
+        #     command = "${systemctl} suspend";
+        #   }
+        # ];
+
         events = [
           {
             event = "lock";
