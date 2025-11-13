@@ -1,4 +1,4 @@
-{ lib, pkgs, pkgs-latest, self, config, ... }:
+{ lib, pkgs, self, config, ... }:
 {
   system.stateVersion = "24.11";
 

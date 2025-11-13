@@ -4,8 +4,6 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    nixpkgs-latest.url = "github:nixos/nixpkgs/nixos-unstable";
-
     flake-utils.url = "github:numtide/flake-utils";
 
     treefmt-nix = {
@@ -56,37 +54,7 @@
         ];
       };
 
-      pkgs-latest = import nixpkgs-latest {
-        inherit system;
-        config.allowUnfree = true;
-      };
-
-      helpers = import ./lib/helpers.nix { inherit self nixpkgs; };
-
-      mkOS = { name, hostPubkey, p ? pkgs }: {
-        ${name} = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit home-manager self inputs;
-            lib = helpers.lib;
-          };
-          modules = [
-            nixpkgs.nixosModules.readOnlyPkgs
-            home-manager.nixosModules.home-manager
-            vaultix.nixosModules.default
-            nix-index-database.nixosModules.nix-index
-            {
-              _module.args.pkgs-latest = pkgs-latest;
-              nixpkgs.pkgs = p;
-              nixpkgs.overlays = nixpkgs.lib.mkForce p.overlays;
-              networking.hostName = name;
-              imports = helpers.profile-list;
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              vaultix.settings.hostPubkey = hostPubkey;
-            }
-          ] ++ (import (./hosts + "/${name}") { inherit inputs; });
-        };
-      };
+      helpers = import ./lib/helpers.nix { inherit self nixpkgs inputs pkgs; };
 
       treefmt-eval = (inputs.treefmt-nix.lib.evalModule pkgs ./lib/treefmt.nix);
     in
@@ -100,7 +68,7 @@
       shared-data = helpers.shared-data;
 
       vaultix = vaultix.configure rec {
-        nodes = builtins.removeAttrs self.nixosConfigurations [ "azbase" ];
+        nodes = helpers.nodes;
         identity = self + "/resources/keys/age-yubikey-identity-main.txt";
         extraRecipients = [ "age1yubikey1q0mllu8l3pf4fynhye98u308ppk9tjx7aawvzhhqwvrn878nmcsfcwj37nf" ];
         extraPackages = [ pkgs.age-plugin-yubikey ];
@@ -111,51 +79,12 @@
       overlays.default = (helpers.default-overlays { inherit inputs; });
 
       # expose packages to flake here
-      packages."${system}" = flake-utils.lib.flattenTree (helpers.packages pkgs);
+      packages."${system}" = flake-utils.lib.flattenTree helpers.packages;
 
       devShells."${system}" =
         (helpers.shells { inherit pkgs self; } "dev");
 
-      nixosConfigurations =
-        builtins.foldl' (x: y: x // y) { }
-          [
-            (mkOS {
-              name = "zheng";
-              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINpWTwJQ7923qsxZGWjxQrl8Bx6/+pdZDsiz0dg1akxz";
-              p = pkgs.appendOverlays [
-                jovian.overlays.default
-                helpers.jovian-overlay
-              ];
-            })
-            (mkOS {
-              name = "dui";
-              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJLftJ5dhUg+HMKxqwMlUswnpQtPVdYFDxbD6YB58kGp";
-            })
-            (mkOS {
-              name = "xun";
-              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHMytlKhUyTAqKE3T9IkpEl7qheowlRdojUJaxdnIVj8";
-            })
-            (mkOS {
-              name = "li";
-              hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFxduWDt3Qli+3gTUd4/3/qbVqy+wyNrqTxZhV/7/7eV";
-            })
-            {
-              azbase = (nixpkgs.lib.nixosSystem {
-                specialArgs = {
-                  inherit self;
-                };
-                modules = [
-                  nixpkgs.nixosModules.readOnlyPkgs
-                  {
-                    _module.args.pkgs-latest = pkgs-latest;
-                    nixpkgs.pkgs = pkgs;
-                  }
-                  ./modules/mixins/deploy.nix
-                  ./modules/mixins/azurebase.nix
-                ];
-              });
-            }
-          ];
+      nixosConfigurations = helpers.nixosConfigurations;
 
       formatter."${system}" = treefmt-eval.config.build.wrapper;
 

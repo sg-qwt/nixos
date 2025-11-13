@@ -1,6 +1,6 @@
 { lib, self, symlinkJoin, pkgs, ... }:
 let
-  hosts = (lib.concatStringsSep ":" (builtins.attrNames self.nixosConfigurations));
+  hosts = (lib.concatStringsSep ":" (builtins.attrNames self.shared-data.hosts));
   bento = pkgs.writers.writeBabashkaBin "bento"
     {
       makeWrapperArgs = [

@@ -1,4 +1,4 @@
-{ self, nixpkgs }:
+{ self, nixpkgs, inputs, pkgs }:
 rec {
   patchDesktop = pkgs: pkg: appName: from: to: lib.hiPrio
     (pkgs.runCommand "$patched-desktop-entry-for-${appName}" { }
@@ -59,7 +59,7 @@ rec {
       };
     });
 
-  packages = pkgs:
+  packages =
     (builtins.listToAttrs
       (map (name: { name = name; value = pkgs.my."${name}"; })
         (builtins.attrNames pkgs.my)));
@@ -77,6 +77,63 @@ rec {
     (lib.importJSON (self + "/resources/shared-data/data.json")) //
     (lib.importJSON (self + "/resources/shared-data/tfo.json")) //
     {
-      hosts = (builtins.attrNames self.nixosConfigurations);
+      hosts = {
+        zheng.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINpWTwJQ7923qsxZGWjxQrl8Bx6/+pdZDsiz0dg1akxz";
+        dui.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJLftJ5dhUg+HMKxqwMlUswnpQtPVdYFDxbD6YB58kGp";
+        xun.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHMytlKhUyTAqKE3T9IkpEl7qheowlRdojUJaxdnIVj8";
+        li.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFxduWDt3Qli+3gTUd4/3/qbVqy+wyNrqTxZhV/7/7eV";
+      };
     };
+
+  azbase = (nixpkgs.lib.nixosSystem {
+    specialArgs = {
+      inherit self;
+    };
+    modules = [
+      nixpkgs.nixosModules.readOnlyPkgs
+      {
+        nixpkgs.pkgs = pkgs;
+      }
+      ./modules/mixins/deploy.nix
+      ./modules/mixins/azurebase.nix
+    ];
+  });
+
+  mkOS = { name, hostPubkey }:
+    let
+      p =
+        if (name == "zheng") then
+          pkgs.appendOverlays [
+            inputs.jovian.overlays.default
+            jovian-overlay
+          ] else pkgs;
+      home-manager = inputs.home-manager;
+    in
+    nixpkgs.lib.nixosSystem {
+      specialArgs = {
+        inherit home-manager self inputs;
+        lib = lib;
+      };
+      modules = [
+        nixpkgs.nixosModules.readOnlyPkgs
+        home-manager.nixosModules.home-manager
+        inputs.vaultix.nixosModules.default
+        inputs.nix-index-database.nixosModules.nix-index
+        {
+          nixpkgs.pkgs = p;
+          nixpkgs.overlays = nixpkgs.lib.mkForce p.overlays;
+          networking.hostName = name;
+          imports = profile-list;
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          vaultix.settings.hostPubkey = hostPubkey;
+        }
+      ] ++ (import (../hosts + "/${name}") { inherit inputs; });
+    };
+
+  nodes = builtins.mapAttrs
+    (hostname: value: (mkOS { name = hostname; hostPubkey = value.key; }))
+    shared-data.hosts;
+
+  nixosConfigurations = nodes // { inherit azbase; };
 }

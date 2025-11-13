@@ -1,4 +1,4 @@
-s@{ config, pkgs-latest, pkgs, lib, self, ... }:
+s@{ config, pkgs, lib, self, ... }:
 let
   me = config.myos.user.mainUser;
   me-secret = {
@@ -52,7 +52,7 @@ lib.mkProfile s "shell"
 
     programs.starship = {
       enable = true;
-      package = pkgs-latest.starship;
+      package = pkgs.starship;
       enableBashIntegration = true;
       settings = lib.mkMerge [
         {

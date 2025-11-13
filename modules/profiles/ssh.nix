@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.myos.ssh;
-  data = self.shared-data;
   username = config.myos.user.mainUser;
   match-blocks =
     {
@@ -25,11 +24,11 @@ let
       (map
         (host: {
           "${host}" = {
-            hostname = "${host}.h.${data.fqdn.edg}";
+            hostname = "${host}.h.${self.shared-data.fqdn.edg}";
             user = username;
           };
         })
-        data.hosts));
+        (builtins.attrNames self.shared-data.hosts)));
 in
 {
   options.myos.ssh = {
