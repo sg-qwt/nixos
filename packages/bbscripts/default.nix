@@ -22,6 +22,7 @@ let
         "${lib.makeBinPath [
         pkgs.brightnessctl
         pkgs.libnotify
+        pkgs.asusctl
       ]}"
       ];
     }

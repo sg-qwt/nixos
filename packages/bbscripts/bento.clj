@@ -34,7 +34,7 @@
   (shell "nixos-rebuild"
          "--target-host" (str user "@" host)
          "--flake" (str flake "#" (name id))
-         "--use-remote-sudo" "switch")
+         "--sudo" "switch")
   (println "✅ deploy successfully"))
 
 (defn deploy
@@ -80,7 +80,12 @@
        (println)))
 
 (def power-menu
-  {:suspend "systemctl suspend" :reboot "systemctl reboot" :poweroff "systemctl poweroff"})
+  {:suspend "systemctl suspend"
+   :reboot "systemctl reboot"
+   :poweroff "systemctl poweroff"
+   :performance "asusctl profile -P Performance"
+   :balanced "asusctl profile -P Balanced"
+   :quiet "asusctl profile -P Quiet"})
 
 (defn run-menu
   []
