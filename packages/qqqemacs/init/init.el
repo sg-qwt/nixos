@@ -848,6 +848,10 @@ the focus."
 
   (qqq/local-leader
     clojure-mode-map
+    "r" '(:keymap clojure-refactor-map :ignore t :wk "refactor"))
+
+  (qqq/local-leader
+    clojure-mode-map
     :infix "a"
     "p o" #'portal.api/open
     "p c" #'portal.api/close
@@ -859,6 +863,7 @@ the focus."
   (qqq/local-leader
     clojure-mode-map
     :infix "e"
+    "" '(:ignore t :wk "eval")
     "b" #'cider-eval-buffer
     "r" #'cider-eval-region
     "e" #'cider-eval-sexp-at-point
@@ -892,6 +897,7 @@ the focus."
   (qqq/local-leader
     clojure-mode-map
     :infix "h"
+    "" '(:ignore t :wk "help")
     "n" #'cider-find-ns
     "a" #'cider-apropos
     "c" #'cider-clojuredocs
