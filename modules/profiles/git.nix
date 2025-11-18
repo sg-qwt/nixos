@@ -21,7 +21,7 @@ lib.mkProfile s "git"
         key = "key::${builtins.elemAt self.shared-data.openssh-keys 0}";
       };
 
-      lfs.enable = false;
+      lfs.enable = true;
 
       extraConfig = {
         init.defaultBranch = "main";

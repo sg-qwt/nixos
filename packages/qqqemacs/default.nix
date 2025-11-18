@@ -66,12 +66,12 @@ let
 
       gptel
       (eca.overrideAttrs (old: {
-        version = "20251107.1237";
+        version = "20251110.1856";
         src = pkgs.fetchFromGitHub {
           owner = "editor-code-assistant";
           repo = "eca-emacs";
-          rev = "ae5c11e36c7d6c4cda206c8aa96ea2225da55434";
-          hash = "sha256-9yfDD8dbTYrJggE9IYOwR1sAfeFa434Szym1Wf8ySAE=";
+          rev = "dd5600be65480489aa39795c1699f632cd6396ad";
+          hash = "sha256-qevnr8QF6gbmXPHw8YcImY12QjFI4hjnK2UxzPg7cAc=";
         };
       }))
 
