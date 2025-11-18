@@ -65,6 +65,10 @@
       (when (not matching-buffer)
 	(eca))))
 
+  (defun qqq/kill-eca ()
+    (interactive)
+    (kill-matching-buffers ".*<eca.*" 't 't))
+
   (defun qqq/scratch-buffer-other-window ()
     "Switch to the *scratch* buffer other window.
 If the buffer doesn't exist, create it first."
@@ -271,6 +275,8 @@ If the buffer doesn't exist, create it first."
   (qqq/leader
     :infix "l"
     "" '(:ignore t :wk "AI")
+    "e" #'qqq/switch-to-eca
+    "k" #'qqq/kill-eca
     "c" #'eca-chat-add-context-to-user-prompt
     "f" #'eca-chat-add-filepath-to-user-prompt)
 
@@ -320,7 +326,6 @@ If the buffer doesn't exist, create it first."
 	    (interactive)
 	    (switch-to-buffer
 	     (gptel "*gptel*")))
-    "e" #'qqq/switch-to-eca
     "t" #'multi-vterm-dedicated-toggle
     "i" #'ibuffer
     "b" #'consult-buffer
