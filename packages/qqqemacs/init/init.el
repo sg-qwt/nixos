@@ -853,7 +853,7 @@ the focus."
 
   (qqq/local-leader
     clojure-mode-map
-    "r" '(:keymap clojure-refactor-map :ignore t :wk "refactor"))
+    "r" '(:keymap clojure-refactor-map :wk "refactor"))
 
   (qqq/local-leader
     clojure-mode-map
