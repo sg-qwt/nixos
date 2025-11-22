@@ -26,6 +26,14 @@ lib.mkProfile s "qqqemacs"
               gpt-5-mini = { };
             };
           };
+          azantro = {
+            api = "anthropic";
+            url = "https://${gpt-host}/anthropic";
+            keyRc = "${gpt-host}";
+            models = {
+              claude-sonnet-4-5 = { };
+            };
+          };
         };
         customTools = {
           web-fetch = {
