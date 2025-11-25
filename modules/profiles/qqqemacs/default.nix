@@ -31,7 +31,7 @@ lib.mkProfile s "qqqemacs"
             url = "https://${gpt-host}/anthropic";
             keyRc = "${gpt-host}";
             models = {
-              claude-sonnet-4-5 = { };
+              claude-opus-4-5 = { };
             };
           };
         };
