@@ -11,10 +11,11 @@ lib.mkProfile s "qqqemacs"
       gpt-host = "${self.shared-data.az-anu-domain}.openai.azure.com";
       json = pkgs.formats.json { };
       trafilatura = lib.getExe pkgs.python3Packages.trafilatura;
+      brepl = lib.getExe pkgs.my.brepl;
 
       eca-config = json.generate "eca-config.json" {
         defaultBehavior = "agent";
-        defaultModel = "azure/gpt-5-mini";
+        defaultModel = "azantro/claude-opus-4-5";
         netrcFile = config.vaultix.templates.eca-netrc.path;
         providers = {
           azure = {
@@ -36,6 +37,32 @@ lib.mkProfile s "qqqemacs"
           };
         };
         customTools = {
+          brepl-eval = {
+            description = "Evaluates Clojure code using brepl. Returns the result of evaluation with stdout/stderr captured. The tool AUTOMATICALLY wraps your code in a safe heredoc pattern ('<<EOF'), so you must provide ONLY the raw Clojure code. Do not add the 'brepl' command or 'EOF' markers yourself. Supports multi-line code, reloading namespaces, and running tests.";
+            command = "${brepl} \"$(cat <<'EOF'\n{{code}}\nEOF\n)\"";
+            schema = {
+              properties = {
+                code = {
+                  type = "string";
+                  description = "The raw Clojure expression(s) to evaluate. Example: (require '[my.ns] :reload) (my.ns/func)";
+                };
+              };
+              required = [ "code" ];
+            };
+          };
+          brepl-load-file = {
+            description = "Loads an entire Clojure file into the nREPL environment.";
+            command = "${brepl} -f {{file}}";
+            schema = {
+              properties = {
+                file = {
+                  type = "string";
+                  description = "The path to the file to load (e.g., 'src/myapp/core.clj').";
+                };
+              };
+              required = [ "file" ];
+            };
+          };
           web-fetch = {
             description = "Fetches the content of a URL and returns it in Markdown format.";
             command = "${trafilatura} --output-format=markdown -u {{url}}";
