@@ -2,11 +2,11 @@
 
 buildGraalvmNativeImage (finalAttrs: {
   pname = "eca";
-  version = "0.82.1";
+  version = "0.84.2";
 
   src = fetchurl {
     url = "https://github.com/editor-code-assistant/eca/releases/download/${finalAttrs.version}/eca.jar";
-    hash = "sha256-/n1XXL+HsMxn2U4VSZDqt2obuJN94AfwikxD68FLrYQ=";
+    hash = "sha256-WoyLRSVJK2x6j9eNI+gOQltKJVm5DCizyx5XLzM08Ks=";
   };
 
   extraNativeImageBuildArgs = [

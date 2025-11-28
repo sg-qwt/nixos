@@ -22,7 +22,7 @@ lib.mkProfile s "qqqemacs"
             api = "openai-responses";
             url = "https://${gpt-host}";
             completionUrlRelativePath = "/openai/v1/responses";
-            keyRc = "${gpt-host}";
+            key = "\${netrc:${gpt-host}}";
             models = {
               gpt-5-mini = { };
             };
@@ -30,7 +30,7 @@ lib.mkProfile s "qqqemacs"
           azantro = {
             api = "anthropic";
             url = "https://${gpt-host}/anthropic";
-            keyRc = "${gpt-host}";
+            key = "\${netrc:${gpt-host}}";
             models = {
               claude-opus-4-5 = { };
             };
@@ -38,7 +38,13 @@ lib.mkProfile s "qqqemacs"
         };
         customTools = {
           brepl-eval = {
-            description = "Evaluates Clojure code using brepl. Returns the result of evaluation with stdout/stderr captured. The tool AUTOMATICALLY wraps your code in a safe heredoc pattern ('<<EOF'), so you must provide ONLY the raw Clojure code. Do not add the 'brepl' command or 'EOF' markers yourself. Supports multi-line code, reloading namespaces, and running tests.";
+            description = ''
+              Evaluates Clojure code using brepl. Returns the result of evaluation with stdout/stderr captured.
+
+              The tool AUTOMATICALLY wraps your code in a safe heredoc pattern ('<<EOF'), so you must provide ONLY the raw Clojure code.
+              Do not add the 'brepl' command or 'EOF' markers yourself.
+              Ensure proper bracket balancing and valid syntax.
+            '';
             command = "${brepl} \"$(cat <<'EOF'\n{{code}}\nEOF\n)\"";
             schema = {
               properties = {
