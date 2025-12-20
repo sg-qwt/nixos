@@ -56,7 +56,8 @@ in
       nvidiaSettings = true;
       dynamicBoost.enable = true;
 
-      package = config.boot.kernelPackages.nvidiaPackages.latest;
+      # TODO wait https://github.com/NixOS/nixpkgs/pull/470229
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
       prime = {
         offload = {
           enable = true;

@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 (eval-when-compile
   (require 'use-package))
 
@@ -1000,15 +1002,21 @@ the focus."
   :config
   (add-to-list 'eglot-server-programs '((nix-mode) "nil")))
 
+
+
 (use-package eglot-clojure-config
   :preface
+  (defun qqq/special-eglot-hover-function (cb &rest _ignored)
+    "Same as `eglot-hover-eldoc-function`, but throw away its short :echo cookie"
+    (eglot-hover-eldoc-function (lambda (info &rest _ignore)
+				  (funcall cb info))))
   ;; snippets borrowed from Clojurian slack to fix eglot echo doc arities
   (defun qqq/switch-eldoc-eglot-fns ()
     (when (derived-mode-p 'clojure-mode 'clojurescript-mode 'clojurec-mode)
       (remove-hook 'eldoc-documentation-functions #'eglot-hover-eldoc-function t)
       (remove-hook 'eldoc-documentation-functions #'eglot-signature-eldoc-function t)
       (add-hook 'eldoc-documentation-functions #'eglot-signature-eldoc-function -99 t)
-      (add-hook 'eldoc-documentation-functions #'eglot-hover-eldoc-function -99 t)))
+      (add-hook 'eldoc-documentation-functions #'qqq/special-eglot-hover-function -99 t)))
   :no-require t
   :after (eglot clojure-mode)
   :hook
@@ -1020,7 +1028,7 @@ the focus."
 (use-package eldoc
   :custom
   ;; (eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly)
-  (eldoc-echo-area-use-multiline-p nil)
+  (eldoc-echo-area-use-multiline-p 1)
   (eldoc-echo-area-prefer-doc-buffer t))
 
 ;;;;;;;;;;;;;;;;;;;;;;

@@ -18,7 +18,8 @@
 	"rsshub": 1264,
 	"transmission": 9191,
 	"transmission-peer": 51513,
-	"chugou": 8888
+	"chugou": 8888,
+	"litellm": 4001
     },
     "fqdn":{
 	"edg": "edgerunners.eu.org"

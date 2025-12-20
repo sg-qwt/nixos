@@ -26,9 +26,7 @@ resource "cloudflare_api_token" "cf_acme_token" {
       { id = local.zone_read.id },
       { id = local.dns_write.id }
     ]
-    resources = {
-      "com.cloudflare.api.account.zone.*" = "*"
-    }
+    resources = jsonencode({"com.cloudflare.api.account.zone.*" = "*"})
   }]
 }
 

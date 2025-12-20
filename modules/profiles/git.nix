@@ -12,8 +12,6 @@ lib.mkProfile s "git"
   myhome = {
     programs.git = {
       enable = true;
-      userName = "無名氏";
-      userEmail = "hello@edgerunners.eu.org";
 
       signing = {
         signByDefault = false;
@@ -23,7 +21,11 @@ lib.mkProfile s "git"
 
       lfs.enable = true;
 
-      extraConfig = {
+      settings = {
+        user = {
+          name = "無名氏";
+          email = "hello@edgerunners.eu.org";
+        };
         init.defaultBranch = "main";
         pull.rebase = true;
         push.followTags = true;

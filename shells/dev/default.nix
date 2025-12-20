@@ -3,12 +3,12 @@ let
   tfenv = self + "/caveman/tf-infra.env.age";
   id = self + "/resources/keys/age-yubikey-identity-main.txt";
   terraform = (pkgs.terraform.withPlugins (p: [
-    p.azurerm
-    p.cloudflare
-    p.tailscale
-    p.time
-    p.grafana
-    p.random
+    p.hashicorp_azurerm
+    p.cloudflare_cloudflare
+    p.tailscale_tailscale
+    p.hashicorp_time
+    p.grafana_grafana
+    p.hashicorp_random
   ]));
   tf = (pkgs.writeShellScriptBin "tf" ''
     ${terraform}/bin/terraform -chdir=$FLAKE_INFRA_DIR $@

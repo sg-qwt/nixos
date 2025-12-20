@@ -431,17 +431,10 @@ lib.mkProfile s "sway"
         #     command = "${systemctl} suspend";
         #   }
         # ];
-
-        events = [
-          {
-            event = "lock";
-            command = swaylock;
-          }
-          {
-            event = "before-sleep";
-            command = "${loginctl} lock-session";
-          }
-        ];
+        events = {
+          lock = swaylock;
+          before-sleep = "${loginctl} lock-session";
+        };
       };
 
       services.kanshi = {

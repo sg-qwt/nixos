@@ -2,43 +2,43 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/cloudflare/cloudflare" {
-  version = "5.11.0"
+  version = "5.14.0"
   hashes = [
-    "h1:t6iB0FgR6PgCwXuPbfqHqd2y+m49+gOB9C9MOuzRoG0=",
+    "h1:8qWarfEsfsc55xjwER+Y2iChOS2PJJe27kKA4szmcEU=",
   ]
 }
 
 provider "registry.terraform.io/grafana/grafana" {
-  version = "4.10.0"
+  version = "4.21.0"
   hashes = [
-    "h1:Arn4ACkoMIPVTsHWUNhF1I8KGqndnRIy8/kjHNY7lqM=",
+    "h1:8sPdQvzvxWr/CQ7rHi0hswC/AtwXDje3r/nZo4Cfyh8=",
   ]
 }
 
 provider "registry.terraform.io/hashicorp/azurerm" {
-  version = "4.47.0"
+  version = "4.55.0"
   hashes = [
-    "h1:wCTqZYRXjo8Uu8+Uo2xpTfDLF2Ou9cjgoy066a5w9b8=",
+    "h1:Xf2gaeyZiwIy5CH6OaHO5ePdysVUDNk3Tc/dhvIb8DI=",
   ]
 }
 
 provider "registry.terraform.io/hashicorp/random" {
   version = "3.7.2"
   hashes = [
-    "h1:QImaf4ewxb+BSFmNFlgTdaX2lx+KK7iSqWB96f/2KIA=",
+    "h1:V4HI+yJdhHSpePgh1S6M0/XdMTdwV8yD4zfs3RoAPoc=",
   ]
 }
 
 provider "registry.terraform.io/hashicorp/time" {
   version = "0.13.1"
   hashes = [
-    "h1:e3dOLFNApkOND8dNHaq3T0Vq7gA/eCvFZFuRxZaCg1Q=",
+    "h1:cqLsKAg3fJ3oICDI6wIBFW2Mu2ODeRSXQZDz1Tp3aZ8=",
   ]
 }
 
 provider "registry.terraform.io/tailscale/tailscale" {
-  version = "0.22.0"
+  version = "0.24.0"
   hashes = [
-    "h1:Nfiw87zzN+uTvgf30LYyuN7d287wBV7Is5Ahx2EawT4=",
+    "h1:zrnVOPWqDGPe/dBopCIvI4X3MvG5ajHAqyBLTvuxyHI=",
   ]
 }

@@ -50,6 +50,50 @@ resource "azurerm_cognitive_deployment" "anu_gpt5_mini" {
   }
 }
 
+resource "azurerm_cognitive_deployment" "anu_gpt5_mini_alt" {
+  depends_on = [
+    azurerm_cognitive_account.anu_foundry
+  ]
+
+  name                   = "gpt-5-mini-alt"
+  cognitive_account_id   = azurerm_cognitive_account.anu_foundry.id
+  rai_policy_name        = "Microsoft.DefaultV2"
+  version_upgrade_option = "OnceNewDefaultVersionAvailable"
+
+  sku {
+    name     = "DataZoneStandard"
+    capacity = 200
+  }
+
+  model {
+    format  = "OpenAI"
+    name    = "gpt-5-mini"
+    version = "2025-08-07"
+  }
+}
+
+resource "azurerm_cognitive_deployment" "anu_gpt5_2_chat" {
+  depends_on = [
+    azurerm_cognitive_account.anu_foundry
+  ]
+
+  name                   = "gpt-5.2-chat"
+  cognitive_account_id   = azurerm_cognitive_account.anu_foundry.id
+  rai_policy_name        = "Microsoft.DefaultV2"
+  version_upgrade_option = "OnceNewDefaultVersionAvailable"
+
+  sku {
+    name     = "GlobalStandard"
+    capacity = 50
+  }
+
+  model {
+    format  = "OpenAI"
+    name    = "gpt-5.2-chat"
+    version = "2025-12-11"
+  }
+}
+
 output "openai_key" {
   value     = azurerm_cognitive_account.anu_foundry.primary_access_key
   sensitive = true

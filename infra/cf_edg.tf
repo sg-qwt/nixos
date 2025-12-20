@@ -6,6 +6,7 @@ data "cloudflare_zone" "edg" {
 
 locals {
   edg_zone_id = data.cloudflare_zone.edg.zone_id
+  edg_domain = data.cloudflare_zone.edg.name
 }
 
 resource "cloudflare_dns_record" "root" {

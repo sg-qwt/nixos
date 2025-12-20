@@ -17,6 +17,7 @@ lib.mkProfile s "transmission" {
 
   services.transmission = {
     enable = true;
+    package = pkgs.transmission_4;
     webHome = pkgs.flood-for-transmission;
     credentialsFile = config.vaultix.templates.transmission-credentials.path;
     settings = {
