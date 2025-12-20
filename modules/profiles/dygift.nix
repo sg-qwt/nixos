@@ -4,19 +4,32 @@ lib.mkProfile s "dygift" {
   vaultix.secrets.dygift-ltp0 = { };
 
   vaultix.templates.dygift-config.content = lib.generators.toYAML { } {
-    cron = {
-      refresh = "0 10 0 * * *";
-      renewal = "0 50 23 * * *";
+    log = {
+      console = {
+        format = "text";
+        level = "INFO";
+      };
     };
     douyu = {
-      did = config.vaultix.placeholder.dygift-did;
-      ltp0 = config.vaultix.placeholder.dygift-ltp0;
-      room = 9999;
-      ignore_expired_check = true;
-      assigns = [
+      cron = {
+        disable = true;
+        spec = "0 0 12 * * *";
+        startup = false;
+        jitter = 10;
+      };
+      accounts = [
         {
-          room = 500269;
-          all = true;
+          phone = "main";
+          did = config.vaultix.placeholder.dygift-did;
+          ltp0 = config.vaultix.placeholder.dygift-ltp0;
+          room = 9999;
+          assigns = [
+            {
+              room = 500269;
+              all = true;
+            }
+          ];
+          ignore_expired_check = true;
         }
       ];
     };
@@ -34,7 +47,7 @@ lib.mkProfile s "dygift" {
       LoadCredential = [
         "config:${config.vaultix.templates.dygift-config.path}"
       ];
-      ExecStart = "${pkgs.my.douyu-task}/bin/douyu-task cron --config %d/config";
+      ExecStart = "${lib.getExe pkgs.my.sign-task} -c %d/config cron";
       Restart = "on-failure";
     };
   };

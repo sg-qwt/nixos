@@ -18,4 +18,8 @@ buildGoModule {
   postFixup = ''
     mv $out/bin/cmd $out/bin/sign-task
   '';
+
+  meta = {
+    mainProgram = "sign-task";
+  };
 }
