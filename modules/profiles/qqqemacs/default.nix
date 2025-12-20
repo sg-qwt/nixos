@@ -9,22 +9,39 @@ lib.mkProfile s "qqqemacs"
         exec ${npx} -y @brave/brave-search-mcp-server --brave-api-key "$(cat ${config.vaultix.secrets.brave-search-key.path})" "$@"
       '';
       gpt-host = "${self.shared-data.az-anu-domain}.openai.azure.com";
+      litellm-host = "llmproxy.${self.shared-data.fqdn.edg}";
       json = pkgs.formats.json { };
       trafilatura = lib.getExe pkgs.python3Packages.trafilatura;
       brepl = lib.getExe pkgs.my.brepl;
 
       eca-config = json.generate "eca-config.json" {
         defaultBehavior = "agent";
-        defaultModel = "azantro/claude-opus-4-5";
+        defaultModel = "litellm/gpt-5-mini";
         netrcFile = config.vaultix.templates.eca-netrc.path;
         providers = {
-          azure = {
-            api = "openai-responses";
-            url = "https://${gpt-host}";
-            completionUrlRelativePath = "/openai/v1/responses";
-            key = "\${netrc:${gpt-host}}";
+          litellm = {
+            api = "openai-chat";
+            url = "https://${litellm-host}";
+            key = "\${netrc:${litellm-host}}";
             models = {
               gpt-5-mini = { };
+              "gpt-5.2-chat" = { };
+              claude-opus-4-5 = { };
+              gemini-3-pro-preview = {
+                extraPayload = {
+                  stream = true;
+                };
+              };
+              "gemini-2.5-pro" = {
+                extraPayload = {
+                  stream = true;
+                };
+              };
+              gemini-3-flash-preview = {
+                extraPayload = {
+                  stream = true;
+                };
+              };
             };
           };
           azantro = {
@@ -85,12 +102,14 @@ lib.mkProfile s "qqqemacs"
             };
           };
         };
+
         mcpServers = {
           brave-search = {
             command = "${lib.getExe brave-mcp}";
             args = [ ];
           };
         };
+
       };
 
       my-eca = (pkgs.symlinkJoin {
@@ -124,6 +143,10 @@ lib.mkProfile s "qqqemacs"
         owner = config.myos.user.mainUser;
       };
 
+      vaultix.secrets.eca-litellm-key = {
+        owner = config.myos.user.mainUser;
+      };
+
       vaultix.secrets.brave-search-key = {
         owner = config.myos.user.mainUser;
       };
@@ -141,6 +164,8 @@ lib.mkProfile s "qqqemacs"
         content = ''
           machine ${gpt-host}
           password ${config.vaultix.placeholder.eca-openai-key}
+          machine ${litellm-host}
+          password ${config.vaultix.placeholder.eca-litellm-key}
         '';
         owner = config.myos.user.mainUser;
       };
