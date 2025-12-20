@@ -95,7 +95,7 @@ lib.mkProfile s "qqqemacs"
 
       my-eca = (pkgs.symlinkJoin {
         name = "myeca";
-        paths = [ self.packages.${pkgs.system}.eca ];
+        paths = [ self.packages.${pkgs.stdenv.hostPlatform.system}.eca ];
         nativeBuildInputs = [ pkgs.makeWrapper ];
         postBuild = ''
           wrapProgram $out/bin/eca \
@@ -150,7 +150,7 @@ lib.mkProfile s "qqqemacs"
           my-eca
           (pkgs.symlinkJoin {
             name = "qqqemacs";
-            paths = [ self.packages.${pkgs.system}.qqqemacs ];
+            paths = [ self.packages.${pkgs.stdenv.hostPlatform.system}.qqqemacs ];
             nativeBuildInputs = [ pkgs.makeWrapper ];
             postBuild = ''
               wrapProgram $out/bin/emacs \
