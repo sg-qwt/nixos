@@ -14,5 +14,6 @@
     tailscale.enable = true;
     android.enable = true;
     gaming.enable = true;
+    gemini.enable = true;
   };
 }

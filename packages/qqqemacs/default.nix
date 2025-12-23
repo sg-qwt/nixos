@@ -75,6 +75,18 @@ let
         };
       }))
 
+      (epkgs.trivialBuild {
+        pname = "gemini-cli";
+        version = "0.2.0";
+        src = pkgs.fetchFromGitHub {
+          owner = "linchen2chris";
+          repo = "gemini-cli.el";
+          rev = "c28aef428733abae03ca1367a10beda06f65cc68";
+          hash = "sha256-KDTQrQrE4JTltH/6UtgeDeiluYrKNty4KmZqrgHqnec=";
+        };
+        packageRequires = with epkgs; [ transient melpaPackages.popup melpaPackages.projectile ];
+      })
+
       age
     ]) ++
 
@@ -85,6 +97,7 @@ let
       nftables-mode
       jarchive
       dired-preview
+      epkgs.eat
     ]));
 
   deps = with pkgs; [
@@ -93,6 +106,7 @@ let
     unzip # nov.el
     (aspellWithDicts (ds: with ds; [ en ]))
     my.bbscripts
+    gemini-cli
 
     # rage with yubikey plugin
     my.rage

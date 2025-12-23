@@ -271,17 +271,6 @@ If the buffer doesn't exist, create it first."
     "p" #'smartparens-mode
     "w" #'visual-line-mode)
 
-  ;;;;;;;;;
-  ;; LLM ;;
-  ;;;;;;;;;
-  (qqq/leader
-    :infix "l"
-    "" '(:ignore t :wk "AI")
-    "e" #'qqq/switch-to-eca
-    "k" #'qqq/kill-eca
-    "c" #'eca-chat-add-context-to-user-prompt
-    "f" #'eca-chat-add-filepath-to-user-prompt)
-
   ;;;;;;;;;;;;
   ;; search ;;
   ;;;;;;;;;;;;
@@ -555,7 +544,9 @@ If the buffer doesn't exist, create it first."
   (setq display-line-numbers-type 'relative)
   (defcustom display-line-numbers-exempt-modes
     '(nov-mode
-      pdf-view-mode)
+      pdf-view-mode
+      eat-mode
+      )
     "Major modes on which to disable line numbers."
     :group 'display-line-numbers
     :type 'list
@@ -1290,3 +1281,20 @@ the focus."
   :general
   (general-def 'normal eca-chat-mode-map
     [remap markdown-cycle] 'eca-chat--key-pressed-tab))
+
+;;;;;;;;;;;;;;;;;;;;;;
+;; eat & gemini-cli ;;
+;;;;;;;;;;;;;;;;;;;;;;
+(use-package eat
+  :custom
+  (confirm-kill-processes nil)
+  (eat-term-scrollback-size 500000))
+(use-package gemini-cli
+  :custom
+  (gemini-cli-terminal-backend 'eat)
+  (gemini-cli-confirm-kill nil)
+  :general
+  (qqq/leader
+    "l" '(:keymap gemini-cli-command-map :wk "gemini"))
+  :config
+  (gemini-cli-mode))
