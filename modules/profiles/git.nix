@@ -19,7 +19,9 @@ lib.mkProfile s "git"
         key = "key::${builtins.elemAt self.shared-data.openssh-keys 0}";
       };
 
-      lfs.enable = true;
+      lfs = {
+        enable = true;
+      };
 
       settings = {
         user = {
@@ -31,6 +33,7 @@ lib.mkProfile s "git"
         push.followTags = true;
         push.autoSetupRemote = true;
         feature.manyFiles = true;
+        lfs.ssh.automultiplex = false;
       };
 
       ignores = [ ".lsp/.cache" ".clj-kondo/.cache" ];

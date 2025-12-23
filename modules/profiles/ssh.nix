@@ -15,9 +15,9 @@ let
         serverAliveCountMax = 3;
         hashKnownHosts = false;
         userKnownHostsFile = "~/.ssh/known_hosts";
-        controlMaster = "no";
         controlPath = "~/.ssh/master-%r@%n:%p";
-        controlPersist = "no";
+        controlMaster = "auto";
+        controlPersist = "1m";
       };
     } //
     (builtins.foldl' (a: b: a // b) { }
