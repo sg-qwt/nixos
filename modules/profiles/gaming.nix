@@ -46,6 +46,11 @@ lib.mkProfile s "gaming"
     };
   };
 
+  services.scx = {
+    enable = true;
+    scheduler = "scx_lavd";
+  };
+
   myhome = { config, lib, osConfig, ... }: {
     programs.mangohud = {
       enable = true;
