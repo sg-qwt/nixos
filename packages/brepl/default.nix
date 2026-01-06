@@ -8,13 +8,13 @@
 
 stdenv.mkDerivation rec {
   pname = "brepl";
-  version = "2.3.1";
+  version = "2.5.1";
 
   src = fetchFromGitHub {
     owner = "licht1stein";
     repo = "brepl";
     rev = "v${version}";
-    hash = "sha256-zNzQ2JTYWwaWJ5inJa2B8WHu3CFM8CzqkWuB/Ekr7lw=";
+    hash = "sha256-5rv7fFRe32a1JL2BAD3mMP2b3VGtiMC+MDphhJgJkgk=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
@@ -24,12 +24,12 @@ stdenv.mkDerivation rec {
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/share/brepl $out/bin
-    cp brepl $out/share/brepl/
-    cp -r lib $out/share/brepl/
-    chmod +x $out/share/brepl/brepl
+    mkdir -p $out/bin
+    cp brepl $out/bin/brepl
+    chmod +x $out/bin/brepl
 
-    makeWrapper $out/share/brepl/brepl $out/bin/brepl \
+    # Wrap to ensure babashka is on PATH
+    wrapProgram $out/bin/brepl \
       --prefix PATH : ${lib.makeBinPath [ babashka ]}
 
     runHook postInstall
