@@ -83,9 +83,9 @@
   {:suspend "systemctl suspend"
    :reboot "systemctl reboot"
    :poweroff "systemctl poweroff"
-   :performance "asusctl profile -P Performance"
-   :balanced "asusctl profile -P Balanced"
-   :quiet "asusctl profile -P Quiet"})
+   :performance "asusctl profile set Performance"
+   :balanced "asusctl profile set Balanced"
+   :quiet "asusctl profile set Quiet"})
 
 (defn run-menu
   []

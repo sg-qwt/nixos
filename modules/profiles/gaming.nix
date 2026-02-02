@@ -103,14 +103,14 @@ lib.mkProfile s "gaming"
           # Steam is running
           if [ "$CURRENT_PROFILE" != "Balanced" ]; then
             echo "Steam detected, switching to Balanced profile"
-            asusctl profile -P Balanced
+            asusctl profile set Balanced
             CURRENT_PROFILE="Balanced"
           fi
         else
           # Steam is not running
           if [ "$CURRENT_PROFILE" != "Quiet" ]; then
             echo "Steam not running, switching to Quiet profile"
-            asusctl profile -P Quiet
+            asusctl profile set Quiet
             CURRENT_PROFILE="Quiet"
           fi
         fi
