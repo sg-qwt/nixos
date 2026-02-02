@@ -1,5 +1,53 @@
 {
   "nodes": {
+    "acp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1768760130,
+        "narHash": "sha256-MX7fVVldR/du7nT+YOdSCKKKdqsr/LsfuG7uPiLN5VE=",
+        "owner": "xenodium",
+        "repo": "acp.el",
+        "rev": "9ab9b8f25cd7f42955171d471da5c3d016d1ef5a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "xenodium",
+        "repo": "acp.el",
+        "type": "github"
+      }
+    },
+    "agent-shell": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1769675566,
+        "narHash": "sha256-ILSc1AcOsGgaLf7CZsiocAyP4Nz1wHXo+NeNIcXsFW4=",
+        "owner": "xenodium",
+        "repo": "agent-shell",
+        "rev": "0214d4578c675d5012346ce75c638ed4720bf702",
+        "type": "github"
+      },
+      "original": {
+        "owner": "xenodium",
+        "repo": "agent-shell",
+        "type": "github"
+      }
+    },
+    "brepl": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1768652389,
+        "narHash": "sha256-+O15bkLPGig0tSBvq9MULFwQn/QL0ZjTddUffUSL1KI=",
+        "owner": "licht1stein",
+        "repo": "brepl",
+        "rev": "28f89c0983a0d3013185885880b1da72a54ea981",
+        "type": "github"
+      },
+      "original": {
+        "owner": "licht1stein",
+        "repo": "brepl",
+        "type": "github"
+      }
+    },
     "chugou": {
       "inputs": {
         "clojure-nix-locker": "clojure-nix-locker",
@@ -60,6 +108,34 @@
       "original": {
         "owner": "ipetkov",
         "repo": "crane",
+        "type": "github"
+      }
+    },
+    "eca": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-T04tSERz/Ek5QE5DjYy7dOC4gy+421v8VJnGX+TeBxY=",
+        "type": "file",
+        "url": "https://github.com/editor-code-assistant/eca/releases/download/0.97.3/eca.jar"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/editor-code-assistant/eca/releases/download/0.97.3/eca.jar"
+      }
+    },
+    "eca-emacs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1769431948,
+        "narHash": "sha256-saYUW+5I2PxY5LVWSvZjoBNtSpsskTNIci9PueuQMWY=",
+        "owner": "editor-code-assistant",
+        "repo": "eca-emacs",
+        "rev": "f5ea2d098b90ac4fcb0e6ebfe71dd5524bf42d81",
+        "type": "github"
+      },
+      "original": {
+        "owner": "editor-code-assistant",
+        "repo": "eca-emacs",
         "type": "github"
       }
     },
@@ -144,11 +220,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1766171975,
-        "narHash": "sha256-47Ee0bTidhF/3/sHuYnWRuxcCrrm0mBNDxBkOTd3wWQ=",
+        "lastModified": 1769638001,
+        "narHash": "sha256-hGwdJ/+oo+IRo2TiWV/V8BWWptQihcdFV/olTONaHqg=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "bb35f07cc95a73aacbaf1f7f46bb8a3f40f265b5",
+        "rev": "bd9f031efc634be4b80c5090b9171cc3a9f8e49c",
         "type": "github"
       },
       "original": {
@@ -253,11 +329,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1766070988,
-        "narHash": "sha256-G/WVghka6c4bAzMhTwT2vjLccg/awmHkdKSd2JrycLc=",
+        "lastModified": 1769461804,
+        "narHash": "sha256-msG8SU5WsBUfVVa/9RPLaymvi5bI8edTavbIq3vRlhI=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "c6245e83d836d0433170a16eb185cefe0572f8b8",
+        "rev": "bfc1b8a4574108ceef22f02bafcf6611380c100d",
         "type": "github"
       },
       "original": {
@@ -292,12 +368,18 @@
     },
     "root": {
       "inputs": {
+        "acp": "acp",
+        "agent-shell": "agent-shell",
+        "brepl": "brepl",
         "chugou": "chugou",
+        "eca": "eca",
+        "eca-emacs": "eca-emacs",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "jovian": "jovian",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs_2",
+        "shell-maker": "shell-maker",
         "treefmt-nix": "treefmt-nix_2",
         "vaultix": "vaultix"
       }
@@ -320,6 +402,22 @@
       "original": {
         "owner": "oxalica",
         "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "shell-maker": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1769258029,
+        "narHash": "sha256-dXcR6Q8TykEWqHMPm2y73Kbd9cKp0ke2lpjExNb3MIo=",
+        "owner": "xenodium",
+        "repo": "shell-maker",
+        "rev": "2d6e1302b457468b9becdde9549ce4b5d10116ab",
+        "type": "github"
+      },
+      "original": {
+        "owner": "xenodium",
+        "repo": "shell-maker",
         "type": "github"
       }
     },

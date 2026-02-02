@@ -1,21 +1,16 @@
 { lib
 , stdenv
 , makeWrapper
-, babashka
-, fetchFromGitHub
+, babashka-unwrapped
+, self
 , ...
 }:
 
 stdenv.mkDerivation rec {
   pname = "brepl";
-  version = "2.5.1";
+  version = "unstable";
 
-  src = fetchFromGitHub {
-    owner = "licht1stein";
-    repo = "brepl";
-    rev = "v${version}";
-    hash = "sha256-5rv7fFRe32a1JL2BAD3mMP2b3VGtiMC+MDphhJgJkgk=";
-  };
+  src = self.inputs.brepl;
 
   nativeBuildInputs = [ makeWrapper ];
 
@@ -30,7 +25,8 @@ stdenv.mkDerivation rec {
 
     # Wrap to ensure babashka is on PATH
     wrapProgram $out/bin/brepl \
-      --prefix PATH : ${lib.makeBinPath [ babashka ]}
+      --prefix PATH : ${lib.makeBinPath [ babashka-unwrapped ]} \
+      --set BABASHKA_CLASSPATH ""
 
     runHook postInstall
   '';
@@ -46,10 +42,8 @@ stdenv.mkDerivation rec {
       command-line evaluations, file loading, and scripting workflows.
     '';
     homepage = "https://github.com/licht1stein/brepl";
-    changelog = "https://github.com/licht1stein/brepl/releases/tag/v${version}";
     license = licenses.mpl20;
-    maintainers = with maintainers; [ ];
-    platforms = babashka.meta.platforms;
+    platforms = babashka-unwrapped.meta.platforms;
     mainProgram = "brepl";
   };
 }

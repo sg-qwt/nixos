@@ -2,7 +2,33 @@
 let
   emacsWithPackages = (emacsPackagesFor emacs30-pgtk).emacsWithPackages;
 
+  trivialBuild = pkgs.emacsPackages.trivialBuild;
+
+  shell-maker = trivialBuild {
+    pname = "shell-maker";
+    version = "unstable";
+    src = self.inputs.shell-maker;
+    packageRequires = [ ];
+  };
+
+  acp = trivialBuild {
+    pname = "acp";
+    version = "unstable";
+    src = self.inputs.acp;
+    packageRequires = [ ];
+  };
+
+  agent-shell = trivialBuild {
+    pname = "agent-shell";
+    version = "unstable";
+    src = self.inputs.agent-shell;
+    packageRequires = [ acp shell-maker ];
+  };
+
   qqqemacs = emacsWithPackages (epkgs:
+    [
+      agent-shell
+    ] ++
     [
       (epkgs.treesit-grammars.with-grammars
         (grammars: with grammars;
@@ -66,26 +92,9 @@ let
 
       gptel
       (eca.overrideAttrs (old: {
-        version = "20251130.2137";
-        src = pkgs.fetchFromGitHub {
-          owner = "editor-code-assistant";
-          repo = "eca-emacs";
-          rev = "68881666b4a8d05eb279c7b4a99bfed80bc3672e";
-          hash = "sha256-YlT3/tkWni18TLkxSEh+Q7lEX1T3a+g30ifDAu1gzJA=";
-        };
+        version = "0.0.1";
+        src = self.inputs.eca-emacs;
       }))
-
-      (epkgs.trivialBuild {
-        pname = "gemini-cli";
-        version = "0.2.0";
-        src = pkgs.fetchFromGitHub {
-          owner = "linchen2chris";
-          repo = "gemini-cli.el";
-          rev = "c28aef428733abae03ca1367a10beda06f65cc68";
-          hash = "sha256-KDTQrQrE4JTltH/6UtgeDeiluYrKNty4KmZqrgHqnec=";
-        };
-        packageRequires = with epkgs; [ transient melpaPackages.popup melpaPackages.projectile ];
-      })
 
       age
     ]) ++
@@ -104,9 +113,9 @@ let
     ripgrep # consult-ripgrep
     discount # markdown-mode
     unzip # nov.el
-    (aspellWithDicts (ds: with ds; [ en ]))
+    (hunspell.withDicts (di: [ di.en-us ]))
     my.bbscripts
-    gemini-cli
+    gemini-cli-bin
 
     # rage with yubikey plugin
     my.rage

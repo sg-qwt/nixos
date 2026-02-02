@@ -6,7 +6,7 @@ lib.mkProfile s "gemini" {
   myhome = {
     programs.gemini-cli = {
       enable = true;
-      package = pkgs.gemini-cli;
+      package = pkgs.gemini-cli-bin;
       settings = {
         privacy = {
           usageStatisticsEnabled = false;

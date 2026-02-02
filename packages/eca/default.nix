@@ -1,12 +1,13 @@
-{ lib, buildGraalvmNativeImage, fetchurl, ... }:
+{ lib, buildGraalvmNativeImage, self, ... }:
 
 buildGraalvmNativeImage (finalAttrs: {
   pname = "eca";
-  version = "0.84.2";
+  version = "unstable";
 
-  src = fetchurl {
-    url = "https://github.com/editor-code-assistant/eca/releases/download/${finalAttrs.version}/eca.jar";
-    hash = "sha256-WoyLRSVJK2x6j9eNI+gOQltKJVm5DCizyx5XLzM08Ks=";
+  # a necessary hack to rename flake input to jar file
+  src = builtins.path {
+    path = self.inputs.eca;
+    name = "eca.jar";
   };
 
   extraNativeImageBuildArgs = [

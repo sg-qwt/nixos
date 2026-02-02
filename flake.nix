@@ -36,6 +36,31 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    agent-shell = {
+      url = "github:xenodium/agent-shell";
+      flake = false;
+    };
+    acp = {
+      url = "github:xenodium/acp.el";
+      flake = false;
+    };
+    shell-maker = {
+      url = "github:xenodium/shell-maker";
+      flake = false;
+    };
+    eca-emacs = {
+      url = "github:editor-code-assistant/eca-emacs";
+      flake = false;
+    };
+    eca = {
+      url = "file+https://github.com/editor-code-assistant/eca/releases/download/0.97.3/eca.jar";
+      flake = false;
+    };
+    brepl = {
+      url = "github:licht1stein/brepl?tag=v2.5.2";
+      flake = false;
+    };
+
     self.submodules = true;
   };
 

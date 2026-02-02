@@ -1,6 +1,6 @@
 s@{ config, pkgs, lib, self, ... }:
 let
-  jdk = pkgs.jdk17;
+  jdk = pkgs.jdk25_headless;
 in
 lib.mkProfile s "clojure-dev"
 {
@@ -29,5 +29,6 @@ lib.mkProfile s "clojure-dev"
     home.sessionVariables.CLJ_CONFIG = "${config.xdg.configHome}/clojure";
     xdg.configFile."clojure/deps.edn".source = ./deps.edn;
     xdg.configFile."clojure-lsp/config.edn".source = ./config.edn;
+    xdg.configFile."nrepl/nrepl.edn".source = ./nrepl.edn;
   };
 }

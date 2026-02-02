@@ -546,6 +546,7 @@ If the buffer doesn't exist, create it first."
     '(nov-mode
       pdf-view-mode
       eat-mode
+      agent-shell-mode
       )
     "Major modes on which to disable line numbers."
     :group 'display-line-numbers
@@ -1282,19 +1283,35 @@ the focus."
   (general-def 'normal eca-chat-mode-map
     [remap markdown-cycle] 'eca-chat--key-pressed-tab))
 
-;;;;;;;;;;;;;;;;;;;;;;
-;; eat & gemini-cli ;;
-;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;
+;; eat ;;
+;;;;;;;;;
 (use-package eat
   :custom
   (confirm-kill-processes nil)
   (eat-term-scrollback-size 500000))
-(use-package gemini-cli
+
+;;;;;;;;;;;;;;;;;
+;; agent-shell ;;
+;;;;;;;;;;;;;;;;;
+(use-package agent-shell
+  :commands (agent-shell)
   :custom
-  (gemini-cli-terminal-backend 'eat)
-  (gemini-cli-confirm-kill nil)
+  (agent-shell-show-welcome-message nil)
   :general
-  (qqq/leader
-    "l" '(:keymap gemini-cli-command-map :wk "gemini"))
+  (:states '(normal insert)
+	   :keymaps 'agent-shell-mode-map
+	   "C-<return>" 'comint-send-input
+	   "C-p" 'agent-shell-previous-item
+	   "C-n" 'agent-shell-next-item
+	   "TAB" 'agent-shell-ui-toggle-fragment-at-point)
+  (:states '(insert)
+	   :keymaps 'agent-shell-mode-map
+	   "RET" 'agent-shell-newline)
   :config
-  (gemini-cli-mode))
+  (setq agent-shell-google-authentication (agent-shell-google-make-authentication :login t))
+  (setq agent-shell-preferred-agent-config (agent-shell-google-make-gemini-config))
+  (add-hook 'diff-mode-hook
+	    (lambda ()
+	      (when (string-match-p "\\*agent-shell-diff\\*" (buffer-name))
+		(evil-emacs-state)))))
