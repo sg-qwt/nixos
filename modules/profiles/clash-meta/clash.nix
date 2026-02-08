@@ -11,7 +11,7 @@ rec {
   log-level = "warning";
 
   mode = "rule";
-  find-process-mode = "strict";
+  find-process-mode = "always";
   geodata-mode = true;
   global-client-fingerprint = "chrome";
 
@@ -188,6 +188,7 @@ rec {
 
   rules = [
     # "DOMAIN-SUFFIX,${fqdn.edg},DIRECT"
+    "PROCESS-NAME,dota2,DIRECT"
     "AND,((DOMAIN-SUFFIX,${fqdn.edg}),(DST-PORT,22)),DIRECT"
     "DOMAIN-SUFFIX,cm.steampowered.com,DIRECT"
     "DOMAIN-SUFFIX,steamserver.net,DIRECT"
