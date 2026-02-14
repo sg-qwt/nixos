@@ -49,6 +49,7 @@ rec {
     auto-detect-interface = true;
     exclude-interface = [
       config.services.tailscale.interfaceName
+      "tun163"
     ];
   };
 
@@ -65,6 +66,8 @@ rec {
       "+.tailscale.com"
       "+.tailscale.io"
       "+.pool.ntp.org"
+      "+.uu.163.com"
+      "ps.res.netease.com"
     ];
 
     nameserver = [
@@ -188,7 +191,6 @@ rec {
 
   rules = [
     # "DOMAIN-SUFFIX,${fqdn.edg},DIRECT"
-    "PROCESS-NAME,dota2,DIRECT"
     "AND,((DOMAIN-SUFFIX,${fqdn.edg}),(DST-PORT,22)),DIRECT"
     "DOMAIN-SUFFIX,cm.steampowered.com,DIRECT"
     "DOMAIN-SUFFIX,steamserver.net,DIRECT"

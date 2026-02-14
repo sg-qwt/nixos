@@ -1,6 +1,11 @@
 s@{ config, pkgs, lib, self, ... }:
 let
   myhomecfg = config.home-manager.users."${config.myos.user.mainUser}";
+  cap = [
+    "CAP_NET_RAW"
+    "CAP_NET_ADMIN"
+    "CAP_NET_BIND_SERVICE"
+  ];
 in
 lib.mkProfile s "gaming"
 {
@@ -12,6 +17,38 @@ lib.mkProfile s "gaming"
     env = {
       MANGOHUD_CONFIGFILE = "${myhomecfg.xdg.configHome}/MangoHud/MangoHud.conf";
     };
+  };
+
+  vaultix.secrets.uuplugin = { };
+
+  systemd.services.uuplugin = {
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    path = with pkgs; [
+      iproute2
+      nettools
+      iptables
+    ];
+    serviceConfig = {
+      AmbientCapabilities = cap;
+      CapabilityBoundingSet = cap;
+      StateDirectory = "%N";
+      WorkingDirectory = "%S/%N";
+      LoadCredential = [
+        "uuplugin-uuid:${config.vaultix.secrets.uuplugin.path}"
+      ];
+      ExecStartPre = [
+        "${pkgs.coreutils}/bin/ln -nsf %d/uuplugin-uuid %S/%N/.uuplugin_uuid"
+      ];
+      ExecStart = "${lib.getExe pkgs.my.uuplugin} ${pkgs.my.uuplugin}/share/uuplugin/uu.conf";
+      Restart = "on-failure";
+    };
+  };
+
+  # for uuplugin
+  networking.firewall = {
+    allowedTCPPorts = [ 16363 ];
   };
 
   programs.steam = {
