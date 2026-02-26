@@ -25,9 +25,19 @@ let
     packageRequires = [ acp shell-maker ];
   };
 
+  phscroll = trivialBuild {
+    pname = "phscroll";
+    version = "0.0.1";
+    src = self.inputs.phscroll;
+    packageRequires = [ ];
+  };
+
+  
+
   qqqemacs = emacsWithPackages (epkgs:
     [
       agent-shell
+      phscroll
     ] ++
     [
       (epkgs.treesit-grammars.with-grammars
@@ -97,6 +107,8 @@ let
       }))
 
       age
+
+      pi-coding-agent
     ]) ++
 
     (with epkgs.elpaPackages; [

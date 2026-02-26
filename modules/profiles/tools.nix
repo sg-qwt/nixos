@@ -21,6 +21,10 @@ lib.mkProfile s "tools"
     self.packages.${pkgs.stdenv.hostPlatform.system}.bbscripts
 
     my.rage
+
+    nix-tree
+
+    llm-agents.pi
   ];
 
   programs.nix-index-database.comma.enable = true;

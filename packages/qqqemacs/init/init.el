@@ -236,9 +236,7 @@ If the buffer doesn't exist, create it first."
   (qqq/local-leader "" nil)
 
   (qqq/leader
-    "TAB" #'mode-line-other-buffer
-    "SPC" #'execute-extended-command
-    "/" #'consult-ripgrep)
+    "SPC" #'execute-extended-command)
 
   (qqq/leader
     :infix "c"
@@ -260,7 +258,8 @@ If the buffer doesn't exist, create it first."
     "M" #'describe-mode
     "m" #'woman
     "i" #'consult-info
-    "l" #'global-command-log-mode)
+    "l" #'global-command-log-mode
+    "p" #'describe-package)
 
   (qqq/leader
     :infix "t"
@@ -281,6 +280,11 @@ If the buffer doesn't exist, create it first."
     "b" #'consult-line
     "p" #'consult-ripgrep)
 
+  (qqq/leader
+    :infix "a"
+    "" '(:ignore t :wk "application")
+    "p" #'pi-coding-agent)
+
   ;;;;;;;;;;;;;
   ;; project ;;
   ;;;;;;;;;;;;;
@@ -294,17 +298,15 @@ If the buffer doesn't exist, create it first."
 	    (interactive) (consult-ripgrep nil "TODO"))
     "t" #'multi-vterm-project)
 
-  ;;;;;;;;;;
-  ;; myos ;;
-  ;;;;;;;;;;
   (qqq/leader
     :infix "m"
-    "" '(:ignore t :wk "myos")
+    "" '(:ignore t :wk "misc")
     "b" #'(lambda ()
 	    "Build current host"
 	    (interactive) (qqq/system.build (system-name)))
     "B" #'qqq/system.build
-    "f" #'qqq/flake.format)
+    "f" #'qqq/flake.format
+    "u" #'qqq/garden-upload)
 
   ;;;;;;;;;;;;
   ;; buffer ;;
@@ -325,7 +327,13 @@ If the buffer doesn't exist, create it first."
     "m" #'qqq/switch-to-message
     "p" #'qqq/consult-buffer-p
     "d" #'kill-current-buffer
-    "l" #'evil-switch-to-windows-last-buffer)
+    "TAB" #'mode-line-other-buffer)
+  
+  (qqq/leader
+    :infix "g"
+    "" '(:ignore t :wk "git")
+    "s" #'magit-status
+    "f" #'magit-log-buffer-file)
 
   ;;;;;;;;;;
   ;; file ;;
@@ -397,9 +405,6 @@ If the buffer doesn't exist, create it first."
   :custom
   (magit-diff-visit-prefer-worktree t)
   :general
-  (qqq/leader
-    "g s" #'magit-status
-    "g f" #'magit-log-buffer-file)
   (qqq/local-leader
     git-commit-mode-map
     "g" #'qqq/gptel-commit-summary)
@@ -470,9 +475,6 @@ If the buffer doesn't exist, create it first."
       (magit-call-git "commit" "-m" (concat "auto: " (current-time-string)))
       (magit-call-git "push")))
   :general
-  (qqq/leader
-    :infix "o"
-    "u" #'qqq/garden-upload)
   (qqq/local-leader
     org-capture-mode-map
     "c" #'org-capture-finalize
@@ -669,10 +671,13 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
   :preface
   (defun corfu-move-to-minibuffer ()
     (interactive)
-    (let ((completion-extra-properties corfu--extra)
-	  completion-cycle-threshold completion-cycling)
-      (apply #'consult-completion-in-region completion-in-region--data)))
+    (pcase completion-in-region--data
+      (`(,beg ,end ,table ,pred ,extras)
+       (let ((completion-extra-properties extras)
+	     completion-cycle-threshold completion-cycling)
+	 (consult-completion-in-region beg end table pred)))))
   :init
+  (add-to-list 'corfu-continue-commands #'corfu-move-to-minibuffer)
   (global-corfu-mode))
 
 ;;;;;;;;;;;;;;
@@ -1315,3 +1320,9 @@ the focus."
 	    (lambda ()
 	      (when (string-match-p "\\*agent-shell-diff\\*" (buffer-name))
 		(evil-emacs-state)))))
+
+(use-package pi-coding-agent
+  :custom
+  (pi-coding-agent-phscroll-offer-install nil)
+  (pi-coding-agent-input-window-height 30)
+  :commands (pi-coding-agent))

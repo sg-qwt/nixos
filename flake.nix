@@ -36,6 +36,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.treefmt-nix.follows = "treefmt-nix";
+    };
+
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     agent-shell = {
       url = "github:xenodium/agent-shell";
       flake = false;
@@ -60,6 +71,10 @@
       url = "github:licht1stein/brepl?tag=v2.5.2";
       flake = false;
     };
+    phscroll = {
+      url = "github:misohena/phscroll";
+      flake = false;
+    };
 
     self.submodules = true;
   };
@@ -76,6 +91,8 @@
 
         overlays = [
           self.overlays.default
+          llm-agents.overlays.default
+          emacs-overlay.overlays.package
         ];
       };
 
