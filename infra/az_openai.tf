@@ -28,69 +28,25 @@ resource "azurerm_cognitive_account" "anu_foundry" {
   project_management_enabled = true
 }
 
-resource "azurerm_cognitive_deployment" "anu_gpt5_mini" {
+resource "azurerm_cognitive_deployment" "anu_gpt5_1_codex_mini" {
   depends_on = [
     azurerm_cognitive_account.anu_foundry
   ]
 
-  name                   = "gpt-5-mini"
+  name                   = "gpt-5.1-codex-mini"
   cognitive_account_id   = azurerm_cognitive_account.anu_foundry.id
   rai_policy_name        = "Microsoft.DefaultV2"
   version_upgrade_option = "OnceNewDefaultVersionAvailable"
 
   sku {
     name     = "GlobalStandard"
-    capacity = 200
+    capacity = 1000
   }
 
   model {
     format  = "OpenAI"
-    name    = "gpt-5-mini"
-    version = "2025-08-07"
-  }
-}
-
-resource "azurerm_cognitive_deployment" "anu_gpt5_mini_alt" {
-  depends_on = [
-    azurerm_cognitive_account.anu_foundry
-  ]
-
-  name                   = "gpt-5-mini-alt"
-  cognitive_account_id   = azurerm_cognitive_account.anu_foundry.id
-  rai_policy_name        = "Microsoft.DefaultV2"
-  version_upgrade_option = "OnceNewDefaultVersionAvailable"
-
-  sku {
-    name     = "DataZoneStandard"
-    capacity = 200
-  }
-
-  model {
-    format  = "OpenAI"
-    name    = "gpt-5-mini"
-    version = "2025-08-07"
-  }
-}
-
-resource "azurerm_cognitive_deployment" "anu_gpt5_2_chat" {
-  depends_on = [
-    azurerm_cognitive_account.anu_foundry
-  ]
-
-  name                   = "gpt-5.2-chat"
-  cognitive_account_id   = azurerm_cognitive_account.anu_foundry.id
-  rai_policy_name        = "Microsoft.DefaultV2"
-  version_upgrade_option = "OnceNewDefaultVersionAvailable"
-
-  sku {
-    name     = "GlobalStandard"
-    capacity = 50
-  }
-
-  model {
-    format  = "OpenAI"
-    name    = "gpt-5.2-chat"
-    version = "2025-12-11"
+    name    = "gpt-5.1-codex-mini"
+    version = "2025-11-13"
   }
 }
 

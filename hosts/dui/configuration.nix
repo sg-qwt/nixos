@@ -21,10 +21,8 @@ let edg = self.shared-data.fqdn.edg; in
 
   myos.attic-server.enable = true;
   myos.transmission.enable = true;
-  myos.dygift.enable = true;
 
   myos.chugou.enable = false;
-  myos.llmproxy.enable = true;
 
   vaultix.secrets.cloudflare-token = { };
   vaultix.templates.acme-credential.content = ''

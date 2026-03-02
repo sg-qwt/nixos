@@ -31,11 +31,18 @@
   (println "💻 host: " host)
   (println "🤖 user: " user)
   (println "📦 flake: " flake)
-  (shell "nixos-rebuild"
-         "--target-host" (str user "@" host)
-         "--flake" (str flake "#" (name id))
-         "--sudo" "switch")
-  (println "✅ deploy successfully"))
+  (let [{:keys [exit err]}
+        (shell {:continue true :err :string}
+               "nixos-rebuild"
+               "--target-host" (str user "@" host)
+               "--flake" (str flake "#" (name id))
+               "--sudo" "switch")]
+    (if (zero? exit)
+      (println "✅ deploy successfully")
+      (do
+        (println "❌ deploy failed with exit code:" exit)
+        (println err)
+        (System/exit exit)))))
 
 (defn deploy
   [{:keys [opts]}]

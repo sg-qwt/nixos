@@ -4,27 +4,6 @@ let
 
   trivialBuild = pkgs.emacsPackages.trivialBuild;
 
-  shell-maker = trivialBuild {
-    pname = "shell-maker";
-    version = "unstable";
-    src = self.inputs.shell-maker;
-    packageRequires = [ ];
-  };
-
-  acp = trivialBuild {
-    pname = "acp";
-    version = "unstable";
-    src = self.inputs.acp;
-    packageRequires = [ ];
-  };
-
-  agent-shell = trivialBuild {
-    pname = "agent-shell";
-    version = "unstable";
-    src = self.inputs.agent-shell;
-    packageRequires = [ acp shell-maker ];
-  };
-
   phscroll = trivialBuild {
     pname = "phscroll";
     version = "0.0.1";
@@ -32,11 +11,8 @@ let
     packageRequires = [ ];
   };
 
-  
-
   qqqemacs = emacsWithPackages (epkgs:
     [
-      agent-shell
       phscroll
     ] ++
     [
@@ -45,6 +21,7 @@ let
         [
           tree-sitter-yaml
           tree-sitter-typescript
+          tree-sitter-json
         ]))
     ] ++
 
@@ -100,12 +77,6 @@ let
 
       rust-mode
 
-      gptel
-      (eca.overrideAttrs (old: {
-        version = "0.0.1";
-        src = self.inputs.eca-emacs;
-      }))
-
       age
 
       pi-coding-agent
@@ -126,11 +97,15 @@ let
     discount # markdown-mode
     unzip # nov.el
     (hunspell.withDicts (di: [ di.en-us ]))
+
     my.bbscripts
-    gemini-cli-bin
+
+    my.sdcv
 
     # rage with yubikey plugin
     my.rage
+
+    llm-agents.pi
 
     # lsp
     nil
