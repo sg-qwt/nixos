@@ -11,30 +11,56 @@ let
     packageRequires = [ pkgs.emacsPackages.transient ];
   };
 
+  ts-grammers = epkgs: (epkgs.treesit-grammars.with-grammars
+    (grammars: with grammars;
+      [
+        tree-sitter-yaml
+        tree-sitter-typescript
+        tree-sitter-json
+        tree-sitter-python
+        tree-sitter-javascript
+        tree-sitter-tsx
+        tree-sitter-bash
+        tree-sitter-c
+        tree-sitter-cpp
+        tree-sitter-rust
+        tree-sitter-go
+        tree-sitter-ruby
+        tree-sitter-css
+        tree-sitter-html
+        tree-sitter-java
+        tree-sitter-lua
+        tree-sitter-toml
+        tree-sitter-cmake
+        tree-sitter-dockerfile
+        tree-sitter-c-sharp
+        tree-sitter-elixir
+        tree-sitter-haskell
+        tree-sitter-heex
+        tree-sitter-kotlin
+        tree-sitter-gomod
+        tree-sitter-php
+        tree-sitter-scala
+
+        tree-sitter-markdown
+        tree-sitter-markdown-inline
+
+        (pkgs.tree-sitter.buildGrammar {
+          language = "clojure";
+          version = "unstable-20250526";
+          src = pkgs.fetchFromGitHub {
+            owner = "sogaiu";
+            repo = "tree-sitter-clojure";
+            rev = "69070d2e4563f8f58c7f57b0c8e093a08d7a5814";
+            sha256 = "sha256-+Miraf8kI8rZg7SYdfNM+mb78k9xNDUKYg3VTFzUHMo=";
+          };
+        })
+      ]));
+
   qqqemacs = emacsWithPackages (epkgs:
     [
       pi-coding-agent
-    ] ++
-    [
-      (epkgs.treesit-grammars.with-grammars
-        (grammars: with grammars;
-        [
-          tree-sitter-yaml
-          tree-sitter-typescript
-          tree-sitter-json
-          tree-sitter-markdown
-          tree-sitter-markdown-inline
-          (pkgs.tree-sitter.buildGrammar {
-            language = "clojure";
-            version = "unstable-20250526";
-            src = pkgs.fetchFromGitHub {
-              owner = "sogaiu";
-              repo = "tree-sitter-clojure";
-              rev = "69070d2e4563f8f58c7f57b0c8e093a08d7a5814";
-              sha256 = "sha256-+Miraf8kI8rZg7SYdfNM+mb78k9xNDUKYg3VTFzUHMo=";
-            };
-          })
-        ]))
+      (ts-grammers epkgs)
     ] ++
 
     (with epkgs.melpaStablePackages; [
@@ -66,6 +92,7 @@ let
 
       nix-mode
       hcl-mode
+      clojure-ts-mode # only used for pi
 
       embark
       embark-consult
@@ -90,8 +117,6 @@ let
       rust-mode
 
       age
-
-      clojure-ts-mode
     ]) ++
 
     (with epkgs.elpaPackages; [

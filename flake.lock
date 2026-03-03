@@ -369,11 +369,11 @@
     "pi-coding-agent": {
       "flake": false,
       "locked": {
-        "lastModified": 1772492682,
-        "narHash": "sha256-p9YfIJElMAOvVQBWUnV4SgZ4EP7nyadJ45ENmt54bOs=",
+        "lastModified": 1772532332,
+        "narHash": "sha256-yfgqXt+ZyTddQOh+F9bqIm1cSoYsKLtvnDgDY3rv7o0=",
         "owner": "dnouri",
         "repo": "pi-coding-agent",
-        "rev": "7038078b62e7a89b76fa6c6dceda3b756edf0bbe",
+        "rev": "ab4003e45470f87f9afbd6908a7563884eca1176",
         "type": "github"
       },
       "original": {
