@@ -4,16 +4,16 @@ let
 
   trivialBuild = pkgs.emacsPackages.trivialBuild;
 
-  phscroll = trivialBuild {
-    pname = "phscroll";
+  pi-coding-agent = trivialBuild {
+    pname = "pi-coding-agent";
     version = "0.0.1";
-    src = self.inputs.phscroll;
-    packageRequires = [ ];
+    src = self.inputs.pi-coding-agent;
+    packageRequires = [ pkgs.emacsPackages.transient ];
   };
 
   qqqemacs = emacsWithPackages (epkgs:
     [
-      phscroll
+      pi-coding-agent
     ] ++
     [
       (epkgs.treesit-grammars.with-grammars
@@ -22,6 +22,18 @@ let
           tree-sitter-yaml
           tree-sitter-typescript
           tree-sitter-json
+          tree-sitter-markdown
+          tree-sitter-markdown-inline
+          (pkgs.tree-sitter.buildGrammar {
+            language = "clojure";
+            version = "unstable-20250526";
+            src = pkgs.fetchFromGitHub {
+              owner = "sogaiu";
+              repo = "tree-sitter-clojure";
+              rev = "69070d2e4563f8f58c7f57b0c8e093a08d7a5814";
+              sha256 = "sha256-+Miraf8kI8rZg7SYdfNM+mb78k9xNDUKYg3VTFzUHMo=";
+            };
+          })
         ]))
     ] ++
 
@@ -79,7 +91,7 @@ let
 
       age
 
-      pi-coding-agent
+      clojure-ts-mode
     ]) ++
 
     (with epkgs.elpaPackages; [

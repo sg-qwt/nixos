@@ -1179,6 +1179,5 @@ the focus."
 
 (use-package pi-coding-agent
   :custom
-  (pi-coding-agent-phscroll-offer-install nil)
   (pi-coding-agent-input-window-height 30)
   :commands (pi-coding-agent))

@@ -366,19 +366,20 @@
         "type": "github"
       }
     },
-    "phscroll": {
+    "pi-coding-agent": {
       "flake": false,
       "locked": {
-        "lastModified": 1772103555,
-        "narHash": "sha256-EMy4C8SNfHjXONLZI4Oh6L6yJnlP0BgtN2OwA1LbI2Y=",
-        "owner": "misohena",
-        "repo": "phscroll",
-        "rev": "ce72c04563311fdf91c6222a9f6a49ea18c8dd69",
+        "lastModified": 1772492682,
+        "narHash": "sha256-p9YfIJElMAOvVQBWUnV4SgZ4EP7nyadJ45ENmt54bOs=",
+        "owner": "dnouri",
+        "repo": "pi-coding-agent",
+        "rev": "7038078b62e7a89b76fa6c6dceda3b756edf0bbe",
         "type": "github"
       },
       "original": {
-        "owner": "misohena",
-        "repo": "phscroll",
+        "owner": "dnouri",
+        "ref": "new-markdown-mode",
+        "repo": "pi-coding-agent",
         "type": "github"
       }
     },
@@ -416,7 +417,7 @@
         "llm-agents": "llm-agents",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs_2",
-        "phscroll": "phscroll",
+        "pi-coding-agent": "pi-coding-agent",
         "treefmt-nix": "treefmt-nix_2",
         "vaultix": "vaultix"
       }
