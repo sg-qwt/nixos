@@ -37,7 +37,7 @@ pkgs.mkShell {
 
     alias tfp="tf plan"
     alias tfa="tf apply -auto-approve"
-    alias tfo="tf output -json | jq 'with_entries(select(.value.sensitive == false)) | map_values(.value) | with_entries(.key |= gsub(\"_\"; \"-\"))' > $FLAKE_HOME/resources/shared-data/tfo.json"
+    alias tfo="tf output -json | jq 'with_entries(select(.value.sensitive == false)) | map_values(.value) | with_entries(.key |= gsub(\"_\"; \"-\"))' > $FLAKE_HOME/caveman/data/tfo.json"
 
 
 

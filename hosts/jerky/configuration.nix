@@ -1,5 +1,5 @@
 { config, lib, pkgs, modulesPath, self, ... }:
-let edg = self.shared-data.fqdn.edg; in
+let edg = self.tfo.fqdn.edg; in
 {
   networking.firewall.enable = false;
 

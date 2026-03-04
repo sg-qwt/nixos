@@ -73,15 +73,16 @@ rec {
     in
     devshells // { default = devshells."${default}"; };
 
+  tfo = lib.importJSON (self + "/caveman/data/tfo.json");
+
   shared-data =
     (lib.importJSON (self + "/resources/shared-data/data.json")) //
-    (lib.importJSON (self + "/resources/shared-data/tfo.json")) //
     {
       hosts = {
         zheng.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINpWTwJQ7923qsxZGWjxQrl8Bx6/+pdZDsiz0dg1akxz";
-        dui.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJLftJ5dhUg+HMKxqwMlUswnpQtPVdYFDxbD6YB58kGp";
-        xun.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHMytlKhUyTAqKE3T9IkpEl7qheowlRdojUJaxdnIVj8";
         li.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFxduWDt3Qli+3gTUd4/3/qbVqy+wyNrqTxZhV/7/7eV";
+        jerky.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGcSpxva4CYd5ufZJ8Q5fAn4EzmO1VLuL62Vt1cLF+Dg";
+        puer.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKcOrd7uUWfIqR7cyp6sc9bR4seNb8m3het9CFsxznN/";
       };
     };
 

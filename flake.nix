@@ -88,6 +88,7 @@
       };
 
       shared-data = helpers.shared-data;
+      tfo = helpers.tfo;
 
       vaultix = vaultix.configure rec {
         nodes = helpers.nodes;

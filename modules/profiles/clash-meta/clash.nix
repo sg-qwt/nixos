@@ -1,6 +1,7 @@
 { config, pkgs, interface, self }:
 let
-  inherit (self.shared-data) ports fqdn path dui-ipv4 xun-ipv4;
+  inherit (self.shared-data) ports;
+  inherit (self.tfo) fqdn jerky-ipv4 puer-ipv4;
 in
 rec {
   mixed-port = ports.clash-meta-mixed;
@@ -94,7 +95,7 @@ rec {
     {
       name = "vless";
       type = "vless";
-      server = dui-ipv4;
+      server = jerky-ipv4;
       port = ports.https;
       uuid = config.vaultix.placeholder.sing-vless-uuid;
       network = "tcp";
@@ -128,7 +129,7 @@ rec {
     {
       name = "sstls";
       type = "ss";
-      server = xun-ipv4;
+      server = puer-ipv4;
       port = ports.sstls;
       cipher = "2022-blake3-aes-128-gcm";
       password = config.vaultix.placeholder.sing-shadow;
@@ -165,14 +166,6 @@ rec {
       })
 
       (build-group {
-        name = "poly";
-        type = "select";
-        proxies = [
-          "sstls"
-        ];
-      })
-
-      (build-group {
         name = "auto";
         type = "url-test";
         proxies = custom-pxs;
@@ -195,7 +188,6 @@ rec {
     "DOMAIN-SUFFIX,cm.steampowered.com,DIRECT"
     "DOMAIN-SUFFIX,steamserver.net,DIRECT"
     "DOMAIN-SUFFIX,steamchina.com,DIRECT"
-    "DOMAIN-SUFFIX,polymarket.com,poly"
     "GEOSITE,category-ads-all,REJECT"
     "GEOSITE,openai,select"
     "GEOSITE,geolocation-cn,DIRECT"

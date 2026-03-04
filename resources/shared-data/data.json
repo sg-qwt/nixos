@@ -1,35 +1,32 @@
 {
-    "ports": {
-	"https": 443,
-	"reality": 9989,
-	"ss1": 2952,
-	"sstls": 8989,
-	"clash-meta-mixed": 7891,
-	"clash-meta-api": 9091,
-	"clash-dns": 1053,
-	"dendrite": 8008,
-	"tailscaled": 41641,
-	"atticd": 8040,
-	"default-ssl": 8443,
-	"mautrix-slack": 29335,
-	"chugou-prometheus-client": 9999,
-	"prometheus": 9390,
-	"prometheus-node-exporter": 9383,
-	"rsshub": 1264,
-	"transmission": 9191,
-	"transmission-peer": 51513,
-	"chugou": 8888,
-	"litellm": 4001
-    },
-    "fqdn":{
-	"edg": "edgerunners.eu.org"
-    },
-    "path": {
-	"metrics": "/metrics",
-	"transmission": "/trans"
-    },
-    "openssh-keys": [
-	"sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIK9vRLHnJ+stWj636G27/Xp06+Q1jsV4vks/bDNOD9dKAAAABHNzaDo= main",
-	"sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIEAj84opeeWFMY1yxMzG3WvUVRxVhfxeauPEX6zuMWiyAAAABHNzaDo= backup"
-    ]
+  "ports": {
+    "https": 443,
+    "reality": 9989,
+    "ss1": 2952,
+    "sstls": 8989,
+    "clash-meta-mixed": 7891,
+    "clash-meta-api": 9091,
+    "clash-dns": 1053,
+    "dendrite": 8008,
+    "tailscaled": 41641,
+    "atticd": 8040,
+    "default-ssl": 8443,
+    "mautrix-slack": 29335,
+    "chugou-prometheus-client": 9999,
+    "prometheus": 9390,
+    "prometheus-node-exporter": 9383,
+    "rsshub": 1264,
+    "transmission": 9191,
+    "transmission-peer": 51513,
+    "chugou": 8888,
+    "litellm": 4001
+  },
+  "path": {
+    "metrics": "/metrics",
+    "transmission": "/trans"
+  },
+  "openssh-keys": [
+    "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIK9vRLHnJ+stWj636G27/Xp06+Q1jsV4vks/bDNOD9dKAAAABHNzaDo= main",
+    "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIEAj84opeeWFMY1yxMzG3WvUVRxVhfxeauPEX6zuMWiyAAAABHNzaDo= backup"
+  ]
 }

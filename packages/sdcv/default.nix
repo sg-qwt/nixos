@@ -1,4 +1,4 @@
-{ lib , pkgs , self , ... }:
+{ lib, pkgs, self, ... }:
 let
   handict = pkgs.fetchzip {
     url = "https://qtnixosres.s3.us-east-005.backblazeb2.com/stardict-chibigenc-2.4.2.tar.bz2";

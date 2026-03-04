@@ -1,7 +1,4 @@
 s@{ config, pkgs, lib, self, ... }:
-let
-  inherit (self.shared-data) ports fqdn path;
-in
 lib.mkProfile s "gemini" {
   myhome = {
     programs.gemini-cli = {

@@ -1,3 +1,15 @@
+terraform {
+  required_providers {
+    azurerm = {
+      source = "hashicorp/azurerm"
+    }
+
+    cloudflare = {
+      source = "cloudflare/cloudflare"
+    }
+  }
+}
+
 variable "rg_name" {}
 variable "region" {}
 variable "hostname" {}
@@ -9,6 +21,9 @@ variable "ip_refresh" {
   type        = string
   default     = ""
 }
+variable "nsg_rules" {}
+variable "zone_id" {}
+
 
 resource "azurerm_resource_group" "rg" {
   name     = var.rg_name
@@ -111,7 +126,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   # not used
   admin_ssh_key {
     username   = "me"
-    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDZI2D+3uQ1sKAttjgNyk0A/E/KhJiGHfHAlAa8gOvS+VNVeBm7grDPP2DDMRcwS0HT7hbXY3v+L5zplnDXCMRNmXdnJVg4wDbxt6HbtJm2o3QJAqj7njPFn7FcG8B5yvgwIWzsl3nYO9n+UPL/f/WDVWEYQGUW5xrA+/n07zEFeFGQAE4F3i/qGWn8kSqIXPYz1aaBLqN+9+6pAVuf6dDWSdqRnGJEymsO1mVvprrjlU3Wja+pA/JIT28pVqqKWk/R20rJUm2eT1WIceHo+PlBW/8kz/YJUhzAOgu2iqolkrJng6HFNBKdhq/sC9PLcbrml3hx8peFahRSxqnz8//D20NBzDjk6ThJAEZOYw9tlJxQexsDDP1pgtB1TZI+GS+7z9LdUV+MJjP6po46EX/qG2fm7XHKPl5vBDO0+lxEDqrIUftAv3tEtlhqbVDcPx+0MxH3UGd3b2UwuvB0CYckHvj2TRAh2PuH4TMGTZrbRy5RdwvsObg6ijOOlM1eQWNv/LjjXRz8SYd1pReSjZhywFcmUDyJcEAgi7C4wTKxzCuO1lkcTs3l2/n+dvy4J4izDGEkbZHvWStJ0tqe0oXb9KoCONyFAMmtsmYQCtXaaXa1uDmOcAUEk256aD5vDzmzUafewOqTxr492ZAQ3RBmWqphabJeuMP7Jw3z/keWpQ== cardno:18 182 344"
+    public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILMxO4XzAGPffx5MiVtIyEwYsaiC32p/xloF9VpkdgWa dummy"
   }
 
   boot_diagnostics {
@@ -119,12 +134,37 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
 }
 
-output "rg" {
-  value = azurerm_resource_group.rg.name
+resource "azurerm_network_security_rule" "nsgrules" {
+  for_each                    = var.nsg_rules
+  name                        = each.key
+  priority                    = each.value.priority
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = each.value.protocol
+  source_port_range           = "*"
+  destination_port_range      = each.value.port
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.rg.name
+  network_security_group_name = azurerm_network_security_group.nsg.name
 }
 
-output "nsg" {
-  value = azurerm_network_security_group.nsg.name
+resource "cloudflare_dns_record" "h4" {
+  name    = "${var.hostname}.h"
+  type    = "A"
+  content = azurerm_public_ip.public_ip_v4.ip_address
+  zone_id = var.zone_id
+  proxied = false
+  ttl     = 1
+}
+
+resource "cloudflare_dns_record" "h6" {
+  name    = "${var.hostname}.h"
+  type    = "AAAA"
+  content = azurerm_public_ip.public_ip_v6.ip_address
+  zone_id = var.zone_id
+  proxied = false
+  ttl     = 1
 }
 
 output "ipv4" {
@@ -133,4 +173,8 @@ output "ipv4" {
 
 output "ipv6" {
   value = azurerm_public_ip.public_ip_v6.ip_address
+}
+
+output "hostname" {
+  value = azurerm_linux_virtual_machine.vm.name
 }

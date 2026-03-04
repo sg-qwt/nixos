@@ -35,13 +35,13 @@ resource "azurerm_shared_image" "nixos" {
   }
 }
 
-resource "azurerm_shared_image_version" "nixos" {
-  name                                     = "0.0.1"
+resource "azurerm_shared_image_version" "nixos20251012" {
+  name                                     = "0.0.2"
   gallery_name                             = azurerm_shared_image.nixos.gallery_name
   image_name                               = azurerm_shared_image.nixos.name
   resource_group_name                      = azurerm_shared_image.nixos.resource_group_name
   location                                 = azurerm_shared_image.nixos.location
-  blob_uri                                 = data.azurerm_storage_blob.image_vhd.id
+  blob_uri                                 = data.azurerm_storage_blob.image_vhd_20251012.id
   storage_account_id                       = data.azurerm_storage_account.persist.id
   deletion_of_replicated_locations_enabled = true
 
@@ -50,8 +50,15 @@ resource "azurerm_shared_image_version" "nixos" {
     regional_replica_count = 1
     storage_account_type   = "Standard_LRS"
   }
+
   target_region {
-    name                   = "uksouth"
+    name                   = "eastasia"
+    regional_replica_count = 1
+    storage_account_type   = "Standard_LRS"
+  }
+
+  target_region {
+    name                   = "japaneast"
     regional_replica_count = 1
     storage_account_type   = "Standard_LRS"
   }

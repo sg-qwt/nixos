@@ -24,7 +24,7 @@ let
       (map
         (host: {
           "${host}" = {
-            hostname = "${host}.h.${self.shared-data.fqdn.edg}";
+            hostname = "${host}.h.${self.tfo.fqdn.edg}";
             user = username;
           };
         })

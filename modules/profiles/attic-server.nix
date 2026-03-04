@@ -1,7 +1,8 @@
 s@{ config, pkgs, lib, self, ... }:
 lib.mkProfile s "attic-server" (
   let
-    inherit (self.shared-data) fqdn ports;
+    inherit (self.shared-data) ports;
+    inherit (self.tfo) fqdn;
     listen-addr = "[::]:${toString ports.atticd}";
     host-addr = "attic.${fqdn.edg}";
   in
