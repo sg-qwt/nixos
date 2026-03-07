@@ -51,10 +51,6 @@
       url = "github:licht1stein/brepl?tag=v2.5.2";
       flake = false;
     };
-    pi-coding-agent = {
-      url = "github:dnouri/pi-coding-agent/new-markdown-mode";
-      flake = false;
-    };
 
     self.submodules = true;
   };

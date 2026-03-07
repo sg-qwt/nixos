@@ -2,14 +2,7 @@
 let
   emacsWithPackages = (emacsPackagesFor emacs30-pgtk).emacsWithPackages;
 
-  trivialBuild = pkgs.emacsPackages.trivialBuild;
-
-  pi-coding-agent = trivialBuild {
-    pname = "pi-coding-agent";
-    version = "0.0.1";
-    src = self.inputs.pi-coding-agent;
-    packageRequires = [ pkgs.emacsPackages.transient ];
-  };
+  # trivialBuild = pkgs.emacsPackages.trivialBuild;
 
   ts-grammers = epkgs: (epkgs.treesit-grammars.with-grammars
     (grammars: with grammars;
@@ -59,7 +52,6 @@ let
 
   qqqemacs = emacsWithPackages (epkgs:
     [
-      pi-coding-agent
       (ts-grammers epkgs)
     ] ++
 
@@ -73,6 +65,8 @@ let
     ]) ++
 
     (with epkgs.melpaPackages; [
+      pi-coding-agent
+
       avy
       evil
       evil-surround
