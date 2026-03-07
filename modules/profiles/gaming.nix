@@ -9,6 +9,26 @@ let
 in
 lib.mkProfile s "gaming"
 {
+  environment.systemPackages = [ pkgs.my.netns-exec ];
+
+  environment.etc."netns/uunet/resolv.conf".text = ''
+    nameserver 114.114.114.114
+  '';
+
+  networking.firewall.extraReversePathFilterRules = ''
+    iifname "veth-uu-host" accept
+  '';
+
+  security.wrappers = {
+    netns-exec = {
+      source = pkgs.my.netns-exec + "/bin/netns-exec";
+      owner = "root";
+      group = "root";
+      setuid = true;
+      setgid = true;
+    };
+  };
+
   # TODO move nvidia-offload to gamescope here once issue fixed
   # https://github.com/ValveSoftware/gamescope/issues/1590
   programs.gamescope = {
@@ -19,11 +39,75 @@ lib.mkProfile s "gaming"
     };
   };
 
+  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+  networking = {
+    nat = {
+      enable = true;
+      internalInterfaces = [ "veth-uu-host" ];
+    };
+    firewall.trustedInterfaces = [ "veth-uu-host" ];
+  };
+
+  systemd.services.uunet-namespace = {
+    description = "Setup UUnet Network Namespace";
+    wantedBy = [ "network.target" ];
+    before = [ "uuplugin.service" ]; 
+    
+    path = [ pkgs.iproute2 ]; 
+    
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+
+    script = ''
+      ip netns del uunet 2>/dev/null || true
+      ip link del veth-uu-host 2>/dev/null || true
+
+      ip netns add uunet
+      ip link add veth-uu-host type veth peer name veth-uu-ns
+      ip link set veth-uu-ns netns uunet
+
+      # Host side
+      ip addr add 10.99.99.1/24 dev veth-uu-host
+      ip link set veth-uu-host up
+
+      # Sandbox side
+      ip -n uunet addr add 10.99.99.2/24 dev veth-uu-ns
+      ip -n uunet link set veth-uu-ns up
+      ip -n uunet link set lo up
+
+      # Route sandbox traffic to the host
+      ip -n uunet route add default via 10.99.99.1
+    '';
+
+    preStop = ''
+      ip link del veth-uu-host 2>/dev/null || true
+      ip netns del uunet 2>/dev/null || true
+    '';
+  };
+
   vaultix.secrets.uuplugin = { };
 
+  systemd.sockets.uuplugin-proxy = {
+    description = "Listen on 16363 for UUplugin";
+    listenStreams = [ "16363" ];
+    wantedBy = [ "sockets.target" ];
+  };
+
+  systemd.services.uuplugin-proxy = {
+    description = "Proxy UUplugin mobile app traffic to the namespace";
+    requires = [ "uuplugin.service" ];
+    after = [ "uuplugin.service" ];
+    serviceConfig = {
+      ExecStart = "${config.systemd.package}/lib/systemd/systemd-socket-proxyd 10.99.99.2:16363";
+      DynamicUser = true;
+    };
+  };
+
   systemd.services.uuplugin = {
-    wants = [ "network-online.target" ];
-    after = [ "network-online.target" ];
+    requires = [ "uunet-namespace.service" ];
+    after = [ "uunet-namespace.service" ];
     wantedBy = [ "multi-user.target" ];
     path = with pkgs; [
       iproute2
@@ -31,6 +115,7 @@ lib.mkProfile s "gaming"
       iptables
     ];
     serviceConfig = {
+      NetworkNamespacePath = "/var/run/netns/uunet";
       AmbientCapabilities = cap;
       CapabilityBoundingSet = cap;
       StateDirectory = "%N";

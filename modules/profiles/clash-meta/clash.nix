@@ -42,15 +42,15 @@ rec {
     stack = "mixed";
     device = interface;
     dns-hijack = [
-      "any:53"
-      "tcp://any:53"
+      "127.0.0.1:53"
+      "tcp://127.0.0.1:53"
     ];
     auto-route = true;
     auto-redirect = true;
     auto-detect-interface = true;
     exclude-interface = [
       config.services.tailscale.interfaceName
-      "tun163"
+      "veth-uu-host"
     ];
   };
 
