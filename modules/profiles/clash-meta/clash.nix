@@ -42,8 +42,8 @@ rec {
     stack = "mixed";
     device = interface;
     dns-hijack = [
-      "127.0.0.1:53"
-      "tcp://127.0.0.1:53"
+      "any:53"
+      "tcp://any:53"
     ];
     auto-route = true;
     auto-redirect = true;

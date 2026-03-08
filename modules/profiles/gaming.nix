@@ -6,22 +6,27 @@ let
     "CAP_NET_ADMIN"
     "CAP_NET_BIND_SERVICE"
   ];
+  uu-interface = "veth-myos-uu";
+  netns-exec-bin = lib.getExe pkgs.my.netns-exec;
+  steam-gamescope-uunet = pkgs.writeShellScriptBin "steam-gamescope-uunet" ''
+    exec ${netns-exec-bin} uunet steam-gamescope
+  '';
 in
 lib.mkProfile s "gaming"
 {
-  environment.systemPackages = [ pkgs.my.netns-exec ];
+  environment.systemPackages = [ steam-gamescope-uunet ];
 
   environment.etc."netns/uunet/resolv.conf".text = ''
     nameserver 114.114.114.114
   '';
 
   networking.firewall.extraReversePathFilterRules = ''
-    iifname "veth-uu-host" accept
+    iifname "${uu-interface}" accept
   '';
 
   security.wrappers = {
     netns-exec = {
-      source = pkgs.my.netns-exec + "/bin/netns-exec";
+      source = netns-exec-bin;
       owner = "root";
       group = "root";
       setuid = true;
@@ -40,18 +45,19 @@ lib.mkProfile s "gaming"
   };
 
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+  
   networking = {
     nat = {
       enable = true;
-      internalInterfaces = [ "veth-uu-host" ];
+      internalInterfaces = [ uu-interface ];
     };
-    firewall.trustedInterfaces = [ "veth-uu-host" ];
+    firewall.trustedInterfaces = [ uu-interface ];
   };
 
   systemd.services.uunet-namespace = {
     description = "Setup UUnet Network Namespace";
     wantedBy = [ "network.target" ];
-    before = [ "uuplugin.service" ]; 
+    before = [ "uuplugin.service" ];
     
     path = [ pkgs.iproute2 ]; 
     
@@ -62,15 +68,15 @@ lib.mkProfile s "gaming"
 
     script = ''
       ip netns del uunet 2>/dev/null || true
-      ip link del veth-uu-host 2>/dev/null || true
+      ip link del ${uu-interface} 2>/dev/null || true
 
       ip netns add uunet
-      ip link add veth-uu-host type veth peer name veth-uu-ns
+      ip link add ${uu-interface} type veth peer name veth-uu-ns
       ip link set veth-uu-ns netns uunet
 
       # Host side
-      ip addr add 10.99.99.1/24 dev veth-uu-host
-      ip link set veth-uu-host up
+      ip addr add 10.99.99.1/24 dev ${uu-interface}
+      ip link set ${uu-interface} up
 
       # Sandbox side
       ip -n uunet addr add 10.99.99.2/24 dev veth-uu-ns
@@ -82,7 +88,7 @@ lib.mkProfile s "gaming"
     '';
 
     preStop = ''
-      ip link del veth-uu-host 2>/dev/null || true
+      ip link del ${uu-interface} 2>/dev/null || true
       ip netns del uunet 2>/dev/null || true
     '';
   };
@@ -134,6 +140,19 @@ lib.mkProfile s "gaming"
   # for uuplugin
   networking.firewall = {
     allowedTCPPorts = [ 16363 ];
+  };
+
+  # TODO remove hack after bug fix
+  # https://github.com/MetaCubeX/mihomo/issues/2605
+  systemd.services.mihomo = {
+    postStart = ''
+      until ${pkgs.nftables}/bin/nft list chain inet mihomo prerouting >/dev/null 2>&1; do
+        sleep 0.5
+      done
+
+      ${pkgs.nftables}/bin/nft insert rule inet mihomo prerouting iifname "${uu-interface}" return
+      ${pkgs.nftables}/bin/nft insert rule inet mihomo prerouting iifname "${config.services.tailscale.interfaceName}" return
+    '';
   };
 
   programs.steam = {

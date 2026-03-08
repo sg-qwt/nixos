@@ -27,7 +27,6 @@ stdenv.mkDerivation (finalAttrs: {
   installFlags = [ "PREFIX=${placeholder "out"}" ];
 
   meta = {
-    maintainers = with lib.maintainers; [ xddxdd ];
     description = "Run command in Linux network namespace as normal user";
     homepage = "https://github.com/pekman/netns-exec";
     license = lib.licenses.gpl2Only;

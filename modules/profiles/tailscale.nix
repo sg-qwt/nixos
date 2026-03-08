@@ -1,7 +1,7 @@
 s@{ config, lib, self, ... }:
 lib.mkProfile s "tailscale" (
   let
-    interface = "tailscale0";
+    interface = "veth-myos-ts";
     port = self.shared-data.ports.tailscaled;
   in
   {
