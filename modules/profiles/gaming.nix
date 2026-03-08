@@ -7,9 +7,8 @@ let
     "CAP_NET_BIND_SERVICE"
   ];
   uu-interface = "veth-myos-uu";
-  netns-exec-bin = lib.getExe pkgs.my.netns-exec;
   steam-gamescope-uunet = pkgs.writeShellScriptBin "steam-gamescope-uunet" ''
-    exec ${netns-exec-bin} uunet steam-gamescope
+    exec ${config.security.wrapperDir}/netns-exec uunet steam-gamescope
   '';
 in
 lib.mkProfile s "gaming"
@@ -26,7 +25,7 @@ lib.mkProfile s "gaming"
 
   security.wrappers = {
     netns-exec = {
-      source = netns-exec-bin;
+      source = lib.getExe pkgs.my.netns-exec;
       owner = "root";
       group = "root";
       setuid = true;
