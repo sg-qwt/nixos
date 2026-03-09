@@ -3,18 +3,14 @@
 with lib;
 let
   cfg = config.myos.singbox;
-  cap = [
-    "CAP_NET_RAW"
-    "CAP_NET_ADMIN"
-    "CAP_NET_BIND_SERVICE"
-  ];
   inherit (self.shared-data) ports;
+  certDir = config.security.acme.certs.edg.directory;
 in
 {
   options.myos.singbox = {
     enable = mkEnableOption "singbox server";
     profile = mkOption {
-      type = types.enum [ "sstls" "reality" ];
+      type = types.enum [ "sstls" "reality" "anytls" ];
     };
     sni = mkOption {
       type = types.str;
@@ -29,15 +25,11 @@ in
   config = mkIf cfg.enable
     {
       vaultix.secrets.sing-shadow = { };
-      vaultix.secrets.sing-shadow-tls = { };
+      vaultix.secrets.sing-pass = { };
       vaultix.secrets.sing-vless-uuid = { };
       vaultix.secrets.sing-reality-private = { };
-      vaultix.templates.singbox = {
-        content = builtins.toJSON
-          (import (./. + "/${toString cfg.profile}.nix") { inherit config self; });
-      };
 
-      services.nginx.defaultSSLListenPort = ports.default-ssl;
+      services.nginx.defaultSSLListenPort = mkIf (cfg.profile == "reality") ports.default-ssl;
       services.nginx.streamConfig = mkIf (cfg.profile == "reality") ''
         map $ssl_preread_server_name $sni_upstream {
           ${cfg.sni} singbox;
@@ -54,25 +46,16 @@ in
         }
       '';
 
-      systemd.services.singbox = {
-        description = "singbox server daemon service";
-        wants = [ "network-online.target" ];
-        after = [ "network-online.target" ];
-        wantedBy = [ "multi-user.target" ];
-        restartTriggers = [
-          config.vaultix.templates.singbox.content
-        ];
-        serviceConfig = {
-          DynamicUser = true;
-          StateDirectory = "singbox";
-          LoadCredential = [
-            "config:${config.vaultix.templates.singbox.path}"
-          ];
-          ExecStart = "${pkgs.sing-box}/bin/sing-box run -c %d/config -D $STATE_DIRECTORY";
-          CapabilityBoundingSet = cap;
-          AmbientCapabilities = cap;
-          Restart = "on-failure";
-        };
+      security.acme.certs.edg = mkIf (cfg.profile == "anytls") {
+        reloadServices = [ "sing-box.service" ];
+        postRun = "${lib.getExe' pkgs.acl "setfacl"} --recursive --modify u:sing-box:rX ${
+          certDir
+        }";
+      };
+
+      services.sing-box = {
+        enable = true;
+        settings = (import (./. + "/${toString cfg.profile}.nix") { inherit config self; });
       };
     };
 }

@@ -19,7 +19,8 @@
     "transmission": 9191,
     "transmission-peer": 51513,
     "chugou": 8888,
-    "litellm": 4001
+    "litellm": 4001,
+    "anytls": 9000
   },
   "path": {
     "metrics": "/metrics",

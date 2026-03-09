@@ -28,12 +28,12 @@ in
     {
       vaultix.secrets.sspass = { };
       vaultix.secrets.sing-shadow = { };
-      vaultix.secrets.sing-shadow-tls = { };
+      vaultix.secrets.sing-pass = { };
       vaultix.secrets.sing-vless-uuid = { };
       vaultix.secrets.warp-key = { };
       vaultix.secrets.clash-secret = { };
       vaultix.templates.clashm = {
-        content = lib.generators.toYAML { }
+        content = builtins.toJSON
           (import ./clash.nix {
             inherit config pkgs self;
             interface = cfg.interface;
@@ -63,7 +63,6 @@ in
         };
       };
 
-
       programs.proxychains = {
         enable = true;
         quietMode = true;
@@ -75,35 +74,6 @@ in
             port = ports.clash-meta-mixed;
           };
         };
-      };
-
-      myhome = {
-
-        programs.bash.bashrcExtra = ''
-          enable-proxy() {
-            PROXY_HOST="localhost"
-            PROXY_PORT="${toString ports.clash-meta-mixed}"
-
-            export HTTP_PROXY="http://$PROXY_HOST:$PROXY_PORT/"
-            export http_proxy="$HTTP_PROXY"
-
-            export HTTPS_PROXY="http://$PROXY_HOST:$PROXY_PORT/"
-            export https_proxy="$HTTPS_PROXY"
-
-            export NO_PROXY="localhost, 127.0.0.0/8, ::1"
-            export no_proxy="$NO_PROXY"
-
-            echo "HTTP Proxy Enabled!"
-          }
-
-          disable-proxy() {
-            unset HTTP_PROXY http_proxy
-            unset HTTPS_PROXY https_proxy
-            unset NO_PROXY no_proxy
-
-            echo "HTTP Proxy Disabled!"
-          }
-        '';
       };
     };
 }

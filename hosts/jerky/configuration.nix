@@ -7,7 +7,7 @@ let edg = self.tfo.fqdn.edg; in
 
   myos.singbox = {
     enable = true;
-    profile = "reality";
+    profile = "anytls";
   };
 
   services.postgresql = {

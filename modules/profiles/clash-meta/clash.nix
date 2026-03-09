@@ -1,7 +1,7 @@
 { config, pkgs, interface, self }:
 let
   inherit (self.shared-data) ports;
-  inherit (self.tfo) fqdn jerky-ipv4 puer-ipv4;
+  inherit (self.tfo) fqdn jerky-ipv6 puer-ipv4;
 in
 rec {
   mixed-port = ports.clash-meta-mixed;
@@ -91,26 +91,44 @@ rec {
     };
   };
 
-  proxies = [
-    {
-      name = "vless";
-      type = "vless";
-      server = jerky-ipv4;
-      port = ports.https;
-      uuid = config.vaultix.placeholder.sing-vless-uuid;
-      network = "tcp";
-      tls = true;
-      udp = true;
-      flow = "xtls-rprx-vision";
-      servername = config.myos.singbox.sni;
-      reality-opts = {
-        public-key = "MaT4kg5zs3YFoMa6X4N_EcQJkKJ67Q-vp5wKAOS5YBk";
-        short-id = "fdb1";
+  proxies =
+    let
+      front = {
+        name = "anytls";
+        type = "anytls";
+        server = jerky-ipv6;
+        port = ports.anytls;
+        password = config.vaultix.placeholder.sing-pass;
+        client-fingerprint = "chrome";
+        udp = true;
+        tls = true;
+        sni = fqdn.edg;
+        alpn = ["h2"];
+        skip-cert-verify = false;
       };
-      client-fingerprint = "chrome";
-    }
+      front-alt = {
+        name = "vless";
+        type = "vless";
+        server = jerky-ipv6;
+        port = ports.https;
+        uuid = config.vaultix.placeholder.sing-vless-uuid;
+        network = "tcp";
+        tls = true;
+        udp = true;
+        flow = "xtls-rprx-vision";
+        servername = config.myos.singbox.sni;
+        reality-opts = {
+          public-key = "MaT4kg5zs3YFoMa6X4N_EcQJkKJ67Q-vp5wKAOS5YBk";
+          short-id = "fdb1";
+        };
+        client-fingerprint = "chrome";
+      };
+    in
+    [
+      front
+
     {
-      name = "vless-warp";
+      name = "front+warp";
       type = "wireguard";
       server = "engage.cloudflareclient.com";
       port = 2408;
@@ -124,8 +142,9 @@ rec {
       dns = [
         "https://dns.cloudflare.com/dns-query"
       ];
-      dialer-proxy = "vless";
+      dialer-proxy = front.name;
     }
+
     {
       name = "sstls";
       type = "ss";
@@ -137,7 +156,7 @@ rec {
       plugin = "shadow-tls";
       plugin-opts = {
         host = config.myos.singbox.sni2;
-        password = config.vaultix.placeholder.sing-shadow-tls;
+        password = config.vaultix.placeholder.sing-pass;
         version = 3;
       };
     }

@@ -7,7 +7,7 @@ module "az_jerky" {
   size          = "Standard_B2als_v2"
   disk_size_gb  = 100
   image_version = azurerm_shared_image_version.nixos20251012.id
-  ip_refresh    = "0708"
+  ip_refresh    = "0709"
   zone_id       = local.edg_zone_id
   nsg_rules = {
     transmission-peer = {
@@ -29,6 +29,11 @@ module "az_jerky" {
       priority = 1004
       protocol = "Tcp"
       port     = 22
+    }
+    anytls = {
+      priority = 1005
+      protocol = "Tcp"
+      port     = local.ports.anytls
     }
   }
 }
