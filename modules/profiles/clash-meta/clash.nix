@@ -103,7 +103,7 @@ rec {
         udp = true;
         tls = true;
         sni = fqdn.edg;
-        alpn = ["h2"];
+        alpn = [ "h2" ];
         skip-cert-verify = false;
       };
       front-alt = {
@@ -127,40 +127,40 @@ rec {
     [
       front
 
-    {
-      name = "front+warp";
-      type = "wireguard";
-      server = "engage.cloudflareclient.com";
-      port = 2408;
-      ip = "172.16.0.2/32";
-      ipv6 = "2606:4700:110:8917:8d18:1f95:291e:3c2e/128";
-      private-key = config.vaultix.placeholder.warp-key;
-      public-key = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
-      udp = true;
-      mtu = 1280;
-      remote-dns-resolve = true;
-      dns = [
-        "https://dns.cloudflare.com/dns-query"
-      ];
-      dialer-proxy = front.name;
-    }
+      {
+        name = "front+warp";
+        type = "wireguard";
+        server = "engage.cloudflareclient.com";
+        port = 2408;
+        ip = "172.16.0.2/32";
+        ipv6 = "2606:4700:110:8917:8d18:1f95:291e:3c2e/128";
+        private-key = config.vaultix.placeholder.warp-key;
+        public-key = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
+        udp = true;
+        mtu = 1280;
+        remote-dns-resolve = true;
+        dns = [
+          "https://dns.cloudflare.com/dns-query"
+        ];
+        dialer-proxy = front.name;
+      }
 
-    {
-      name = "sstls";
-      type = "ss";
-      server = puer-ipv4;
-      port = ports.sstls;
-      cipher = "2022-blake3-aes-128-gcm";
-      password = config.vaultix.placeholder.sing-shadow;
-      client-fingerprint = "chrome";
-      plugin = "shadow-tls";
-      plugin-opts = {
-        host = config.myos.singbox.sni2;
-        password = config.vaultix.placeholder.sing-pass;
-        version = 3;
-      };
-    }
-  ];
+      {
+        name = "sstls";
+        type = "ss";
+        server = puer-ipv4;
+        port = ports.sstls;
+        cipher = "2022-blake3-aes-128-gcm";
+        password = config.vaultix.placeholder.sing-shadow;
+        client-fingerprint = "chrome";
+        plugin = "shadow-tls";
+        plugin-opts = {
+          host = config.myos.singbox.sni2;
+          password = config.vaultix.placeholder.sing-pass;
+          version = 3;
+        };
+      }
+    ];
 
   proxy-providers = { };
 

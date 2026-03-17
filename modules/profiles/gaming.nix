@@ -44,7 +44,7 @@ lib.mkProfile s "gaming"
   };
 
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
-  
+
   networking = {
     nat = {
       enable = true;
@@ -57,9 +57,9 @@ lib.mkProfile s "gaming"
     description = "Setup UUnet Network Namespace";
     wantedBy = [ "network.target" ];
     before = [ "uuplugin.service" ];
-    
-    path = [ pkgs.iproute2 ]; 
-    
+
+    path = [ pkgs.iproute2 ];
+
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;

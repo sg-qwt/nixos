@@ -1,27 +1,14 @@
 s@{ config, lib, self, ... }:
-let
-  inherit (self.tfo) fqdn;
-in
 lib.mkProfile s "cache" {
-
-  vaultix.secrets.attic-hello-token = { };
-  vaultix.templates.netrc.content = ''
-    machine attic.${fqdn.edg}
-    password ${config.vaultix.placeholder.attic-hello-token}
-  '';
-
-  nix.settings.netrc-file = config.vaultix.templates.netrc.path;
 
   nix.settings.substituters = [
     "https://cache.nixos.org?priority=20"
     "https://nix-community.cachix.org?priority=30"
-    "https://attic.${fqdn.edg}/hello?priority=40"
-    "https://cache.numtide.com?priority=50"
+    "https://cache.numtide.com?priority=40"
   ];
 
   nix.settings.trusted-public-keys = [
     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-    "hello:1i/LXgtEDpGmjTelurlADkaoFZdBP55NBJMxL2swzLY="
     "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
   ];
 

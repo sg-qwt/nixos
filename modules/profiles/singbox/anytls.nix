@@ -23,7 +23,7 @@ in
       tls = {
         enabled = true;
         server_name = fqdn.edg;
-        alpn = ["h2"];
+        alpn = [ "h2" ];
         certificate_path = "${certDir}/fullchain.pem";
         key_path = "${certDir}/key.pem";
       };

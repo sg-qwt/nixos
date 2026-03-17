@@ -34,16 +34,27 @@ lib.mkProfile s "desktop-apps"
       BraveWalletDisabled = true;
       BraveVPNDisabled = true;
       BraveAIChatEnabled = false;
+      BraveNewsDisabled = true;
+      BraveTalkDisabled = true;
       TorDisabled = true;
+
+      ForcedLanguages = [ "en-US" ];
+      ApplicationLocaleValue = "en-US";
+      TranslateEnabled = false;
+      SpellcheckEnabled = true;
+      SpellcheckLanguage = [ "en-US" ];
 
       PasswordManagerEnabled = false;
       PasswordSharingEnabled = false;
       PasswordLeakDetectionEnabled = false;
 
       MetricsReportingEnabled = false;
+      SafeBrowsingProtectionLevel = 1;
       SafeBrowsingExtendedReportingEnabled = false;
       SafeBrowsingSurveysEnabled = false;
       SafeBrowsingDeepScanningEnabled = false;
+
+      SafeSitesFilterBehavior = 0;
 
       NewTabPageLocation = search-url;
 
