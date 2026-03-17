@@ -23,8 +23,6 @@ lib.mkProfile s "tools"
     my.rage
 
     nix-tree
-
-    llm-agents.pi
   ];
 
   programs.nix-index-database.comma.enable = true;

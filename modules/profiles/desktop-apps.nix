@@ -25,7 +25,6 @@ lib.mkProfile s "desktop-apps"
       "bhhhlbepdkbapadjdnnojkbgioiodbic" # solflare-wallet
       "kdbmhfkmnlmbkgbabkdealhhbfhlmmon" # steamdb
       "ngonfifpkpeefnhelnfdkficaiihklid" # protondb-for-steam
-      "gebbhagfogifgggkldgodflihgfeippi" # return-youtube-dislike
       "lkbebcjgcmobigpeffafkodonchffocl;https://gitflic.ru/project/magnolia1234/bpc_updates/blob/raw?file=updates.xml" # bypass-paywall
 
     ];

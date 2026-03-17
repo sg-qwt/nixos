@@ -62,16 +62,17 @@ let
       cider-eval-sexp-fu
 
       markdown-mode
+
+      pi-coding-agent
     ]) ++
 
     (with epkgs.melpaPackages; [
-      pi-coding-agent
-
       avy
       evil
       evil-surround
       evil-collection
       evil-org
+      evil-keypad
       general
 
       orderless

@@ -22,6 +22,10 @@ lib.mkProfile s "tmux"
       bind -r C-h select-window -t :-
       bind -r C-l select-window -t :+
 
+      # Extended keys (Ctrl+Shift combos)
+      set -g extended-keys on
+      set -g extended-keys-format csi-u
+
       # Change status bar colors
       set -g status-fg white
       set -g status-bg black

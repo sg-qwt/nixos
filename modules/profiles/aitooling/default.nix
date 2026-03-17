@@ -1,9 +1,9 @@
 s@{ config, pkgs, lib, self, ... }:
-lib.mkProfile s "gemini" {
+lib.mkProfile s "aitooling" {
   myhome = {
     programs.gemini-cli = {
       enable = true;
-      package = pkgs.gemini-cli-bin;
+      package = pkgs.llm-agents.gemini-cli;
       settings = {
         privacy = {
           usageStatisticsEnabled = false;
@@ -39,5 +39,6 @@ lib.mkProfile s "gemini" {
 
   environment.systemPackages = with pkgs; [
     my.brepl
+    llm-agents.pi
   ];
 }
