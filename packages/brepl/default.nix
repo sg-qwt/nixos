@@ -3,14 +3,20 @@
 , makeWrapper
 , babashka-unwrapped
 , self
+, fetchFromGitHub
 , ...
 }:
 
 stdenv.mkDerivation rec {
   pname = "brepl";
-  version = "unstable";
+  version = "2.7.1";
 
-  src = self.inputs.brepl;
+  src = fetchFromGitHub {
+    owner = "licht1stein";
+    repo = "brepl";
+    rev = "v${version}";
+    hash = "sha256-Obv2kSEsgZacY4T3HU1/FqTx4y2dRiCgk9j2tPPd3+o=";
+  };
 
   nativeBuildInputs = [ makeWrapper ];
 
@@ -19,9 +25,10 @@ stdenv.mkDerivation rec {
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/bin
-    cp brepl $out/bin/brepl
-    chmod +x $out/bin/brepl
+    install -Dm755 brepl $out/bin/brepl
+    install -Dm644 resources/skills/brepl/SKILL.md $out/share/brepl/SKILL.md
+
+    sed -i '1s|#!/usr/bin/env.*|#!/usr/bin/env bb|' $out/bin/brepl
 
     # Wrap to ensure babashka is on PATH
     wrapProgram $out/bin/brepl \

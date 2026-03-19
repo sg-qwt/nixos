@@ -47,11 +47,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    brepl = {
-      url = "github:licht1stein/brepl?tag=v2.5.2";
-      flake = false;
-    };
-
     self.submodules = true;
   };
 

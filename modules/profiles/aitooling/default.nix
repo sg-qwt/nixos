@@ -14,7 +14,7 @@ lib.mkProfile s "aitooling" {
           };
         };
         ui = {
-          theme = "ANSI Light";
+          theme = "ANSI";
           hideBanner = true;
           showMemoryUsage = true;
           hideContextPercentage = false;
@@ -30,15 +30,16 @@ lib.mkProfile s "aitooling" {
           fileName = [ "AGENTS.md" ];
         };
       };
-      context = {
-        AGENTS = ./agents.md;
-      };
     };
     home.file.".gemini/settings.json".force = true;
+
+    home.file.".agents/skills/brepl/SKILL.md".source = pkgs.my.brepl + "/share/brepl/SKILL.md";
   };
 
   environment.systemPackages = with pkgs; [
     my.brepl
     llm-agents.pi
   ];
+
+
 }

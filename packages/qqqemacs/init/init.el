@@ -358,7 +358,7 @@ If the buffer doesn't exist, create it first."
   (defun qqq/commit-message ()
     "Summarize current git commit."
     (interactive)
-    (async-shell-command "pi -p \"/commit-message\"" (current-buffer)))
+    (async-shell-command "git diff --cached | pi --model openai-codex/gpt-5.4 --print \"Draft a Conventional‑Commits‑style commit message by given patch\"" (current-buffer)))
   :bind (:map git-commit-mode-map
 	      ("C-c g" . #'qqq/commit-message))
   :custom
