@@ -1,4 +1,9 @@
 s@{ config, pkgs, lib, self, ... }:
+let
+  piro = pkgs.writeScriptBin "piro" ''
+    exec ${lib.getExe pkgs.llm-agents.pi} --tools read,grep,find,ls "$@"
+  '';
+in
 lib.mkProfile s "aitooling" {
   myhome = {
     programs.gemini-cli = {
@@ -39,6 +44,7 @@ lib.mkProfile s "aitooling" {
   environment.systemPackages = with pkgs; [
     my.brepl
     llm-agents.pi
+    piro
   ];
 
 
