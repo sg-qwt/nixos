@@ -39,6 +39,10 @@ lib.mkProfile s "aitooling" {
     home.file.".gemini/settings.json".force = true;
 
     home.file.".agents/skills/brepl/SKILL.md".source = pkgs.my.brepl + "/share/brepl/SKILL.md";
+
+    home.file.".pi/agent/extensions/notify.ts".source = pkgs.replaceVars ./notify.ts {
+      sound = "${pkgs.my.og-packs}/share/og-packs/dota2_axe/sounds/AxeIsReady.mp3";
+    };
   };
 
   environment.systemPackages = with pkgs; [
