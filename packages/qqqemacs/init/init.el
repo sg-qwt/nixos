@@ -331,6 +331,15 @@ If the buffer doesn't exist, create it first."
   )
 
 (use-package with-editor
+  :preface
+  (defun qqq/which-key-with-editor-replacements ()
+    (setq-local which-key-replacement-alist
+		(append
+		 '((("\\`, c\\'") nil . "finish")
+		   (("\\`, k\\'") nil . "cancel"))
+		 which-key-replacement-alist)))
+  :hook
+  (with-editor-mode . qqq/which-key-with-editor-replacements)
   :general
   (qqq/local-leader
     with-editor-mode-map
