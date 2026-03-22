@@ -72,7 +72,6 @@ let
       evil-surround
       evil-collection
       evil-org
-      evil-keypad
       general
 
       orderless

@@ -180,13 +180,6 @@ If the buffer doesn't exist, create it first."
   (evil-ex-define-cmd "q" 'qqq/ex-kill-buffer)
   (evil-mode 1))
 
-(use-package evil-keypad
-  :after evil
-  :custom
-  (evil-keypad-activation-trigger (kbd ","))
-  :config
-  (evil-keypad-global-mode 1))
-
 (use-package evil-surround
   :config
   (global-evil-surround-mode 1))
@@ -216,7 +209,14 @@ If the buffer doesn't exist, create it first."
     :prefix "SPC"
     :global-prefix "C-SPC")
 
+  (general-create-definer qqq/local-leader
+    :states '(normal visual motion emacs)
+    :keymaps 'override
+    :prefix ","
+    :global-prefix "C-,")
+
   (qqq/leader "" nil)
+  (qqq/local-leader "" nil)
 
   (qqq/leader
     "SPC" #'execute-extended-command)
@@ -327,8 +327,16 @@ If the buffer doesn't exist, create it first."
 
   (qqq/leader
     "q" #'save-buffers-kill-emacs)
-
+  
   )
+
+(use-package with-editor
+  :general
+  (qqq/local-leader
+    with-editor-mode-map
+    "c" #'with-editor-finish
+    "k" #'with-editor-cancel))
+
 
 (use-package avy
   :demand t
@@ -359,11 +367,12 @@ If the buffer doesn't exist, create it first."
     "Summarize current git commit."
     (interactive)
     (async-shell-command "git diff --cached | piro --model openai-codex/gpt-5.4 --print \"Draft a Conventional‑Commits‑style commit message by given patch. Output ONLY the raw commit message text. Do not wrap the output in backticks or markdown code blocks. Do not include any explanations, greetings, or conversational filler. The output must be ready to paste directly into COMMIT_EDITMSG.\"" (current-buffer)))
-  :bind (:map git-commit-mode-map
-	      ("C-c g" . #'qqq/commit-message))
   :custom
   (magit-diff-visit-prefer-worktree t)
   :general
+  (qqq/local-leader
+    git-commit-mode-map
+    "g" #'qqq/commit-message)
   (general-def
     '(normal)
     magit-status-mode-map
@@ -434,6 +443,10 @@ If the buffer doesn't exist, create it first."
       (magit-call-git "commit" "-m" (concat "auto: " (current-time-string)))
       (magit-call-git "push")))
   :general
+  (qqq/local-leader
+    org-capture-mode-map
+    "c" #'org-capture-finalize
+    "k" #'org-capture-kill)
   (general-def '(normal)
     org-mode-map
     "RET" 'org-open-at-point
@@ -793,8 +806,10 @@ the focus."
 	      :around 'evil-collection-cider-last-sexp)
   (advice-add 'qqq/cider-send-sexp-to-repl-focus
 	      :around 'evil-collection-cider-last-sexp)
+
   :general
   (general-unbind cider-repl-mode-map ",")
+
   (general-def
     'normal
     cider-mode-map
@@ -804,82 +819,84 @@ the focus."
     '(normal insert)
     cider-repl-mode-map
     "C-l" #'cider-repl-clear-buffer)
+ (qqq/local-leader
+    clojure-mode-map
+    "r" '(:keymap clojure-refactor-map :wk "refactor"))
 
-  ;; (qqq/local-leader
-  ;;   clojure-mode-map
-  ;;   "r" '(:keymap clojure-refactor-map :wk "refactor"))
+  (qqq/local-leader
+    clojure-mode-map
+    :infix "o"
+    "" '(:ignore t :wk "other")
+    "p o" #'portal.api/open
+    "p c" #'portal.api/close
+    "p k" #'portal.api/clear
+    "s s" #'systemic/start
+    "s r" #'systemic/restart
+    "s k" #'systemic/stop)
 
-  ;; (qqq/local-leader
-  ;;   clojure-mode-map
-  ;;   :infix "a"
-  ;;   "p o" #'portal.api/open
-  ;;   "p c" #'portal.api/close
-  ;;   "p k" #'portal.api/clear
-  ;;   "s s" #'systemic/start
-  ;;   "s r" #'systemic/restart
-  ;;   "s k" #'systemic/stop)
+  (qqq/local-leader
+    clojure-mode-map
+    :infix "e"
+    "" '(:ignore t :wk "eval")
+    "b" #'cider-eval-buffer
+    "r" #'cider-eval-region
+    "e" #'cider-eval-sexp-at-point
+    "(" #'cider-eval-list-at-point
+    "f" #'cider-eval-defun-at-point
+    ";" #'cider-pprint-eval-defun-to-comment
+    ":" #'cider-pprint-eval-last-sexp-to-comment
+    "p" #'cider-pprint-eval-last-sexp-to-repl
+    "i" #'cider-interrupt
+    "m" #'cider-macroexpand-1
+    "M" #'cider-macroexpand-all)
 
-  ;; (qqq/local-leader
-  ;;   clojure-mode-map
-  ;;   :infix "e"
-  ;;   "" '(:ignore t :wk "eval")
-  ;;   "b" #'cider-eval-buffer
-  ;;   "r" #'cider-eval-region
-  ;;   "e" #'cider-eval-sexp-at-point
-  ;;   "(" #'cider-eval-list-at-point
-  ;;   "f" #'cider-eval-defun-at-point
-  ;;   ";" #'cider-pprint-eval-defun-to-comment
-  ;;   ":" #'cider-pprint-eval-last-sexp-to-comment
-  ;;   "p" #'cider-pprint-eval-last-sexp-to-repl
-  ;;   "i" #'cider-interrupt
-  ;;   "m" #'cider-macroexpand-1
-  ;;   "M" #'cider-macroexpand-all)
+  (qqq/local-leader
+    :keymaps '(clojure-mode-map cider-repl-mode-map)
+    :infix "s"
+    "a" #'qqq/cider-switch)
 
-  ;; (qqq/local-leader
-  ;;   :keymaps '(clojure-mode-map cider-repl-mode-map)
-  ;;   :infix "s"
-  ;;   "a" #'qqq/cider-switch)
+  (qqq/local-leader
+    clojure-mode-map
+    :infix "s"
+    "" '(:ignore t :wk "send")
+    "b" #'cider-load-buffer
+    "n" #'qqq/cider-send-ns-form-to-repl
+    "N" #'qqq/cider-send-ns-form-to-repl-focus
+    "e" #'qqq/cider-send-sexp-to-repl
+    "E" #'qqq/cider-send-sexp-to-repl-focus
+    "f" #'qqq/cider-send-function-to-repl
+    "F" #'qqq/cider-send-function-to-repl-focus
+    "r" #'qqq/cider-send-region-to-repl
+    "R" #'qqq/cider-send-region-to-repl-focus)
 
-  ;; (qqq/local-leader
-  ;;   clojure-mode-map
-  ;;   :infix "s"
-  ;;   "b" #'cider-load-buffer
-  ;;   "n" #'qqq/cider-send-ns-form-to-repl
-  ;;   "N" #'qqq/cider-send-ns-form-to-repl-focus
-  ;;   "e" #'qqq/cider-send-sexp-to-repl
-  ;;   "E" #'qqq/cider-send-sexp-to-repl-focus
-  ;;   "f" #'qqq/cider-send-function-to-repl
-  ;;   "F" #'qqq/cider-send-function-to-repl-focus
-  ;;   "r" #'qqq/cider-send-region-to-repl
-  ;;   "R" #'qqq/cider-send-region-to-repl-focus)
+  (qqq/local-leader
+    clojure-mode-map
+    :infix "h"
+    "" '(:ignore t :wk "help")
+    "n" #'cider-find-ns
+    "a" #'cider-apropos
+    "c" #'cider-clojuredocs
+    "d" #'cider-doc
+    "j" #'cider-javadoc
+    "w" #'cider-clojuredocs-web)
 
-  ;; (qqq/local-leader
-  ;;   clojure-mode-map
-  ;;   :infix "h"
-  ;;   "" '(:ignore t :wk "help")
-  ;;   "n" #'cider-find-ns
-  ;;   "a" #'cider-apropos
-  ;;   "c" #'cider-clojuredocs
-  ;;   "d" #'cider-doc
-  ;;   "j" #'cider-javadoc
-  ;;   "w" #'cider-clojuredocs-web)
+  (qqq/local-leader
+    clojure-mode-map
+    :infix "c"
+    "" '(:ignore t :wk "connect")
+    "c" #'cider-connect-clj
+    "b" #'qqq/cider-connect-bb
+    "r" #'cider-restart
+    "q" #'cider-quit)
 
-  ;; (qqq/local-leader
-  ;;   :keymaps '(clojure-mode-map cider-repl-mode-map)
-  ;;   :infix "c"
-  ;;   "c" #'cider-connect-clj
-  ;;   "b" #'qqq/cider-connect-bb
-  ;;   "r" #'cider-restart
-  ;;   "q" #'cider-quit)
-
-  ;; (qqq/local-leader
-  ;;   clojure-mode-map
-  ;;   :infix "="
-  ;;   "=" #'cider-format-buffer
-  ;;   "f" #'cider-format-defun
-  ;;   "r" #'cider-format-region
-  ;;   "e b" #'cider-format-edn-buffer)
-
+  (qqq/local-leader
+    clojure-mode-map
+    :infix "="
+    "" '(:ignore t :wk "format")
+    "=" #'cider-format-buffer
+    "f" #'cider-format-defun
+    "r" #'cider-format-region
+    "e b" #'cider-format-edn-buffer)
   )
 
 (use-package cider-eval-sexp-fu
@@ -894,16 +911,16 @@ the focus."
 ;;;;;;;;;;;
 ;; elisp ;;
 ;;;;;;;;;;;
-;; (use-package emacs-lisp-mode
-;;   :general
-;;   (qqq/local-leader
-;;     emacs-lisp-mode-map
-;;     :infix "e"
-;;     "b" #'eval-buffer
-;;     "f" #'eval-defun
-;;     "r" #'eval-region
-;;     "e" #'eval-expression
-;;     ";" #'eval-print-last-sexp))
+(use-package emacs-lisp-mode
+  :general
+  (qqq/local-leader
+    emacs-lisp-mode-map
+    :infix "e"
+    "b" #'eval-buffer
+    "f" #'eval-defun
+    "r" #'eval-region
+    "e" #'eval-expression
+    ";" #'eval-print-last-sexp))
 
 ;;;;;;;;;;;
 ;; dired ;;
@@ -1091,6 +1108,12 @@ the focus."
 
 (use-package multi-vterm
   :demand t
+  :general
+  (qqq/local-leader
+    vterm-mode-map
+    "r" #'multi-vterm-rename-buffer
+    "n" #'multi-vterm-next
+    "p" #'multi-vterm-prev)
   :custom
   (multi-vterm-dedicated-window-height-percent 40))
 
@@ -1107,6 +1130,15 @@ the focus."
 ;; lint ;;
 ;;;;;;;;;;
 (use-package flymake
+  :general
+  (qqq/local-leader
+    flymake-mode-map
+    :infix "l"
+    "" '(:ignore t :wk "flymake")
+    "n" #'flymake-goto-next-error
+    "p" #'flymake-goto-prev-error
+    "b" #'flymake-show-buffer-diagnostics
+    "P" #'flymake-show-project-diagnostics)
   :config
   (remove-hook 'flymake-diagnostic-functions #'flymake-proc-legacy-flymake))
 
