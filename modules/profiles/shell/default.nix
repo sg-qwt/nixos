@@ -57,6 +57,7 @@ lib.mkProfile s "shell"
       settings = lib.mkMerge [
         {
           add_newline = true;
+          scan_timeout = 500;
           battery = {
             disabled = true;
           };
