@@ -525,6 +525,7 @@ If the buffer doesn't exist, create it first."
     '(nov-mode
       pdf-view-mode
       eat-mode
+      pi-coding-agent-chat-mode
       )
     "Major modes on which to disable line numbers."
     :group 'display-line-numbers
