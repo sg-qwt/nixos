@@ -1200,6 +1200,6 @@ the focus."
 
 (use-package pi-coding-agent
   :custom
-  (pi-coding-agent-input-window-height 30)
-
+  (pi-coding-agent-input-window-height 0.3)
+  (pi-coding-agent-quit-without-confirmation t)
   :commands (pi-coding-agent))

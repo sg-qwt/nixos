@@ -28,8 +28,8 @@ lib.mkProfile s "aitooling" {
         general = {
           previewFeatures = true;
           vimMode = false;
-          disableAutoUpdate = true;
-          disableUpdateNag = true;
+          enableAutoUpdate = false;
+          enableAutoUpdateNotification = false;
         };
         context = {
           fileName = [ "AGENTS.md" ];
