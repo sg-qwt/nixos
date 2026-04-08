@@ -38,6 +38,8 @@ let
       tree-sitter-markdown
       tree-sitter-markdown-inline
 
+      tree-sitter-regex
+
       (pkgs.tree-sitter.buildGrammar {
         language = "clojure";
         version = "unstable-20250526";

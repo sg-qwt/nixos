@@ -441,6 +441,10 @@ If the buffer doesn't exist, create it first."
 (use-package json-ts-mode
   :mode "\\.json\\'")
 
+(use-package clojure-ts-mode
+  :custom
+  (clojure-ts-ensure-grammars nil))
+
 (use-package org
   :preface
   (defun qqq/garden-upload ()
@@ -494,7 +498,7 @@ If the buffer doesn't exist, create it first."
 (use-package evil-cleverparens
   :after (evil smartparens)
   :hook
-  ((emacs-lisp-mode clojure-mode cider-repl-mode) . evil-cleverparens-mode)
+  ((emacs-lisp-mode clojure-ts-mode cider-repl-mode) . evil-cleverparens-mode)
   :config
   (require 'evil-cleverparens-text-objects))
 
@@ -667,10 +671,6 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
 ;;;;;;;;;;;;;
 ;; clojure ;;
 ;;;;;;;;;;;;;
-(use-package clojure-mode
-  :config
-  (require 'clojure-mode-extra-font-locking))
-
 (use-package cider
   :custom
   (nrepl-use-ssh-fallback-for-remote-hosts t)
@@ -804,6 +804,7 @@ the focus."
       (cider-switch-to-repl-buffer)))
 
   :hook
+  (clojure-ts-mode . cider-mode)
   (cider-mode . qqq/cider-disable-completion)
   (cider-mode . qqq/cider-disable-eldoc)
   
@@ -830,11 +831,11 @@ the focus."
     cider-repl-mode-map
     "C-l" #'cider-repl-clear-buffer)
  (qqq/local-leader
-    clojure-mode-map
-    "r" '(:keymap clojure-refactor-map :wk "refactor"))
+    clojure-ts-mode-map
+    "r" '(:keymap clojure-ts-refactor-map :wk "refactor"))
 
   (qqq/local-leader
-    clojure-mode-map
+    clojure-ts-mode-map
     :infix "o"
     "" '(:ignore t :wk "other")
     "p o" #'portal.api/open
@@ -845,7 +846,7 @@ the focus."
     "s k" #'systemic/stop)
 
   (qqq/local-leader
-    clojure-mode-map
+    clojure-ts-mode-map
     :infix "e"
     "" '(:ignore t :wk "eval")
     "b" #'cider-eval-buffer
@@ -861,12 +862,12 @@ the focus."
     "M" #'cider-macroexpand-all)
 
   (qqq/local-leader
-    :keymaps '(clojure-mode-map cider-repl-mode-map)
+    :keymaps '(clojure-ts-mode-map cider-repl-mode-map)
     :infix "s"
     "a" #'qqq/cider-switch)
 
   (qqq/local-leader
-    clojure-mode-map
+    clojure-ts-mode-map
     :infix "s"
     "" '(:ignore t :wk "send")
     "b" #'cider-load-buffer
@@ -880,7 +881,7 @@ the focus."
     "R" #'qqq/cider-send-region-to-repl-focus)
 
   (qqq/local-leader
-    clojure-mode-map
+    clojure-ts-mode-map
     :infix "h"
     "" '(:ignore t :wk "help")
     "n" #'cider-find-ns
@@ -891,7 +892,7 @@ the focus."
     "w" #'cider-clojuredocs-web)
 
   (qqq/local-leader
-    clojure-mode-map
+    clojure-ts-mode-map
     :infix "c"
     "" '(:ignore t :wk "connect")
     "c" #'cider-connect-clj
@@ -900,7 +901,7 @@ the focus."
     "q" #'cider-quit)
 
   (qqq/local-leader
-    clojure-mode-map
+    clojure-ts-mode-map
     :infix "="
     "" '(:ignore t :wk "format")
     "=" #'cider-format-buffer
@@ -914,9 +915,7 @@ the focus."
 
 (use-package jarchive
   :hook
-  (clojure-mode . jarchive-setup)
-  (clojurec-mode . jarchive-setup)
-  (clojurescript-mode . jarchive-setup))
+  (clojure-ts-mode . jarchive-setup))
 
 ;;;;;;;;;;;
 ;; elisp ;;
@@ -993,18 +992,16 @@ the focus."
 				  (funcall cb info))))
   ;; snippets borrowed from Clojurian slack to fix eglot echo doc arities
   (defun qqq/switch-eldoc-eglot-fns ()
-    (when (derived-mode-p 'clojure-mode 'clojurescript-mode 'clojurec-mode)
+    (when (derived-mode-p 'clojure-ts-mode)
       (remove-hook 'eldoc-documentation-functions #'eglot-hover-eldoc-function t)
       (remove-hook 'eldoc-documentation-functions #'eglot-signature-eldoc-function t)
       (add-hook 'eldoc-documentation-functions #'eglot-signature-eldoc-function -99 t)
       (add-hook 'eldoc-documentation-functions #'qqq/special-eglot-hover-function -99 t)))
   :no-require t
-  :after (eglot clojure-mode)
+  :after (eglot clojure-ts-mode)
   :hook
   (eglot-managed-mode . qqq/switch-eldoc-eglot-fns)
-  (clojure-mode . eglot-ensure)
-  (clojurescript-mode . eglot-ensure)
-  (clojurec-mode . eglot-ensure))
+  (clojure-ts-mode . eglot-ensure))
 
 (use-package eldoc
   :custom
@@ -1197,6 +1194,12 @@ the focus."
   (age-default-recipient (getenv "QQQ_AGE_RECIPIENTS"))
   :config
   (age-file-enable))
+
+
+(use-package md-ts-mode
+  :config
+  (add-to-list 'md-ts-code-block-source-mode-map
+	       '(clojure . clojure-ts-mode)))
 
 (use-package pi-coding-agent
   :custom
