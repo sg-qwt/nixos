@@ -1,7 +1,11 @@
 s@{ config, pkgs, lib, self, ... }:
 let
+  pi = pkgs.my.pi-with-extensions pkgs.llm-agents.pi [
+    pkgs.my.pi-clojure
+    pkgs.my.pi-notify
+  ];
   piro = pkgs.writeScriptBin "piro" ''
-    exec ${lib.getExe pkgs.llm-agents.pi} --tools read,grep,find,ls "$@"
+    exec ${lib.getExe pi} --tools read,grep,find,ls "$@"
   '';
 in
 lib.mkProfile s "aitooling" {
@@ -37,17 +41,10 @@ lib.mkProfile s "aitooling" {
       };
     };
     home.file.".gemini/settings.json".force = true;
-
-    home.file.".agents/skills/brepl/SKILL.md".source = pkgs.my.brepl + "/share/brepl/SKILL.md";
-
-    home.file.".pi/agent/extensions/notify.ts".source = pkgs.replaceVars ./notify.ts {
-      sound = "${pkgs.my.og-packs}/share/og-packs/dota2_axe/sounds/AxeIsReady.mp3";
-    };
   };
 
   environment.systemPackages = with pkgs; [
-    my.brepl
-    llm-agents.pi
+    pi
     piro
   ];
 
