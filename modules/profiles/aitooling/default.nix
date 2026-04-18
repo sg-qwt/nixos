@@ -1,9 +1,6 @@
 s@{ config, pkgs, lib, self, ... }:
 let
-  pi = pkgs.my.pi-with-extensions pkgs.llm-agents.pi [
-    pkgs.my.pi-clojure
-    pkgs.my.pi-notify
-  ];
+  pi = pkgs.my.pi;
   piro = pkgs.writeScriptBin "piro" ''
     exec ${lib.getExe pi} --tools read,grep,find,ls "$@"
   '';
@@ -41,6 +38,11 @@ lib.mkProfile s "aitooling" {
       };
     };
     home.file.".gemini/settings.json".force = true;
+
+    home.file.".pi/agent/APPEND_SYSTEM.md" = {
+      source = ./APPEND_SYSTEM.md;
+      force = true;
+    };
   };
 
   environment.systemPackages = with pkgs; [

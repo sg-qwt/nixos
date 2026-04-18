@@ -2,6 +2,8 @@
 let
   emacsWithPackages = (emacsPackagesFor emacs30-pgtk).emacsWithPackages;
 
+  pi = pkgs.my.pi;
+
   # trivialBuild = pkgs.emacsPackages.trivialBuild;
 
   ts-grammers = epkgs: (epkgs.treesit-grammars.with-grammars
@@ -138,7 +140,7 @@ let
     # rage with yubikey plugin
     my.rage
 
-    llm-agents.pi
+    pi
 
     # lsp
     nil
