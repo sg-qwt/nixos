@@ -26,12 +26,12 @@ resource "cloudflare_dns_record" "edg" {
     a = {
       name    = "@"
       type    = "A"
-      content = module.az_jerky.ipv4
+      content = module.az["jerky"].ipv4
     }
     aaaa = {
       name    = "@"
       type    = "AAAA"
-      content = module.az_jerky.ipv6
+      content = module.az["jerky"].ipv6
     }
     catch = {
       name    = "*"
@@ -53,12 +53,12 @@ resource "cloudflare_dns_record" "cybcc" {
     a = {
       name    = "@"
       type    = "A"
-      content = module.az_puer.ipv4
+      content = module.az["puer"].ipv4
     }
     aaaa = {
       name    = "@"
       type    = "AAAA"
-      content = module.az_puer.ipv6
+      content = module.az["puer"].ipv6
     }
     catch = {
       name    = "*"

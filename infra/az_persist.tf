@@ -24,7 +24,7 @@ resource "azurerm_shared_image" "nixos" {
   name                = "nixos-image-shared"
   gallery_name        = data.azurerm_shared_image_gallery.gallery.name
   resource_group_name = "persistent"
-  location            = "southeastasia"
+  location            = local.az_shared_image_location
   os_type             = "Linux"
   hyper_v_generation  = "V2"
 
@@ -45,21 +45,13 @@ resource "azurerm_shared_image_version" "nixos20251012" {
   storage_account_id                       = data.azurerm_storage_account.persist.id
   deletion_of_replicated_locations_enabled = true
 
-  target_region {
-    name                   = "southeastasia"
-    regional_replica_count = 1
-    storage_account_type   = "Standard_LRS"
-  }
+  dynamic "target_region" {
+    for_each = local.az_image_target_regions
 
-  target_region {
-    name                   = "eastasia"
-    regional_replica_count = 1
-    storage_account_type   = "Standard_LRS"
-  }
-
-  target_region {
-    name                   = "japaneast"
-    regional_replica_count = 1
-    storage_account_type   = "Standard_LRS"
+    content {
+      name                   = target_region.value
+      regional_replica_count = 1
+      storage_account_type   = "Standard_LRS"
+    }
   }
 }
