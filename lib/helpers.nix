@@ -81,8 +81,8 @@ rec {
       hosts = {
         zheng.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINpWTwJQ7923qsxZGWjxQrl8Bx6/+pdZDsiz0dg1akxz";
         li.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFxduWDt3Qli+3gTUd4/3/qbVqy+wyNrqTxZhV/7/7eV";
-        jerky.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGcSpxva4CYd5ufZJ8Q5fAn4EzmO1VLuL62Vt1cLF+Dg";
         puer.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKcOrd7uUWfIqR7cyp6sc9bR4seNb8m3het9CFsxznN/";
+        rocky.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDy3hWnYzgOJZ51yD25J5vLk33PAgKEdASoDL0UV5ivk";
       };
     };
 

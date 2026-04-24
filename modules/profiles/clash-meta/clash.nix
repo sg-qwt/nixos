@@ -1,7 +1,7 @@
 { config, pkgs, interface, self }:
 let
   inherit (self.shared-data) ports;
-  inherit (self.tfo) fqdn jerky-ipv6 puer-ipv4;
+  inherit (self.tfo) fqdn az-ips;
 in
 rec {
   mixed-port = ports.clash-meta-mixed;
@@ -96,7 +96,7 @@ rec {
       front = {
         name = "anytls";
         type = "anytls";
-        server = jerky-ipv6;
+        server = az-ips.rocky.ipv6;
         port = ports.anytls;
         password = config.vaultix.placeholder.sing-pass;
         client-fingerprint = "chrome";
@@ -109,7 +109,7 @@ rec {
       front-alt = {
         name = "vless";
         type = "vless";
-        server = jerky-ipv6;
+        server = az-ips.rocky.ipv6;
         port = ports.https;
         uuid = config.vaultix.placeholder.sing-vless-uuid;
         network = "tcp";
@@ -148,7 +148,7 @@ rec {
       {
         name = "sstls";
         type = "ss";
-        server = puer-ipv4;
+        server = az-ips.puer.ipv4;
         port = ports.sstls;
         cipher = "2022-blake3-aes-128-gcm";
         password = config.vaultix.placeholder.sing-shadow;

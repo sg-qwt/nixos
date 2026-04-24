@@ -26,12 +26,12 @@ resource "cloudflare_dns_record" "edg" {
     a = {
       name    = "@"
       type    = "A"
-      content = module.az["jerky"].ipv4
+      content = module.az["rocky"].ipv4
     }
     aaaa = {
       name    = "@"
       type    = "AAAA"
-      content = module.az["jerky"].ipv6
+      content = module.az["rocky"].ipv6
     }
     catch = {
       name    = "*"
