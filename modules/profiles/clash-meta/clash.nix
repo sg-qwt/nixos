@@ -207,6 +207,7 @@ rec {
     "DOMAIN-SUFFIX,cm.steampowered.com,DIRECT"
     "DOMAIN-SUFFIX,steamserver.net,DIRECT"
     "DOMAIN-SUFFIX,steamchina.com,DIRECT"
+    "DOMAIN-SUFFIX,polymarket.com,anytls"
     "GEOSITE,category-ads-all,REJECT"
     "GEOSITE,openai,select"
     "GEOSITE,geolocation-cn,DIRECT"

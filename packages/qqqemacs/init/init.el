@@ -307,11 +307,13 @@ If the buffer doesn't exist, create it first."
     "d" #'kill-current-buffer
     "TAB" #'mode-line-other-buffer)
   
+  ;;;;;;;;;
+  ;; git ;;
+  ;;;;;;;;;
   (qqq/leader
     :infix "g"
     "" '(:ignore t :wk "git")
-    "s" #'magit-status
-    "f" #'magit-log-buffer-file)
+    "s" #'magit-status)
 
   ;;;;;;;;;;
   ;; file ;;
@@ -321,6 +323,7 @@ If the buffer doesn't exist, create it first."
     "" '(:ignore t :wk "file")
     "r" #'qqq/rename-current-buffer-file
     "f" #'find-file
+    "h" #'magit-log-buffer-file
     "p" #'project-find-file
     "d" #'dired-jump
     "D" #'dired-jump-other-window)
