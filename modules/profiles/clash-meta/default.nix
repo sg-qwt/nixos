@@ -44,6 +44,28 @@ in
 
       services.mihomo = {
         enable = true;
+        package = pkgs.mihomo.overrideAttrs (
+          _:
+          let
+            rev = "82621cd1bf9bf9976f787b69e06677ce0daeb21e";
+            version = "alpha-unstable-82621cd";
+          in
+          {
+            inherit version;
+            src = pkgs.fetchFromGitHub {
+              owner = "MetaCubeX";
+              repo = "mihomo";
+              inherit rev;
+              hash = "sha256-zGSbOkZ1ESYqz0R74j9dRp09cwzs8OfhQ16ukh93bi8=";
+            };
+            vendorHash = "sha256-ju/j08AzpejuMNngMAq81bp9ZSQgKhjxZTaACqd5OPc=";
+            ldflags = [
+              "-s"
+              "-w"
+              "-X github.com/metacubex/mihomo/constant.Version=${version}"
+            ];
+          }
+        );
         configFile = config.vaultix.templates.clashm.path;
         webui = pkgs.metacubexd;
         tunMode = true;

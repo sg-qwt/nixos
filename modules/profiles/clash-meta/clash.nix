@@ -14,7 +14,6 @@ rec {
   mode = "rule";
   find-process-mode = "always";
   geodata-mode = true;
-  global-client-fingerprint = "chrome";
 
   profile = {
     store-selected = true;

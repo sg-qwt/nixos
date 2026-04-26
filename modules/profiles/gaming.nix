@@ -141,19 +141,6 @@ lib.mkProfile s "gaming"
     allowedTCPPorts = [ 16363 ];
   };
 
-  # TODO remove hack after bug fix
-  # https://github.com/MetaCubeX/mihomo/issues/2605
-  systemd.services.mihomo = {
-    postStart = ''
-      until ${pkgs.nftables}/bin/nft list chain inet mihomo prerouting >/dev/null 2>&1; do
-        sleep 0.5
-      done
-
-      ${pkgs.nftables}/bin/nft insert rule inet mihomo prerouting iifname "${uu-interface}" return
-      ${pkgs.nftables}/bin/nft insert rule inet mihomo prerouting iifname "${config.services.tailscale.interfaceName}" return
-    '';
-  };
-
   programs.steam = {
     enable = true;
     fontPackages = with pkgs; [ noto-fonts-cjk-sans ];
