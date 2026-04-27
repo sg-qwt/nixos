@@ -597,6 +597,14 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
 	(with-current-buffer "*dict*"
 	  (ansi-color-apply-on-region (point-min) (point-max))
 	  (special-mode)))))
+  (defun qqq/open-poly (identifier)
+    "Open polymarket profile"
+    (interactive
+     (list (or (thing-at-point 'symbol t)
+               (read-string "Identifier: "))))
+    (browse-url
+     (concat "https://polymarket.com/"
+             (url-hexify-string identifier))))
   :general
   (general-def 'override
     "C-a" 'embark-act
@@ -611,7 +619,8 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
     "D" #'qqq/sdcv-at-word)
   (general-def embark-identifier-map
     "d" #'qqq/sdcv-at-char
-    "D" #'qqq/sdcv-at-word)
+    "D" #'qqq/sdcv-at-word
+    "p" #'qqq/open-poly)
 
   :init
   (setq prefix-help-command #'embark-prefix-help-command)
