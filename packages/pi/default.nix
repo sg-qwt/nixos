@@ -1,7 +1,6 @@
 { pkgs, lib, symlinkJoin, makeWrapper, ... }:
 let
   extensions = [
-    pkgs.my.pi-clojure
     pkgs.my.pi-notify
   ];
   skills = [

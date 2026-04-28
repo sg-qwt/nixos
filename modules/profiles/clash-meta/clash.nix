@@ -92,7 +92,7 @@ rec {
 
   proxies =
     let
-      front = {
+      anytls = {
         name = "anytls";
         type = "anytls";
         server = az-ips.rocky.ipv6;
@@ -122,29 +122,7 @@ rec {
         };
         client-fingerprint = "chrome";
       };
-    in
-    [
-      front
-
-      {
-        name = "front+warp";
-        type = "wireguard";
-        server = "engage.cloudflareclient.com";
-        port = 2408;
-        ip = "172.16.0.2/32";
-        ipv6 = "2606:4700:110:8917:8d18:1f95:291e:3c2e/128";
-        private-key = config.vaultix.placeholder.warp-key;
-        public-key = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
-        udp = true;
-        mtu = 1280;
-        remote-dns-resolve = true;
-        dns = [
-          "https://dns.cloudflare.com/dns-query"
-        ];
-        dialer-proxy = front.name;
-      }
-
-      {
+      sstls = {
         name = "sstls";
         type = "ss";
         server = az-ips.puer.ipv4;
@@ -158,7 +136,31 @@ rec {
           password = config.vaultix.placeholder.sing-pass;
           version = 3;
         };
+      };
+    in
+    [
+      anytls
+
+      sstls
+
+      {
+        name = "anytls+warp";
+        type = "wireguard";
+        server = "engage.cloudflareclient.com";
+        port = 2408;
+        ip = "172.16.0.2/32";
+        ipv6 = "2606:4700:110:8917:8d18:1f95:291e:3c2e/128";
+        private-key = config.vaultix.placeholder.warp-key;
+        public-key = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
+        udp = true;
+        mtu = 1280;
+        remote-dns-resolve = true;
+        dns = [
+          "https://dns.cloudflare.com/dns-query"
+        ];
+        dialer-proxy = anytls.name;
       }
+      
     ];
 
   proxy-providers = { };
