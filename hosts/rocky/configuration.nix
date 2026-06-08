@@ -36,7 +36,7 @@ let edg = self.tfo.fqdn.edg; in
     dnsPropagationCheck = true;
     dnsProvider = "cloudflare";
     extraDomainNames = [ "*.${edg}" ];
-    credentialsFile = config.vaultix.templates.acme-credential.path;
+    environmentFile = config.vaultix.templates.acme-credential.path;
   };
   users.users.nginx.extraGroups = [ config.users.groups.acme.name ];
 

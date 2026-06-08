@@ -47,6 +47,7 @@ in
     };
 
     nvidia = {
+      branch = "stable";
       modesetting.enable = true;
       powerManagement = {
         enable = true;
@@ -56,7 +57,6 @@ in
       nvidiaSettings = true;
       dynamicBoost.enable = true;
 
-      package = config.boot.kernelPackages.nvidiaPackages.production;
       prime = {
         offload = {
           enable = true;

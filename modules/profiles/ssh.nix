@@ -24,8 +24,8 @@ let
       (map
         (host: {
           "${host}" = {
-            hostname = "${host}.h.${self.tfo.fqdn.edg}";
-            user = username;
+            HostName = "${host}.h.${self.tfo.fqdn.edg}";
+            User = username;
           };
         })
         (builtins.attrNames self.shared-data.hosts)));
@@ -50,7 +50,29 @@ in
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
-        matchBlocks = match-blocks;
+        settings = {
+          "*" = {
+            ForwardAgent = false;
+            AddKeysToAgent = "no";
+            Compression = true;
+            ServerAliveInterval = 60;
+            ServerAliveCountMax = 3;
+            HashKnownHosts = false;
+            UserKnownHostsFile = "~/.ssh/known_hosts";
+            ControlPath = "~/.ssh/master-%r@%n:%p";
+            ControlMaster = "auto";
+            ControlPersist = "1m";
+          };
+        } //
+        (builtins.foldl' (a: b: a // b) { }
+          (map
+            (host: {
+              "${host}" = {
+                HostName = "${host}.h.${self.tfo.fqdn.edg}";
+                User = username;
+              };
+            })
+            (builtins.attrNames self.shared-data.hosts)));
       };
     };
   };
