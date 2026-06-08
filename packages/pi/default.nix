@@ -13,6 +13,7 @@ let
 in
 symlinkJoin {
   name = "pi";
+  inherit (pkgs.llm-agents.pi) version;
   paths = [
     pkgs.llm-agents.pi
     pkgs.my.brepl

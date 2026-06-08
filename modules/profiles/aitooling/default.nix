@@ -43,6 +43,17 @@ lib.mkProfile s "aitooling" {
       source = ./APPEND_SYSTEM.md;
       force = true;
     };
+
+    home.file.".pi/agent/settings.json" = {
+      text = builtins.toJSON {
+        lastChangelogVersion = pi.version;
+        defaultProvider = "openai-codex";
+        defaultModel = "gpt-5.5";
+        defaultThinkingLevel = "high";
+        transport = "auto";
+      };
+      force = true;
+    };
   };
 
   environment.systemPackages = with pkgs; [

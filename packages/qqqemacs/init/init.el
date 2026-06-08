@@ -446,7 +446,9 @@ If the buffer doesn't exist, create it first."
 
 (use-package clojure-ts-mode
   :custom
-  (clojure-ts-ensure-grammars nil))
+  (clojure-ts-ensure-grammars nil)
+  (clojure-ts-comment-macro-font-lock-body t)
+  (clojure-ts-toplevel-inside-comment-form t))
 
 (use-package org
   :preface
