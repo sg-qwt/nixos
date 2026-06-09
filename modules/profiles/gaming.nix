@@ -37,7 +37,8 @@ lib.mkProfile s "gaming"
   # https://github.com/ValveSoftware/gamescope/issues/1590
   programs.gamescope = {
     enable = true;
-    capSysNice = true;
+    # https://github.com/NixOS/nixpkgs/issues/523200
+    capSysNice = false;
     env = {
       MANGOHUD_CONFIGFILE = "${myhomecfg.xdg.configHome}/MangoHud/MangoHud.conf";
     };
