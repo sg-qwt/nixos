@@ -53,12 +53,12 @@ resource "cloudflare_dns_record" "cybcc" {
     a = {
       name    = "@"
       type    = "A"
-      content = module.az["puer"].ipv4
+      content = module.az["just"].ipv4
     }
     aaaa = {
       name    = "@"
       type    = "AAAA"
-      content = module.az["puer"].ipv6
+      content = module.az["just"].ipv6
     }
     catch = {
       name    = "*"

@@ -110,6 +110,19 @@ rec {
         };
         client-fingerprint = "chrome";
       };
+      hy = {
+        name = "hy";
+        type = "hysteria2";
+        server = az-ips.just.ipv4;
+        port = ports.https;
+        password = config.vaultix.placeholder.sing-hy;
+        up = "10 Mbps";
+        down = "10 Mbps";
+        obfs = "salamander";
+        obfs-password = config.vaultix.placeholder.sing-hy;
+        sni = fqdn.cybcc;
+        alpn = [ "h3" ];
+      };
       sstls = {
         name = "sstls";
         type = "ss";
@@ -130,6 +143,8 @@ rec {
       anytls
 
       sstls
+
+      hy
 
       {
         name = "anytls+warp";

@@ -4,13 +4,14 @@ with lib;
 let
   cfg = config.myos.singbox;
   inherit (self.shared-data) ports;
-  certDir = config.security.acme.certs.edg.directory;
+  edgCertDir = config.security.acme.certs.edg.directory;
+  cybccCertDir = config.security.acme.certs.cybcc.directory;
 in
 {
   options.myos.singbox = {
     enable = mkEnableOption "singbox server";
     profile = mkOption {
-      type = types.enum [ "sstls" "reality" "anytls" ];
+      type = types.enum [ "sstls" "reality" "anytls" "hysteria" ];
     };
     sni = mkOption {
       type = types.str;
@@ -28,6 +29,7 @@ in
       vaultix.secrets.sing-pass = { };
       vaultix.secrets.sing-vless-uuid = { };
       vaultix.secrets.sing-reality-private = { };
+      vaultix.secrets.sing-hy = { };
 
       services.nginx.defaultSSLListenPort = mkIf (cfg.profile == "reality") ports.default-ssl;
       services.nginx.streamConfig = mkIf (cfg.profile == "reality") ''
@@ -49,7 +51,14 @@ in
       security.acme.certs.edg = mkIf (cfg.profile == "anytls") {
         reloadServices = [ "sing-box.service" ];
         postRun = "${lib.getExe' pkgs.acl "setfacl"} --recursive --modify u:sing-box:rX ${
-          certDir
+          edgCertDir
+        }";
+      };
+
+      security.acme.certs.cybcc = mkIf (cfg.profile == "hysteria") {
+        reloadServices = [ "sing-box.service" ];
+        postRun = "${lib.getExe' pkgs.acl "setfacl"} --recursive --modify u:sing-box:rX ${
+          cybccCertDir
         }";
       };
 

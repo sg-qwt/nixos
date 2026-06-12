@@ -30,6 +30,7 @@ in
       vaultix.secrets.sing-shadow = { };
       vaultix.secrets.sing-pass = { };
       vaultix.secrets.sing-vless-uuid = { };
+      vaultix.secrets.sing-hy = { };
       vaultix.secrets.warp-key = { };
       vaultix.secrets.clash-secret = { };
       vaultix.templates.clashm = {

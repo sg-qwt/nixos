@@ -6,6 +6,7 @@ locals {
       name         = "puer"
       region       = "southeastasia"
       size         = "Standard_B2ats_v2"
+      ip_refresh   = "0612"
       disk_size_gb = 8
       zone_id      = local.edg_zone_id
       nsg_rules = {
@@ -13,6 +14,27 @@ locals {
           priority = 1001
           protocol = "Tcp"
           port     = local.ports.sstls
+        }
+        ssh = {
+          priority = 1002
+          protocol = "Tcp"
+          port     = 22
+        }
+      }
+    },
+
+    {
+      name         = "just"
+      region       = "eastasia"
+      size         = "Standard_B2ats_v2"
+      ip_refresh   = "0612"
+      disk_size_gb = 8
+      zone_id      = local.edg_zone_id
+      nsg_rules = {
+        sstls = {
+          priority = 1001
+          protocol = "*"
+          port     = local.ports.https
         }
         ssh = {
           priority = 1002
@@ -56,7 +78,7 @@ locals {
           port     = local.ports.anytls
         }
       }
-    },
+    }
   ]
 
   az_vms_by_name = {
