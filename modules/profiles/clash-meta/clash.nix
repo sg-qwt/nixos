@@ -58,7 +58,6 @@ rec {
     ipv6 = true;
     use-hosts = true;
     enhanced-mode = "fake-ip";
-    respect-rules = true;
     fake-ip-filter = [
       "*"
       "+.lan"
@@ -69,25 +68,14 @@ rec {
       "+.uu.163.com"
       "ps.res.netease.com"
     ];
-
+    default-nameserver = [
+      "tls://223.5.5.5"
+      "tls://223.6.6.6"
+    ];
     nameserver = [
-      "tls://8.8.4.4#select"
-      "tls://1.0.0.1#select"
-    ];
-
-    proxy-server-nameserver = [
       "https://doh.pub/dns-query"
+      "https://dns.alidns.com/dns-query"
     ];
-    nameserver-policy = {
-      "geosite:cn,private" = [
-        "https://doh.pub/dns-query"
-        "https://dns.alidns.com/dns-query"
-      ];
-      "geosite:geolocation-!cn" = [
-        "https://dns.cloudflare.com/dns-query"
-        "https://dns.google/dns-query"
-      ];
-    };
   };
 
   proxies =

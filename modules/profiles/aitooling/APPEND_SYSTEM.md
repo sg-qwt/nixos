@@ -12,3 +12,7 @@
 ## Clojure
 - **Clojure eval**: Use `brepl` via the `brepl` skill for evaluating Clojure code.
 - **After Clojure edits**: Check/fix paren balance using the `brepl` skill workflow before finishing.
+
+## Git staging
+
+Never stage files (`git add`, `git add -p`, etc.) unless the user explicitly asks to stage changes. Editing files is allowed when requested, but leave the Git index untouched by default.
