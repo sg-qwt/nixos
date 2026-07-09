@@ -87,6 +87,7 @@ lib.mkProfile s "shell"
         enter_accept = false;
         sync.records = true;
         dotfiles.enabled = true;
+        ai.enabled = false;
       };
     };
 
