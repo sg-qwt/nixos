@@ -39,8 +39,8 @@ in
 
       gc = {
         automatic = true;
-        options = "--delete-older-than 14d";
-        dates = "weekly";
+        options = "--delete-older-than 90d";
+        dates = "monthly";
       };
     };
 

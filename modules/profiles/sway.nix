@@ -144,6 +144,7 @@ lib.mkProfile s "sway"
   myhome = { config, lib, osConfig, ... }:
     {
       home.pointerCursor = {
+        enable = true;
         package = pkgs.adwaita-icon-theme;
         name = "Adwaita";
         size = 24;
