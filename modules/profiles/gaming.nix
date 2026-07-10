@@ -33,14 +33,12 @@ lib.mkProfile s "gaming"
     };
   };
 
-  # TODO move nvidia-offload to gamescope here once issue fixed
-  # https://github.com/ValveSoftware/gamescope/issues/1590
   programs.gamescope = {
     enable = true;
     # https://github.com/NixOS/nixpkgs/issues/523200
     capSysNice = false;
     env = {
-      MANGOHUD_CONFIGFILE = "${myhomecfg.xdg.configHome}/MangoHud/MangoHud.conf";
+      # MANGOHUD_CONFIGFILE = "${myhomecfg.xdg.configHome}/MangoHud/MangoHud.conf";
     };
   };
 
@@ -147,14 +145,7 @@ lib.mkProfile s "gaming"
     fontPackages = with pkgs; [ noto-fonts-cjk-sans ];
     extraCompatPackages = [ pkgs.proton-ge-bin ];
     remotePlay.openFirewall = true;
-    package = pkgs.steam.override {
-      extraEnv = {
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-        __NV_PRIME_RENDER_OFFLOAD = "1";
-        __NV_PRIME_RENDER_OFFLOAD_PROVIDER = "NVIDIA-G0";
-        __VK_LAYER_NV_optimus = "NVIDIA_only";
-      };
-    };
+    package = pkgs.steam;
     gamescopeSession = {
       enable = true;
       args = [
@@ -174,77 +165,28 @@ lib.mkProfile s "gaming"
     };
   };
 
-  services.scx = {
-    enable = true;
-    scheduler = "scx_lavd";
-  };
-
   myhome = { config, lib, osConfig, ... }: {
-    programs.mangohud = {
-      enable = true;
-      settings = {
-        pci_dev = "0000:01:00.0";
-        horizontal = true;
-        horizontal_stretch = false;
-        hud_no_margin = true;
-        fps = true;
-        cpu_stats = true;
-        cpu_temp = true;
-        gpu_stats = true;
-        gpu_temp = true;
-        ram = true;
-        vram = true;
-        hud_compact = true;
-        toggle_hud = "F12";
-        toggle_hud_position = "F11";
-      };
-    };
-
-    xdg.dataFile."Steam/steam_dev.cfg".text = ''
-      unShaderBackgroundProcessingThreads 8
-    '';
+    # programs.mangohud = {
+    #   enable = true;
+    #   settings = {
+    #     horizontal = true;
+    #     horizontal_stretch = false;
+    #     hud_no_margin = true;
+    #     fps = true;
+    #     cpu_stats = true;
+    #     cpu_temp = true;
+    #     gpu_stats = true;
+    #     gpu_temp = true;
+    #     ram = true;
+    #     vram = true;
+    #     hud_compact = true;
+    #     toggle_hud = "F12";
+    #     toggle_hud_position = "F11";
+    #   };
+    # };
 
   };
 
   # controller
   hardware.xone.enable = true;
-
-  # Switch ASUS power profile based on Steam status
-  systemd.user.services.steam-power-profile = {
-    enable = true;
-    description = "Switch ASUS power profile based on Steam status";
-    wantedBy = [ "default.target" ];
-
-    serviceConfig = {
-      Type = "simple";
-      Restart = "always";
-      RestartSec = 5;
-    };
-
-    path = [ pkgs.procps pkgs.asusctl ];
-
-    script = ''
-      CURRENT_PROFILE=""
-
-      while true; do
-        if pgrep -x "steam" > /dev/null; then
-          # Steam is running
-          if [ "$CURRENT_PROFILE" != "Balanced" ]; then
-            echo "Steam detected, switching to Balanced profile"
-            asusctl profile set Balanced
-            CURRENT_PROFILE="Balanced"
-          fi
-        else
-          # Steam is not running
-          if [ "$CURRENT_PROFILE" != "Quiet" ]; then
-            echo "Steam not running, switching to Quiet profile"
-            asusctl profile set Quiet
-            CURRENT_PROFILE="Quiet"
-          fi
-        fi
-
-        sleep 5
-      done
-    '';
-  };
 }

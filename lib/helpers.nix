@@ -104,7 +104,7 @@ rec {
   mkOS = { name, hostPubkey }:
     let
       p =
-        if (name == "zheng") then
+        if (name == "zheng" || name == "li") then
           pkgs.appendOverlays [
             inputs.jovian.overlays.default
             jovian-overlay

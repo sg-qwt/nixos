@@ -1,7 +1,4 @@
-{ config, lib, pkgs, modulesPath, ... }:
-let
-  systemctl = lib.getExe' config.systemd.package "systemctl";
-in
+{ config, lib, pkgs, modulesPath, inputs, ... }:
 {
   imports =
     [
@@ -9,26 +6,36 @@ in
     ];
 
   boot = {
+    kernelPackages = inputs.jovian.legacyPackages.${pkgs.stdenv.hostPlatform.system}.linuxPackages_jovian;
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
     initrd = {
-      availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "usbhid" "sd_mod" "rtsx_pci_sdmmc" ];
-      kernelModules = [ ];
+      kernelModules = [
+        "hid-generic"
+        "usbhid"
+      ];
+      availableKernelModules = [
+        "nvme"
+        "sdhci"
+        "sdhci_pci"
+        "xhci_pci"
+        "cqhci"
+        "mmc_block"
+      ];
     };
     kernelParams = [
       "nowatchdog"
       "amd_pstate=active"
-      "i915.enable_dpcd_backlight=1"
-      "nvidia.NVreg_EnableBacklightHandler=0"
-      "nvidia.NVReg_RegistryDwords=EnableBrightnessControl=0"
+
+      "amdgpu.sched_hw_submission=4"
+      "amdgpu.lockup_timeout=5000,10000,10000,5000"
     ];
     kernelModules = [ "kvm-amd" ];
-    blacklistedKernelModules = [ "nouveau" ];
+    blacklistedKernelModules = [ ];
     extraModulePackages = [ ];
     supportedFilesystems = [ "bcachefs" ];
-    kernelPackages = pkgs.linuxPackages_latest;
   };
 
   hardware = {
@@ -45,58 +52,11 @@ in
       enable = true;
       enableGraphical = true;
     };
-
-    nvidia = {
-      branch = "stable";
-      modesetting.enable = true;
-      powerManagement = {
-        enable = true;
-        finegrained = true;
-      };
-      open = true;
-      nvidiaSettings = true;
-      dynamicBoost.enable = true;
-
-      prime = {
-        offload = {
-          enable = true;
-          enableOffloadCmd = true;
-        };
-        amdgpuBusId = "PCI:101:0:0";
-        nvidiaBusId = "PCI:1:0:0";
-      };
-    };
   };
 
   services.xserver.videoDrivers = [
     "amdgpu"
-    "nvidia"
   ];
-
-  services.fwupd.enable = false;
-
-  services.logind = {
-    settings.Login = {
-      HandleLidSwitchDocked = "ignore";
-      HandleLidSwitchExternalPower = "ignore";
-      HandlePowerKey = "suspend";
-      HandleLidSwitch = "ignore";
-    };
-  };
-
-  services.udev = {
-    enable = true;
-    # fixes mic mute button
-    extraHwdb = ''
-      evdev:name:*:dmi:bvn*:bvr*:bd*:svnASUS*:pn*:*
-      KEYBOARD_KEY_ff31007c=f20
-    '';
-    extraRules = ''
-      ACTION=="add", SUBSYSTEM=="usb", TEST=="power/autosuspend", ATTR{idVendor}=="0b05", ATTR{idProduct}=="19b6", ATTR{power/autosuspend}="-1"
-      ACTION=="add|change", SUBSYSTEM=="usb", ATTR{idVendor}=="0b05", ATTR{idProduct}=="193b", ATTR{power/wakeup}="disabled"
-      SUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity}=="[0-5]", RUN+="${systemctl} poweroff"
-    '';
-  };
 
   zramSwap = {
     enable = true;

@@ -1,7 +1,14 @@
 { config, pkgs, lib, ... }:
 {
+  jovian.devices.steamdeck.enableOsFanControl = true;
+  systemd.tmpfiles.settings."99-jovian"."/sys/firmware/dmi/tables/*".z.mode = "444";
+  systemd.tmpfiles.rules = [
+    "z /sys/class/dmi/id/product_serial 440 root wheel - -"
+    "z /sys/class/dmi/id/board_serial 440 root wheel - -"
+  ];
+  jovian.steam.enable = true;
+
   myos = {
-    asusd.enable = true;
     sway.enable = true;
     tmux.enable = true;
     qqqemacs.enable = true;

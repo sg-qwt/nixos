@@ -25,19 +25,9 @@ let
   solaar = lib.getExe pkgs.solaar;
 
   monitor = {
-    internal = {
-      id = "Thermotrex Corporation TL140ADXP02-0 Unknown";
-      resolution = "2560x1600@165Hz";
-      scale = 1.6;
-    };
     main = {
       id = "Dell Inc. DELL U2718QM MYPFK89J15HL";
       resolution = "3840x2160@60Hz";
-      scale = 2.0;
-    };
-    headless = {
-      id = "HEADLESS-1";
-      resolution = "2800x1752@60Hz";
       scale = 2.0;
     };
   };
@@ -100,47 +90,6 @@ lib.mkProfile s "sway"
     };
   };
 
-
-  vaultix.secrets.sunshine-pass = { };
-  vaultix.secrets.sunshine-salt = { };
-
-  vaultix.templates.sunshine-cred = {
-    content = builtins.toJSON {
-      username = config.myos.user.mainUser;
-      password = config.vaultix.placeholder.sunshine-pass;
-      salt = config.vaultix.placeholder.sunshine-salt;
-    };
-    owner = config.myos.user.mainUser;
-  };
-
-  services.sunshine = {
-    enable = true;
-    autoStart = false;
-    capSysAdmin = true;
-    openFirewall = true;
-    settings = {
-      # TODO wait https://github.com/LizardByte/Sunshine/pull/2885
-      # output_name = monitor.headless;
-      output_name = 2;
-      credentials_file = config.vaultix.templates.sunshine-cred.path;
-      stream_audio = "disabled";
-    };
-    applications = {
-      apps = [
-        {
-          name = "tablet monitor";
-          auto-detach = "true";
-          prep-cmd = [
-            {
-              do = "${swaymsg} output HEADLESS-1 enable";
-              undo = "${swaymsg} output HEADLESS-1 disable";
-            }
-          ];
-        }
-      ];
-    };
-  };
-
   myhome = { config, lib, osConfig, ... }:
     {
       home.pointerCursor = {
@@ -190,6 +139,7 @@ lib.mkProfile s "sway"
               interval = 60;
               warning = 20.0;
               alert = 10.0;
+              format = " $icon $used / $total ";
             }
             {
               block = "cpu";
@@ -227,13 +177,6 @@ lib.mkProfile s "sway"
               block = "time";
               interval = 5;
               format = " $timestamp.datetime(f:'%a %b %e %R') ";
-            }
-            {
-              block = "battery";
-              format = " $icon $percentage ";
-              full_format = " $icon $percentage ";
-              empty_format = " $icon $percentage ";
-              device = "BAT0";
             }
           ];
         };
@@ -277,10 +220,6 @@ lib.mkProfile s "sway"
 
       wayland.windowManager.sway = {
         enable = true;
-        extraOptions = [ "--unsupported-gpu" ];
-        extraSessionCommands = ''
-          export WLR_DRM_DEVICES=$(realpath /dev/dri/by-path/pci-0000:65:00.0-card)
-        '';
 
         systemd = {
           enable = true;
@@ -303,11 +242,7 @@ lib.mkProfile s "sway"
 
           startup = [
             { command = "emacs"; }
-            { command = "\"${swaymsg} create_output; ${swaymsg} output ${monitor.headless.id} disable\""; }
-          ] ++ (lib.optional config.services.kanshi.enable
-            # workaround for https://github.com/emersion/kanshi/issues/43
-            { command = "${systemctl} --user restart kanshi.service"; always = true; }
-          ) ++ (lib.optional osConfig.services.blueman.enable
+          ] ++ (lib.optional osConfig.services.blueman.enable
             { command = "${blueman-applet}"; always = true; }
           ) ++ (lib.optional osConfig.i18n.inputMethod.enable
             { command = "systemd-cat --identifier=fcitx5 ${fcitx5} -d --replace"; always = true; }
@@ -350,9 +285,7 @@ lib.mkProfile s "sway"
             "*" = {
               bg = "${wallpaper} fill";
             };
-          } // (createSwayOutput monitor "main")
-          // (createSwayOutput monitor "internal")
-          // (createSwayOutput monitor "headless");
+          } // (createSwayOutput monitor "main");
 
           workspaceOutputAssign = [
             { workspace = "1"; output = monitor.main.id; }
@@ -360,10 +293,10 @@ lib.mkProfile s "sway"
             { workspace = "3"; output = monitor.main.id; }
             { workspace = "4"; output = monitor.main.id; }
             { workspace = "5"; output = monitor.main.id; }
-            { workspace = "6"; output = monitor.internal.id; }
-            { workspace = "7"; output = monitor.internal.id; }
-            { workspace = "8"; output = monitor.internal.id; }
-            { workspace = "9"; output = monitor.headless.id; }
+            { workspace = "6"; output = monitor.main.id; }
+            { workspace = "7"; output = monitor.main.id; }
+            { workspace = "8"; output = monitor.main.id; }
+            { workspace = "9"; output = monitor.main.id; }
           ];
 
           input = {
@@ -404,12 +337,6 @@ lib.mkProfile s "sway"
             ];
           };
         };
-
-        extraConfig =
-          lib.strings.concatLines [
-            "bindswitch --reload --locked lid:on output eDP-1 disable"
-            "bindswitch --reload --locked lid:off output eDP-1 enable"
-          ];
       };
 
       programs.swaylock = {
@@ -436,45 +363,6 @@ lib.mkProfile s "sway"
           lock = swaylock;
           before-sleep = "${loginctl} lock-session";
         };
-      };
-
-      services.kanshi = {
-        enable = true;
-        settings = [
-          {
-            profile.name = "undocked";
-            profile.outputs = [
-              {
-                criteria = "${monitor.internal.id}";
-                position = "0,0";
-                scale = monitor.internal.scale;
-              }
-              {
-                criteria = "${monitor.headless.id}";
-                status = "disable";
-              }
-            ];
-          }
-          {
-            profile.name = "docked";
-            profile.outputs = [
-              {
-                criteria = monitor.main.id;
-                position = "0,0";
-                scale = monitor.main.scale;
-              }
-              {
-                criteria = monitor.internal.id;
-                position = "1920,0";
-                scale = monitor.internal.scale;
-              }
-              {
-                criteria = monitor.headless.id;
-                status = "disable";
-              }
-            ];
-          }
-        ];
       };
 
       home.packages = with pkgs; [
