@@ -16,7 +16,7 @@ lib.mkProfile s "aitooling" {
       text = builtins.toJSON {
         lastChangelogVersion = pi.version;
         defaultProvider = "openai-codex";
-        defaultModel = "gpt-5.5";
+        defaultModel = "gpt-5.6-sol";
         defaultThinkingLevel = "high";
         transport = "auto";
       };

@@ -62,7 +62,6 @@
 
         overlays = [
           self.overlays.default
-          llm-agents.overlays.default
           emacs-overlay.overlays.package
         ];
       };
