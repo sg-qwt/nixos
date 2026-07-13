@@ -6,7 +6,6 @@
     "z /sys/class/dmi/id/product_serial 440 root wheel - -"
     "z /sys/class/dmi/id/board_serial 440 root wheel - -"
   ];
-  jovian.steam.enable = true;
 
   myos = {
     sway.enable = true;

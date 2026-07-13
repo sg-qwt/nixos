@@ -32,7 +32,7 @@
       "amdgpu.sched_hw_submission=4"
       "amdgpu.lockup_timeout=5000,10000,10000,5000"
     ];
-    kernelModules = [ "kvm-amd" ];
+    kernelModules = [ "kvm-amd" "ntsync" ];
     blacklistedKernelModules = [ ];
     extraModulePackages = [ ];
     supportedFilesystems = [ "bcachefs" ];
@@ -52,6 +52,8 @@
       enable = true;
       enableGraphical = true;
     };
+
+    steam-hardware.enable = true;
   };
 
   services.xserver.videoDrivers = [

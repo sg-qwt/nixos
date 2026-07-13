@@ -35,14 +35,16 @@ lib.mkProfile s "gaming"
 
   programs.gamescope = {
     enable = true;
+    enableWsi = true;
     # https://github.com/NixOS/nixpkgs/issues/523200
     capSysNice = false;
     env = {
-      # MANGOHUD_CONFIGFILE = "${myhomecfg.xdg.configHome}/MangoHud/MangoHud.conf";
+      MANGOHUD_CONFIGFILE = "${myhomecfg.xdg.configHome}/MangoHud/MangoHud.conf";
     };
   };
 
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+  boot.kernel.sysctl."net.ipv4.tcp_mtu_probing" = 1;
 
   networking = {
     nat = {
@@ -145,7 +147,7 @@ lib.mkProfile s "gaming"
     fontPackages = with pkgs; [ noto-fonts-cjk-sans ];
     extraCompatPackages = [ pkgs.proton-ge-bin ];
     remotePlay.openFirewall = true;
-    package = pkgs.steam;
+    package = pkgs.steam.override { platformArgs = ""; };
     gamescopeSession = {
       enable = true;
       args = [
@@ -159,32 +161,31 @@ lib.mkProfile s "gaming"
         "--mangoapp"
       ];
       steamArgs = [
-        "-tenfoot"
-        "-pipewire-dmabuf"
+        "-pipewire"
+        "-gamepadui"
       ];
     };
   };
 
   myhome = { config, lib, osConfig, ... }: {
-    # programs.mangohud = {
-    #   enable = true;
-    #   settings = {
-    #     horizontal = true;
-    #     horizontal_stretch = false;
-    #     hud_no_margin = true;
-    #     fps = true;
-    #     cpu_stats = true;
-    #     cpu_temp = true;
-    #     gpu_stats = true;
-    #     gpu_temp = true;
-    #     ram = true;
-    #     vram = true;
-    #     hud_compact = true;
-    #     toggle_hud = "F12";
-    #     toggle_hud_position = "F11";
-    #   };
-    # };
-
+    programs.mangohud = {
+      enable = true;
+      settings = {
+        horizontal = true;
+        horizontal_stretch = false;
+        hud_no_margin = true;
+        fps = true;
+        cpu_stats = true;
+        cpu_temp = true;
+        gpu_stats = true;
+        gpu_temp = true;
+        ram = true;
+        vram = true;
+        hud_compact = true;
+        toggle_hud = "F12";
+        toggle_hud_position = "F11";
+      };
+    };
   };
 
   # controller
