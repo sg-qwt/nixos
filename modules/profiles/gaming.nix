@@ -134,6 +134,7 @@ lib.mkProfile s "gaming"
       ];
       ExecStart = "${lib.getExe pkgs.my.uuplugin} ${pkgs.my.uuplugin}/share/uuplugin/uu.conf";
       Restart = "on-failure";
+      TimeoutStopSec = "5s";
     };
   };
 
@@ -158,6 +159,8 @@ lib.mkProfile s "gaming"
         "3840"
         "--output-height"
         "2160"
+        "--hide-cursor-delay"
+        "3000"
         "--mangoapp"
       ];
       steamArgs = [
@@ -166,6 +169,45 @@ lib.mkProfile s "gaming"
       ];
     };
   };
+
+  systemd.user.services.steam-power-profile = {
+    enable = true;
+    description = "Switch power profile based on Steam status";
+    wantedBy = [ "default.target" ];
+
+    serviceConfig = {
+      Type = "simple";
+      Restart = "always";
+      RestartSec = 5;
+    };
+
+    path = [ pkgs.procps pkgs.power-profiles-daemon ];
+
+    script = ''
+      CURRENT_PROFILE=""
+
+      while true; do
+        if pgrep -x "steam" > /dev/null; then
+          # Steam is running
+          if [ "$CURRENT_PROFILE" != "performance" ]; then
+            echo "Steam detected, switching to performance profile"
+            powerprofilesctl set performance
+            CURRENT_PROFILE="performance"
+          fi
+        else
+          # Steam is not running
+          if [ "$CURRENT_PROFILE" != "balanced" ]; then
+            echo "Steam not running, switching to balanced profile"
+            powerprofilesctl set balanced
+            CURRENT_PROFILE="balanced"
+          fi
+        fi
+
+        sleep 5
+      done
+    '';
+  };
+ 
 
   myhome = { config, lib, osConfig, ... }: {
     programs.mangohud = {
