@@ -213,19 +213,11 @@ lib.mkProfile s "gaming"
     programs.mangohud = {
       enable = true;
       settings = {
-        horizontal = true;
+        preset = "2,3,4,0,1";
         horizontal_stretch = false;
-        hud_no_margin = true;
-        fps = true;
-        cpu_stats = true;
-        cpu_temp = true;
-        gpu_stats = true;
-        gpu_temp = true;
-        ram = true;
-        vram = true;
-        hud_compact = true;
-        toggle_hud = "F12";
-        toggle_hud_position = "F11";
+        toggle_preset = "F10";
+        toggle_hud = "F11";
+        toggle_hud_position = "F12";
       };
     };
   };
