@@ -31,13 +31,19 @@ lib.mkProfile s "gaming"
       setuid = true;
       setgid = true;
     };
+
+    bwrap = {
+      setuid = true;
+      owner = "root";
+      group = "root";
+      source = "${pkgs.bubblewrap}/bin/bwrap";
+    };
   };
 
   programs.gamescope = {
     enable = true;
     enableWsi = true;
-    # https://github.com/NixOS/nixpkgs/issues/523200
-    capSysNice = false;
+    capSysNice = true;
     env = {
       MANGOHUD_CONFIGFILE = "${myhomecfg.xdg.configHome}/MangoHud/MangoHud.conf";
     };
