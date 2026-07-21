@@ -46,6 +46,8 @@ lib.mkProfile s "gaming"
     capSysNice = true;
     env = {
       MANGOHUD_CONFIGFILE = "${myhomecfg.xdg.configHome}/MangoHud/MangoHud.conf";
+      STEAM_MULTIPLE_XWAYLANDS = "1";
+      STEAM_LAUNCH_WRAPPER_SCOPE = "1";
     };
   };
 
@@ -159,6 +161,7 @@ lib.mkProfile s "gaming"
       enable = true;
       args = [
         "--fullscreen"
+        "--mangoapp"
         "--nested-refresh"
         "60"
         "--output-width"
@@ -167,7 +170,9 @@ lib.mkProfile s "gaming"
         "2160"
         "--hide-cursor-delay"
         "3000"
-        "--mangoapp"
+        "--xwayland-count"
+        "2"
+
       ];
       steamArgs = [
         "-pipewire"
