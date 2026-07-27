@@ -123,13 +123,6 @@ lib.mkProfile s "sway"
           icons = "none";
           theme = "plain";
           blocks = [
-            {
-              block = "custom";
-              command = "${curl} --silent https://wttr.in/shanghai?format=+%C+%t";
-              hide_when_empty = true;
-              interval = 3000;
-              format = " $text ";
-            }
             (queryCoin "BTC")
             (queryCoin "SOL")
             {
@@ -146,8 +139,12 @@ lib.mkProfile s "sway"
               interval = 5;
             }
             {
+              block = "amd_gpu";
+              interval = 5;
+            }
+            {
               block = "memory";
-              format = " $icon $mem_total_used_percents.eng(w:2) ";
+              format = " $icon $mem_used_percents.eng(w:2) ";
             }
             {
               block = "sound";
