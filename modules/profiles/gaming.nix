@@ -54,6 +54,12 @@ lib.mkProfile s "gaming"
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
   boot.kernel.sysctl."net.ipv4.tcp_mtu_probing" = 1;
 
+  services.scx = {
+    enable = true;
+    package = pkgs.scx.rustscheds;
+    scheduler = "scx_lavd";
+  };
+
   networking = {
     nat = {
       enable = true;
@@ -172,11 +178,13 @@ lib.mkProfile s "gaming"
         "3000"
         "--xwayland-count"
         "2"
-
       ];
       steamArgs = [
         "-pipewire"
+        "-steampal"
+        "-steamdeck"
         "-gamepadui"
+        "-steamos3"
       ];
     };
   };
