@@ -11,6 +11,8 @@ in
 
   config = {
 
+    boot.loader.systemd-boot.configurationLimit = 8;
+
     system.configurationRevision = self.rev or self.dirtyRev or "dirty";
 
     time.timeZone = "Asia/Shanghai";
