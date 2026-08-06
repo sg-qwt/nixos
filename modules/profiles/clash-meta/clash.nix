@@ -123,6 +123,19 @@ rec {
         sni = fqdn.cybcc;
         alpn = [ "h3" ];
       };
+      hyv6 = {
+        name = "hyv6";
+        type = "hysteria2";
+        server = az-ips.just.ipv6;
+        port = ports.https;
+        password = config.vaultix.placeholder.sing-hy;
+        up = "10 Mbps";
+        down = "10 Mbps";
+        obfs = "salamander";
+        obfs-password = config.vaultix.placeholder.sing-hy;
+        sni = fqdn.cybcc;
+        alpn = [ "h3" ];
+      };
       sstls = {
         name = "sstls";
         type = "ss";
@@ -145,6 +158,8 @@ rec {
       sstls
 
       hy
+
+      hyv6
 
       {
         name = "anytls+warp";
@@ -211,6 +226,7 @@ rec {
     "DOMAIN-SUFFIX,cm.steampowered.com,DIRECT"
     "DOMAIN-SUFFIX,steamserver.net,DIRECT"
     "DOMAIN-SUFFIX,steamchina.com,DIRECT"
+    "DOMAIN-SUFFIX,bambulab.com,select"
     "DOMAIN-SUFFIX,polymarket.com,anytls"
     "DOMAIN-SUFFIX,openai.com,sstls"
     "DOMAIN-SUFFIX,chatgpt.com,sstls"

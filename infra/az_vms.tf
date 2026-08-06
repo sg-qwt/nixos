@@ -27,7 +27,7 @@ locals {
       name         = "just"
       region       = "eastasia"
       size         = "Standard_B2ats_v2"
-      ip_refresh   = "0612"
+      ip_refresh   = "0806"
       disk_size_gb = 8
       zone_id      = local.edg_zone_id
       nsg_rules = {
