@@ -21,8 +21,6 @@ let
   fcitx5 = lib.getExe config.i18n.inputMethod.package;
   blueman-applet = lib.getExe' pkgs.blueman "blueman-applet";
   start-sway = "systemd-cat --identifier=sway sway";
-  pgrep = lib.getExe' pkgs.procps "pgrep";
-  solaar = lib.getExe pkgs.solaar;
 
   monitor = {
     main = {
@@ -87,6 +85,15 @@ lib.mkProfile s "sway"
       default_session = {
         command = "${lib.getExe pkgs.tuigreet} --asterisks --time --cmd '${start-sway}'";
       };
+    };
+  };
+
+  programs.solaar = {
+    enable = true;
+    userService = {
+      enable = true;
+      window = "hide";
+      batteryIcons = "symbolic";
     };
   };
 
@@ -243,8 +250,6 @@ lib.mkProfile s "sway"
             { command = "${blueman-applet}"; always = true; }
           ) ++ (lib.optional osConfig.i18n.inputMethod.enable
             { command = "systemd-cat --identifier=fcitx5 ${fcitx5} -d --replace"; always = true; }
-          ) ++ (lib.optional osConfig.hardware.logitech.wireless.enableGraphical
-            { command = "${pgrep} solaar > /dev/null || ${solaar} --window=hide --battery-icons=symbolic"; always = true; }
           );
 
           menu = "${lib.getExe config.programs.wofi.package}";
@@ -362,7 +367,8 @@ lib.mkProfile s "sway"
       home.packages = with pkgs; [
         wl-clipboard
         xdg-utils
-        wf-recorder
+        # TODO https://github.com/NixOS/nixpkgs/pull/552231
+        # wf-recorder
         open-in-mpv
       ];
 

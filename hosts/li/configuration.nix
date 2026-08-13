@@ -8,6 +8,13 @@
   ];
   services.power-profiles-daemon.enable = true;
 
+  # services.fwupd = {
+  #   enable = true;
+  #   daemonSettings = {
+  #     OnlyTrusted = false;
+  #   };
+  # };
+
   myos = {
     sway.enable = true;
     tmux.enable = true;

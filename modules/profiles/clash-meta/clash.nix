@@ -227,7 +227,7 @@ rec {
     "DOMAIN-SUFFIX,steamserver.net,DIRECT"
     "DOMAIN-SUFFIX,steamchina.com,DIRECT"
     "DOMAIN-SUFFIX,bambulab.com,select"
-    "DOMAIN-SUFFIX,polymarket.com,anytls"
+    # "DOMAIN-SUFFIX,polymarket.com,anytls"
     "DOMAIN-SUFFIX,openai.com,sstls"
     "DOMAIN-SUFFIX,chatgpt.com,sstls"
     "GEOSITE,category-ads-all,REJECT"

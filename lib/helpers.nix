@@ -37,6 +37,8 @@ rec {
   default-overlays =
     args: final: prev:
     {
+      inherit mylibs;
+
       my =
         (builtins.listToAttrs
           (map
@@ -56,7 +58,20 @@ rec {
       buildFHSEnv = prev.buildFHSEnv.override {
         bubblewrap = "/run/wrappers";
       };
-      inherit mylibs;
+
+      # TODO https://github.com/NixOS/nixpkgs/pull/552075
+      python313Packages = prev.python313Packages.overrideScope (
+        pyFinal: pyPrev: {
+          nanoemoji = pyPrev.nanoemoji.overrideAttrs (_: {
+            src = prev.fetchFromGitHub {
+              owner = "googlefonts";
+              repo = "nanoemoji";
+              tag = "v0.16.0";
+              hash = "sha256-FysyKC01XBnRiur5RR9fcsTxQqE8x0JJHSoe3q6JtKc=";
+            };
+          });
+        }
+      );
     };
 
   jovian-overlay =
