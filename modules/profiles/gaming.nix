@@ -36,7 +36,7 @@ lib.mkProfile s "gaming"
       setuid = true;
       owner = "root";
       group = "root";
-      source = "${pkgs.bubblewrap}/bin/bwrap";
+      source = "${pkgs.bubblewrapSetuid}/bin/bwrap";
     };
   };
 
