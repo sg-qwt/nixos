@@ -1219,4 +1219,12 @@ the focus."
   :custom
   (pi-coding-agent-input-window-height 0.3)
   (pi-coding-agent-quit-without-confirmation t)
+  (pi-coding-agent-evil-copy-raw-markdown nil)
+  :config
+  (with-eval-after-load 'pi-coding-agent-evil
+    (general-def
+      '(normal motion)
+      pi-coding-agent-chat-mode-map
+      "?" #'evil-search-backward
+      "m" #'pi-coding-agent-menu))
   :commands (pi-coding-agent))
