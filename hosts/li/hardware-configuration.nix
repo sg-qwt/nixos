@@ -1,4 +1,17 @@
 { config, lib, pkgs, modulesPath, inputs, ... }:
+let
+  system = pkgs.stdenv.hostPlatform.system;
+
+  jovianKernel = inputs.jovian.legacyPackages.${system}.linux_jovian;
+
+  jovianKernelWithEcrc = jovianKernel.override {
+    argsOverride.structuredExtraConfig =
+      jovianKernel.structuredExtraConfig
+      // {
+        PCIE_ECRC = lib.kernel.yes;
+      };
+  };
+in
 {
   imports =
     [
@@ -6,7 +19,7 @@
     ];
 
   boot = {
-    kernelPackages = inputs.jovian.legacyPackages.${pkgs.stdenv.hostPlatform.system}.linuxPackages_jovian;
+    kernelPackages = pkgs.linuxPackagesFor jovianKernelWithEcrc;
     loader = {
       systemd-boot.enable = true;
       systemd-boot.memtest86.enable = true;
