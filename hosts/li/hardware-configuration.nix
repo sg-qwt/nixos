@@ -34,7 +34,7 @@
       "amdgpu.lockup_timeout=5000,10000,10000,5000"
 
       "pcie_ports=native"
-      "pcie_ecrc=on"
+      "pci=ecrc=on"
     ];
     kernelModules = [ "kvm-amd" "ntsync" ];
     blacklistedKernelModules = [ ];
