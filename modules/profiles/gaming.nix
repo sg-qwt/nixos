@@ -22,6 +22,10 @@ lib.mkProfile s "gaming"
     }
   ];
 
+  environment.variables = {
+    MESA_SHADER_CACHE_MAX_SIZE = "16G";
+  };
+
   environment.systemPackages = [ steam-gamescope-uunet ];
 
   environment.etc."netns/uunet/resolv.conf".text = ''
