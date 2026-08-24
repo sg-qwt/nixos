@@ -13,6 +13,15 @@ let
 in
 lib.mkProfile s "gaming"
 {
+  security.pam.loginLimits = [
+    {
+      item = "nice";
+      type = "hard";
+      domain = "*";
+      value = "-8";
+    }
+  ];
+
   environment.systemPackages = [ steam-gamescope-uunet ];
 
   environment.etc."netns/uunet/resolv.conf".text = ''
