@@ -3,16 +3,19 @@ data "azurerm_storage_account" "persist" {
   resource_group_name = "persistent"
 }
 
+data "azurerm_storage_container" "vhds" {
+  name                  = "vhds"
+  storage_account_id    = data.azurerm_storage_account.persist.id
+}
+
 data "azurerm_storage_blob" "image_vhd" {
   name                   = "nixosbase-2023-05-28.vhd"
-  storage_account_name   = data.azurerm_storage_account.persist.name
-  storage_container_name = "vhds"
+  storage_container_id   = data.azurerm_storage_container.vhds.id
 }
 
 data "azurerm_storage_blob" "image_vhd_20251012" {
   name                   = "nixos-image-azure-25.11.20251012.cf3f5c4-x86_64-linux.vhd"
-  storage_account_name   = data.azurerm_storage_account.persist.name
-  storage_container_name = "vhds"
+  storage_container_id   = data.azurerm_storage_container.vhds.id
 }
 
 data "azurerm_shared_image_gallery" "gallery" {

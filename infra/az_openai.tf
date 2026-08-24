@@ -28,12 +28,12 @@ resource "azurerm_cognitive_account" "anu_foundry" {
   project_management_enabled = true
 }
 
-resource "azurerm_cognitive_deployment" "anu_gpt5_1_codex_mini" {
+resource "azurerm_cognitive_deployment" "anu_gpt5_6_sol" {
   depends_on = [
     azurerm_cognitive_account.anu_foundry
   ]
 
-  name                   = "gpt-5.1-codex-mini"
+  name                   = "gpt-5.6-sol"
   cognitive_account_id   = azurerm_cognitive_account.anu_foundry.id
   rai_policy_name        = "Microsoft.DefaultV2"
   version_upgrade_option = "OnceNewDefaultVersionAvailable"
@@ -45,8 +45,8 @@ resource "azurerm_cognitive_deployment" "anu_gpt5_1_codex_mini" {
 
   model {
     format  = "OpenAI"
-    name    = "gpt-5.1-codex-mini"
-    version = "2025-11-13"
+    name    = "gpt-5.6-sol"
+    version = "2026-07-09"
   }
 }
 

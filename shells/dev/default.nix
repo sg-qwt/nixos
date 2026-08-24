@@ -3,8 +3,17 @@ let
   tfenv = self + "/caveman/tf-infra.env.age";
   id = self + "/resources/keys/age-yubikey-identity-main.txt";
   terraform = (pkgs.terraform.withPlugins (p: [
+    # p.cloudflare_cloudflare
+    # TODO https://github.com/cloudflare/terraform-provider-cloudflare/issues/7304
+    (p.mkProvider {
+      owner = "cloudflare";
+      repo = "terraform-provider-cloudflare";
+      rev = "v5.22.0";
+      hash = "sha256-qy/bW3CnsSXoiCLPW+LVuBb7OQLhxIpCDNTyAdjU5rM=";
+      vendorHash = "sha256-IwklxMtQ6pOO/066SKx298ANoh0i/DiGtgqamenMi+s=";
+      homepage = "https://registry.terraform.io/providers/cloudflare/cloudflare";
+    })
     p.hashicorp_azurerm
-    p.cloudflare_cloudflare
     p.tailscale_tailscale
     p.hashicorp_time
     p.grafana_grafana
