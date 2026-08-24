@@ -367,8 +367,7 @@ lib.mkProfile s "sway"
       home.packages = with pkgs; [
         wl-clipboard
         xdg-utils
-        # TODO https://github.com/NixOS/nixpkgs/pull/552231
-        # wf-recorder
+        wf-recorder
         open-in-mpv
       ];
 
