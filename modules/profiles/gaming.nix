@@ -10,6 +10,9 @@ let
   steam-gamescope-uunet = pkgs.writeShellScriptBin "steam-gamescope-uunet" ''
     exec ${config.security.wrapperDir}/netns-exec uunet steam-gamescope
   '';
+  steam-is-running = pkgs.writeShellScript "steam-is-running" ''
+    exec ${pkgs.procps}/bin/pgrep -u ${lib.escapeShellArg config.myos.user.mainUser} -x steam > /dev/null
+  '';
 in
 lib.mkProfile s "gaming"
 {
@@ -122,26 +125,68 @@ lib.mkProfile s "gaming"
 
   vaultix.secrets.uuplugin = { };
 
-  systemd.sockets.uuplugin-proxy = {
-    description = "Listen on 16363 for UUplugin";
-    listenStreams = [ "16363" ];
-    wantedBy = [ "sockets.target" ];
-  };
-
   systemd.services.uuplugin-proxy = {
     description = "Proxy UUplugin mobile app traffic to the namespace";
-    requires = [ "uuplugin.service" ];
-    after = [ "uuplugin.service" ];
+    requires = [ "uunet-namespace.service" ];
+    after = [ "uunet-namespace.service" ];
+    partOf = [ "uuplugin.service" ];
     serviceConfig = {
-      ExecStart = "${config.systemd.package}/lib/systemd/systemd-socket-proxyd 10.99.99.2:16363";
+      ExecStart = "${lib.getExe pkgs.socat} TCP4-LISTEN:16363,reuseaddr,fork TCP4:10.99.99.2:16363";
       DynamicUser = true;
+      Restart = "on-failure";
+      RestartSec = "1s";
+      SuccessExitStatus = [ 143 ];
+    };
+  };
+
+  systemd.services.steam-state-monitor = {
+    description = "Manage gaming services based on Steam status";
+    wantedBy = [ "multi-user.target" ];
+    script = ''
+      LAST_STEAM_STATE=""
+
+      while true; do
+        if ${steam-is-running}; then
+          STEAM_STATE="running"
+          DESIRED_PROFILE="performance"
+
+          if ! ${config.systemd.package}/bin/systemctl is-active --quiet uuplugin.service; then
+            ${config.systemd.package}/bin/systemctl start uuplugin.service
+          fi
+        else
+          STEAM_STATE="stopped"
+          DESIRED_PROFILE="balanced"
+
+          if ${config.systemd.package}/bin/systemctl is-active --quiet uuplugin.service; then
+            ${config.systemd.package}/bin/systemctl stop uuplugin.service
+          fi
+        fi
+
+        if [ "$STEAM_STATE" != "$LAST_STEAM_STATE" ]; then
+          echo "Steam $STEAM_STATE; switching to $DESIRED_PROFILE power profile"
+          ${pkgs.power-profiles-daemon}/bin/powerprofilesctl set "$DESIRED_PROFILE"
+          LAST_STEAM_STATE="$STEAM_STATE"
+        fi
+
+        ${pkgs.coreutils}/bin/sleep 1
+      done
+    '';
+    serviceConfig = {
+      Type = "simple";
+      Restart = "always";
+      RestartSec = "5s";
     };
   };
 
   systemd.services.uuplugin = {
-    requires = [ "uunet-namespace.service" ];
-    after = [ "uunet-namespace.service" ];
-    wantedBy = [ "multi-user.target" ];
+    requires = [
+      "uunet-namespace.service"
+      "uuplugin-proxy.service"
+    ];
+    after = [
+      "uunet-namespace.service"
+      "uuplugin-proxy.service"
+    ];
     path = with pkgs; [
       iproute2
       nettools
@@ -160,8 +205,9 @@ lib.mkProfile s "gaming"
         "${pkgs.coreutils}/bin/ln -nsf %d/uuplugin-uuid %S/%N/.uuplugin_uuid"
       ];
       ExecStart = "${lib.getExe pkgs.my.uuplugin} ${pkgs.my.uuplugin}/share/uuplugin/uu.conf";
+      KillSignal = "SIGKILL";
+      SuccessExitStatus = [ "SIGKILL" ];
       Restart = "on-failure";
-      TimeoutStopSec = "5s";
     };
   };
 
@@ -201,45 +247,6 @@ lib.mkProfile s "gaming"
       ];
     };
   };
-
-  systemd.user.services.steam-power-profile = {
-    enable = true;
-    description = "Switch power profile based on Steam status";
-    wantedBy = [ "default.target" ];
-
-    serviceConfig = {
-      Type = "simple";
-      Restart = "always";
-      RestartSec = 5;
-    };
-
-    path = [ pkgs.procps pkgs.power-profiles-daemon ];
-
-    script = ''
-      CURRENT_PROFILE=""
-
-      while true; do
-        if pgrep -x "steam" > /dev/null; then
-          # Steam is running
-          if [ "$CURRENT_PROFILE" != "performance" ]; then
-            echo "Steam detected, switching to performance profile"
-            powerprofilesctl set performance
-            CURRENT_PROFILE="performance"
-          fi
-        else
-          # Steam is not running
-          if [ "$CURRENT_PROFILE" != "balanced" ]; then
-            echo "Steam not running, switching to balanced profile"
-            powerprofilesctl set balanced
-            CURRENT_PROFILE="balanced"
-          fi
-        fi
-
-        sleep 5
-      done
-    '';
-  };
- 
 
   myhome = { config, lib, osConfig, ... }: {
     programs.mangohud = {
