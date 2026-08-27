@@ -16,6 +16,11 @@ let
 in
 lib.mkProfile s "gaming"
 {
+  systemd.tmpfiles.rules = [
+    "Z /sys/class/powercap/intel-rapl:0/energy_uj 0444 root root - -"
+    "Z /sys/devices/virtual/powercap/intel-rapl/intel-rapl:0/intel-rapl:0:0/energy_uj 0444 root root - -"
+  ];
+
   security.pam.loginLimits = [
     {
       item = "nice";
@@ -73,7 +78,7 @@ lib.mkProfile s "gaming"
   services.scx = {
     enable = true;
     package = pkgs.scx.rustscheds;
-    scheduler = "scx_lavd";
+    scheduler = "scx_bpfland";
   };
 
   networking = {
