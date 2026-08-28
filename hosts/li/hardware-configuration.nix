@@ -48,6 +48,8 @@ in
 
       "pcie_ports=native"
       "pci=ecrc=on"
+
+      "nvme_core.default_ps_max_latency_us=0"
     ];
     kernelModules = [ "kvm-amd" "ntsync" ];
     blacklistedKernelModules = [ ];
