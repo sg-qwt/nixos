@@ -63,6 +63,11 @@ in
             ControlMaster = "auto";
             ControlPersist = "1m";
           };
+          "github.com" = {
+            HostName = "ssh.github.com";
+            Port = 443;
+            User = "git";
+          };
         } //
         (builtins.foldl' (a: b: a // b) { }
           (map
