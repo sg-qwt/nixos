@@ -124,22 +124,24 @@ lib.mkProfile s "gaming"
 
   vaultix.secrets.uuplugin = { };
 
+  systemd.sockets.uuplugin-proxy = {
+    description = "Listen on 16363 for UUplugin";
+    listenStreams = [ "16363" ];
+    wantedBy = [ "sockets.target" ];
+  };
+
   systemd.services.uuplugin-proxy = {
     description = "Proxy UUplugin mobile app traffic to the namespace";
-    requires = [ "uunet-namespace.service" ];
-    after = [ "uunet-namespace.service" ];
-    partOf = [ "uuplugin.service" ];
+    requires = [ "uuplugin.service" ];
+    after = [ "uuplugin.service" ];
     serviceConfig = {
-      ExecStart = "${lib.getExe pkgs.socat} TCP4-LISTEN:16363,reuseaddr,fork TCP4:10.99.99.2:16363";
+      ExecStart = "${config.systemd.package}/lib/systemd/systemd-socket-proxyd 10.99.99.2:16363";
       DynamicUser = true;
-      Restart = "on-failure";
-      RestartSec = "1s";
-      SuccessExitStatus = [ 143 ];
     };
   };
 
   systemd.services.steam-state-monitor = {
-    description = "Manage gaming services based on Steam status";
+    description = "Manage power profile based on Steam status";
     wantedBy = [ "multi-user.target" ];
     script = ''
       LAST_STEAM_STATE=""
@@ -148,17 +150,9 @@ lib.mkProfile s "gaming"
         if ${steam-is-running}; then
           STEAM_STATE="running"
           DESIRED_PROFILE="performance"
-
-          if ! ${config.systemd.package}/bin/systemctl is-active --quiet uuplugin.service; then
-            ${config.systemd.package}/bin/systemctl start uuplugin.service
-          fi
         else
           STEAM_STATE="stopped"
           DESIRED_PROFILE="balanced"
-
-          if ${config.systemd.package}/bin/systemctl is-active --quiet uuplugin.service; then
-            ${config.systemd.package}/bin/systemctl stop uuplugin.service
-          fi
         fi
 
         if [ "$STEAM_STATE" != "$LAST_STEAM_STATE" ]; then
@@ -178,14 +172,9 @@ lib.mkProfile s "gaming"
   };
 
   systemd.services.uuplugin = {
-    requires = [
-      "uunet-namespace.service"
-      "uuplugin-proxy.service"
-    ];
-    after = [
-      "uunet-namespace.service"
-      "uuplugin-proxy.service"
-    ];
+    requires = [ "uunet-namespace.service" ];
+    after = [ "uunet-namespace.service" ];
+    wantedBy = [ "multi-user.target" ];
     path = with pkgs; [
       iproute2
       nettools
@@ -204,9 +193,8 @@ lib.mkProfile s "gaming"
         "${pkgs.coreutils}/bin/ln -nsf %d/uuplugin-uuid %S/%N/.uuplugin_uuid"
       ];
       ExecStart = "${lib.getExe pkgs.my.uuplugin} ${pkgs.my.uuplugin}/share/uuplugin/uu.conf";
-      KillSignal = "SIGKILL";
-      SuccessExitStatus = [ "SIGKILL" ];
       Restart = "on-failure";
+      TimeoutStopSec = "5s";
     };
   };
 
