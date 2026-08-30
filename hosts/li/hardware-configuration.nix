@@ -50,6 +50,7 @@ in
       "pci=ecrc=on"
 
       "nvme_core.default_ps_max_latency_us=0"
+      "pcie_aspm.policy=performance"
     ];
     kernelModules = [ "kvm-amd" "ntsync" ];
     blacklistedKernelModules = [ ];
