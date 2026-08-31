@@ -3,14 +3,6 @@ let
   system = pkgs.stdenv.hostPlatform.system;
 
   jovianKernel = inputs.jovian.legacyPackages.${system}.linux_jovian;
-
-  jovianKernelWithEcrc = jovianKernel.override {
-    argsOverride.structuredExtraConfig =
-      jovianKernel.structuredExtraConfig
-      // {
-        PCIE_ECRC = lib.kernel.yes;
-      };
-  };
 in
 {
   imports =
@@ -19,7 +11,7 @@ in
     ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackagesFor jovianKernelWithEcrc;
+    kernelPackages = pkgs.linuxPackagesFor jovianKernel;
     loader = {
       systemd-boot.enable = true;
       systemd-boot.memtest86.enable = true;
@@ -45,9 +37,6 @@ in
 
       "amdgpu.sched_hw_submission=4"
       "amdgpu.lockup_timeout=5000,10000,10000,5000"
-
-      "pcie_ports=native"
-      "pci=ecrc=on"
 
       "nvme_core.default_ps_max_latency_us=0"
       "pcie_aspm.policy=performance"
