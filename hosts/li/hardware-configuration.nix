@@ -38,8 +38,7 @@ in
       "amdgpu.sched_hw_submission=4"
       "amdgpu.lockup_timeout=5000,10000,10000,5000"
 
-      "nvme_core.default_ps_max_latency_us=0"
-      "pcie_aspm.policy=performance"
+      "processor.max_cstate=2"
     ];
     kernelModules = [ "kvm-amd" "ntsync" ];
     blacklistedKernelModules = [ ];
