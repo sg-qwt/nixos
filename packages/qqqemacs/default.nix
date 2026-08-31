@@ -1,6 +1,6 @@
-{ lib, pkgs, emacs30-pgtk, emacsPackagesFor, self, ... }:
+{ lib, pkgs, emacs31-pgtk, emacsPackagesFor, self, ... }:
 let
-  emacsWithPackages = (emacsPackagesFor emacs30-pgtk).emacsWithPackages;
+  emacsWithPackages = (emacsPackagesFor emacs31-pgtk).emacsWithPackages;
 
   pi = pkgs.my.pi;
 
