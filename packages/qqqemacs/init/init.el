@@ -709,7 +709,7 @@ Supports exporting consult-grep to wgrep, file to wdeired, and consult-location 
   ;; clerk
   (defun clerk/show ()
     (interactive)
-    (when-let
+    (when-let*
 	((filename
 	  (buffer-file-name)))
       (save-buffer)
@@ -935,6 +935,8 @@ the focus."
 ;; elisp ;;
 ;;;;;;;;;;;
 (use-package emacs-lisp-mode
+  :custom
+  (elisp-fontify-semantically t)
   :general
   (qqq/local-leader
     emacs-lisp-mode-map
@@ -1080,25 +1082,7 @@ the focus."
 (use-package ibuffer
   :custom
   (ibuffer-show-empty-filter-groups nil)
-  :config
-  (define-ibuffer-column size-h
-    (:name "Size" :inline t)
-    (cond
-     ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
-     ((> (buffer-size) 100000) (format "%7.0fk" (/ (buffer-size) 1000.0)))
-     ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
-     (t (format "%8d" (buffer-size)))))
-  (setq ibuffer-formats
-	'((mark modified read-only " "
-		(name 18 18 :left :elide)
-		" "
-		(size-h 9 -1 :right)
-		" "
-		(mode 16 16 :left :elide)
-		" "
-		(vc-status 16 16 :left)
-		" "
-		vc-relative-file))))
+  (ibuffer-human-readable-size t))
 
 (use-package ibuffer-vc
   :hook (ibuffer . ibuffer-vc-set-filter-groups-by-vc-root)
@@ -1108,7 +1092,7 @@ the focus."
   (setq ibuffer-vc-buffer-file-name-function
 	(lambda (buf)
 	  (with-current-buffer buf
-	    (when-let ((file-name (or buffer-file-name
+	    (when-let* ((file-name (or buffer-file-name
 				      list-buffers-directory
 				      (and (string-prefix-p "*vterminal" (buffer-name buf))
 					   (not (string-match-p (regexp-quote "dedicated") (buffer-name buf)))
@@ -1228,3 +1212,7 @@ the focus."
       "?" #'evil-search-backward
       "m" #'pi-coding-agent-menu))
   :commands (pi-coding-agent))
+
+(use-package treesit
+  :custom
+  (treesit-auto-install-grammar 'never))
