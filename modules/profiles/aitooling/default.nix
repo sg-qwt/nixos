@@ -6,6 +6,11 @@ let
   '';
 in
 lib.mkProfile s "aitooling" {
+  services.ollama = {
+    enable = true;
+    package = pkgs.ollama-rocm;
+  };
+
   myhome = {
     home.file.".pi/agent/APPEND_SYSTEM.md" = {
       source = ./APPEND_SYSTEM.md;

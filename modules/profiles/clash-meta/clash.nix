@@ -181,19 +181,12 @@ rec {
       
     ];
 
-  proxy-providers = { };
-
   proxy-groups =
     let
       custom-pxs = (map (x: (toString x.name)) proxies);
-      providers = builtins.attrNames proxy-providers;
-      build-group = attr:
-        if (providers == [ ])
-        then attr
-        else attr // { use = providers; };
     in
     [
-      (build-group {
+      {
         name = "select";
         type = "select";
         proxies = custom-pxs ++ [
@@ -201,23 +194,33 @@ rec {
           "fallback"
           "DIRECT"
         ];
-      })
+      }
 
-      (build-group {
+      {
+        name = "maybe";
+        type = "select";
+        proxies = [
+          "DIRECT"
+          "select"
+        ];
+        default-selected = "DIRECT";
+      }
+
+      {
         name = "auto";
         type = "url-test";
         proxies = custom-pxs;
         interval = 86400;
         url = "http://www.gstatic.com/generate_204";
-      })
+      }
 
-      (build-group {
+      {
         name = "fallback";
         type = "fallback";
         proxies = custom-pxs;
         interval = 7200;
         url = "http://www.gstatic.com/generate_204";
-      })
+      }
     ];
 
   rules = [
@@ -226,6 +229,10 @@ rec {
     "DOMAIN-SUFFIX,cm.steampowered.com,DIRECT"
     "DOMAIN-SUFFIX,steamserver.net,DIRECT"
     "DOMAIN-SUFFIX,steamchina.com,DIRECT"
+
+    "DOMAIN-SUFFIX,r2.cloudflarestorage.com,maybe"
+    "DOMAIN-SUFFIX,cache.nixos.org,maybe"
+
     "DOMAIN-SUFFIX,bambulab.com,select"
     "DOMAIN-SUFFIX,makerworld.com,select"
     "DOMAIN-SUFFIX,makerworld.bblmw.com,select"

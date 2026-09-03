@@ -147,6 +147,7 @@ lib.mkProfile s "sway"
             }
             {
               block = "amd_gpu";
+              format = " $icon $utilization $vram_used ";
               interval = 5;
             }
             {
