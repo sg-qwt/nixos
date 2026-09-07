@@ -16,6 +16,20 @@ let
 in
 lib.mkProfile s "gaming"
 {
+  systemd.packages = [
+    pkgs.my.dmemcg-booster
+  ];
+
+  systemd.services.dmemcg-booster-system = {
+    overrideStrategy = "asDropin";
+    wantedBy = [ "multi-user.target" ];
+  };
+
+  systemd.user.services.dmemcg-booster-user = {
+    overrideStrategy = "asDropin";
+    wantedBy = [ "graphical-session-pre.target" ];
+  };
+
   systemd.tmpfiles.rules = [
     "Z /sys/class/powercap/intel-rapl:0/energy_uj 0444 root root - -"
     "Z /sys/devices/virtual/powercap/intel-rapl/intel-rapl:0/intel-rapl:0:0/energy_uj 0444 root root - -"
