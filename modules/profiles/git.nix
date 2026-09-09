@@ -1,11 +1,11 @@
 s@{ config, pkgs, lib, self, ... }:
 lib.mkProfile s "git"
 {
-  vaultix.secrets.caveman-token = { };
+  vaultix.secrets.caveman-token-new = { };
   vaultix.templates.github-caveman-conf = {
     owner = config.myos.user.mainUser;
     content = ''
-      [url "https://${config.vaultix.placeholder.caveman-token}@github.com/sg-qwt/caveman"]
+      [url "https://${config.vaultix.placeholder.caveman-token-new}@github.com/sg-qwt/caveman"]
           insteadOf = https://github.com/sg-qwt/caveman
     '';
   };

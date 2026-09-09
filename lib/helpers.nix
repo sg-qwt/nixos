@@ -95,6 +95,7 @@ rec {
         puer.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKcOrd7uUWfIqR7cyp6sc9bR4seNb8m3het9CFsxznN/";
         rocky.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDy3hWnYzgOJZ51yD25J5vLk33PAgKEdASoDL0UV5ivk";
         just.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHds+RAGMmOq8gw6hREjld78Rx4Ura0XgaEzmv5MUmMe";
+        kirin.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID64w7UdM/25HKOaAkgUoYcodR08TcChK0JW46tfajh1";
       };
     };
 
