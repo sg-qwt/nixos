@@ -23,7 +23,11 @@ let
   start-sway = "systemd-cat --identifier=sway sway";
 
   monitor = {
-    main = {
+    main = if config.networking.hostName == "kirin" then {
+      id = "Sharp Corporation 0x15DD Unknown";
+      resolution = "2560x1600@120Hz";
+      scale = 1.8;
+    } else {
       id = "Dell Inc. DELL U2718QM MYPFK89J15HL";
       resolution = "3840x2160@60Hz";
       scale = 2.0;
@@ -145,11 +149,11 @@ lib.mkProfile s "sway"
               block = "cpu";
               interval = 5;
             }
-            {
-              block = "amd_gpu";
-              format = " $icon $utilization $vram_used ";
-              interval = 5;
-            }
+          ] ++ lib.optional (builtins.elem "amdgpu" osConfig.services.xserver.videoDrivers) {
+            block = "amd_gpu";
+            format = " $icon $utilization $vram_used ";
+            interval = 5;
+          } ++ [
             {
               block = "memory";
               format = " $icon $mem_used_percents.eng(w:2) ";
@@ -183,7 +187,14 @@ lib.mkProfile s "sway"
               interval = 5;
               format = " $timestamp.datetime(f:'%a %b %e %R') ";
             }
-          ];
+          ] ++ (lib.optionals (osConfig.networking.hostName == "kirin") [
+            {
+              block = "battery";
+              format = " $icon $percentage ";
+              full_format = " $icon $percentage ";
+              empty_format = " $icon $percentage ";
+            }
+          ]);
         };
       };
 
