@@ -6,7 +6,19 @@
     ];
 
   boot = {
+    kernelPatches = [
+      {
+        # https://bugzilla.kernel.org/show_bug.cgi?id=221956
+        name = "cs42l43-acpi-spk-id-gpios-workaround";
+        patch = ./patches/0001-spi-cs42l43-Workaround-for-ACPI-with-wrong-spk-id-gp.patch;
+      }
+    ];
     kernelPackages = pkgs.linuxPackages_latest;
+    # https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/8930
+    kernelParams = [
+      "xe.enable_psr=0"
+      "xe.enable_panel_replay=0"
+    ];
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
