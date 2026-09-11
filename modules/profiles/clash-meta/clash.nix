@@ -178,7 +178,7 @@ rec {
         ];
         dialer-proxy = anytls.name;
       }
-      
+
     ];
 
   proxy-groups =

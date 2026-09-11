@@ -1,9 +1,8 @@
-{
-  rustPlatform,
-  fetchFromGitLab,
-  pkg-config,
-  dbus,
-  ...
+{ rustPlatform
+, fetchFromGitLab
+, pkg-config
+, dbus
+, ...
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {

@@ -23,15 +23,16 @@ let
   start-sway = "systemd-cat --identifier=sway sway";
 
   monitor = {
-    main = if config.networking.hostName == "kirin" then {
-      id = "Sharp Corporation 0x15DD Unknown";
-      resolution = "2560x1600@120Hz";
-      scale = 1.8;
-    } else {
-      id = "Dell Inc. DELL U2718QM MYPFK89J15HL";
-      resolution = "3840x2160@60Hz";
-      scale = 2.0;
-    };
+    main =
+      if config.networking.hostName == "kirin" then {
+        id = "Sharp Corporation 0x15DD Unknown";
+        resolution = "2560x1600@120Hz";
+        scale = 1.8;
+      } else {
+        id = "Dell Inc. DELL U2718QM MYPFK89J15HL";
+        resolution = "3840x2160@60Hz";
+        scale = 2.0;
+      };
   };
 
   createSwayOutput = monitor: name:

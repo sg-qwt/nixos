@@ -1,18 +1,17 @@
-{
-  lib,
-  stdenv,
-  fetchFromGitHub,
-  cmake,
-  pkg-config,
-  openssl,
-  zlib,
-  curl,
-  uthash,
-  mosquitto,
-  cjson,
-  client ? "orca_slicer",
-  pluginVersion ? "02.03.00.99",
-  ...
+{ lib
+, stdenv
+, fetchFromGitHub
+, cmake
+, pkg-config
+, openssl
+, zlib
+, curl
+, uthash
+, mosquitto
+, cjson
+, client ? "orca_slicer"
+, pluginVersion ? "02.03.00.99"
+, ...
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "open-bamboo-networking";
