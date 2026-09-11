@@ -1,14 +1,39 @@
 s@{ config, pkgs, lib, self, ... }:
+let
+  git-credential-cavemen = pkgs.writeShellScript "git-credential-cavemen" ''
+    # A credential helper receives the requested credential on stdin. Return
+    # nothing for non-matching requests so Git can try another helper or prompt.
+    if [ "$1" != "get" ]; then
+      exit 0
+    fi
+
+    protocol=
+    host=
+    path=
+    while IFS='=' read -r key value; do
+      case "$key" in
+        protocol) protocol="$value" ;;
+        host) host="$value" ;;
+        path) path="$value" ;;
+      esac
+    done
+
+    if [ "$protocol" = "https" ] \
+      && [ "$host" = "github.com" ] \
+      && [ "$path" = "sg-qwt/caveman.git" ]; then
+      printf '%s\n' \
+        "username=pat" \
+        "password=$(cat ${config.vaultix.secrets.caveman-token-new.path})" \
+        ""
+    fi
+  '';
+in
 lib.mkProfile s "git"
 {
-  vaultix.secrets.caveman-token-new = { };
-  vaultix.templates.github-caveman-conf = {
+  vaultix.secrets.caveman-token-new = {
     owner = config.myos.user.mainUser;
-    content = ''
-      [url "https://${config.vaultix.placeholder.caveman-token-new}@github.com/sg-qwt/caveman"]
-          insteadOf = https://github.com/sg-qwt/caveman
-    '';
   };
+
   myhome = {
     programs.git = {
       enable = true;
@@ -34,13 +59,14 @@ lib.mkProfile s "git"
         push.autoSetupRemote = true;
         feature.manyFiles = true;
         lfs.ssh.automultiplex = false;
+
+        credential."https://github.com" = {
+          useHttpPath = true;
+          helper = "${git-credential-cavemen}";
+        };
       };
 
       ignores = [ ".lsp/.cache" ".clj-kondo/.cache" ];
-
-      includes = [
-        { path = config.vaultix.templates.github-caveman-conf.path; }
-      ];
     };
   };
 }
