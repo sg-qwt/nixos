@@ -41,7 +41,11 @@ lib.mkProfile s "git"
       signing = {
         signByDefault = false;
         format = "ssh";
-        key = "key::${builtins.elemAt self.shared-data.openssh-keys 0}";
+        key =
+          if config.networking.hostName == "kirin" then
+            "key::${builtins.elemAt self.shared-data.openssh-keys 0}"
+          else
+            "key::${builtins.elemAt self.shared-data.openssh-keys 1}";
       };
 
       lfs = {
