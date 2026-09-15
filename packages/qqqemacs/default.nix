@@ -24,6 +24,7 @@ let
       tree-sitter-json
       tree-sitter-python
       tree-sitter-javascript
+      tree-sitter-jsdoc
       tree-sitter-tsx
       tree-sitter-bash
       tree-sitter-c
