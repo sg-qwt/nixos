@@ -194,6 +194,7 @@ lib.mkProfile s "sway"
               format = " $icon $percentage ";
               full_format = " $icon $percentage ";
               empty_format = " $icon $percentage ";
+              not_charging_format = " $icon $percentage ";
             }
           ]);
         };
