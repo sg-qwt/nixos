@@ -207,6 +207,13 @@ rec {
       }
 
       {
+        name = "openai";
+        type = "select";
+        proxies = custom-pxs;
+        default-selected = "sstls";
+      }
+
+      {
         name = "auto";
         type = "url-test";
         proxies = custom-pxs;
@@ -238,8 +245,8 @@ rec {
     "DOMAIN-SUFFIX,makerworld.com,select"
     "DOMAIN-SUFFIX,makerworld.bblmw.com,select"
     # "DOMAIN-SUFFIX,polymarket.com,anytls"
-    "DOMAIN-SUFFIX,openai.com,sstls"
-    "DOMAIN-SUFFIX,chatgpt.com,sstls"
+    "DOMAIN-SUFFIX,openai.com,openai"
+    "DOMAIN-SUFFIX,chatgpt.com,openai"
     "GEOSITE,category-ads-all,REJECT"
     "GEOSITE,openai,select"
     "GEOSITE,geolocation-cn,DIRECT"
