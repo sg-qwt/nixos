@@ -7,8 +7,7 @@ let
     url = "https://github.com/search?q={searchTerms}+NOT+is%3Afork+language%3A\"${language}\"&type=code";
   };
 in
-lib.mkProfile s "desktop-apps"
-{
+lib.mkProfile s "desktop-apps" {
   # file manager
   services.gvfs.enable = true;
   programs.thunar.enable = true;
@@ -119,24 +118,28 @@ lib.mkProfile s "desktop-apps"
     };
   };
 
-  myhome = { config, ... }:
+  myhome =
+    { config, ... }:
     let
-      brave-pkg = (pkgs.brave.override {
-        commandLineArgs = [
-          "--enable-wayland-ime"
-          "--wayland-text-input-version=3"
-          "--enable-features=WaylandLinuxDrmSyncobj"
-          "--password-store=basic"
-        ];
-      });
+      brave-pkg = (
+        pkgs.brave.override {
+          commandLineArgs = [
+            "--enable-wayland-ime"
+            "--wayland-text-input-version=3"
+            "--enable-features=WaylandLinuxDrmSyncobj"
+            "--password-store=basic"
+          ];
+        }
+      );
       browser = lib.getExe brave-pkg;
-      make-webapp = name: app: (pkgs.makeDesktopItem {
-        inherit name;
-        desktopName =
-          (lib.strings.toUpper (builtins.substring 0 1 name)) +
-          (builtins.substring 1 (-1) name);
-        exec = "${browser} --new-window --app=\"${app}\"";
-      });
+      make-webapp =
+        name: app:
+        (pkgs.makeDesktopItem {
+          inherit name;
+          desktopName =
+            (lib.strings.toUpper (builtins.substring 0 1 name)) + (builtins.substring 1 (-1) name);
+          exec = "${browser} --new-window --app=\"${app}\"";
+        });
     in
     {
       programs.mpv = {

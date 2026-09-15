@@ -1,5 +1,14 @@
-{ config, lib, pkgs, modulesPath, self, ... }:
-let edg = self.tfo.fqdn.edg; in
+{
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  self,
+  ...
+}:
+let
+  edg = self.tfo.fqdn.edg;
+in
 {
   networking.firewall.enable = false;
 

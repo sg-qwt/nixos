@@ -1,6 +1,12 @@
-s@{ config, pkgs, lib, inputs, self, ... }:
-lib.mkProfile s "desktop"
-{
+s@{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  self,
+  ...
+}:
+lib.mkProfile s "desktop" {
   fonts = {
     fontDir.enable = true;
     fontconfig.enable = true;
@@ -49,7 +55,7 @@ lib.mkProfile s "desktop"
     };
     wireplumber.extraConfig."99-hdmi-fix"."monitor.alsa.rules" = [
       {
-        matches = [{ "node.name" = "alsa_output.pci-0000_65_00.1.hdmi-stereo-extra2"; }];
+        matches = [ { "node.name" = "alsa_output.pci-0000_65_00.1.hdmi-stereo-extra2"; } ];
         actions.update-props = {
           "api.alsa.period-size" = 2048;
           "api.alsa.headroom" = 8192;

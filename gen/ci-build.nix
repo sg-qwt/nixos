@@ -2,15 +2,18 @@
 let
   cilib = import ../lib/ci-lib.nix;
   hosts = (builtins.attrNames self.nixosConfigurations);
-  inherit (cilib) ghexpr ors runs-on steps;
-  if-clause =
+  inherit (cilib)
     ghexpr
-      (ors [
-        "(github.event.inputs.host == 'all')"
-        "(matrix.host == github.event.inputs.host)"
-        "(github.event.pull_request.head.repo.full_name == github.repository)"
-        "(github.event_name == 'push')"
-      ]);
+    ors
+    runs-on
+    steps
+    ;
+  if-clause = ghexpr (ors [
+    "(github.event.inputs.host == 'all')"
+    "(matrix.host == github.event.inputs.host)"
+    "(github.event.pull_request.head.repo.full_name == github.repository)"
+    "(github.event_name == 'push')"
+  ]);
   cond-step = step: ({ "if" = if-clause; } // step);
   job-id = {
     check = "check-flake-and-formatter";
@@ -71,7 +74,10 @@ in
 
     build-nixos-configuration = {
       inherit runs-on;
-      needs = [ job-id.check job-id.eval-host ];
+      needs = [
+        job-id.check
+        job-id.eval-host
+      ];
 
       # "if" =
       #   ghexpr
@@ -87,17 +93,16 @@ in
         };
       };
 
-      steps =
-        (map cond-step
-          [
-            steps.make-space
-            steps.set-swap
-            steps.checkout
-            steps.install-nix
-            steps.setup-attic-cache
-            (steps.build-host (ghexpr "matrix.host"))
-          ]
-        );
+      steps = (
+        map cond-step [
+          steps.make-space
+          steps.set-swap
+          steps.checkout
+          steps.install-nix
+          steps.setup-attic-cache
+          (steps.build-host (ghexpr "matrix.host"))
+        ]
+      );
     };
   };
 }

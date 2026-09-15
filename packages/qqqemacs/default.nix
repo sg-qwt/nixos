@@ -1,149 +1,159 @@
-{ lib
-, pkgs
-, emacs31-pgtk
-, emacsPackagesFor
-, self
-, ageIdentity ? self + "/resources/keys/age-yubikey-identity-main.txt"
-, ...
+{
+  lib,
+  pkgs,
+  emacs31-pgtk,
+  emacsPackagesFor,
+  self,
+  ageIdentity ? self + "/resources/keys/age-yubikey-identity-main.txt",
+  ...
 }:
 let
   emacsWithPackages = (emacsPackagesFor emacs31-pgtk).emacsWithPackages;
 
   pi = pkgs.my.pi;
 
-  pilish = epkgs: epkgs.melpaStablePackages.pilish.overrideAttrs (_: {
-    commit = "92673467f345d51a116e11a40d7a86e144ba7d95";
-    src = pkgs.fetchFromGitHub {
-      owner = "dnouri";
-      repo = "pilish";
-      rev = "92673467f345d51a116e11a40d7a86e144ba7d95";
-      hash = "sha256-lKz4xqQ6w3GjzDZURSocu8Vg+9bCPssmomXTAaSEPx8=";
-    };
-  });
+  pilish =
+    epkgs:
+    epkgs.melpaStablePackages.pilish.overrideAttrs (_: {
+      commit = "92673467f345d51a116e11a40d7a86e144ba7d95";
+      src = pkgs.fetchFromGitHub {
+        owner = "dnouri";
+        repo = "pilish";
+        rev = "92673467f345d51a116e11a40d7a86e144ba7d95";
+        hash = "sha256-lKz4xqQ6w3GjzDZURSocu8Vg+9bCPssmomXTAaSEPx8=";
+      };
+    });
 
   # trivialBuild = pkgs.emacsPackages.trivialBuild;
 
-  ts-grammers = epkgs: (epkgs.treesit-grammars.with-grammars
-    (grammars: with grammars;
-    [
-      tree-sitter-yaml
-      tree-sitter-typescript
-      tree-sitter-json
-      tree-sitter-python
-      tree-sitter-javascript
-      tree-sitter-jsdoc
-      tree-sitter-tsx
-      tree-sitter-bash
-      tree-sitter-c
-      tree-sitter-cpp
-      tree-sitter-rust
-      tree-sitter-go
-      tree-sitter-ruby
-      tree-sitter-css
-      tree-sitter-html
-      tree-sitter-java
-      tree-sitter-lua
-      tree-sitter-toml
-      tree-sitter-cmake
-      tree-sitter-dockerfile
-      tree-sitter-c-sharp
-      tree-sitter-elixir
-      tree-sitter-haskell
-      tree-sitter-heex
-      tree-sitter-kotlin
-      tree-sitter-gomod
-      tree-sitter-php
-      tree-sitter-scala
+  ts-grammers =
+    epkgs:
+    (epkgs.treesit-grammars.with-grammars (
+      grammars: with grammars; [
+        tree-sitter-yaml
+        tree-sitter-typescript
+        tree-sitter-json
+        tree-sitter-python
+        tree-sitter-javascript
+        tree-sitter-jsdoc
+        tree-sitter-tsx
+        tree-sitter-bash
+        tree-sitter-c
+        tree-sitter-cpp
+        tree-sitter-rust
+        tree-sitter-go
+        tree-sitter-ruby
+        tree-sitter-css
+        tree-sitter-html
+        tree-sitter-java
+        tree-sitter-lua
+        tree-sitter-toml
+        tree-sitter-cmake
+        tree-sitter-dockerfile
+        tree-sitter-c-sharp
+        tree-sitter-elixir
+        tree-sitter-haskell
+        tree-sitter-heex
+        tree-sitter-kotlin
+        tree-sitter-gomod
+        tree-sitter-php
+        tree-sitter-scala
 
-      tree-sitter-markdown
-      tree-sitter-markdown-inline
+        tree-sitter-markdown
+        tree-sitter-markdown-inline
 
-      tree-sitter-regex
+        tree-sitter-regex
 
-      (pkgs.tree-sitter.buildGrammar {
-        language = "clojure";
-        version = "unstable-20250526";
-        src = pkgs.fetchFromGitHub {
-          owner = "sogaiu";
-          repo = "tree-sitter-clojure";
-          rev = "69070d2e4563f8f58c7f57b0c8e093a08d7a5814";
-          sha256 = "sha256-+Miraf8kI8rZg7SYdfNM+mb78k9xNDUKYg3VTFzUHMo=";
-        };
-      })
-    ]));
+        (pkgs.tree-sitter.buildGrammar {
+          language = "clojure";
+          version = "unstable-20250526";
+          src = pkgs.fetchFromGitHub {
+            owner = "sogaiu";
+            repo = "tree-sitter-clojure";
+            rev = "69070d2e4563f8f58c7f57b0c8e093a08d7a5814";
+            sha256 = "sha256-+Miraf8kI8rZg7SYdfNM+mb78k9xNDUKYg3VTFzUHMo=";
+          };
+        })
+      ]
+    ));
 
-  qqqemacs = emacsWithPackages (epkgs:
+  qqqemacs = emacsWithPackages (
+    epkgs:
     [
       (ts-grammers epkgs)
-    ] ++
+    ]
+    ++
 
-    (with epkgs.melpaStablePackages; [
-      clojure-mode
-      clojure-mode-extra-font-locking
-      cider
-      cider-eval-sexp-fu
+      (with epkgs.melpaStablePackages; [
+        clojure-mode
+        clojure-mode-extra-font-locking
+        cider
+        cider-eval-sexp-fu
 
-      markdown-mode
+        markdown-mode
 
-      (pilish epkgs)
-    ]) ++
+        (pilish epkgs)
+      ])
+    ++
 
-    (with epkgs.melpaPackages; [
-      avy
-      evil
-      evil-surround
-      evil-collection
-      evil-org
-      general
+      (with epkgs.melpaPackages; [
+        avy
+        evil
+        evil-surround
+        evil-collection
+        evil-org
+        general
 
-      orderless
-      marginalia
-      consult
-      cape
-      company # for company backends
+        orderless
+        marginalia
+        consult
+        cape
+        company # for company backends
 
-      command-log-mode
+        command-log-mode
 
-      magit
+        magit
 
-      nix-mode
-      hcl-mode
-      clojure-ts-mode # only used for pi
+        nix-mode
+        hcl-mode
+        clojure-ts-mode # only used for pi
 
-      embark
-      embark-consult
-      wgrep
+        embark
+        embark-consult
+        wgrep
 
-      smartparens
-      evil-cleverparens
+        smartparens
+        evil-cleverparens
 
-      pdf-tools
-      nov
+        pdf-tools
+        nov
 
-      yasnippet
-      yasnippet-capf
+        yasnippet
+        yasnippet-capf
 
-      ibuffer-vc
+        ibuffer-vc
 
-      vterm
-      multi-vterm
+        vterm
+        multi-vterm
 
-      hl-todo
+        hl-todo
 
-      rust-mode
+        rust-mode
 
-      age
-    ]) ++
+        age
+      ])
+    ++
 
-    (with epkgs.elpaPackages; [
-      eglot
-      vertico
-      corfu
-      nftables-mode
-      jarchive
-      dired-preview
-      epkgs.eat
-    ]));
+      (with epkgs.elpaPackages; [
+        eglot
+        vertico
+        corfu
+        nftables-mode
+        jarchive
+        dired-preview
+        epkgs.eat
+      ])
+  );
 
   deps = with pkgs; [
     ripgrep # consult-ripgrep

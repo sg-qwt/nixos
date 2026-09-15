@@ -1,4 +1,11 @@
-{ pkgs, lib, symlinkJoin, makeWrapper, inputs, ... }:
+{
+  pkgs,
+  lib,
+  symlinkJoin,
+  makeWrapper,
+  inputs,
+  ...
+}:
 let
   extensions = [
     pkgs.my.pi-codex-usage
@@ -7,10 +14,13 @@ let
   skills = [
     (pkgs.my.brepl + "/share/brepl/SKILL.md")
   ];
-  wrapperFlags =
-    [ "--set PI_TELEMETRY 0" ]
-    ++ map (extension: "--add-flags ${lib.escapeShellArg "--extension ${toString extension}"}") extensions
-    ++ map (skill: "--add-flags ${lib.escapeShellArg "--skill ${toString skill}"}") skills;
+  wrapperFlags = [
+    "--set PI_TELEMETRY 0"
+  ]
+  ++ map (
+    extension: "--add-flags ${lib.escapeShellArg "--extension ${toString extension}"}"
+  ) extensions
+  ++ map (skill: "--add-flags ${lib.escapeShellArg "--skill ${toString skill}"}") skills;
   pi = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pi;
 in
 symlinkJoin {

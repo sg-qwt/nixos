@@ -1,4 +1,10 @@
-s@{ config, pkgs, lib, self, ... }:
+s@{
+  config,
+  pkgs,
+  lib,
+  self,
+  ...
+}:
 let
   modifier = "Mod4";
   systemctl = lib.getExe' config.systemd.package "systemctl";
@@ -24,18 +30,22 @@ let
 
   monitor = {
     main =
-      if config.networking.hostName == "kirin" then {
-        id = "Sharp Corporation 0x15DD Unknown";
-        resolution = "2560x1600@120Hz";
-        scale = 1.8;
-      } else {
-        id = "Dell Inc. DELL U2718QM MYPFK89J15HL";
-        resolution = "3840x2160@60Hz";
-        scale = 2.0;
-      };
+      if config.networking.hostName == "kirin" then
+        {
+          id = "Sharp Corporation 0x15DD Unknown";
+          resolution = "2560x1600@120Hz";
+          scale = 1.8;
+        }
+      else
+        {
+          id = "Dell Inc. DELL U2718QM MYPFK89J15HL";
+          resolution = "3840x2160@60Hz";
+          scale = 2.0;
+        };
   };
 
-  createSwayOutput = monitor: name:
+  createSwayOutput =
+    monitor: name:
     let
       m = monitor."${name}";
     in
@@ -54,8 +64,7 @@ let
     format = " ${symbol} $text ";
   };
 in
-lib.mkProfile s "sway"
-{
+lib.mkProfile s "sway" {
   myos.desktop.enable = true;
   myos.fcitx.enable = true;
   services.blueman.enable = true;
@@ -73,7 +82,10 @@ lib.mkProfile s "sway"
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
     config = {
       common.default = [ "gtk" ];
-      sway.default = [ "wlr" "gtk" ];
+      sway.default = [
+        "wlr"
+        "gtk"
+      ];
     };
   };
 
@@ -102,7 +114,13 @@ lib.mkProfile s "sway"
     };
   };
 
-  myhome = { config, lib, osConfig, ... }:
+  myhome =
+    {
+      config,
+      lib,
+      osConfig,
+      ...
+    }:
     {
       home.pointerCursor = {
         enable = true;
@@ -150,21 +168,25 @@ lib.mkProfile s "sway"
               block = "cpu";
               interval = 5;
             }
-          ] ++ lib.optional (builtins.elem "amdgpu" osConfig.services.xserver.videoDrivers) {
+          ]
+          ++ lib.optional (builtins.elem "amdgpu" osConfig.services.xserver.videoDrivers) {
             block = "amd_gpu";
             format = " $icon $utilization $vram_used ";
             interval = 5;
-          } ++ [
+          }
+          ++ [
             {
               block = "memory";
               format = " $icon $mem_used_percents.eng(w:2) ";
             }
             {
               block = "sound";
-              click = [{
-                button = "left";
-                cmd = "${pavucontrol}";
-              }];
+              click = [
+                {
+                  button = "left";
+                  cmd = "${pavucontrol}";
+                }
+              ];
             }
             {
               block = "net";
@@ -178,17 +200,20 @@ lib.mkProfile s "sway"
               device = "wlan0";
               format = " {$ssid $signal_strength} $speed_down.eng(prefix:K) $speed_up.eng(prefix:K) ";
               interval = 5;
-              click = [{
-                button = "left";
-                cmd = "alacritty -e nmtui";
-              }];
+              click = [
+                {
+                  button = "left";
+                  cmd = "alacritty -e nmtui";
+                }
+              ];
             }
             {
               block = "time";
               interval = 5;
               format = " $timestamp.datetime(f:'%a %b %e %R') ";
             }
-          ] ++ (lib.optionals (osConfig.networking.hostName == "kirin") [
+          ]
+          ++ (lib.optionals (osConfig.networking.hostName == "kirin") [
             {
               block = "battery";
               format = " $icon $percentage ";
@@ -255,16 +280,19 @@ lib.mkProfile s "sway"
 
           workspaceAutoBackAndForth = true;
 
-
           terminal = lib.getExe config.programs.alacritty.package;
 
           startup = [
             { command = "emacs"; }
-          ] ++ (lib.optional osConfig.services.blueman.enable
-            { command = "${blueman-applet}"; always = true; }
-          ) ++ (lib.optional osConfig.i18n.inputMethod.enable
-            { command = "systemd-cat --identifier=fcitx5 ${fcitx5} -d --replace"; always = true; }
-          );
+          ]
+          ++ (lib.optional osConfig.services.blueman.enable {
+            command = "${blueman-applet}";
+            always = true;
+          })
+          ++ (lib.optional osConfig.i18n.inputMethod.enable {
+            command = "systemd-cat --identifier=fcitx5 ${fcitx5} -d --replace";
+            always = true;
+          });
 
           menu = "${lib.getExe config.programs.wofi.package}";
 
@@ -279,8 +307,10 @@ lib.mkProfile s "sway"
           ];
 
           keybindings = lib.mkOptionDefault {
-            "${modifier}+e" = "exec ${swayr} switch-to-app-or-urgent-or-lru-window --skip-lru-if-current-doesnt-match emacs || emacs";
-            "${modifier}+Shift+Return" = "exec ${swayr} switch-to-app-or-urgent-or-lru-window --skip-lru-if-current-doesnt-match Alacritty || alacritty";
+            "${modifier}+e" =
+              "exec ${swayr} switch-to-app-or-urgent-or-lru-window --skip-lru-if-current-doesnt-match emacs || emacs";
+            "${modifier}+Shift+Return" =
+              "exec ${swayr} switch-to-app-or-urgent-or-lru-window --skip-lru-if-current-doesnt-match Alacritty || alacritty";
             "${modifier}+s" = "layout toggle split";
             "${modifier}+Tab" = "exec ${swayr} switch-window";
             "Print" = ''
@@ -288,7 +318,8 @@ lib.mkProfile s "sway"
                 -g \"$(${slurp})\" \
                 - | ${wl-copy}
             '';
-            "${modifier}+Print" = "exec ${grim} ${config.xdg.userDirs.pictures}/screenshot-$(date +\"%Y-%m-%d-%H-%M-%S\").png";
+            "${modifier}+Print" =
+              "exec ${grim} ${config.xdg.userDirs.pictures}/screenshot-$(date +\"%Y-%m-%d-%H-%M-%S\").png";
             "XF86AudioRaiseVolume" = "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 5%+";
             "XF86AudioLowerVolume" = "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 5%-";
             "XF86AudioMute" = "exec ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
@@ -301,18 +332,46 @@ lib.mkProfile s "sway"
             "*" = {
               bg = "${wallpaper} fill";
             };
-          } // (createSwayOutput monitor "main");
+          }
+          // (createSwayOutput monitor "main");
 
           workspaceOutputAssign = [
-            { workspace = "1"; output = monitor.main.id; }
-            { workspace = "2"; output = monitor.main.id; }
-            { workspace = "3"; output = monitor.main.id; }
-            { workspace = "4"; output = monitor.main.id; }
-            { workspace = "5"; output = monitor.main.id; }
-            { workspace = "6"; output = monitor.main.id; }
-            { workspace = "7"; output = monitor.main.id; }
-            { workspace = "8"; output = monitor.main.id; }
-            { workspace = "9"; output = monitor.main.id; }
+            {
+              workspace = "1";
+              output = monitor.main.id;
+            }
+            {
+              workspace = "2";
+              output = monitor.main.id;
+            }
+            {
+              workspace = "3";
+              output = monitor.main.id;
+            }
+            {
+              workspace = "4";
+              output = monitor.main.id;
+            }
+            {
+              workspace = "5";
+              output = monitor.main.id;
+            }
+            {
+              workspace = "6";
+              output = monitor.main.id;
+            }
+            {
+              workspace = "7";
+              output = monitor.main.id;
+            }
+            {
+              workspace = "8";
+              output = monitor.main.id;
+            }
+            {
+              workspace = "9";
+              output = monitor.main.id;
+            }
           ];
 
           input = {
@@ -328,7 +387,10 @@ lib.mkProfile s "sway"
           };
           assigns = {
             "8" = [
-              { app_id = ""; title = "^Spotify"; }
+              {
+                app_id = "";
+                title = "^Spotify";
+              }
             ];
           };
           floating.criteria = [
@@ -340,11 +402,15 @@ lib.mkProfile s "sway"
             titlebar = false;
             commands = [
               {
-                criteria = { shell = "xwayland"; };
+                criteria = {
+                  shell = "xwayland";
+                };
                 command = "title_format \"[XWayland] %title\"";
               }
               {
-                criteria = { app_id = "^brave-(?!browser).*"; };
+                criteria = {
+                  app_id = "^brave-(?!browser).*";
+                };
                 command = "layout tabbed";
               }
             ];

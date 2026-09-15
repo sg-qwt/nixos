@@ -1,4 +1,9 @@
-{ config, pkgs, interface, self }:
+{
+  config,
+  pkgs,
+  interface,
+  self,
+}:
 let
   inherit (self.shared-data) ports;
   inherit (self.tfo) fqdn az-ips;
@@ -24,14 +29,23 @@ rec {
     enable = true;
     sniff = {
       HTTP = {
-        ports = [ 80 "8080-8880" ];
+        ports = [
+          80
+          "8080-8880"
+        ];
         override-destination = true;
       };
       TLS = {
-        ports = [ 443 8443 ];
+        ports = [
+          443
+          8443
+        ];
       };
       QUIC = {
-        ports = [ 443 8443 ];
+        ports = [
+          443
+          8443
+        ];
       };
     };
   };
@@ -81,20 +95,26 @@ rec {
   proxies =
     let
       mkVariants =
-        { type
-        , hostname
-        , settings
-        , variantSettings ? (_: { })
+        {
+          type,
+          hostname,
+          settings,
+          variantSettings ? (_: { }),
         }:
         map
-          (family:
-          settings
-          // {
-            name = "${type}-${hostname}-v${family}";
-            server = az-ips."${hostname}"."ipv${family}";
-          }
-          // variantSettings family)
-          [ "4" "6" ];
+          (
+            family:
+            settings
+            // {
+              name = "${type}-${hostname}-v${family}";
+              server = az-ips."${hostname}"."ipv${family}";
+            }
+            // variantSettings family
+          )
+          [
+            "4"
+            "6"
+          ];
 
       anytls = mkVariants {
         type = "anytls";
@@ -170,10 +190,7 @@ rec {
 
   proxy-groups =
     let
-      custom-pxs =
-        proxies
-        |> map (x: toString x.name)
-        |> builtins.filter (x: x != "masque");
+      custom-pxs = proxies |> map (x: toString x.name) |> builtins.filter (x: x != "masque");
     in
     [
       {

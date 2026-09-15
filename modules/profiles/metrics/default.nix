@@ -1,4 +1,10 @@
-s@{ config, pkgs, lib, self, ... }:
+s@{
+  config,
+  pkgs,
+  lib,
+  self,
+  ...
+}:
 with lib;
 let
   inherit (self.shared-data) ports;
@@ -56,7 +62,8 @@ in
             }
           ];
         }
-      ] ++ (lib.optional cfg.chugou chugou);
+      ]
+      ++ (lib.optional cfg.chugou chugou);
 
       remoteWrite = [
         {

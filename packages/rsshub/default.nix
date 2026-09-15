@@ -1,15 +1,16 @@
-{ lib
-, stdenv
-, stdenvNoCC
-, fetchFromGitHub
-, nodePackages
-, jq
-, moreutils
-, esbuild
-, nodejs
-, buildGoModule
-, makeWrapper
-, ...
+{
+  lib,
+  stdenv,
+  stdenvNoCC,
+  fetchFromGitHub,
+  nodePackages,
+  jq,
+  moreutils,
+  esbuild,
+  nodejs,
+  buildGoModule,
+  makeWrapper,
+  ...
 }:
 
 stdenv.mkDerivation rec {
@@ -60,18 +61,25 @@ stdenv.mkDerivation rec {
     makeWrapper
   ];
 
-  ESBUILD_BINARY_PATH = "${lib.getExe (esbuild.override {
-    buildGoModule = args: buildGoModule (args // rec {
-      version = "0.14.7";
-      src = fetchFromGitHub {
-        owner = "evanw";
-        repo = "esbuild";
-        rev = "v${version}";
-        hash = "sha256-aDzUMP6VmtQ2VMY4axOVTBdAi+yTW+RQIrjXdsbbqV8=";
-      };
-      vendorHash = "sha256-QPkBR+FscUc3jOvH7olcGUhM6OW4vxawmNJuRQxPuGs=";
-    });
-  })}";
+  ESBUILD_BINARY_PATH = "${lib.getExe (
+    esbuild.override {
+      buildGoModule =
+        args:
+        buildGoModule (
+          args
+          // rec {
+            version = "0.14.7";
+            src = fetchFromGitHub {
+              owner = "evanw";
+              repo = "esbuild";
+              rev = "v${version}";
+              hash = "sha256-aDzUMP6VmtQ2VMY4axOVTBdAi+yTW+RQIrjXdsbbqV8=";
+            };
+            vendorHash = "sha256-QPkBR+FscUc3jOvH7olcGUhM6OW4vxawmNJuRQxPuGs=";
+          }
+        );
+    }
+  )}";
 
   preBuild = ''
     export HOME=$(mktemp -d)
@@ -91,11 +99,10 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/rsshub
     cp -r . $out/rsshub
-    
+
     makeWrapper ${nodejs}/bin/node $out/bin/rsshub \
               --add-flags $out/rsshub/lib/index.js
   '';
-
 
   meta = with lib; {
     description = "Everything is RSSible";

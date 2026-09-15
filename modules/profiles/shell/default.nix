@@ -1,4 +1,10 @@
-s@{ config, pkgs, lib, self, ... }:
+s@{
+  config,
+  pkgs,
+  lib,
+  self,
+  ...
+}:
 let
   me = config.myos.user.mainUser;
   me-secret = {
@@ -6,8 +12,7 @@ let
     group = config.users.users.${me}.group;
   };
 in
-lib.mkProfile s "shell"
-{
+lib.mkProfile s "shell" {
   vaultix.secrets.atuin-key = me-secret;
   vaultix.secrets.atuin-session = me-secret;
 

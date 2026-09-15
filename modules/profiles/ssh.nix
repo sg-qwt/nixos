@@ -1,34 +1,38 @@
-{ pkgs, config, lib, self, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  self,
+  ...
+}:
 
 with lib;
 
 let
   cfg = config.myos.ssh;
   username = config.myos.user.mainUser;
-  match-blocks =
-    {
-      "*" = {
-        forwardAgent = false;
-        addKeysToAgent = "no";
-        compression = true;
-        serverAliveInterval = 60;
-        serverAliveCountMax = 3;
-        hashKnownHosts = false;
-        userKnownHostsFile = "~/.ssh/known_hosts";
-        controlPath = "~/.ssh/master-%r@%n:%p";
-        controlMaster = "auto";
-        controlPersist = "1m";
+  match-blocks = {
+    "*" = {
+      forwardAgent = false;
+      addKeysToAgent = "no";
+      compression = true;
+      serverAliveInterval = 60;
+      serverAliveCountMax = 3;
+      hashKnownHosts = false;
+      userKnownHostsFile = "~/.ssh/known_hosts";
+      controlPath = "~/.ssh/master-%r@%n:%p";
+      controlMaster = "auto";
+      controlPersist = "1m";
+    };
+  }
+  // (builtins.foldl' (a: b: a // b) { } (
+    map (host: {
+      "${host}" = {
+        HostName = "${host}.h.${self.tfo.fqdn.edg}";
+        User = username;
       };
-    } //
-    (builtins.foldl' (a: b: a // b) { }
-      (map
-        (host: {
-          "${host}" = {
-            HostName = "${host}.h.${self.tfo.fqdn.edg}";
-            User = username;
-          };
-        })
-        (builtins.attrNames self.shared-data.hosts)));
+    }) (builtins.attrNames self.shared-data.hosts)
+  ));
 in
 {
   options.myos.ssh = {
@@ -68,16 +72,15 @@ in
             Port = 443;
             User = "git";
           };
-        } //
-        (builtins.foldl' (a: b: a // b) { }
-          (map
-            (host: {
-              "${host}" = {
-                HostName = "${host}.h.${self.tfo.fqdn.edg}";
-                User = username;
-              };
-            })
-            (builtins.attrNames self.shared-data.hosts)));
+        }
+        // (builtins.foldl' (a: b: a // b) { } (
+          map (host: {
+            "${host}" = {
+              HostName = "${host}.h.${self.tfo.fqdn.edg}";
+              User = username;
+            };
+          }) (builtins.attrNames self.shared-data.hosts)
+        ));
       };
     };
   };

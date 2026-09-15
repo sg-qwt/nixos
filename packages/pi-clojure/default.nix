@@ -1,10 +1,11 @@
-{ lib
-, stdenvNoCC
-, fetchFromGitHub
-, fetchurl
-, gnutar
-, gzip
-, ...
+{
+  lib,
+  stdenvNoCC,
+  fetchFromGitHub,
+  fetchurl,
+  gnutar,
+  gzip,
+  ...
 }:
 
 stdenvNoCC.mkDerivation rec {
@@ -38,7 +39,10 @@ stdenvNoCC.mkDerivation rec {
     hash = "sha256-c8KPMs2QqGijtnBcT/UBUPTqwEsBCujk5WG4GGdcrn0=";
   };
 
-  nativeBuildInputs = [ gnutar gzip ];
+  nativeBuildInputs = [
+    gnutar
+    gzip
+  ];
 
   dontConfigure = true;
   dontBuild = true;

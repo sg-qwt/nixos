@@ -1,9 +1,14 @@
-s@{ config, pkgs, lib, self, ... }:
+s@{
+  config,
+  pkgs,
+  lib,
+  self,
+  ...
+}:
 let
   jdk = pkgs.jdk25_headless;
 in
-lib.mkProfile s "clojure-dev"
-{
+lib.mkProfile s "clojure-dev" {
   programs.java = {
     enable = true;
     package = jdk;

@@ -1,9 +1,15 @@
-{ config, lib, pkgs, modulesPath, inputs, ... }:
 {
-  imports =
-    [
-      (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  inputs,
+  ...
+}:
+{
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+  ];
 
   boot = {
     kernelPatches = [
@@ -25,7 +31,12 @@
     };
     initrd = {
       kernelModules = [ ];
-      availableKernelModules = [ "xhci_pci" "nvme" "uas" "sd_mod" ];
+      availableKernelModules = [
+        "xhci_pci"
+        "nvme"
+        "uas"
+        "sd_mod"
+      ];
     };
     kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
@@ -60,18 +71,19 @@
     memoryPercent = 50;
   };
 
-  fileSystems."/" =
-    {
-      device = "UUID=3bd1ff99-7586-4376-a342-386d8d66daea";
-      fsType = "bcachefs";
-    };
+  fileSystems."/" = {
+    device = "UUID=3bd1ff99-7586-4376-a342-386d8d66daea";
+    fsType = "bcachefs";
+  };
 
-  fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-uuid/75A0-8614";
-      fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/75A0-8614";
+    fsType = "vfat";
+    options = [
+      "fmask=0022"
+      "dmask=0022"
+    ];
+  };
 
   swapDevices = [ ];
 }

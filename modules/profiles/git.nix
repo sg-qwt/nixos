@@ -1,4 +1,10 @@
-s@{ config, pkgs, lib, self, ... }:
+s@{
+  config,
+  pkgs,
+  lib,
+  self,
+  ...
+}:
 let
   git-credential-cavemen = pkgs.writeShellScript "git-credential-cavemen" ''
     # A credential helper receives the requested credential on stdin. Return
@@ -28,8 +34,7 @@ let
     fi
   '';
 in
-lib.mkProfile s "git"
-{
+lib.mkProfile s "git" {
   vaultix.secrets.caveman-token-new = {
     owner = config.myos.user.mainUser;
   };
@@ -70,7 +75,10 @@ lib.mkProfile s "git"
         };
       };
 
-      ignores = [ ".lsp/.cache" ".clj-kondo/.cache" ];
+      ignores = [
+        ".lsp/.cache"
+        ".clj-kondo/.cache"
+      ];
     };
   };
 }

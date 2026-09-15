@@ -1,4 +1,10 @@
-s@{ config, pkgs, lib, self, ... }:
+s@{
+  config,
+  pkgs,
+  lib,
+  self,
+  ...
+}:
 let
   pi = pkgs.my.pi;
   piro = pkgs.writeScriptBin "piro" ''
@@ -33,6 +39,5 @@ lib.mkProfile s "aitooling" {
     pi
     piro
   ];
-
 
 }

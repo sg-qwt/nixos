@@ -1,4 +1,11 @@
-s@{ config, pkgs, lib, inputs, self, ... }:
+s@{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  self,
+  ...
+}:
 lib.mkProfile s "container" {
   virtualisation.containers.enable = true;
 
@@ -34,7 +41,9 @@ lib.mkProfile s "container" {
             "${homepath}/Downloads/baidunetdisk:/root/baidunetdiskdownload"
           ];
           ports = [ "5801:6080" ];
-          environment = { VNC_SERVER_PASSWD = "passwd"; };
+          environment = {
+            VNC_SERVER_PASSWD = "passwd";
+          };
         };
 
         jellyfin = {
@@ -44,7 +53,11 @@ lib.mkProfile s "container" {
             "${homepath}/.config/jellyfin:/config"
             "/rpool/data/media:/media"
           ];
-          ports = [ "8096:8096" "7359:7359/udp" "1900:1900/udp" ];
+          ports = [
+            "8096:8096"
+            "7359:7359/udp"
+            "1900:1900/udp"
+          ];
           environment = {
             PUID = "1000";
             PGID = "100";

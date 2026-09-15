@@ -1,4 +1,9 @@
-s@{ config, lib, self, ... }:
+s@{
+  config,
+  lib,
+  self,
+  ...
+}:
 lib.mkProfile s "cache" {
 
   nix.settings.substituters = [

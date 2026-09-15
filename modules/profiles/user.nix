@@ -1,4 +1,10 @@
-{ options, config, lib, self, ... }:
+{
+  options,
+  config,
+  lib,
+  self,
+  ...
+}:
 
 with lib;
 
@@ -36,7 +42,14 @@ in
 
     users.users."${cfg.mainUser}" = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "networkmanager" "audio" "video" "systemd-journal" ] ++ cfg.extraGroups;
+      extraGroups = [
+        "wheel"
+        "networkmanager"
+        "audio"
+        "video"
+        "systemd-journal"
+      ]
+      ++ cfg.extraGroups;
       hashedPasswordFile = config.vaultix.secrets.me-password.path;
       openssh.authorizedKeys.keys = self.shared-data.openssh-keys;
     };

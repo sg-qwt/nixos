@@ -1,6 +1,5 @@
 s@{ pkgs, lib, ... }:
-lib.mkProfile s "fcitx"
-{
+lib.mkProfile s "fcitx" {
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";

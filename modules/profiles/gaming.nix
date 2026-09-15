@@ -1,4 +1,10 @@
-s@{ config, pkgs, lib, self, ... }:
+s@{
+  config,
+  pkgs,
+  lib,
+  self,
+  ...
+}:
 let
   myhomecfg = config.home-manager.users."${config.myos.user.mainUser}";
   cap = [
@@ -14,8 +20,7 @@ let
     exec ${pkgs.procps}/bin/pgrep -u ${lib.escapeShellArg config.myos.user.mainUser} -x steam > /dev/null
   '';
 in
-lib.mkProfile s "gaming"
-{
+lib.mkProfile s "gaming" {
   systemd.packages = [
     pkgs.my.dmemcg-booster
   ];
@@ -249,18 +254,25 @@ lib.mkProfile s "gaming"
     };
   };
 
-  myhome = { config, lib, osConfig, ... }: {
-    programs.mangohud = {
-      enable = true;
-      settings = {
-        preset = "2,3,4,0,1";
-        horizontal_stretch = false;
-        toggle_preset = "F10";
-        toggle_hud = "F11";
-        toggle_hud_position = "F12";
+  myhome =
+    {
+      config,
+      lib,
+      osConfig,
+      ...
+    }:
+    {
+      programs.mangohud = {
+        enable = true;
+        settings = {
+          preset = "2,3,4,0,1";
+          horizontal_stretch = false;
+          toggle_preset = "F10";
+          toggle_hud = "F11";
+          toggle_hud_position = "F12";
+        };
       };
     };
-  };
 
   # controller
   hardware.xone.enable = true;

@@ -1,4 +1,10 @@
-s@{ config, pkgs, lib, self, ... }:
+s@{
+  config,
+  pkgs,
+  lib,
+  self,
+  ...
+}:
 let
   ageIdentity =
     if config.networking.hostName == "li" then
@@ -28,5 +34,3 @@ lib.mkProfile s "qqqemacs" {
     '';
   };
 }
-
-  

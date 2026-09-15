@@ -1,4 +1,9 @@
-s@{ config, lib, self, ... }:
+s@{
+  config,
+  lib,
+  self,
+  ...
+}:
 lib.mkProfile s "tailscale" (
   let
     interface = "veth-myos-ts";

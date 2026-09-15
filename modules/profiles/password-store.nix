@@ -1,6 +1,10 @@
-s@{ config, pkgs, lib, ... }:
-lib.mkProfile s "password-store"
-{
+s@{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+lib.mkProfile s "password-store" {
   myhome = { config, ... }: {
 
     programs.password-store = {

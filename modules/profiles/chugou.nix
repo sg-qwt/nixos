@@ -1,4 +1,10 @@
-{ config, lib, inputs, self, ... }:
+{
+  config,
+  lib,
+  inputs,
+  self,
+  ...
+}:
 with lib;
 let
   inherit (self.shared-data) ports;

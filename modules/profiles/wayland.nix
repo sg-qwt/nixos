@@ -1,6 +1,10 @@
-s@{ config, pkgs, lib, ... }:
-lib.mkProfile s "wayland"
-{
+s@{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+lib.mkProfile s "wayland" {
   environment = {
     sessionVariables = {
       MOZ_ENABLE_WAYLAND = "1";

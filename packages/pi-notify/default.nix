@@ -1,8 +1,9 @@
-{ lib
-, stdenvNoCC
-, replaceVars
-, pkgs
-, ...
+{
+  lib,
+  stdenvNoCC,
+  replaceVars,
+  pkgs,
+  ...
 }:
 
 let

@@ -1,4 +1,10 @@
-s@{ config, pkgs, lib, self, ... }:
+s@{
+  config,
+  pkgs,
+  lib,
+  self,
+  ...
+}:
 lib.mkProfile s "attic-server" (
   let
     inherit (self.shared-data) ports;
@@ -30,7 +36,9 @@ lib.mkProfile s "attic-server" (
           max-size = 256 * 1024; # 256 KiB
         };
 
-        compression = { type = "zstd"; };
+        compression = {
+          type = "zstd";
+        };
 
         garbage-collection = {
           interval = "5 days";

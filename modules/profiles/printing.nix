@@ -1,6 +1,11 @@
-s@{ config, pkgs, lib, self, ... }:
-lib.mkProfile s "printing"
-{
+s@{
+  config,
+  pkgs,
+  lib,
+  self,
+  ...
+}:
+lib.mkProfile s "printing" {
   networking.firewall = {
     allowedUDPPorts = [ 2021 ];
   };

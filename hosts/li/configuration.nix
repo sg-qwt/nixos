@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   jovian.devices.steamdeck.enableOsFanControl = true;
   systemd.tmpfiles.settings."99-jovian"."/sys/firmware/dmi/tables/*".z.mode = "444";

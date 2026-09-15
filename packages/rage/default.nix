@@ -1,4 +1,9 @@
-{ lib, symlinkJoin, pkgs, ... }:
+{
+  lib,
+  symlinkJoin,
+  pkgs,
+  ...
+}:
 let
   deps = with pkgs; [ age-plugin-yubikey ];
 in

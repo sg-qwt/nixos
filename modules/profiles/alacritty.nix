@@ -1,6 +1,10 @@
-s@{ config, pkgs, lib, ... }:
-lib.mkProfile s "alacritty"
-{
+s@{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+lib.mkProfile s "alacritty" {
   myhome = {
     programs.alacritty = {
       enable = true;

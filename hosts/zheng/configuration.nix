@@ -2,9 +2,16 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
-let user = config.myos.user.mainUser; in
+let
+  user = config.myos.user.mainUser;
+in
 {
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;

@@ -1,4 +1,10 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  ...
+}:
 {
   imports = [
     "${modulesPath}/virtualisation/azure-common.nix"

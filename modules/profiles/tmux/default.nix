@@ -1,6 +1,5 @@
 s@{ lib, ... }:
-lib.mkProfile s "tmux"
-{
+lib.mkProfile s "tmux" {
   programs.tmux = {
     enable = true;
     secureSocket = false;

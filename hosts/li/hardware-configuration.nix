@@ -1,14 +1,20 @@
-{ config, lib, pkgs, modulesPath, inputs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  inputs,
+  ...
+}:
 let
   system = pkgs.stdenv.hostPlatform.system;
 
   jovianKernel = inputs.jovian.legacyPackages.${system}.linux_jovian;
 in
 {
-  imports =
-    [
-      (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+  ];
 
   boot = {
     kernelPackages = pkgs.linuxPackagesFor jovianKernel;
@@ -40,7 +46,10 @@ in
 
       "processor.max_cstate=2"
     ];
-    kernelModules = [ "kvm-amd" "ntsync" ];
+    kernelModules = [
+      "kvm-amd"
+      "ntsync"
+    ];
     blacklistedKernelModules = [ ];
     extraModulePackages = [ ];
     supportedFilesystems = [ "bcachefs" ];
@@ -69,18 +78,19 @@ in
     memoryPercent = 50;
   };
 
-  fileSystems."/" =
-    {
-      device = "/dev/disk/by-uuid/d220b16d-b8d7-4fa2-9042-aaa023d7b071";
-      fsType = "bcachefs";
-    };
-  specialisation.fsck.configuration.fileSystems."/".options = [ "fsck" "fix_errors" ];
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/d220b16d-b8d7-4fa2-9042-aaa023d7b071";
+    fsType = "bcachefs";
+  };
+  specialisation.fsck.configuration.fileSystems."/".options = [
+    "fsck"
+    "fix_errors"
+  ];
 
-  fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-uuid/09C1-138C";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/09C1-138C";
+    fsType = "vfat";
+  };
 
   swapDevices = [ ];
 }

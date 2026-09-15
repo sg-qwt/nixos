@@ -1,4 +1,10 @@
-{ config, lib, pkgs, self, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  self,
+  ...
+}:
 
 with lib;
 let
@@ -24,58 +30,58 @@ in
     };
   };
 
-  config = mkIf cfg.enable
-    {
-      vaultix.secrets.sspass = { };
-      vaultix.secrets.sing-shadow = { };
-      vaultix.secrets.sing-pass = { };
-      vaultix.secrets.sing-vless-uuid = { };
-      vaultix.secrets.sing-hy = { };
-      vaultix.secrets.masque-key = { };
-      vaultix.secrets.clash-secret = { };
-      vaultix.templates.clashm = {
-        content = builtins.toJSON
-          (import ./clash.nix {
-            inherit config pkgs self;
-            interface = cfg.interface;
-          });
-      };
+  config = mkIf cfg.enable {
+    vaultix.secrets.sspass = { };
+    vaultix.secrets.sing-shadow = { };
+    vaultix.secrets.sing-pass = { };
+    vaultix.secrets.sing-vless-uuid = { };
+    vaultix.secrets.sing-hy = { };
+    vaultix.secrets.masque-key = { };
+    vaultix.secrets.clash-secret = { };
+    vaultix.templates.clashm = {
+      content = builtins.toJSON (
+        import ./clash.nix {
+          inherit config pkgs self;
+          interface = cfg.interface;
+        }
+      );
+    };
 
-      networking.firewall.trustedInterfaces = [ cfg.interface ];
+    networking.firewall.trustedInterfaces = [ cfg.interface ];
 
-      services.mihomo = {
-        enable = true;
-        package = pkgs.mihomo;
-        configFile = config.vaultix.templates.clashm.path;
-        webui = pkgs.metacubexd;
-        tunMode = true;
-      };
+    services.mihomo = {
+      enable = true;
+      package = pkgs.mihomo;
+      configFile = config.vaultix.templates.clashm.path;
+      webui = pkgs.metacubexd;
+      tunMode = true;
+    };
 
-      systemd.services.mihomo = {
-        restartTriggers = [
-          config.vaultix.templates.clashm.content
+    systemd.services.mihomo = {
+      restartTriggers = [
+        config.vaultix.templates.clashm.content
+      ];
+      serviceConfig = {
+        CapabilityBoundingSet = lib.mkForce cap;
+        AmbientCapabilities = lib.mkForce cap;
+        ExecStartPre = [
+          "${pkgs.coreutils}/bin/ln -sf ${pkgs.v2ray-geoip}/share/v2ray/geoip.dat /var/lib/private/mihomo/GeoIP.dat"
+          "${pkgs.coreutils}/bin/ln -sf ${pkgs.v2ray-domain-list-community}/share/v2ray/geosite.dat /var/lib/private/mihomo/GeoSite.dat"
         ];
-        serviceConfig = {
-          CapabilityBoundingSet = lib.mkForce cap;
-          AmbientCapabilities = lib.mkForce cap;
-          ExecStartPre = [
-            "${pkgs.coreutils}/bin/ln -sf ${pkgs.v2ray-geoip}/share/v2ray/geoip.dat /var/lib/private/mihomo/GeoIP.dat"
-            "${pkgs.coreutils}/bin/ln -sf ${pkgs.v2ray-domain-list-community}/share/v2ray/geosite.dat /var/lib/private/mihomo/GeoSite.dat"
-          ];
-        };
       };
+    };
 
-      programs.proxychains = {
-        enable = true;
-        quietMode = true;
-        proxies = {
-          clash = {
-            inherit host;
-            enable = true;
-            type = "socks5";
-            port = ports.clash-meta-mixed;
-          };
+    programs.proxychains = {
+      enable = true;
+      quietMode = true;
+      proxies = {
+        clash = {
+          inherit host;
+          enable = true;
+          type = "socks5";
+          port = ports.clash-meta-mixed;
         };
       };
     };
+  };
 }

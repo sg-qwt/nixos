@@ -1,4 +1,10 @@
-s@{ config, pkgs, lib, self, ... }:
+s@{
+  config,
+  pkgs,
+  lib,
+  self,
+  ...
+}:
 lib.mkProfile s "android" {
   myhome = {
     home.packages = with pkgs; [

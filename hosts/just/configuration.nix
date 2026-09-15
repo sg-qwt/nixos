@@ -1,4 +1,11 @@
-{ config, lib, pkgs, modulesPath, self, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  self,
+  ...
+}:
 let
   edg = self.tfo.fqdn.edg;
   cybcc = self.tfo.fqdn.cybcc;

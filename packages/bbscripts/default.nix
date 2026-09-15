@@ -1,32 +1,36 @@
-{ lib, self, symlinkJoin, pkgs, ... }:
+{
+  lib,
+  self,
+  symlinkJoin,
+  pkgs,
+  ...
+}:
 let
   hosts = (lib.concatStringsSep ":" (builtins.attrNames self.shared-data.hosts));
-  bento = pkgs.writers.writeBabashkaBin "bento"
-    {
-      makeWrapperArgs = [
-        "--set"
-        "BABASHKA_CLASSPATH"
-        "\"\""
+  bento = pkgs.writers.writeBabashkaBin "bento" {
+    makeWrapperArgs = [
+      "--set"
+      "BABASHKA_CLASSPATH"
+      "\"\""
 
-        "--set"
-        "MYOS_BENTO_HOSTS"
-        "${hosts}"
+      "--set"
+      "MYOS_BENTO_HOSTS"
+      "${hosts}"
 
-        "--set"
-        "MYOS_BENTO_SHI_DATA"
-        "${self + "/resources/dicts/shi.txt"}"
+      "--set"
+      "MYOS_BENTO_SHI_DATA"
+      "${self + "/resources/dicts/shi.txt"}"
 
-        "--prefix"
-        "PATH"
-        ":"
-        "${lib.makeBinPath [
+      "--prefix"
+      "PATH"
+      ":"
+      "${lib.makeBinPath [
         pkgs.brightnessctl
         pkgs.libnotify
         pkgs.asusctl
       ]}"
-      ];
-    }
-    (builtins.readFile ./bento.clj);
+    ];
+  } (builtins.readFile ./bento.clj);
 in
 symlinkJoin {
   name = "bbscripts";

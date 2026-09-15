@@ -1,11 +1,12 @@
-{ callPackage
-, lib
-, stdenv
-, fetchurl
-, nixos
-, testers
-, hello
-, ...
+{
+  callPackage,
+  lib,
+  stdenv,
+  fetchurl,
+  nixos,
+  testers,
+  hello,
+  ...
 }:
 
 stdenv.mkDerivation (finalAttrs: {

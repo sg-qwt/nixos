@@ -1,7 +1,8 @@
-{ stdenv
-, fetchFromGitHub
-, lib
-, ...
+{
+  stdenv,
+  fetchFromGitHub,
+  lib,
+  ...
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "netns-exec";
