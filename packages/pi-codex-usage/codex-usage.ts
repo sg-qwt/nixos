@@ -194,9 +194,12 @@ export default function (pi: ExtensionAPI) {
 
       const auth = await ctx.modelRegistry.getApiKeyAndHeaders(model)
       if (!auth.ok || !auth.apiKey) {
+        const reason = auth.ok
+          ? "no API key was returned"
+          : auth.error || "authentication failed"
         pi.sendMessage({
           customType: "codex-usage",
-          content: "Could not load ChatGPT usage limits.",
+          content: `Could not load ChatGPT usage limits.\nreason: ${reason}`,
           display: true,
         })
         return
@@ -218,7 +221,11 @@ export default function (pi: ExtensionAPI) {
           signal: AbortSignal.timeout(15000),
         })
         if (!response.ok) {
-          throw new Error(`usage request failed: ${response.status}`)
+          const body = (await response.text()).replace(/\s+/g, " ").slice(0, 500)
+          const status = `${response.status} ${response.statusText}`.trim()
+          throw new Error(
+            `usage request failed: ${status}${body ? `: ${body}` : ""}`,
+          )
         }
 
         const snapshot = parseUsageSnapshot(await response.json())
@@ -234,10 +241,11 @@ export default function (pi: ExtensionAPI) {
           content: buildUsageDetails(snapshot, provider).join("\n"),
           display: true,
         })
-      } catch {
+      } catch (error) {
+        const reason = error instanceof Error ? error.message : String(error)
         pi.sendMessage({
           customType: "codex-usage",
-          content: "Could not load ChatGPT usage limits.",
+          content: `Could not load ChatGPT usage limits.\nreason: ${reason}`,
           display: true,
         })
       }
