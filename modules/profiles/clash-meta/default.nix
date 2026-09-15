@@ -31,7 +31,7 @@ in
       vaultix.secrets.sing-pass = { };
       vaultix.secrets.sing-vless-uuid = { };
       vaultix.secrets.sing-hy = { };
-      vaultix.secrets.warp-key = { };
+      vaultix.secrets.masque-key = { };
       vaultix.secrets.clash-secret = { };
       vaultix.templates.clashm = {
         content = builtins.toJSON

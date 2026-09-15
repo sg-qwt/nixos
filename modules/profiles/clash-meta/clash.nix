@@ -146,37 +146,38 @@ rec {
         };
       };
 
-      warp = {
-        name = "warp";
-        type = "wireguard";
-        server = "engage.cloudflareclient.com";
-        port = 2408;
-        ip = "172.16.0.2/32";
-        ipv6 = "2606:4700:110:8917:8d18:1f95:291e:3c2e/128";
-        private-key = config.vaultix.placeholder.warp-key;
-        public-key = "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=";
+      masque = {
+        name = "masque";
+        type = "masque";
+        server = "162.159.198.2";
+        port = 443;
+        ip = "172.16.0.2";
+        ipv6 = "2606:4700:110:8b70:fdc8:915f:21c7:daab";
+        private-key = config.vaultix.placeholder.masque-key;
+        public-key = "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEIaU7MToJm9NKp8YfGxR6r+/h4mcG\n7SxI8tsW8OR1A5tv/zCzVbCRRh2t87/kxnP6lAy0lkr7qYwu+ox+k3dr6w==";
         udp = true;
         mtu = 1280;
         remote-dns-resolve = true;
         dns = [
-          "https://dns.cloudflare.com/dns-query"
+          "1.1.1.1"
+          "8.8.8.8"
         ];
-        dialer-proxy = "warp-front";
+        dialer-proxy = "proxies-front";
       };
 
     in
-    anytls ++ sstls ++ hy ++ [ warp ];
+    anytls ++ sstls ++ hy ++ [ masque ];
 
   proxy-groups =
     let
       custom-pxs =
         proxies
         |> map (x: toString x.name)
-        |> builtins.filter (x: x != "warp");
+        |> builtins.filter (x: x != "masque");
     in
     [
       {
-        name = "warp-front";
+        name = "proxies-front";
         type = "select";
         proxies = custom-pxs;
       }
@@ -185,7 +186,7 @@ rec {
         name = "select";
         type = "select";
         proxies = custom-pxs ++ [
-          "warp"
+          "masque"
           "auto"
           "fallback"
           "DIRECT"
