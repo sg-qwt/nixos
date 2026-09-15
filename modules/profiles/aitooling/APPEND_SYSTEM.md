@@ -15,4 +15,4 @@
 
 ## Git staging
 
-Never stage files (`git add`, `git add -p`, etc.) unless the user explicitly asks to stage changes. Editing files is allowed when requested, but leave the Git index untouched by default.
+Never stage files (`git add`, `git add -p`, etc.) if there are already staged but uncommitted files present.
