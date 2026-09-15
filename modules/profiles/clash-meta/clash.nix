@@ -232,6 +232,7 @@ rec {
 
     "DOMAIN-SUFFIX,r2.cloudflarestorage.com,maybe"
     "DOMAIN-SUFFIX,cache.nixos.org,maybe"
+    "DOMAIN-SUFFIX,audio-fa.scdn.co,maybe"
 
     "DOMAIN-SUFFIX,bambulab.com,select"
     "DOMAIN-SUFFIX,makerworld.com,select"
