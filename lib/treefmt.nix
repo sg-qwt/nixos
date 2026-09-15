@@ -5,7 +5,7 @@
     "secrets/cache/*"
     "resources/*"
   ];
-  programs.nixpkgs-fmt.enable = true;
+  programs.nixfmt.enable = true;
   programs.terraform.enable = true;
   programs.zprint = {
     enable = true;

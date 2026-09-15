@@ -1,4 +1,11 @@
-{ lib, pkgs, emacs31-pgtk, emacsPackagesFor, self, ... }:
+{ lib
+, pkgs
+, emacs31-pgtk
+, emacsPackagesFor
+, self
+, ageIdentity ? self + "/resources/keys/age-yubikey-identity-main.txt"
+, ...
+}:
 let
   emacsWithPackages = (emacsPackagesFor emacs31-pgtk).emacsWithPackages;
 
@@ -166,7 +173,7 @@ pkgs.symlinkJoin {
     wrapProgram $out/bin/emacs \
       --set QQQ_SNIPPETS ${./snippets} \
       --set QQQ_AGE_RECIPIENTS ${self + "/resources/keys/recipients.txt"} \
-      --set QQQ_AGE_IDENTITY ${self + "/resources/keys/age-yubikey-identity-main.txt"} \
+      --set QQQ_AGE_IDENTITY ${ageIdentity} \
       --prefix PATH : ${lib.makeBinPath deps} \
       --add-flags --init-directory=${./init}
   '';
