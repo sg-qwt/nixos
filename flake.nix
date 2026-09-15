@@ -69,6 +69,15 @@
       helpers = import ./lib/helpers.nix { inherit self nixpkgs inputs pkgs; };
 
       treefmt-eval = (inputs.treefmt-nix.lib.evalModule pkgs ./lib/treefmt.nix);
+
+      configureVaultix = identity: vaultix.configure rec {
+        nodes = helpers.nodes;
+        inherit identity;
+        extraRecipients = [ "age1yubikey1q0mllu8l3pf4fynhye98u308ppk9tjx7aawvzhhqwvrn878nmcsfcwj37nf" ];
+        extraPackages = [ pkgs.age-plugin-yubikey ];
+        defaultSecretDirectory = "./caveman";
+        cache = "${defaultSecretDirectory}/cache";
+      };
     in
     {
       # expose nix repl usage only
@@ -80,14 +89,13 @@
       shared-data = helpers.shared-data;
       tfo = helpers.tfo;
 
-      vaultix = vaultix.configure rec {
-        nodes = helpers.nodes;
-        identity = self + "/resources/keys/age-yubikey-identity-main.txt";
-        extraRecipients = [ "age1yubikey1q0mllu8l3pf4fynhye98u308ppk9tjx7aawvzhhqwvrn878nmcsfcwj37nf" ];
-        extraPackages = [ pkgs.age-plugin-yubikey ];
-        defaultSecretDirectory = "./caveman";
-        cache = "${defaultSecretDirectory}/cache";
-      };
+      vaultix = configureVaultix (
+        self + "/resources/keys/age-yubikey-identity-main.txt"
+      );
+
+      vaultix-backup = configureVaultix (
+        self + "/resources/keys/age-yubikey-identity-backup.txt"
+      );
 
       overlays.default = (helpers.default-overlays { inherit inputs; });
 
