@@ -266,7 +266,7 @@ If the buffer doesn't exist, create it first."
   (qqq/leader
     :infix "a"
     "" '(:ignore t :wk "application")
-    "p" #'pi-coding-agent)
+    "p" #'pilish)
 
   ;;;;;;;;;;;;;
   ;; project ;;
@@ -534,7 +534,7 @@ If the buffer doesn't exist, create it first."
     '(nov-mode
       pdf-view-mode
       eat-mode
-      pi-coding-agent-chat-mode
+      pilish-chat-mode
       )
     "Major modes on which to disable line numbers."
     :group 'display-line-numbers
@@ -1199,19 +1199,19 @@ the focus."
   (add-to-list 'md-ts-code-block-source-mode-map
 	       '(clojure . clojure-ts-mode)))
 
-(use-package pi-coding-agent
+(use-package pilish
   :custom
-  (pi-coding-agent-input-window-height 0.3)
-  (pi-coding-agent-quit-without-confirmation t)
-  (pi-coding-agent-evil-copy-raw-markdown nil)
+  (pilish-input-window-height 0.3)
+  (pilish-quit-without-confirmation t)
+  (pilish-evil-copy-raw-markdown nil)
   :config
-  (with-eval-after-load 'pi-coding-agent-evil
+  (with-eval-after-load 'pilish-evil
     (general-def
       '(normal motion)
-      pi-coding-agent-chat-mode-map
+      pilish-chat-mode-map
       "?" #'evil-search-backward
-      "m" #'pi-coding-agent-menu))
-  :commands (pi-coding-agent))
+      "m" #'pilish-menu))
+  :commands (pilish))
 
 (use-package treesit
   :custom

@@ -67,7 +67,7 @@ let
 
       markdown-mode
 
-      pi-coding-agent
+      pilish
     ]) ++
 
     (with epkgs.melpaPackages; [

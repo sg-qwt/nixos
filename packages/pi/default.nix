@@ -1,6 +1,7 @@
 { pkgs, lib, symlinkJoin, makeWrapper, inputs, ... }:
 let
   extensions = [
+    pkgs.my.pi-chatgpt-limit
     pkgs.my.pi-notify
   ];
   skills = [
