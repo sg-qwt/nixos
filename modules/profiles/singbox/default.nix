@@ -19,7 +19,7 @@ in
     };
     sni2 = mkOption {
       type = types.str;
-      default = "cloud.tencent.com";
+      default = "www.apple.com";
     };
   };
 

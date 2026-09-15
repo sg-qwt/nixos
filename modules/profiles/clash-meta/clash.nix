@@ -139,7 +139,7 @@ rec {
       sstls = {
         name = "sstls";
         type = "ss";
-        server = az-ips.puer.ipv4;
+        server = az-ips.puer.ipv6;
         port = ports.sstls;
         cipher = "2022-blake3-aes-128-gcm";
         password = config.vaultix.placeholder.sing-shadow;
