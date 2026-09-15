@@ -80,89 +80,74 @@ rec {
 
   proxies =
     let
-      anytls = {
-        name = "anytls";
+      mkVariants =
+        { type
+        , hostname
+        , settings
+        , variantSettings ? (_: { })
+        }:
+        map
+          (family:
+          settings
+          // {
+            name = "${type}-${hostname}-v${family}";
+            server = az-ips."${hostname}"."ipv${family}";
+          }
+          // variantSettings family)
+          [ "4" "6" ];
+
+      anytls = mkVariants {
         type = "anytls";
-        server = az-ips.rocky.ipv6;
-        port = ports.anytls;
-        password = config.vaultix.placeholder.sing-pass;
-        client-fingerprint = "chrome";
-        udp = true;
-        tls = true;
-        sni = fqdn.edg;
-        alpn = [ "h2" ];
-        skip-cert-verify = false;
-      };
-      front-alt = {
-        name = "vless";
-        type = "vless";
-        server = az-ips.rocky.ipv6;
-        port = ports.https;
-        uuid = config.vaultix.placeholder.sing-vless-uuid;
-        network = "tcp";
-        tls = true;
-        udp = true;
-        flow = "xtls-rprx-vision";
-        servername = config.myos.singbox.sni;
-        reality-opts = {
-          public-key = "MaT4kg5zs3YFoMa6X4N_EcQJkKJ67Q-vp5wKAOS5YBk";
-          short-id = "fdb1";
-        };
-        client-fingerprint = "chrome";
-      };
-      hy = {
-        name = "hy";
-        type = "hysteria2";
-        server = az-ips.just.ipv4;
-        port = ports.https;
-        password = config.vaultix.placeholder.sing-hy;
-        up = "10 Mbps";
-        down = "10 Mbps";
-        obfs = "salamander";
-        obfs-password = config.vaultix.placeholder.sing-hy;
-        sni = fqdn.cybcc;
-        alpn = [ "h3" ];
-      };
-      hyv6 = {
-        name = "hyv6";
-        type = "hysteria2";
-        server = az-ips.just.ipv6;
-        port = ports.https;
-        password = config.vaultix.placeholder.sing-hy;
-        up = "10 Mbps";
-        down = "10 Mbps";
-        obfs = "salamander";
-        obfs-password = config.vaultix.placeholder.sing-hy;
-        sni = fqdn.cybcc;
-        alpn = [ "h3" ];
-      };
-      sstls = {
-        name = "sstls";
-        type = "ss";
-        server = az-ips.puer.ipv6;
-        port = ports.sstls;
-        cipher = "2022-blake3-aes-128-gcm";
-        password = config.vaultix.placeholder.sing-shadow;
-        client-fingerprint = "chrome";
-        plugin = "shadow-tls";
-        plugin-opts = {
-          host = config.myos.singbox.sni2;
+        hostname = "rocky";
+        settings = {
+          type = "anytls";
+          port = ports.anytls;
           password = config.vaultix.placeholder.sing-pass;
-          version = 3;
+          client-fingerprint = "chrome";
+          udp = true;
+          tls = true;
+          sni = fqdn.edg;
+          alpn = [ "h2" ];
+          skip-cert-verify = false;
         };
       };
-    in
-    [
-      anytls
 
-      sstls
+      hy = mkVariants {
+        type = "hysteria2";
+        hostname = "just";
+        settings = {
+          type = "hysteria2";
+          port = ports.https;
+          password = config.vaultix.placeholder.sing-hy;
+          up = "10 Mbps";
+          down = "10 Mbps";
+          obfs = "salamander";
+          obfs-password = config.vaultix.placeholder.sing-hy;
+          sni = fqdn.cybcc;
+          alpn = [ "h3" ];
+        };
+      };
 
-      hy
+      sstls = mkVariants {
+        type = "ss";
+        hostname = "puer";
+        settings = {
+          type = "ss";
+          port = ports.sstls;
+          cipher = "2022-blake3-aes-128-gcm";
+          password = config.vaultix.placeholder.sing-shadow;
+          client-fingerprint = "chrome";
+          plugin = "shadow-tls";
+          plugin-opts = {
+            host = config.myos.singbox.sni2;
+            password = config.vaultix.placeholder.sing-pass;
+            version = 3;
+          };
+        };
+      };
 
-      hyv6
-
-      {
-        name = "anytls+warp";
+      warp = {
+        name = "warp";
         type = "wireguard";
         server = "engage.cloudflareclient.com";
         port = 2408;
@@ -176,20 +161,31 @@ rec {
         dns = [
           "https://dns.cloudflare.com/dns-query"
         ];
-        dialer-proxy = anytls.name;
-      }
+        dialer-proxy = "warp-front";
+      };
 
-    ];
+    in
+    anytls ++ sstls ++ hy ++ [ warp ];
 
   proxy-groups =
     let
-      custom-pxs = (map (x: (toString x.name)) proxies);
+      custom-pxs =
+        proxies
+        |> map (x: toString x.name)
+        |> builtins.filter (x: x != "warp");
     in
     [
+      {
+        name = "warp-front";
+        type = "select";
+        proxies = custom-pxs;
+      }
+
       {
         name = "select";
         type = "select";
         proxies = custom-pxs ++ [
+          "warp"
           "auto"
           "fallback"
           "DIRECT"
@@ -210,7 +206,7 @@ rec {
         name = "openai";
         type = "select";
         proxies = custom-pxs;
-        default-selected = "sstls";
+        default-selected = "ss-puer-v6";
       }
 
       {
