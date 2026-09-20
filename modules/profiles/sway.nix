@@ -384,6 +384,9 @@ lib.mkProfile s "sway" {
               tap = "enabled";
               drag_lock = "disabled";
             };
+            "10685:12546:LXT2021:00_29BD:3102" = {
+              events = "disabled";
+            };
           };
           assigns = {
             "8" = [
