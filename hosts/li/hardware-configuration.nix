@@ -3,21 +3,15 @@
   lib,
   pkgs,
   modulesPath,
-  inputs,
   ...
 }:
-let
-  system = pkgs.stdenv.hostPlatform.system;
-
-  jovianKernel = inputs.jovian.legacyPackages.${system}.linux_jovian;
-in
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackagesFor jovianKernel;
+    kernelPackages = pkgs.linuxPackages_jovian;
     loader = {
       systemd-boot.enable = true;
       systemd-boot.memtest86.enable = true;
@@ -63,6 +57,10 @@ in
     graphics = {
       enable = true;
       enable32Bit = true;
+      package = pkgs.mesa-radeonsi-jupiter;
+      package32 = pkgs.pkgsi686Linux.mesa-radeonsi-jupiter;
+      extraPackages = [ (lib.hiPrio pkgs.mesa-radv-jupiter) ];
+      extraPackages32 = [ (lib.hiPrio pkgs.pkgsi686Linux.mesa-radv-jupiter) ];
     };
 
     steam-hardware.enable = true;
