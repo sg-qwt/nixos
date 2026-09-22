@@ -12,18 +12,6 @@ let
 
   pi = pkgs.my.pi;
 
-  pilish =
-    epkgs:
-    epkgs.melpaStablePackages.pilish.overrideAttrs (_: {
-      commit = "92673467f345d51a116e11a40d7a86e144ba7d95";
-      src = pkgs.fetchFromGitHub {
-        owner = "dnouri";
-        repo = "pilish";
-        rev = "92673467f345d51a116e11a40d7a86e144ba7d95";
-        hash = "sha256-lKz4xqQ6w3GjzDZURSocu8Vg+9bCPssmomXTAaSEPx8=";
-      };
-    });
-
   # trivialBuild = pkgs.emacsPackages.trivialBuild;
 
   ts-grammers =
@@ -91,8 +79,6 @@ let
         cider-eval-sexp-fu
 
         markdown-mode
-
-        (pilish epkgs)
       ])
     ++
 
@@ -141,6 +127,8 @@ let
         rust-mode
 
         age
+
+        pilish
       ])
     ++
 

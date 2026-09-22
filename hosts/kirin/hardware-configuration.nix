@@ -22,7 +22,7 @@
     kernelPackages = pkgs.linuxPackages_latest;
     # https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/8930
     kernelParams = [
-      "xe.enable_psr=0"
+      "xe.enable_psr2_sel_fetch=0"
       "xe.enable_panel_replay=0"
     ];
     loader = {
