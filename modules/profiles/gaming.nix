@@ -71,13 +71,6 @@ lib.mkProfile s "gaming" {
       setuid = true;
       setgid = true;
     };
-
-    bwrap = {
-      setuid = true;
-      owner = "root";
-      group = "root";
-      source = "${pkgs.bubblewrapSetuid}/bin/bwrap";
-    };
   };
 
   programs.gamescope = {

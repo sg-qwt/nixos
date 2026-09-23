@@ -51,16 +51,6 @@ rec {
         }) (builtins.attrNames (builtins.readDir (self + "/packages")))
       )
     );
-
-    # https://github.com/NixOS/nixpkgs/issues/523427
-    # https://github.com/NixOS/nixpkgs/issues/533140
-    # https://github.com/NixOS/nixpkgs/issues/523200
-    bubblewrapSetuid = prev.bubblewrap.overrideAttrs (old: {
-      mesonFlags = (old.mesonFlags or [ ]) ++ [ "-Dsupport_setuid=true" ];
-    });
-    buildFHSEnv = prev.buildFHSEnv.override {
-      bubblewrap = "/run/wrappers";
-    };
   };
 
   jovian-overlay = (
