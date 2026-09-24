@@ -4,41 +4,41 @@
 provider "registry.terraform.io/cloudflare/cloudflare" {
   version = "5.22.0"
   hashes = [
-    "h1:LbNVQmxXejIdclZMH+tt4BREqwhKE8KtrXXCEooFOG0=",
+    "h1:PGY6+g2kqeG8damhO5mr46jxX2+63+hJHiu8K9k/Urk=",
   ]
 }
 
 provider "registry.terraform.io/grafana/grafana" {
-  version = "4.45.1"
+  version = "4.46.0"
   hashes = [
-    "h1:wuCqlESmPoHk5ewlYidvBwVWjWuLwwC6BMtNA14/L28=",
+    "h1:EKjM9nbMHWDfxzs3yQ0eJtI3WB54qZ2yxbfhnsHUZAM=",
   ]
 }
 
 provider "registry.terraform.io/hashicorp/azurerm" {
-  version = "5.0.1"
+  version = "5.5.0"
   hashes = [
-    "h1:0k4rp5qUKbPoIvNZyfsSHrVgIRphHP6MkTbAdw9/5u4=",
+    "h1:E6zQKT/5gMSQw6xjmQQuDvhu6Vf+/cp7vGJws5hU6Iw=",
   ]
 }
 
 provider "registry.terraform.io/hashicorp/random" {
   version = "3.9.0"
   hashes = [
-    "h1:MZaKH/ib62yXOnBFQ8xR7TtVHODK1aoBs2A7hbnRV9E=",
+    "h1:HZFZ2TBTM9ItdXvDdybAedOHZ2OWI9gdNnxNw2/TESo=",
   ]
 }
 
 provider "registry.terraform.io/hashicorp/time" {
   version = "0.14.1"
   hashes = [
-    "h1:Nce5ahV5lrNdkKjZsOfolQoq46XUl+SbCHm7ZkAokFs=",
+    "h1:UIpxv8fuV/rMMYJVYoOHpZTADHoNT1Mr8GSCUCf0E24=",
   ]
 }
 
 provider "registry.terraform.io/tailscale/tailscale" {
   version = "0.29.2"
   hashes = [
-    "h1:xKZGM6f/DTBgke83dcRq9GMsf9egd7/Jzdvydf7a9Ic=",
+    "h1:MowNbSBpxO0lY1XU/ld0RwJyo/1NA1vbJFpxKH5Saj4=",
   ]
 }
