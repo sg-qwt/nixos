@@ -1,7 +1,7 @@
-{ pkgs, self }:
+{ pkgs, self, identity ? "main" }:
 let
   tfenv = self + "/caveman/tf-infra.env.age";
-  id = self + "/resources/keys/age-yubikey-identity-main.txt";
+  id = self + "/resources/keys/age-yubikey-identity-${identity}.txt";
   terraform = (
     pkgs.terraform.withPlugins (p: [
       # p.cloudflare_cloudflare
