@@ -57,6 +57,7 @@
       ];
     };
   };
+  myhome.programs.mpv.config.hwdec = "vaapi";
 
   environment.sessionVariables = {
     LIBVA_DRIVER_NAME = "iHD";

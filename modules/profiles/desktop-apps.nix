@@ -8,6 +8,12 @@ let
   };
 in
 lib.mkProfile s "desktop-apps" {
+  _profileOptions.mpvHwdec = lib.mkOption {
+    type = lib.types.str;
+    default = "auto";
+    description = "Hardware video decoding mode used by mpv";
+  };
+
   # file manager
   services.gvfs.enable = true;
   programs.thunar.enable = true;
@@ -146,7 +152,7 @@ lib.mkProfile s "desktop-apps" {
         enable = true;
         config = {
           profile = "gpu-hq";
-          hwdec = "auto";
+          hwdec = s.config.myos.desktop-apps.mpvHwdec;
           ytdl-raw-options = "cookies-from-browser=brave";
           input-ipc-server = "/tmp/mpvsocket";
         };

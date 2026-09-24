@@ -24,7 +24,10 @@
     shell.enable = true;
     git.enable = true;
     ssh.enable = true;
-    desktop-apps.enable = true;
+    desktop-apps = {
+      enable = true;
+      mpvHwdec = "vaapi";
+    };
     tools.enable = true;
     clash-meta.enable = true;
     tailscale.enable = true;

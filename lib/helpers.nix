@@ -20,13 +20,20 @@ rec {
     )
   );
 
-  mkProfile = s: pname: body: {
-    options.myos."${pname}" = {
-      enable = s.lib.mkEnableOption pname;
-    };
+  mkProfile =
+    s: pname: body:
+    let
+      profileOptions = body._profileOptions or { };
+      profileConfig = builtins.removeAttrs body [ "_profileOptions" ];
+    in
+    {
+      options.myos."${pname}" = {
+        enable = s.lib.mkEnableOption pname;
+      }
+      // profileOptions;
 
-    config = s.lib.mkIf s.config.myos."${pname}".enable body;
-  };
+      config = s.lib.mkIf s.config.myos."${pname}".enable profileConfig;
+    };
 
   addPatches =
     pkg: patches:
