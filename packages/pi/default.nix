@@ -10,12 +10,14 @@ let
   extensions = [
     pkgs.my.pi-codex-usage
     pkgs.my.pi-notify
+    (pkgs.atuin.src + "/contrib/pi/atuin.ts")
   ];
   skills = [
     (pkgs.my.brepl + "/share/brepl/SKILL.md")
   ];
   wrapperFlags = [
     "--set PI_TELEMETRY 0"
+    "--prefix PATH : ${lib.makeBinPath [ pkgs.atuin ]}"
   ]
   ++ map (
     extension: "--add-flags ${lib.escapeShellArg "--extension ${toString extension}"}"
