@@ -74,6 +74,7 @@ rec {
     enhanced-mode = "fake-ip";
     fake-ip-filter = [
       "*"
+      "+.h.${fqdn.edg}"
       "+.lan"
       "+.local"
       "+.tailscale.com"
