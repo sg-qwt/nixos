@@ -16,8 +16,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "sg-qwt";
       repo = "pilish";
-      rev = "ec80013b88653059168f998e8153f52302efe48d";
-      hash = "sha256-5aHTjdfPxFwOES581SoQmwE155DRJ8L6p77m9wtwc/Y=";
+      rev = "65ef45a0aca3f153862f6cc8db09210e8d49b1df";
+      hash = "sha256-ZZ0leGBX1+41Roehe/CLCPbWS3vXiYZNNa6BVlsSN4s=";
     };
     version = "20260925.0";
   });
