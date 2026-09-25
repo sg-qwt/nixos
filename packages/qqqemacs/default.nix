@@ -12,7 +12,15 @@ let
 
   pi = pkgs.my.pi;
 
-  # trivialBuild = pkgs.emacsPackages.trivialBuild;
+  pilishFromFork = epkgs: epkgs.melpaPackages.pilish.overrideAttrs (_: {
+    src = pkgs.fetchFromGitHub {
+      owner = "sg-qwt";
+      repo = "pilish";
+      rev = "ec80013b88653059168f998e8153f52302efe48d";
+      hash = "sha256-5aHTjdfPxFwOES581SoQmwE155DRJ8L6p77m9wtwc/Y=";
+    };
+    version = "20260925.0";
+  });
 
   ts-grammers =
     epkgs:
@@ -128,7 +136,7 @@ let
 
         age
 
-        pilish
+        (pilishFromFork epkgs)
       ])
     ++
 
