@@ -6,6 +6,7 @@ s@{
   ...
 }:
 let
+  cfg = config.myos.sway;
   modifier = "Mod4";
   systemctl = lib.getExe' config.systemd.package "systemctl";
   myhomecfg = config.home-manager.users."${config.myos.user.mainUser}";
@@ -28,21 +29,7 @@ let
   blueman-applet = lib.getExe' pkgs.blueman "blueman-applet";
   start-sway = "systemd-cat --identifier=sway sway";
 
-  monitor = {
-    main =
-      if config.networking.hostName == "kirin" then
-        {
-          id = "Sharp Corporation 0x15DD Unknown";
-          resolution = "2560x1600@120Hz";
-          scale = 1.8;
-        }
-      else
-        {
-          id = "Dell Inc. DELL U2718QM MYPFK89J15HL";
-          resolution = "3840x2160@60Hz";
-          scale = 2.0;
-        };
-  };
+  monitor.main = cfg.primaryMonitor;
 
   createSwayOutput =
     monitor: name:
@@ -65,6 +52,15 @@ let
   };
 in
 lib.mkProfile s "sway" {
+  _profileOptions = {
+    primaryMonitor = lib.mkOption {
+      type = lib.types.attrsOf lib.types.anything;
+      description = "Primary Sway output configuration";
+    };
+
+    showBattery = lib.mkEnableOption "the battery block in the status bar";
+  };
+
   myos.desktop.enable = true;
   myos.fcitx.enable = true;
   services.blueman.enable = true;
@@ -213,7 +209,7 @@ lib.mkProfile s "sway" {
               format = " $timestamp.datetime(f:'%a %b %e %R') ";
             }
           ]
-          ++ (lib.optionals (osConfig.networking.hostName == "kirin") [
+          ++ (lib.optionals osConfig.myos.sway.showBattery [
             {
               block = "battery";
               format = " $icon $percentage ";

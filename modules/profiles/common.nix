@@ -15,6 +15,14 @@ in
     ../../modules/mixins/deploy.nix
   ];
 
+  options.myos.yubikey = lib.mkOption {
+    type = lib.types.enum [
+      "main"
+      "backup"
+    ];
+    description = "YubiKey to use for SSH signing and age decryption";
+  };
+
   config = {
 
     boot.loader.systemd-boot.configurationLimit = 8;

@@ -20,6 +20,7 @@ in
   networking.hostId = "a658e17d";
 
   myos.desktop.enable = true;
+  myos.yubikey = "backup";
   myos.user.extraGroups = [ "input" ];
   myos.git.enable = true;
   myos.tailscale.enable = true;

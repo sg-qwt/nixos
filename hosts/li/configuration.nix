@@ -21,7 +21,15 @@
   # };
 
   myos = {
-    sway.enable = true;
+    yubikey = "backup";
+    sway = {
+      enable = true;
+      primaryMonitor = {
+        id = "Dell Inc. DELL U2718QM MYPFK89J15HL";
+        resolution = "3840x2160@60Hz";
+        scale = 2.0;
+      };
+    };
     tmux.enable = true;
     qqqemacs.enable = true;
     shell.enable = true;

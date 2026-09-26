@@ -18,7 +18,16 @@
   };
 
   myos = {
-    sway.enable = true;
+    yubikey = "main";
+    sway = {
+      enable = true;
+      primaryMonitor = {
+        id = "Sharp Corporation 0x15DD Unknown";
+        resolution = "2560x1600@120Hz";
+        scale = 1.8;
+      };
+      showBattery = true;
+    };
     tmux.enable = true;
     qqqemacs.enable = true;
     shell.enable = true;

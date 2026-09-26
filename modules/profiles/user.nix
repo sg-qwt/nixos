@@ -51,7 +51,7 @@ in
       ]
       ++ cfg.extraGroups;
       hashedPasswordFile = config.vaultix.secrets.me-password.path;
-      openssh.authorizedKeys.keys = self.shared-data.openssh-keys;
+      openssh.authorizedKeys.keys = builtins.attrValues self.shared-data.openssh-keys;
     };
 
     vaultix.secrets.me-password = { };

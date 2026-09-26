@@ -46,11 +46,7 @@ lib.mkProfile s "git" {
       signing = {
         signByDefault = false;
         format = "ssh";
-        key =
-          if config.networking.hostName == "kirin" then
-            "key::${builtins.elemAt self.shared-data.openssh-keys 0}"
-          else
-            "key::${builtins.elemAt self.shared-data.openssh-keys 1}";
+        key = "key::${self.shared-data.openssh-keys.${config.myos.yubikey}}";
       };
 
       lfs = {

@@ -100,8 +100,14 @@ rec {
 
   shared-data = (lib.importJSON (self + "/resources/shared-data/data.json")) // {
     hosts = {
-      zheng.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINpWTwJQ7923qsxZGWjxQrl8Bx6/+pdZDsiz0dg1akxz";
-      li.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFxduWDt3Qli+3gTUd4/3/qbVqy+wyNrqTxZhV/7/7eV";
+      zheng = {
+        key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINpWTwJQ7923qsxZGWjxQrl8Bx6/+pdZDsiz0dg1akxz";
+        jovianOverlay = true;
+      };
+      li = {
+        key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFxduWDt3Qli+3gTUd4/3/qbVqy+wyNrqTxZhV/7/7eV";
+        jovianOverlay = true;
+      };
       puer.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKcOrd7uUWfIqR7cyp6sc9bR4seNb8m3het9CFsxznN/";
       rocky.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDy3hWnYzgOJZ51yD25J5vLk33PAgKEdASoDL0UV5ivk";
       just.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHds+RAGMmOq8gw6hREjld78Rx4Ura0XgaEzmv5MUmMe";
@@ -126,10 +132,14 @@ rec {
   );
 
   mkOS =
-    { name, hostPubkey }:
+    {
+      name,
+      hostPubkey,
+      jovianOverlay ? false,
+    }:
     let
       p =
-        if (name == "zheng" || name == "li") then
+        if jovianOverlay then
           pkgs.appendOverlays [
             inputs.jovian.overlays.default
             jovian-overlay
@@ -166,6 +176,7 @@ rec {
     (mkOS {
       name = hostname;
       hostPubkey = value.key;
+      jovianOverlay = value.jovianOverlay or false;
     })
   ) shared-data.hosts;
 

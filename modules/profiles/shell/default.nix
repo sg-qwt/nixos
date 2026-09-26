@@ -52,7 +52,9 @@ lib.mkProfile s "shell" {
         pass = "head -c20 < /dev/random | base64";
         tm = "tmux new-session -A -s main";
         pb = "curl -F 'c=@-' 'https://fars.ee/'";
-        rdecrypt = "rage --identity ${self + "/resources/keys/age-yubikey-identity-main.txt"} --decrypt";
+        rdecrypt = "rage --identity ${
+          self + "/resources/keys/age-yubikey-identity-${osConfig.myos.yubikey}.txt"
+        } --decrypt";
         rencrypt = "rage --recipients-file ${self + "/resources/keys/recipients.txt"}";
       };
     };

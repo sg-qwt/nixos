@@ -59,7 +59,7 @@
   users.groups.deploy = { };
   users.users.deploy = {
     isSystemUser = true;
-    openssh.authorizedKeys.keys = self.shared-data.openssh-keys;
+    openssh.authorizedKeys.keys = builtins.attrValues self.shared-data.openssh-keys;
     group = "deploy";
     shell = pkgs.bash;
   };
