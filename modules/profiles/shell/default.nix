@@ -67,6 +67,12 @@ lib.mkProfile s "shell" {
         {
           add_newline = true;
           scan_timeout = 500;
+          format = lib.concatStrings [
+            "$all"
+            "$time"
+            "$line_break"
+            "$character"
+          ];
           battery = {
             disabled = true;
           };
@@ -75,6 +81,9 @@ lib.mkProfile s "shell" {
           };
           nix_shell = {
             heuristic = true;
+          };
+          time = {
+            disabled = false;
           };
         }
         (lib.importTOML "${config.programs.starship.package}/share/starship/presets/plain-text-symbols.toml")

@@ -21,12 +21,14 @@ in
 
   myos.desktop.enable = true;
   myos.yubikey = "backup";
-  myos.user.extraGroups = [ "input" ];
   myos.git.enable = true;
   myos.tailscale.enable = true;
 
   jovian = {
-    devices.steamdeck.enable = true;
+    devices.steamdeck = {
+      enable = true;
+      enableVendorDrivers = true;
+    };
     steam = {
       enable = true;
       autoStart = true;
@@ -34,8 +36,6 @@ in
       desktopSession = "gamescope-wayland";
     };
   };
-
-  services.getty.autologinUser = user;
 
   environment.systemPackages = with pkgs; [
     steamdeck-firmware

@@ -48,6 +48,7 @@ in
         "audio"
         "video"
         "systemd-journal"
+        "users"
       ]
       ++ cfg.extraGroups;
       hashedPasswordFile = config.vaultix.secrets.me-password.path;
