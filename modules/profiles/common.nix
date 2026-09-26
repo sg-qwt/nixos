@@ -7,9 +7,8 @@ s@{
   ...
 }:
 let
-  btrfsExist = (
-    builtins.any (filesystem: filesystem.fsType == "btrfs") (lib.attrValues config.fileSystems)
-  );
+  btrfsExist =
+    config.fileSystems |> lib.attrValues |> builtins.any (filesystem: filesystem.fsType == "btrfs");
 in
 {
   imports = [

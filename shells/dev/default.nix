@@ -1,4 +1,8 @@
-{ pkgs, self, identity ? "main" }:
+{
+  pkgs,
+  self,
+  identity ? "main",
+}:
 let
   tfenv = self + "/caveman/tf-infra.env.age";
   id = self + "/resources/keys/age-yubikey-identity-${identity}.txt";

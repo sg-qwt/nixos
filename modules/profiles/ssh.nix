@@ -11,6 +11,17 @@ with lib;
 let
   cfg = config.myos.ssh;
   username = config.myos.user.mainUser;
+  host-settings =
+    self.shared-data.hosts
+    |> builtins.attrNames
+    |> map (host: {
+      name = host;
+      value = {
+        HostName = "${host}.h.${self.tfo.fqdn.edg}";
+        User = username;
+      };
+    })
+    |> builtins.listToAttrs;
   match-blocks = {
     "*" = {
       forwardAgent = false;
@@ -25,14 +36,7 @@ let
       controlPersist = "1m";
     };
   }
-  // (builtins.foldl' (a: b: a // b) { } (
-    map (host: {
-      "${host}" = {
-        HostName = "${host}.h.${self.tfo.fqdn.edg}";
-        User = username;
-      };
-    }) (builtins.attrNames self.shared-data.hosts)
-  ));
+  // host-settings;
 in
 {
   options.myos.ssh = {
@@ -73,14 +77,7 @@ in
             User = "git";
           };
         }
-        // (builtins.foldl' (a: b: a // b) { } (
-          map (host: {
-            "${host}" = {
-              HostName = "${host}.h.${self.tfo.fqdn.edg}";
-              User = username;
-            };
-          }) (builtins.attrNames self.shared-data.hosts)
-        ));
+        // host-settings;
       };
     };
   };

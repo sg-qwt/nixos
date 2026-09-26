@@ -143,7 +143,7 @@ lib.mkProfile s "desktop-apps" {
         (pkgs.makeDesktopItem {
           inherit name;
           desktopName =
-            (lib.strings.toUpper (builtins.substring 0 1 name)) + (builtins.substring 1 (-1) name);
+            (name |> builtins.substring 0 1 |> lib.strings.toUpper) + builtins.substring 1 (-1) name;
           exec = "${browser} --new-window --app=\"${app}\"";
         });
     in

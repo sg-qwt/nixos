@@ -6,7 +6,7 @@
   ...
 }:
 let
-  hosts = (lib.concatStringsSep ":" (builtins.attrNames self.shared-data.hosts));
+  hosts = self.shared-data.hosts |> builtins.attrNames |> lib.concatStringsSep ":";
   bento = pkgs.writers.writeBabashkaBin "bento" {
     makeWrapperArgs = [
       "--set"

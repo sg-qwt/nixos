@@ -1,2 +1,5 @@
 { pkgs, self }:
-import ../dev { inherit pkgs self; identity = "backup"; }
+import ../dev {
+  inherit pkgs self;
+  identity = "backup";
+}

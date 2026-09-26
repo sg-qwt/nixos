@@ -14,11 +14,11 @@ rec {
       ''
     );
 
-  profile-list = (
-    map (mname: (self + "/modules/profiles/${mname}")) (
-      builtins.attrNames (builtins.readDir (self + "/modules/profiles"))
-    )
-  );
+  profile-list =
+    self + "/modules/profiles"
+    |> builtins.readDir
+    |> builtins.attrNames
+    |> map (mname: self + "/modules/profiles/${mname}");
 
   mkProfile =
     s: pname: body:
@@ -50,14 +50,15 @@ rec {
   default-overlays = args: final: prev: {
     inherit mylibs;
 
-    my = (
-      builtins.listToAttrs (
-        map (pkgname: {
-          name = pkgname;
-          value = (prev.callPackage (self + "/packages/${pkgname}") (args // { inherit self; }));
-        }) (builtins.attrNames (builtins.readDir (self + "/packages")))
-      )
-    );
+    my =
+      self + "/packages"
+      |> builtins.readDir
+      |> builtins.attrNames
+      |> map (pkgname: {
+        name = pkgname;
+        value = prev.callPackage (self + "/packages/${pkgname}") (args // { inherit self; });
+      })
+      |> builtins.listToAttrs;
   };
 
   jovian-overlay = (
@@ -71,25 +72,27 @@ rec {
     }
   );
 
-  packages = (
-    builtins.listToAttrs (
-      map (name: {
-        name = name;
-        value = pkgs.my."${name}";
-      }) (builtins.attrNames pkgs.my)
-    )
-  );
+  packages =
+    pkgs.my
+    |> builtins.attrNames
+    |> map (name: {
+      inherit name;
+      value = pkgs.my."${name}";
+    })
+    |> builtins.listToAttrs;
 
   shells =
     args: default:
     let
-      devshells = (
-        builtins.foldl' (a: b: a // b) { } (
-          map (sname: { "${sname}" = (import (self + "/shells/${sname}") args); }) (
-            builtins.attrNames (builtins.readDir (self + "/shells"))
-          )
-        )
-      );
+      devshells =
+        self + "/shells"
+        |> builtins.readDir
+        |> builtins.attrNames
+        |> map (sname: {
+          name = sname;
+          value = import (self + "/shells/${sname}") args;
+        })
+        |> builtins.listToAttrs;
     in
     devshells // { default = devshells."${default}"; };
 

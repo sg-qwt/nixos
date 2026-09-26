@@ -39,12 +39,12 @@ in
     vaultix.secrets.masque-key = { };
     vaultix.secrets.clash-secret = { };
     vaultix.templates.clashm = {
-      content = builtins.toJSON (
+      content =
         import ./clash.nix {
           inherit config pkgs self;
           interface = cfg.interface;
         }
-      );
+        |> builtins.toJSON;
     };
 
     networking.firewall.trustedInterfaces = [ cfg.interface ];

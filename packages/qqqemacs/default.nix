@@ -12,15 +12,17 @@ let
 
   pi = pkgs.my.pi;
 
-  pilishFromFork = epkgs: epkgs.melpaPackages.pilish.overrideAttrs (_: {
-    src = pkgs.fetchFromGitHub {
-      owner = "sg-qwt";
-      repo = "pilish";
-      rev = "65ef45a0aca3f153862f6cc8db09210e8d49b1df";
-      hash = "sha256-ZZ0leGBX1+41Roehe/CLCPbWS3vXiYZNNa6BVlsSN4s=";
-    };
-    version = "20260925.0";
-  });
+  pilishFromFork =
+    epkgs:
+    epkgs.melpaPackages.pilish.overrideAttrs (_: {
+      src = pkgs.fetchFromGitHub {
+        owner = "sg-qwt";
+        repo = "pilish";
+        rev = "65ef45a0aca3f153862f6cc8db09210e8d49b1df";
+        hash = "sha256-ZZ0leGBX1+41Roehe/CLCPbWS3vXiYZNNa6BVlsSN4s=";
+      };
+      version = "20260925.0";
+    });
 
   ts-grammers =
     epkgs:

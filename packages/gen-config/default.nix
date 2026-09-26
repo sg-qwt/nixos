@@ -9,40 +9,38 @@
 let
   genfile =
     { dest, settings }:
-    if (lib.strings.hasSuffix "yaml" (lib.strings.toLower dest)) then
+    if dest |> lib.strings.toLower |> lib.strings.hasSuffix "yaml" then
       (pkgs.formats.yaml { }).generate "out.yaml" settings
     else
-      writeText "out.json" (builtins.toJSON settings);
+      settings |> builtins.toJSON |> writeText "out.json";
 
-  files = (builtins.attrNames (builtins.readDir "${self}/gen"));
+  files = "${self}/gen" |> builtins.readDir |> builtins.attrNames;
 
-  scripts = lib.pipe files [
-    (map (file: import "${self}/gen/${file}" { inherit lib self; }))
-    (map (aset: {
+  scripts =
+    files
+    |> map (file: import "${self}/gen/${file}" { inherit lib self; })
+    |> map (aset: {
       dest = aset._gentarget;
-      settings = (lib.filterAttrs (n: v: n != "_gentarget") aset);
-    }))
-    (map (aset: {
+      settings = aset |> lib.filterAttrs (n: v: n != "_gentarget");
+    })
+    |> map (aset: {
       outfile = genfile aset;
       dest = aset.dest;
-    }))
-    (map (aset: ''
+    })
+    |> map (aset: ''
       dest="$root/${aset.dest}"
 
       echo "Updating file: $dest" >&2
 
       cp -f ${aset.outfile} "$dest"
-    ''))
-  ];
+    '');
 in
-writeShellScriptBin "gen-config" (
-  lib.strings.concatLines (
-    [
-      ''
-        set -euxo pipefail
-        root=$(git rev-parse --show-toplevel)
-      ''
-    ]
-    ++ scripts
-  )
-)
+[
+  ''
+    set -euxo pipefail
+    root=$(git rev-parse --show-toplevel)
+  ''
+]
+++ scripts
+|> lib.strings.concatLines
+|> writeShellScriptBin "gen-config"

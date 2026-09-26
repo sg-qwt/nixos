@@ -79,7 +79,7 @@ resource "azurerm_storage_account" "sharedrive" {
 
 resource "azurerm_storage_container" "drivedata" {
   name                  = "data"
-  storage_account_id  = azurerm_storage_account.sharedrive.id
+  storage_account_id    = azurerm_storage_account.sharedrive.id
   container_access_type = "private"
 }
 
