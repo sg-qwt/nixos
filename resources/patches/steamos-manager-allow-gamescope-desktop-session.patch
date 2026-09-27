@@ -1,0 +1,7 @@
+diff --git a/steamos-manager/src/session.rs b/steamos-manager/src/session.rs
+--- a/steamos-manager/src/session.rs
++++ b/steamos-manager/src/session.rs
+@@ -180,3 +179,0 @@
+-    if path.contains("gamescope") {
+-        return false;
+-    }

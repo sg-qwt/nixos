@@ -63,6 +63,10 @@ rec {
 
   jovian-overlay = (
     final: prev: {
+      steamos-manager = lib.addPatches prev.steamos-manager [
+        (self + "/resources/patches/steamos-manager-allow-gamescope-desktop-session.patch")
+      ];
+
       gamescope-session = prev.gamescope-session.override {
         steam = prev.steam.override (old: {
           extraPkgs =

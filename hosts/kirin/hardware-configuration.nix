@@ -17,7 +17,7 @@
         # https://bugzilla.kernel.org/show_bug.cgi?id=221956
         # https://patchwork.kernel.org/m/20260919134730.895381-1-rf@opensource.cirrus.com/
         name = "cs42l43-acpi-spk-id-gpios-workaround";
-        patch = ./patches/0001-spi-cs42l43-Workaround-for-ACPI-with-wrong-spk-id-gp.patch;
+        patch = ../../resources/patches/cs42l43-acpi-spk-id-gpios-workaround.patch;
       }
     ];
     kernelPackages = pkgs.linuxPackages_latest;
