@@ -72,6 +72,15 @@ lib.mkProfile s "aitooling" {
             "${self.tfo.az-drive-container-name}" = {
               enable = true;
               mountPoint = "${config.home.homeDirectory}/cloud/adrive";
+              options = {
+                vfs-cache-mode = "full";
+                vfs-cache-max-age = "30d";
+                vfs-cache-max-size = "10G";
+
+                dir-cache-time = "15m";
+
+                vfs-write-back = "30s";
+              };
             };
           };
 
