@@ -38,7 +38,7 @@
       "amdgpu.sched_hw_submission=4"
       "amdgpu.lockup_timeout=5000,10000,10000,5000"
 
-      "processor.max_cstate=2"
+      "processor.max_cstate=1"
     ];
     kernelModules = [
       "kvm-amd"
