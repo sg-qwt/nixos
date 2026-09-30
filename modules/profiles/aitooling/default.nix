@@ -37,7 +37,7 @@ lib.mkProfile s "aitooling" {
       text = builtins.toJSON {
         lastChangelogVersion = pi.version;
         defaultProvider = "openai-codex";
-        defaultModel = "gpt-6-sol";
+        defaultModel = "gpt-6.1-sol";
         defaultThinkingLevel = "high";
         transport = "auto";
         sessionDir = "${config.home.homeDirectory}/cloud/adrive/pi-sessions";

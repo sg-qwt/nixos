@@ -28,6 +28,8 @@ lib.mkProfile s "tools" {
     my.rage
 
     nix-tree
+
+    gh
   ];
 
   programs.nix-index-database.comma.enable = true;
