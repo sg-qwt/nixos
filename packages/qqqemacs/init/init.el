@@ -378,7 +378,7 @@ If the buffer doesn't exist, create it first."
   (defun qqq/commit-message ()
     "Summarize current git commit."
     (interactive)
-    (async-shell-command "git diff --cached | piro --model openai-codex/gpt-5.4 --print \"Draft a Conventional‑Commits‑style commit message by given patch. Output ONLY the raw commit message text. Do not wrap the output in backticks or markdown code blocks. Do not include any explanations, greetings, or conversational filler. The output must be ready to paste directly into COMMIT_EDITMSG.\"" (current-buffer)))
+    (async-shell-command "git diff --cached | pi --print \"Draft a Conventional‑Commits‑style commit message by given patch. Output ONLY the raw commit message text. Do not wrap the output in backticks or markdown code blocks. Do not include any explanations, greetings, or conversational filler. The output must be ready to paste directly into COMMIT_EDITMSG.\"" (current-buffer)))
   :custom
   (magit-diff-visit-prefer-worktree t)
   :general

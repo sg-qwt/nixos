@@ -7,9 +7,6 @@ s@{
 }:
 let
   pi = pkgs.my.pi;
-  piro = pkgs.writeScriptBin "piro" ''
-    exec ${lib.getExe pi} --tools read,grep,find,ls "$@"
-  '';
   adrive-key = config.vaultix.secrets.az-drive-account-key.path;
 in
 lib.mkProfile s "aitooling" {
@@ -17,24 +14,17 @@ lib.mkProfile s "aitooling" {
     owner = config.myos.user.mainUser;
   };
 
-  environment.systemPackages = with pkgs; [
-    pi
-    piro
-  ];
-
   services.ollama = {
     enable = true;
     package = pkgs.ollama-rocm;
   };
 
   myhome = { config, osConfig, ... }: {
-    home.file.".pi/agent/APPEND_SYSTEM.md" = {
-      source = ./APPEND_SYSTEM.md;
-      force = true;
-    };
-
-    home.file.".pi/agent/settings.json" = {
-      text = builtins.toJSON {
+    programs.pi-coding-agent = {
+      enable = true;
+      appendSystem = ./APPEND_SYSTEM.md;
+      package = pi;
+      settings = {
         lastChangelogVersion = pi.version;
         defaultProvider = "openai-codex";
         defaultModel = "gpt-6.1-sol";
@@ -42,7 +32,6 @@ lib.mkProfile s "aitooling" {
         transport = "auto";
         sessionDir = "${config.home.homeDirectory}/cloud/adrive/pi-sessions";
       };
-      force = true;
     };
 
     # Wait for Vaultix to publish the secret before rendering rclone.conf.
