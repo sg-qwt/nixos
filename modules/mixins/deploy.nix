@@ -25,7 +25,7 @@
     fallback = true;
     connect-timeout = 5;
     log-lines = 25;
-    auto-optimise-store = true;
+    auto-optimise-store = false;
   };
 
   services.userborn.enable = true;

@@ -58,6 +58,12 @@ in
         options = "--delete-older-than 90d";
         dates = "monthly";
       };
+
+      optimise = {
+        automatic = true;
+        dates = [ "weekly" ];
+        persistent = true;
+      };
     };
 
     myos.cache.enable = true;
