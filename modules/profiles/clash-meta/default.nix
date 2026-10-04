@@ -8,6 +8,8 @@
 
 with lib;
 let
+  yamlFormat = pkgs.formats.yaml { };
+  sockFile = "/run/mihomo/mihomo.sock";
   cfg = config.myos.clash-meta;
   host = "127.0.0.1";
   cap = [
@@ -19,7 +21,6 @@ let
     "CAP_DAC_READ_SEARCH"
     "CAP_DAC_OVERRIDE"
   ];
-  inherit (self.shared-data) ports;
 in
 {
   options.myos.clash-meta = {
@@ -37,11 +38,10 @@ in
     vaultix.secrets.sing-vless-uuid = { };
     vaultix.secrets.sing-hy = { };
     vaultix.secrets.masque-key = { };
-    vaultix.secrets.clash-secret = { };
     vaultix.templates.clashm = {
       content =
         import ./clash.nix {
-          inherit config pkgs self;
+          inherit config pkgs self sockFile;
           interface = cfg.interface;
         }
         |> builtins.toJSON;
@@ -53,15 +53,28 @@ in
       enable = true;
       package = pkgs.mihomo;
       configFile = config.vaultix.templates.clashm.path;
-      webui = pkgs.metacubexd;
+      webui = null;
       tunMode = true;
     };
+
+
+    environment.systemPackages = with pkgs; [
+      my.mihomo-tui
+    ];
+
+
+    users.groups.mihomo-api = { };
+    myos.user.extraGroups = [ "mihomo-api" ];
 
     systemd.services.mihomo = {
       restartTriggers = [
         config.vaultix.templates.clashm.content
       ];
       serviceConfig = {
+        Group = "mihomo-api";
+        RuntimeDirectory = "mihomo";
+        RuntimeDirectoryMode = "0750";
+        RestrictAddressFamilies = lib.mkAfter [ "AF_UNIX" ];
         CapabilityBoundingSet = lib.mkForce cap;
         AmbientCapabilities = lib.mkForce cap;
         ExecStartPre = [
@@ -71,16 +84,18 @@ in
       };
     };
 
-    programs.proxychains = {
-      enable = true;
-      quietMode = true;
-      proxies = {
-        clash = {
-          inherit host;
-          enable = true;
-          type = "socks5";
-          port = ports.clash-meta-mixed;
+
+    myhome = { config, osConfig, ... }: {
+
+      xdg.configFile."mihomo-tui/config.yaml" = {
+        source = yamlFormat.generate "mihomo-tui-config" {
+          log-level = "silent";
+          mihomo-api = "unix:${sockFile}";
+          ui = {
+            startup-tab = "Proxies";
+          };
         };
+        force = true;
       };
     };
   };

@@ -3,17 +3,16 @@
   pkgs,
   interface,
   self,
+  sockFile,
 }:
 let
   inherit (self.shared-data) ports;
   inherit (self.tfo) fqdn az-ips;
 in
 rec {
-  mixed-port = ports.clash-meta-mixed;
   ipv6 = true;
   allow-lan = false;
-  external-controller = "0.0.0.0:${toString ports.clash-meta-api}";
-  secret = config.vaultix.placeholder.clash-secret;
+  external-controller-unix = sockFile;
   log-level = "warning";
 
   mode = "rule";
