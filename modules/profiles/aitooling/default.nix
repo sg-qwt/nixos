@@ -31,6 +31,7 @@ lib.mkProfile s "aitooling" {
         defaultThinkingLevel = "high";
         transport = "auto";
         sessionDir = "${config.home.homeDirectory}/cloud/adrive/pi-sessions";
+        defaultTools = [ "+codemode" ];
       };
     };
 
