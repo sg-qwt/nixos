@@ -41,9 +41,17 @@ lib.mkProfile s "desktop-apps" {
       BraveNewsDisabled = true;
       BraveTalkDisabled = true;
       TorDisabled = true;
+      BraveStatsPingEnabled = false;
+      BraveP3AEnabled = false;
+      BraveWebDiscoveryEnabled = false;
+      BraveLocalAIEnabled = false;
+      BraveWaybackMachineEnabled = false;
+      BraveSpeedreaderEnabled = false;
+      BravePlaylistEnabled = false;
+      EmailAliasesEnabled = false;
+      PsstEnabled = false;
 
       ForcedLanguages = [ "en-US" ];
-      ApplicationLocaleValue = "en-US";
       TranslateEnabled = false;
       SpellcheckEnabled = true;
       SpellcheckLanguage = [ "en-US" ];
@@ -61,6 +69,8 @@ lib.mkProfile s "desktop-apps" {
       SafeSitesFilterBehavior = 0;
 
       NewTabPageLocation = search-url;
+
+      RestoreOnStartup = 5;
 
       SiteSearchSettings = [
         (search-code "nc" "Nix")
