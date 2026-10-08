@@ -81,6 +81,10 @@ lib.mkProfile s "gaming" {
       MANGOHUD_CONFIGFILE = "${myhomecfg.xdg.configHome}/MangoHud/MangoHud.conf";
       STEAM_MULTIPLE_XWAYLANDS = "1";
       STEAM_LAUNCH_WRAPPER_SCOPE = "1";
+      GTK_IM_MODULE = "fcitx";
+      QT_IM_MODULE = "fcitx";
+      XMODIFIERS = "@im=fcitx";
+      SDL_IM_MODULE = "fcitx";
     };
   };
 
