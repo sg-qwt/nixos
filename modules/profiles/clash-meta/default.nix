@@ -93,6 +93,12 @@ in
           mihomo-api = "unix:${sockFile}";
           ui = {
             startup-tab = "Proxies";
+            connections = {
+              sort = {
+                field = "DownRate";
+                dir = "desc";
+              };
+            };
           };
         };
         force = true;
