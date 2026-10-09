@@ -63,6 +63,10 @@ rec {
 
   jovian-overlay = (
     final: prev: {
+      gamescope = lib.addPatches prev.gamescope [
+        (self + "/resources/patches/gamescope-fcitx-candidate-popups.patch")
+      ];
+
       steamos-manager = lib.addPatches prev.steamos-manager [
         (self + "/resources/patches/steamos-manager-allow-gamescope-desktop-session.patch")
       ];
