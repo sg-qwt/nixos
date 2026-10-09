@@ -224,7 +224,16 @@ lib.mkProfile s "gaming" {
     fontPackages = with pkgs; [ noto-fonts-cjk-sans ];
     extraCompatPackages = [ pkgs.proton-ge-bin ];
     remotePlay.openFirewall = true;
-    package = pkgs.steam.override { platformArgs = ""; };
+    package = pkgs.steam.override {
+      platformArgs = "";
+      # Steam is Gamescope's child here, so its new Xwayland display names are
+      # available. Set their DPI and register them before Steam's FHS environment.
+      extraPreBwrapCmds = lib.optionalString config.myos.fcitx.enable ''
+        if [ -n "''${GAMESCOPE_WAYLAND_DISPLAY:-}" ]; then
+          ${lib.getExe pkgs.my.fcitx5-gamescope-connect} --dpi 192
+        fi
+      '';
+    };
     gamescopeSession = {
       enable = true;
       args = [

@@ -1,22 +1,9 @@
 s@{
-  config,
   pkgs,
   lib,
   ...
 }:
 lib.mkProfile s "fcitx" {
-  # systemd.user.services.fcitx5-gamescope-helper = lib.mkIf config.myos.gaming.enable {
-  #   description = "Fcitx candidate popups and DPI for Gamescope";
-  #   wantedBy = [ "graphical-session.target" ];
-  #   partOf = [ "graphical-session.target" ];
-  #   after = [ "graphical-session.target" ];
-  #   serviceConfig = {
-  #     ExecStart = "${lib.getExe pkgs.my.fcitx5-gamescope-helper} --dpi 192";
-  #     Restart = "on-failure";
-  #     RestartSec = 3;
-  #   };
-  # };
-
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";

@@ -10,7 +10,7 @@ let
   python = python3.withPackages (ps: [ ps.python-xlib ]);
 in
 stdenvNoCC.mkDerivation {
-  pname = "fcitx5-gamescope-helper";
+  pname = "fcitx5-gamescope-connect";
   version = "0.1.1";
   src = ./.;
 
@@ -23,17 +23,17 @@ stdenvNoCC.mkDerivation {
   dontBuild = true;
   installPhase = ''
     runHook preInstall
-    install -Dm644 helper.py "$out/libexec/fcitx5-gamescope-helper.py"
-    makeWrapper ${python}/bin/python3 "$out/bin/fcitx5-gamescope-helper" \
-      --add-flags "$out/libexec/fcitx5-gamescope-helper.py" \
+    install -Dm644 connect.py "$out/libexec/fcitx5-gamescope-connect.py"
+    makeWrapper ${python}/bin/python3 "$out/bin/fcitx5-gamescope-connect" \
+      --add-flags "-B $out/libexec/fcitx5-gamescope-connect.py" \
       --prefix PATH : ${lib.makeBinPath [ fcitx5 ]}
     runHook postInstall
   '';
 
   meta = {
-    description = "Connect Fcitx to Gamescope displays and associate its candidate popups with games";
+    description = "Configure Gamescope display DPI and register its Xwayland displays with Fcitx at launch";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
-    mainProgram = "fcitx5-gamescope-helper";
+    mainProgram = "fcitx5-gamescope-connect";
   };
 }
