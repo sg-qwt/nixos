@@ -9,7 +9,7 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "mihomo-tui";
-  version = "0.5.2";
+  version = "0.5.3";
 
   __structuredAttrs = true;
 
@@ -17,10 +17,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "potoo0";
     repo = "mihomo-tui";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-cvzNutvJ7ozcC4RjfPaoZ2aLlYfPxI6foVCd1x8Z0ho=";
+    hash = "sha256-MPW3DYNRBmAUcZ7/TnnWlBuBkMgT5f2tcapz7VPPyQA=";
   };
 
-  cargoHash = "sha256-osXfAJaGx9PMZuwWqgDw1nR9MWq+FTHZzQxuN6DKRDw=";
+  cargoHash = "sha256-AubsFQFB7w8kY6CtFdsxmDedIdqrgahzWsbdMgT20TM=";
 
   env = {
     # nixpkgs adds target-specific rustflags, which take precedence over

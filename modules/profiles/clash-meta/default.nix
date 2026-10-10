@@ -89,6 +89,7 @@ in
 
       xdg.configFile."mihomo-tui/config.yaml" = {
         source = yamlFormat.generate "mihomo-tui-config" {
+          runtime-config = false;
           log-level = "silent";
           mihomo-api = "unix:${sockFile}";
           ui = {
