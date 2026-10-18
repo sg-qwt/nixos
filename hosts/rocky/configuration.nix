@@ -29,7 +29,7 @@ in
   };
 
   myos.attic-server.enable = true;
-  myos.transmission.enable = true;
+  myos.transmission.enable = false;
 
   myos.chugou.enable = false;
 

@@ -52,11 +52,6 @@ locals {
       ip_refresh   = "0709"
       zone_id      = local.edg_zone_id
       nsg_rules = {
-        transmission-peer = {
-          priority = 1001
-          protocol = "*"
-          port     = local.ports.transmission-peer
-        }
         http = {
           priority = 1002
           protocol = "Tcp"
