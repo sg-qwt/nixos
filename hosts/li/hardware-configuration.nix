@@ -50,6 +50,11 @@
   };
 
   hardware = {
+    firmware = [
+      pkgs.linux-firmware
+      (lib.hiPrio pkgs.linux-firmware-holo)
+    ];
+
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
     amdgpu.initrd.enable = true;
