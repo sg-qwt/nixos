@@ -38,6 +38,6 @@ in
   };
 
   environment.systemPackages = with pkgs; [
-    steamdeck-firmware
+    jovianPackages.steamdeck-firmware
   ];
 }

@@ -75,7 +75,7 @@ lib.mkProfile s "gaming" {
 
   programs.gamescope = {
     enable = true;
-    enableWsi = true;
+    package = pkgs.jovianPackages.gamescope;
     capSysNice = true;
     env = {
       MANGOHUD_CONFIGFILE = "${myhomecfg.xdg.configHome}/MangoHud/MangoHud.conf";
@@ -86,6 +86,12 @@ lib.mkProfile s "gaming" {
       XMODIFIERS = "@im=fcitx";
       SDL_IM_MODULE = "fcitx";
     };
+  };
+
+  # The NixOS enableWsi option selects nixpkgs' layers, not Jovian's.
+  hardware.graphics = {
+    extraPackages = [ pkgs.jovianPackages.gamescope-wsi ];
+    extraPackages32 = [ pkgs.pkgsi686Linux.jovianPackages.gamescope-wsi ];
   };
 
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
@@ -224,7 +230,7 @@ lib.mkProfile s "gaming" {
     fontPackages = with pkgs; [ noto-fonts-cjk-sans ];
     extraCompatPackages = [ pkgs.proton-ge-bin ];
     remotePlay.openFirewall = true;
-    package = pkgs.steam.override {
+    package = pkgs.jovianPackages.steam.override {
       platformArgs = "";
       # Steam is Gamescope's child here, so its new Xwayland display names are
       # available. Set their DPI and register them before Steam's FHS environment.
@@ -270,6 +276,7 @@ lib.mkProfile s "gaming" {
     {
       programs.mangohud = {
         enable = true;
+        package = pkgs.jovianPackages.mangohud;
         settings = {
           preset = "2,3,4,0,1";
           horizontal_stretch = false;

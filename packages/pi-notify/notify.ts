@@ -1,9 +1,8 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 export default function (pi: ExtensionAPI) {
-  pi.on("agent_end", async (event, _ctx) => {
-    const lastMessage = event.messages[event.messages.length - 1];
-    if (lastMessage?.role === "assistant" && (lastMessage as any).stopReason === "aborted") {
+  pi.on("agent_settled", async (event) => {
+    if (event.aborted) {
       return;
     }
 

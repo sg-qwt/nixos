@@ -63,20 +63,24 @@ rec {
 
   jovian-overlay = (
     final: prev: {
-      gamescope = lib.addPatches prev.gamescope [
-        (self + "/resources/patches/gamescope-fcitx-candidate-popups.patch")
-      ];
+      jovianPackages = prev.jovianPackages.overrideScope (
+        jfinal: jprev: {
+          gamescope = lib.addPatches jprev.gamescope [
+            (self + "/resources/patches/gamescope-fcitx-candidate-popups.patch")
+          ];
 
-      steamos-manager = lib.addPatches prev.steamos-manager [
-        (self + "/resources/patches/steamos-manager-allow-gamescope-desktop-session.patch")
-      ];
+          steamos-manager = lib.addPatches jprev.steamos-manager [
+            (self + "/resources/patches/steamos-manager-allow-gamescope-desktop-session.patch")
+          ];
 
-      gamescope-session = prev.gamescope-session.override {
-        steam = prev.steam.override (old: {
-          extraPkgs =
-            pkgs: (if old ? extraPkgs then old.extraPkgs pkgs else [ ]) ++ [ pkgs.noto-fonts-cjk-sans ];
-        });
-      };
+          gamescope-session = jprev.gamescope-session.override {
+            steam = jfinal.steam.override (old: {
+              extraPkgs =
+                pkgs: (if old ? extraPkgs then old.extraPkgs pkgs else [ ]) ++ [ pkgs.noto-fonts-cjk-sans ];
+            });
+          };
+        }
+      );
     }
   );
 

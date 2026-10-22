@@ -11,7 +11,7 @@
   ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_jovian;
+    kernelPackages = pkgs.jovianPackages.linuxPackages;
     loader = {
       systemd-boot.enable = true;
       systemd-boot.memtest86.enable = true;
@@ -52,7 +52,7 @@
   hardware = {
     firmware = [
       pkgs.linux-firmware
-      (lib.hiPrio pkgs.linux-firmware-holo)
+      (lib.hiPrio pkgs.jovianPackages.linux-firmware-holo)
     ];
 
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
@@ -62,10 +62,10 @@
     graphics = {
       enable = true;
       enable32Bit = true;
-      package = pkgs.mesa-radeonsi-jupiter;
-      package32 = pkgs.pkgsi686Linux.mesa-radeonsi-jupiter;
-      extraPackages = [ (lib.hiPrio pkgs.mesa-radv-jupiter) ];
-      extraPackages32 = [ (lib.hiPrio pkgs.pkgsi686Linux.mesa-radv-jupiter) ];
+      package = pkgs.jovianPackages.mesa-radeonsi;
+      package32 = pkgs.pkgsi686Linux.jovianPackages.mesa-radeonsi;
+      extraPackages = [ (lib.hiPrio pkgs.jovianPackages.mesa-radv) ];
+      extraPackages32 = [ (lib.hiPrio pkgs.pkgsi686Linux.jovianPackages.mesa-radv) ];
     };
 
     steam-hardware.enable = true;

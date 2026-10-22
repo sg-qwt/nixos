@@ -10,7 +10,7 @@ let
   extensions = [
     pkgs.my.pi-codex-usage
     pkgs.my.pi-notify
-    (pkgs.atuin.src + "/contrib/pi/atuin.ts")
+    (pkgs.atuin.src + "/crates/atuin-common/res/harnesstools/pi/atuin.ts")
   ];
   skills = [
     (pkgs.my.brepl + "/share/brepl/SKILL.md")
