@@ -97,6 +97,13 @@ lib.mkProfile s "gaming" {
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
   boot.kernel.sysctl."net.ipv4.tcp_mtu_probing" = 1;
 
+  boot.kernel.sysctl = {
+    "kernel.sched_cfs_bandwidth_slice_us" = 3000;
+    "net.ipv4.tcp_fin_timeout" = 5;
+    "kernel.split_lock_mitigate" = 0;
+    "vm.max_map_count" = 2147483642;
+  };
+
   networking = {
     nat = {
       enable = true;
@@ -231,7 +238,7 @@ lib.mkProfile s "gaming" {
     extraCompatPackages = [ pkgs.proton-ge-bin ];
     remotePlay.openFirewall = true;
     package = pkgs.jovianPackages.steam.override {
-      platformArgs = "";
+      extraArgs = "";
       # Steam is Gamescope's child here, so its new Xwayland display names are
       # available. Set their DPI and register them before Steam's FHS environment.
       extraPreBwrapCmds = lib.optionalString config.myos.fcitx.enable ''
@@ -286,7 +293,4 @@ lib.mkProfile s "gaming" {
         };
       };
     };
-
-  # controller
-  hardware.xone.enable = true;
 }
