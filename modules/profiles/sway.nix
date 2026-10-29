@@ -17,7 +17,7 @@ let
   grim = lib.getExe pkgs.grim;
   slurp = lib.getExe pkgs.slurp;
   status-config = "${myhomecfg.xdg.configHome}/i3status-rust/config-default.toml";
-  wallpaper = self + "/resources/wallpapers/wr.jpg";
+  wallpaper = lib.storeFile (self + "/resources/wallpapers/wr.jpg");
   wpctl = lib.getExe' pkgs.wireplumber "wpctl";
   bento = lib.getExe' self.packages.${pkgs.stdenv.hostPlatform.system}.bbscripts "bento";
   curl = lib.getExe pkgs.curl;

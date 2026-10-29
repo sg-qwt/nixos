@@ -19,7 +19,7 @@ let
 
       "--set"
       "MYOS_BENTO_SHI_DATA"
-      "${self + "/resources/dicts/shi.txt"}"
+      "${pkgs.mylibs.storeFile (self + "/resources/dicts/shi.txt")}"
 
       "--prefix"
       "PATH"

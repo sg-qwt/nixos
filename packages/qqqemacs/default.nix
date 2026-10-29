@@ -168,8 +168,10 @@ pkgs.symlinkJoin {
   postBuild = ''
     wrapProgram $out/bin/emacs \
       --set QQQ_SNIPPETS ${./snippets} \
-      --set QQQ_AGE_RECIPIENTS ${self + "/resources/keys/recipients.txt"} \
-      --set QQQ_AGE_IDENTITY ${self + "/resources/keys/age-yubikey-identity-${yubikey}.txt"} \
+      --set QQQ_AGE_RECIPIENTS ${pkgs.mylibs.storeFile (self + "/resources/keys/recipients.txt")} \
+      --set QQQ_AGE_IDENTITY ${
+        pkgs.mylibs.storeFile (self + "/resources/keys/age-yubikey-identity-${yubikey}.txt")
+      } \
       --prefix PATH : ${lib.makeBinPath deps} \
       --add-flags --init-directory=${./init}
   '';

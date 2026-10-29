@@ -41,7 +41,12 @@ in
     vaultix.templates.clashm = {
       content =
         import ./clash.nix {
-          inherit config pkgs self sockFile;
+          inherit
+            config
+            pkgs
+            self
+            sockFile
+            ;
           interface = cfg.interface;
         }
         |> builtins.toJSON;
@@ -57,11 +62,9 @@ in
       tunMode = true;
     };
 
-
     environment.systemPackages = with pkgs; [
       my.mihomo-tui
     ];
-
 
     users.groups.mihomo-api = { };
     myos.user.extraGroups = [ "mihomo-api" ];
@@ -83,7 +86,6 @@ in
         ];
       };
     };
-
 
     myhome = { config, osConfig, ... }: {
 

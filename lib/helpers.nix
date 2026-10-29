@@ -35,6 +35,15 @@ rec {
       config = s.lib.mkIf s.config.myos."${pname}".enable profileConfig;
     };
 
+  # Copy only the resource, not a path within the whole flake source tree.
+  # Unrelated repository edits must not change build inputs or runtime paths.
+  storeFile =
+    path:
+    builtins.path {
+      inherit path;
+      name = builtins.unsafeDiscardStringContext (builtins.baseNameOf path);
+    };
+
   addPatches =
     pkg: patches:
     pkg.overrideAttrs (old: {
@@ -42,7 +51,12 @@ rec {
     });
 
   mylibs = {
-    inherit mkProfile patchDesktop addPatches;
+    inherit
+      mkProfile
+      patchDesktop
+      addPatches
+      storeFile
+      ;
   };
 
   lib = nixpkgs.lib.extend (final: prev: mylibs);
@@ -66,11 +80,11 @@ rec {
       jovianPackages = prev.jovianPackages.overrideScope (
         jfinal: jprev: {
           gamescope = lib.addPatches jprev.gamescope [
-            (self + "/resources/patches/gamescope-fcitx-candidate-popups.patch")
+            (storeFile (self + "/resources/patches/gamescope-fcitx-candidate-popups.patch"))
           ];
 
           steamos-manager = lib.addPatches jprev.steamos-manager [
-            (self + "/resources/patches/steamos-manager-allow-gamescope-desktop-session.patch")
+            (storeFile (self + "/resources/patches/steamos-manager-allow-gamescope-desktop-session.patch"))
           ];
 
           gamescope-session = jprev.gamescope-session.override {

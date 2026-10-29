@@ -99,9 +99,13 @@
       shared-data = helpers.shared-data;
       tfo = helpers.tfo;
 
-      vaultix = configureVaultix (self + "/resources/keys/age-yubikey-identity-main.txt");
+      vaultix = configureVaultix (
+        helpers.storeFile (self + "/resources/keys/age-yubikey-identity-main.txt")
+      );
 
-      vaultix-backup = configureVaultix (self + "/resources/keys/age-yubikey-identity-backup.txt");
+      vaultix-backup = configureVaultix (
+        helpers.storeFile (self + "/resources/keys/age-yubikey-identity-backup.txt")
+      );
 
       overlays.default = (helpers.default-overlays { inherit inputs; });
 

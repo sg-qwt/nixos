@@ -53,9 +53,9 @@ lib.mkProfile s "shell" {
         tm = "tmux new-session -A -s main";
         pb = "curl -F 'c=@-' 'https://fars.ee/'";
         rdecrypt = "rage --identity ${
-          self + "/resources/keys/age-yubikey-identity-${osConfig.myos.yubikey}.txt"
+          lib.storeFile (self + "/resources/keys/age-yubikey-identity-${osConfig.myos.yubikey}.txt")
         } --decrypt";
-        rencrypt = "rage --recipients-file ${self + "/resources/keys/recipients.txt"}";
+        rencrypt = "rage --recipients-file ${lib.storeFile (self + "/resources/keys/recipients.txt")}";
       };
     };
 
