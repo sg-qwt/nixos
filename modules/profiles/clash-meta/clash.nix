@@ -62,8 +62,8 @@ rec {
     auto-detect-interface = true;
     exclude-interface = [
       config.services.tailscale.interfaceName
-      "veth-uu-host"
-    ];
+    ]
+    ++ pkgs.lib.optional config.myos.gaming.enable config.myos.gaming.uuInterface;
   };
 
   dns = {

@@ -12,7 +12,7 @@ let
     "CAP_NET_ADMIN"
     "CAP_NET_BIND_SERVICE"
   ];
-  uu-interface = "veth-myos-uu";
+  uu-interface = config.myos.gaming.uuInterface;
   steam-gamescope-uunet = pkgs.writeShellScriptBin "steam-gamescope-uunet" ''
     exec ${config.security.wrapperDir}/netns-exec uunet steam-gamescope
   '';
@@ -21,6 +21,12 @@ let
   '';
 in
 lib.mkProfile s "gaming" {
+  _profileOptions.uuInterface = lib.mkOption {
+    type = lib.types.str;
+    default = "veth-myos-uu";
+    description = "Host-side veth interface for the UU acceleration network namespace";
+  };
+
   systemd.packages = [
     pkgs.my.dmemcg-booster
   ];
@@ -58,6 +64,20 @@ lib.mkProfile s "gaming" {
   environment.etc."netns/uunet/resolv.conf".text = ''
     nameserver 114.114.114.114
   '';
+
+  # Keep normal user/group NSS sources, but resolve names inside the namespace
+  # rather than through host-side resolver services (e.g. nss-resolve).
+  environment.etc."netns/uunet/nsswitch.conf".text = lib.concatStrings (
+    lib.mapAttrsToList (database: sources: "${database}: ${lib.concatStringsSep " " sources}\n") (
+      config.system.nssDatabases
+      // {
+        hosts = [
+          "files"
+          "dns"
+        ];
+      }
+    )
+  );
 
   networking.firewall.extraReversePathFilterRules = ''
     iifname "${uu-interface}" accept
@@ -115,7 +135,7 @@ lib.mkProfile s "gaming" {
   systemd.services.uunet-namespace = {
     description = "Setup UUnet Network Namespace";
     wantedBy = [ "network.target" ];
-    before = [ "uuplugin.service" ];
+    before = [ "container@uuplugin.service" ];
 
     path = [ pkgs.iproute2 ];
 
@@ -161,8 +181,8 @@ lib.mkProfile s "gaming" {
 
   systemd.services.uuplugin-proxy = {
     description = "Proxy UUplugin mobile app traffic to the namespace";
-    requires = [ "uuplugin.service" ];
-    after = [ "uuplugin.service" ];
+    requires = [ "container@uuplugin.service" ];
+    after = [ "container@uuplugin.service" ];
     serviceConfig = {
       ExecStart = "${config.systemd.package}/lib/systemd/systemd-socket-proxyd 10.99.99.2:16363";
       DynamicUser = true;
@@ -200,30 +220,92 @@ lib.mkProfile s "gaming" {
     };
   };
 
-  systemd.services.uuplugin = {
-    requires = [ "uunet-namespace.service" ];
-    after = [ "uunet-namespace.service" ];
-    wantedBy = [ "multi-user.target" ];
-    path = with pkgs; [
-      iproute2
-      nettools
-      iptables
+  systemd.services."container@uuplugin" = {
+    # With filesystem sandboxing, systemd bind-mounts RuntimeDirectory. nspawn's
+    # ephemeral fallback copy must use a child, not snapshot that mount into itself.
+    environment.root = lib.mkForce "/run/nixos-containers/%i/root";
+    bindsTo = [ "uunet-namespace.service" ];
+    partOf = [ "uunet-namespace.service" ];
+    wants = [ "network-online.target" ];
+    after = [
+      "uunet-namespace.service"
+      "network-online.target"
     ];
     serviceConfig = {
-      NetworkNamespacePath = "/var/run/netns/uunet";
-      AmbientCapabilities = cap;
-      CapabilityBoundingSet = cap;
-      StateDirectory = "%N";
-      WorkingDirectory = "%S/%N";
-      LoadCredential = [
-        "uuplugin-uuid:${config.vaultix.secrets.uuplugin.path}"
-      ];
-      ExecStartPre = [
-        "${pkgs.coreutils}/bin/ln -nsf %d/uuplugin-uuid %S/%N/.uuplugin_uuid"
-      ];
-      ExecStart = "${lib.getExe pkgs.my.uuplugin} ${pkgs.my.uuplugin}/share/uuplugin/uu.conf";
-      Restart = "on-failure";
-      TimeoutStopSec = "5s";
+      StateDirectory = "uuplugin";
+      StateDirectoryMode = "0700";
+      LoadCredential = [ "uuplugin-uuid:${config.vaultix.secrets.uuplugin.path}" ];
+      # Hide the host Nix daemon socket's source from nspawn, not just the guest.
+      InaccessiblePaths = [ "/nix/var/nix/daemon-socket" ];
+    };
+  };
+
+  containers.uuplugin = {
+    autoStart = true;
+    ephemeral = true;
+    networkNamespace = "/run/netns/uunet";
+    privateUsers = "no";
+    enableTun = true;
+    extraFlags = [ "--resolv-conf=off" ];
+    bindMounts = {
+      "/var/lib/uuplugin" = {
+        hostPath = "/var/lib/uuplugin";
+        isReadOnly = false;
+      };
+      "/run/uuplugin-uuid" = {
+        hostPath = "/run/credentials/container@uuplugin.service/uuplugin-uuid";
+      };
+      "/dev/net/tun" = {
+        hostPath = "/dev/net/tun";
+        isReadOnly = false;
+      };
+    };
+    config = {
+      imports = [ "${pkgs.path}/nixos/modules/profiles/minimal.nix" ];
+      nixpkgs.pkgs = pkgs;
+      nix.enable = false;
+      system.stateVersion = config.system.stateVersion;
+      time.timeZone = config.time.timeZone;
+      # The host owns the shared network namespace's addressing, routes and
+      # firewall. Only UU should modify them inside the container.
+      networking = {
+        useDHCP = false;
+        dhcpcd.enable = false;
+        useHostResolvConf = false;
+        resolvconf.enable = false;
+        firewall.enable = false;
+      };
+      environment.etc."resolv.conf".source = config.environment.etc."netns/uunet/resolv.conf".source;
+      systemd.services.systemd-sysctl.enable = false;
+      systemd.services.uuplugin = {
+        description = "NetEase UU game acceleration plugin";
+        wantedBy = [ "multi-user.target" ];
+        path = with pkgs; [
+          iproute2
+          nettools
+          iptables
+        ];
+        serviceConfig = {
+          AmbientCapabilities = cap;
+          CapabilityBoundingSet = cap;
+          Delegate = true;
+          ProtectControlGroups = "private";
+          StateDirectory = "uuplugin";
+          StateDirectoryMode = "0700";
+          WorkingDirectory = "/var/lib/uuplugin";
+          LoadCredential = [ "uuplugin-uuid:/run/uuplugin-uuid" ];
+          ExecStartPre = "${pkgs.coreutils}/bin/ln -nsf %d/uuplugin-uuid /var/lib/uuplugin/.uuplugin_uuid";
+          ExecStart = "${lib.getExe pkgs.my.uuplugin} ${pkgs.my.uuplugin}/share/uuplugin/uu.conf";
+          Restart = "always";
+          RestartSec = "5s";
+          KillMode = "mixed";
+          TimeoutStopSec = "60s";
+          LimitSTACK = "8M";
+          NoNewPrivileges = true;
+          ProtectHome = true;
+          ProtectSystem = "full";
+        };
+      };
     };
   };
 
@@ -240,7 +322,7 @@ lib.mkProfile s "gaming" {
     package = pkgs.jovianPackages.steam.override {
       extraArgs = "";
       # Steam is Gamescope's child here, so its new Xwayland display names are
-      # available. Set their DPI and register them before Steam's FHS environment.
+      # available. Set DPI before entering Steam's FHS environment.
       extraPreBwrapCmds = lib.optionalString config.myos.fcitx.enable ''
         if [ -n "''${GAMESCOPE_WAYLAND_DISPLAY:-}" ]; then
           ${lib.getExe pkgs.my.fcitx5-gamescope-connect} --dpi 192
