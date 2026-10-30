@@ -255,19 +255,10 @@ lib.mkProfile s "gaming" {
       "/run/uuplugin-uuid" = {
         hostPath = "/run/credentials/container@uuplugin.service/uuplugin-uuid";
       };
-      "/dev/net/tun" = {
-        hostPath = "/dev/net/tun";
-        isReadOnly = false;
-      };
     };
     config = {
-      imports = [ "${pkgs.path}/nixos/modules/profiles/minimal.nix" ];
-      nixpkgs.pkgs = pkgs;
       nix.enable = false;
       system.stateVersion = config.system.stateVersion;
-      time.timeZone = config.time.timeZone;
-      # The host owns the shared network namespace's addressing, routes and
-      # firewall. Only UU should modify them inside the container.
       networking = {
         useDHCP = false;
         dhcpcd.enable = false;
