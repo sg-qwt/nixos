@@ -21,6 +21,8 @@ lib.mkProfile s "tmux" {
       bind -r C-h select-window -t :-
       bind -r C-l select-window -t :+
 
+      set -g mouse off
+
       # Extended keys (Ctrl+Shift combos)
       set -g extended-keys on
       set -g extended-keys-format csi-u
