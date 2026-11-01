@@ -12,6 +12,16 @@ let
 
   pi = pkgs.my.pi;
 
+  markdownGrammarOverride = rec {
+    version = "0.5.4";
+    src = pkgs.fetchFromGitHub {
+      owner = "tree-sitter-grammars";
+      repo = "tree-sitter-markdown";
+      tag = "v${version}";
+      hash = "sha256-8T5EiN8t6nMaKndAxff1hl2DIAhTQY/58oavD9ZrJ5c=";
+    };
+  };
+
   ts-grammers =
     epkgs:
     (epkgs.treesit-grammars.with-grammars (
@@ -45,8 +55,8 @@ let
         tree-sitter-php
         tree-sitter-scala
 
-        tree-sitter-markdown
-        tree-sitter-markdown-inline
+        (tree-sitter-markdown.override markdownGrammarOverride)
+        (tree-sitter-markdown-inline.override markdownGrammarOverride)
 
         tree-sitter-regex
 
