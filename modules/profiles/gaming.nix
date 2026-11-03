@@ -338,10 +338,7 @@ lib.mkProfile s "gaming" {
       ];
       steamArgs = [
         "-pipewire"
-        "-steampal"
         "-steamdeck"
-        "-gamepadui"
-        "-steamos3"
       ];
     };
   };
