@@ -337,6 +337,9 @@ lib.mkProfile s "gaming" {
         "2"
       ];
       steamArgs = [
+        "-steamos3"
+        "-steampal"
+        "-gamepadui"
         "-pipewire"
         "-steamdeck"
       ];
