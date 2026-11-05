@@ -10,6 +10,8 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
+  jovian.steamos.enableSysctlConfig = true;
+
   boot = {
     kernelPackages = pkgs.jovianPackages.linuxPackages;
     loader = {
@@ -33,7 +35,6 @@
     };
     kernelParams = [
       "nowatchdog"
-      "amd_pstate=active"
 
       "amdgpu.sched_hw_submission=4"
       "amdgpu.lockup_timeout=5000,10000,10000,5000"
