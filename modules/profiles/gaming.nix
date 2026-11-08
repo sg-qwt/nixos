@@ -355,6 +355,8 @@ lib.mkProfile s "gaming" {
           toggle_preset = "F10";
           toggle_hud = "F11";
           toggle_hud_position = "F12";
+          # autostart_log = 1;
+          # output_folder = "${config.home.homeDirectory}/bench";
         };
       };
     };
