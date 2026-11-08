@@ -26,6 +26,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    proton-ge = {
+      url = "github:Daaboulex/proton-ge-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     chugou = {
       url = "github:sg-qwt/chugou";
       inputs.flake-utils.follows = "flake-utils";
@@ -64,6 +69,7 @@
         overlays = [
           self.overlays.default
           emacs-overlay.overlays.package
+          proton-ge.overlays.default
         ];
       };
 

@@ -300,7 +300,7 @@ lib.mkProfile s "gaming" {
   programs.steam = {
     enable = true;
     fontPackages = with pkgs; [ noto-fonts-cjk-sans ];
-    extraCompatPackages = [ pkgs.proton-ge-bin ];
+    extraCompatPackages = [ pkgs.proton-ge ];
     remotePlay.openFirewall = true;
     package = pkgs.jovianPackages.steam.override {
       extraArgs = "";
