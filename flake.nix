@@ -6,6 +6,11 @@
 
     flake-utils.url = "github:numtide/flake-utils";
 
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -14,6 +19,7 @@
     vaultix = {
       url = "github:milieuim/vaultix";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
     };
 
     home-manager = {
@@ -29,6 +35,8 @@
     proton-ge = {
       url = "github:Daaboulex/proton-ge-nix";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.std.inputs.flake-parts.follows = "flake-parts";
     };
 
     chugou = {
@@ -44,6 +52,7 @@
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
       inputs.treefmt-nix.follows = "treefmt-nix";
     };
 
