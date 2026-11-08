@@ -73,30 +73,26 @@ rec {
         value = prev.callPackage (self + "/packages/${pkgname}") (args // { inherit self; });
       })
       |> builtins.listToAttrs;
+
+    jovianPackages = prev.jovianPackages.overrideScope (
+      jfinal: jprev: {
+        gamescope = lib.addPatches jprev.gamescope [
+          (storeFile (self + "/resources/patches/gamescope-fcitx-candidate-popups.patch"))
+        ];
+
+        steamos-manager = lib.addPatches jprev.steamos-manager [
+          (storeFile (self + "/resources/patches/steamos-manager-allow-gamescope-desktop-session.patch"))
+        ];
+
+        gamescope-session = jprev.gamescope-session.override {
+          steam = jfinal.steam.override (old: {
+            extraPkgs =
+              pkgs: (if old ? extraPkgs then old.extraPkgs pkgs else [ ]) ++ [ pkgs.noto-fonts-cjk-sans ];
+          });
+        };
+      }
+    );
   };
-
-  jovian-overlay = (
-    final: prev: {
-      jovianPackages = prev.jovianPackages.overrideScope (
-        jfinal: jprev: {
-          gamescope = lib.addPatches jprev.gamescope [
-            (storeFile (self + "/resources/patches/gamescope-fcitx-candidate-popups.patch"))
-          ];
-
-          steamos-manager = lib.addPatches jprev.steamos-manager [
-            (storeFile (self + "/resources/patches/steamos-manager-allow-gamescope-desktop-session.patch"))
-          ];
-
-          gamescope-session = jprev.gamescope-session.override {
-            steam = jfinal.steam.override (old: {
-              extraPkgs =
-                pkgs: (if old ? extraPkgs then old.extraPkgs pkgs else [ ]) ++ [ pkgs.noto-fonts-cjk-sans ];
-            });
-          };
-        }
-      );
-    }
-  );
 
   packages =
     pkgs.my
@@ -126,14 +122,8 @@ rec {
 
   shared-data = (lib.importJSON (self + "/resources/shared-data/data.json")) // {
     hosts = {
-      zheng = {
-        key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINpWTwJQ7923qsxZGWjxQrl8Bx6/+pdZDsiz0dg1akxz";
-        jovianOverlay = true;
-      };
-      li = {
-        key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFxduWDt3Qli+3gTUd4/3/qbVqy+wyNrqTxZhV/7/7eV";
-        jovianOverlay = true;
-      };
+      zheng.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINpWTwJQ7923qsxZGWjxQrl8Bx6/+pdZDsiz0dg1akxz";
+      li.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFxduWDt3Qli+3gTUd4/3/qbVqy+wyNrqTxZhV/7/7eV";
       puer.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKcOrd7uUWfIqR7cyp6sc9bR4seNb8m3het9CFsxznN/";
       rocky.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDy3hWnYzgOJZ51yD25J5vLk33PAgKEdASoDL0UV5ivk";
       just.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHds+RAGMmOq8gw6hREjld78Rx4Ura0XgaEzmv5MUmMe";
@@ -161,17 +151,8 @@ rec {
     {
       name,
       hostPubkey,
-      jovianOverlay ? false,
     }:
     let
-      p =
-        if jovianOverlay then
-          pkgs.appendOverlays [
-            inputs.jovian.overlays.default
-            jovian-overlay
-          ]
-        else
-          pkgs;
       home-manager = inputs.home-manager;
     in
     nixpkgs.lib.nixosSystem {
@@ -185,8 +166,8 @@ rec {
         inputs.vaultix.nixosModules.default
         inputs.nix-index-database.nixosModules.nix-index
         {
-          nixpkgs.pkgs = p;
-          nixpkgs.overlays = nixpkgs.lib.mkForce p.overlays;
+          nixpkgs.pkgs = pkgs;
+          nixpkgs.overlays = nixpkgs.lib.mkForce pkgs.overlays;
           networking.hostName = name;
           imports = profile-list;
           home-manager.useGlobalPkgs = true;
@@ -202,7 +183,6 @@ rec {
     (mkOS {
       name = hostname;
       hostPubkey = value.key;
-      jovianOverlay = value.jovianOverlay or false;
     })
   ) shared-data.hosts;
 

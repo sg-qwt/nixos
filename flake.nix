@@ -76,9 +76,10 @@
         config.allowUnfree = true;
 
         overlays = [
-          self.overlays.default
+          jovian.overlays.default
           emacs-overlay.overlays.package
           proton-ge.overlays.default
+          self.overlays.default
         ];
       };
 

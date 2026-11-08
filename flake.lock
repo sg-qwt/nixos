@@ -385,11 +385,11 @@
         "std": "std"
       },
       "locked": {
-        "lastModified": 1793712722,
-        "narHash": "sha256-OTn45XqZjZIElAUo3NzC7OMWAkHGqLTLKkpmlQdj+IU=",
+        "lastModified": 1794107049,
+        "narHash": "sha256-4wyslABgG3P2b3VjSpd9s2NrXRBe+BIXlN/soTTDGBM=",
         "owner": "Daaboulex",
         "repo": "proton-ge-nix",
-        "rev": "3aa77ffa328da715c7cf563b907963df25da8f9f",
+        "rev": "03869a9beec20f979e3bc91817163ddcd2a7d387",
         "type": "github"
       },
       "original": {
@@ -429,11 +429,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793049164,
-        "narHash": "sha256-dA7A15ARBFmz0mGWefh7fYukRF8xVjmtTmgbchHlhR4=",
+        "lastModified": 1794105499,
+        "narHash": "sha256-0NtmCdOMZn3PEO1JVlxqvua29VMFHXRHLcEQWaePzes=",
         "owner": "Daaboulex",
         "repo": "nix-packaging-standard",
-        "rev": "e36d745062640b73686ad515e1e01fcebc86ba02",
+        "rev": "2a56b68cf7f879a1f9c0cc5fcdb6a51db5cf867a",
         "type": "github"
       },
       "original": {
