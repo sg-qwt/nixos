@@ -37,6 +37,9 @@
   };
 
   hardware = {
+    # The generic Intel WCL image is rejected by this Dell's sensor hub.
+    firmware = [ pkgs.my.dell-xps13-ish-firmware ];
+
     cpu.intel.npu.enable = true;
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
