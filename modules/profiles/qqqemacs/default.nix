@@ -20,8 +20,8 @@ lib.mkProfile s "qqqemacs" {
     home.sessionVariables.EDITOR = "emacsclient -t";
 
     programs.bash.initExtra = ''
-      if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
-        source ${pkgs.emacsPackages.vterm}/share/emacs/site-lisp/elpa/vterm-*/etc/emacs-vterm-bash.sh
+      if [[ "''${INSIDE_EMACS%%,*}" = 'ghostel' ]]; then
+        source "$EMACS_GHOSTEL_PATH/etc/shell/ghostel.bash"
       fi
     '';
   };

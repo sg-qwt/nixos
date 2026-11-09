@@ -8,7 +8,18 @@
   ...
 }:
 let
-  emacsWithPackages = (emacsPackagesFor emacs31-pgtk).emacsWithPackages;
+  emacsPackages = (emacsPackagesFor emacs31-pgtk).overrideScope (
+    final: prev: {
+      ghostel = final.callPackage ../ghostel { emacsPackages = final; };
+      evil-ghostel = prev.evil-ghostel.overrideAttrs (_: {
+        inherit (final.ghostel) src version;
+      });
+      consult-ghostel = prev.consult-ghostel.overrideAttrs (_: {
+        inherit (final.ghostel) src version;
+      });
+    }
+  );
+  emacsWithPackages = emacsPackages.emacsWithPackages;
 
   pi = pkgs.my.pi;
 
@@ -77,6 +88,9 @@ let
     epkgs:
     [
       (ts-grammers epkgs)
+      epkgs.ghostel
+      epkgs.evil-ghostel
+      epkgs.consult-ghostel
     ]
     ++
 
@@ -126,9 +140,6 @@ let
         yasnippet-capf
 
         ibuffer-vc
-
-        vterm
-        multi-vterm
 
         hl-todo
 

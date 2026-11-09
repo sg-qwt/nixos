@@ -279,7 +279,7 @@ If the buffer doesn't exist, create it first."
     "T" #'(lambda ()
 	    "Project TODOs"
 	    (interactive) (consult-ripgrep nil "TODO"))
-    "t" #'multi-vterm-project)
+    "t" #'consult-ghostel-project)
 
   (qqq/leader
     :infix "m"
@@ -297,7 +297,7 @@ If the buffer doesn't exist, create it first."
   (qqq/leader
     :infix "b"
     "" '(:ignore t :wk "buffer")
-    "t" #'multi-vterm-dedicated-toggle
+    "t" #'consult-ghostel
     "i" #'ibuffer
     "b" #'consult-buffer
     "S" #'scratch-buffer
@@ -1086,41 +1086,7 @@ the focus."
 
 (use-package ibuffer-vc
   :hook (ibuffer . ibuffer-vc-set-filter-groups-by-vc-root)
-  :custom (ibuffer-vc-skip-if-remote nil)
-  :config
-  ;; include project local vterm, leave dedicated alone
-  (setq ibuffer-vc-buffer-file-name-function
-	(lambda (buf)
-	  (with-current-buffer buf
-	    (when-let* ((file-name (or buffer-file-name
-				      list-buffers-directory
-				      (and (string-prefix-p "*vterminal" (buffer-name buf))
-					   (not (string-match-p (regexp-quote "dedicated") (buffer-name buf)))
-					   default-directory))))
-	      (file-truename file-name))))))
-
-;;;;;;;;;;;
-;; vterm ;;
-;;;;;;;;;;;
-(use-package vterm
-  :demand t
-  :custom
-  (vterm-kill-buffer-on-exit t)
-  (vterm-max-scrollback 5000)
-  :config
-  (setq kill-buffer-query-functions
-	(delq 'process-kill-buffer-query-function kill-buffer-query-functions)))
-
-(use-package multi-vterm
-  :demand t
-  :general
-  (qqq/local-leader
-    vterm-mode-map
-    "r" #'multi-vterm-rename-buffer
-    "n" #'multi-vterm-next
-    "p" #'multi-vterm-prev)
-  :custom
-  (multi-vterm-dedicated-window-height-percent 40))
+  :custom (ibuffer-vc-skip-if-remote nil))
 
 (use-package project
   :custom
@@ -1216,3 +1182,18 @@ the focus."
 (use-package treesit
   :custom
   (treesit-auto-install-grammar 'never))
+
+;;;;;;;;;;;;;
+;; ghoster ;;
+;;;;;;;;;;;;;
+(use-package ghostel
+  :custom
+  (ghostel-shell-integration nil)
+  :hook (after-init . ghostel-status-indicator-mode))
+
+(use-package evil-ghostel
+  :after (ghostel evil)
+  :hook (ghostel-mode . evil-ghostel-mode))
+
+(use-package consult-ghostel
+  :hook (after-init . consult-ghostel-mode))
