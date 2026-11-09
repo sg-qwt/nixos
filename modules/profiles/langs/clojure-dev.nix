@@ -22,7 +22,7 @@ lib.mkProfile s "clojure-dev" {
       cljfmt
     ];
 
-    programs.bash.bashrcExtra = ''
+    programs.bash.initExtra = ''
       _bb_complete() {
         BB_TASKS=$(bb tasks|bb -io '(->> *input* (drop 2) (map #(-> % (str/split #" ") first)))')
         BB_HELP=$(bb help|bb -io '(->> *input* (map #(->> % (re-find #"^  ([-a-z]+)") second)) (filter some?))')
