@@ -32,7 +32,10 @@
     clash-meta.enable = true;
     tailscale.enable = true;
     android.enable = true;
-    aitooling.enable = true;
+    aitooling = {
+      enable = true;
+      ollama.enable = false;
+    };
     printing.enable = true;
   };
 }

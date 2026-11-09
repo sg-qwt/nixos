@@ -10,12 +10,18 @@ let
   adrive-key = config.vaultix.secrets.az-drive-account-key.path;
 in
 lib.mkProfile s "aitooling" {
+  _profileOptions.ollama.enable = lib.mkOption {
+    type = lib.types.bool;
+    default = true;
+    description = "Whether to enable the local Ollama service";
+  };
+
   vaultix.secrets.az-drive-account-key = {
     owner = config.myos.user.mainUser;
   };
 
   services.ollama = {
-    enable = true;
+    enable = config.myos.aitooling.ollama.enable;
     package = pkgs.ollama-rocm;
   };
 
