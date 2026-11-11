@@ -90,6 +90,11 @@ rec {
       "https://doh.pub/dns-query"
       "https://dns.alidns.com/dns-query"
     ];
+    nameserver-policy = {
+      "+.linkedin.com" = [ "https://1.1.1.1/dns-query#select" ];
+      "+.licdn.com" = [ "https://1.1.1.1/dns-query#select" ];
+      "+.lnkd.in" = [ "https://1.1.1.1/dns-query#select" ];
+    };
   };
 
   proxies =
