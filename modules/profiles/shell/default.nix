@@ -68,6 +68,7 @@ lib.mkProfile s "shell" {
           add_newline = true;
           scan_timeout = 500;
           format = lib.concatStrings [
+            "\${env_var.ZMX_SESSION}"
             "$all"
             "$time"
             "$line_break"
@@ -84,6 +85,12 @@ lib.mkProfile s "shell" {
           };
           time = {
             disabled = false;
+          };
+          env_var.ZMX_SESSION = {
+            symbol = "zmx:";
+            format = "[$symbol$env_value]($style) ";
+            description = "zmx session name";
+            style = "bold magenta";
           };
         }
         (lib.importTOML "${config.programs.starship.package}/share/starship/presets/plain-text-symbols.toml")

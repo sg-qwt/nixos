@@ -1208,4 +1208,8 @@ the focus."
   :general-config
   (qqq/local-leader
     term-sessions-list-mode-map
-    "" term-sessions-list-mode-map))
+    "" term-sessions-list-mode-map)
+  :init
+  (when-let* ((library (locate-library "ghostel")))
+    (setenv "EMACS_GHOSTEL_PATH"
+	    (file-name-directory library))))
