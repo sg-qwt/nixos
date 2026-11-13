@@ -1,5 +1,9 @@
-s@{ lib, ... }:
+s@{ lib, pkgs, ... }:
 lib.mkProfile s "tmux" {
+  environment.systemPackages = with pkgs; [
+    zmx
+  ];
+
   programs.tmux = {
     enable = true;
     secureSocket = false;

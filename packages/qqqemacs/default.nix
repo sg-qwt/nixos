@@ -10,6 +10,16 @@
 let
   emacsPackages = (emacsPackagesFor emacs31-pgtk).overrideScope (
     final: prev: {
+      term-sessions = final.melpaBuild {
+        pname = "term-sessions";
+        version = "0.1.0-unstable-2026-11-13";
+        src = pkgs.fetchFromGitHub {
+          owner = "sg-qwt";
+          repo = "emacs-term-sessions";
+          rev = "31e32c736ac36b1eef2b9c93bf82427e7319edf7";
+          hash = "sha256-97nnZRzhrTXvX46CSRYzwzxtUginbt54BA+9eNXuVU4=";
+        };
+      };
       ghostel = final.callPackage ../ghostel { emacsPackages = final; };
       evil-ghostel = prev.evil-ghostel.overrideAttrs (_: {
         inherit (final.ghostel) src version;
@@ -91,6 +101,7 @@ let
       epkgs.ghostel
       epkgs.evil-ghostel
       epkgs.consult-ghostel
+      epkgs.term-sessions
     ]
     ++
 
@@ -166,6 +177,7 @@ let
     ripgrep # consult-ripgrep
     discount # markdown-mode
     unzip # nov.el
+    zmx # term-sessions
     (hunspell.withDicts (di: [ di.en-us ]))
 
     my.bbscripts

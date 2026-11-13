@@ -297,7 +297,8 @@ If the buffer doesn't exist, create it first."
   (qqq/leader
     :infix "b"
     "" '(:ignore t :wk "buffer")
-    "t" #'consult-ghostel
+    "t" #'term-sessions-consult-session
+    "g" #'consult-ghostel
     "i" #'ibuffer
     "b" #'consult-buffer
     "S" #'scratch-buffer
@@ -1197,3 +1198,14 @@ the focus."
 
 (use-package consult-ghostel
   :hook (after-init . consult-ghostel-mode))
+
+(use-package term-sessions
+  :after general
+  :custom
+  (term-sessions-preferred-frontend 'ghostel)
+  (term-sessions-list-show-details nil)
+  (term-sessions-confirm-kill nil)
+  :general-config
+  (qqq/local-leader
+    term-sessions-list-mode-map
+    "" term-sessions-list-mode-map))
