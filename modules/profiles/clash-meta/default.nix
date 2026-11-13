@@ -63,7 +63,7 @@ in
     };
 
     environment.systemPackages = with pkgs; [
-      my.mihomo-tui
+      mihomo-tui
     ];
 
     users.groups.mihomo-api = { };
