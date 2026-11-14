@@ -1170,7 +1170,7 @@ the focus."
   :custom
   (pilish-input-window-height 0.3)
   (pilish-quit-without-confirmation t)
-  (pilish-evil-copy-raw-markdown nil)
+  (pilish-evil-copy-raw-markdown t)
   :config
   (with-eval-after-load 'pilish-evil
     (general-def
