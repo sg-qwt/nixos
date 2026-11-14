@@ -8,10 +8,10 @@
   ...
 }:
 let
-  version = "0.62.0";
+  version = "0.65.0";
   ghostelModule = fetchurl {
     url = "https://github.com/dakra/ghostel/releases/download/v${version}/ghostel-module-x86_64-linux.so";
-    hash = "sha256-tE9M/qdWl3mPYInUKStVqJOLWsNcV/D83gdhjXfl3lA=";
+    hash = "sha256-1ZKgb/xS6N51aG0f/KKRyRR0arXq38WsukuPOPevhbc=";
   };
 in
 emacsPackages.melpaBuild {
@@ -22,11 +22,11 @@ emacsPackages.melpaBuild {
     owner = "dakra";
     repo = "ghostel";
     tag = "v${version}";
-    hash = "sha256-wHpaa4c3kSiBc7RiAMUWme1q2O7+ArUy4nxjo37IrU8=";
+    hash = "sha256-Y+0P6ELzaMgOxNivUPKUzQ4H7Mk2d4a5pVfE2D2202s=";
   };
 
   packageRequires = [ emacsPackages.compat ];
-  files = ''(:defaults "etc" "ghostel-module.so" "ghostel-module.version")'';
+  files = ''("lisp/*.el" "etc" "ghostel-module.so" "ghostel-module.version")'';
 
   nativeBuildInputs = [ autoPatchelfHook ];
   buildInputs = [ stdenv.cc.libc ];
