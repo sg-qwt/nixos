@@ -8,9 +8,11 @@
   ...
 }:
 let
-  version = "0.65.0";
+  version = "0.65.0-unstable-2026-11-14";
+  # The pinned Elisp remains compatible with the 0.65.0 release module.
+  moduleVersion = "0.65.0";
   ghostelModule = fetchurl {
-    url = "https://github.com/dakra/ghostel/releases/download/v${version}/ghostel-module-x86_64-linux.so";
+    url = "https://github.com/dakra/ghostel/releases/download/v${moduleVersion}/ghostel-module-x86_64-linux.so";
     hash = "sha256-1ZKgb/xS6N51aG0f/KKRyRR0arXq38WsukuPOPevhbc=";
   };
 in
@@ -21,8 +23,8 @@ emacsPackages.melpaBuild {
   src = fetchFromGitHub {
     owner = "dakra";
     repo = "ghostel";
-    tag = "v${version}";
-    hash = "sha256-Y+0P6ELzaMgOxNivUPKUzQ4H7Mk2d4a5pVfE2D2202s=";
+    rev = "98be9d95ecad8135a160696980338c9e2cc24fdb";
+    hash = "sha256-BPUrfwgzUlSrblGkDB1ajbAoeGvvtE0E+F+AP7zyjzM=";
   };
 
   packageRequires = [ emacsPackages.compat ];
@@ -33,7 +35,11 @@ emacsPackages.melpaBuild {
 
   preBuild = ''
     install -m755 ${ghostelModule} ghostel-module.so
-    printf '%s\n' '${version}' > ghostel-module.version
+    printf '%s\n' '${moduleVersion}' > ghostel-module.version
+  '';
+
+  postInstall = ''
+    ln -s "emacs/site-lisp/elpa/$ename-$melpaVersion/etc" "$out/share/ghostel"
   '';
 
   passthru = { inherit ghostelModule; };

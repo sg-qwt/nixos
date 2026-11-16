@@ -12,12 +12,12 @@ let
     final: prev: {
       term-sessions = final.melpaBuild {
         pname = "term-sessions";
-        version = "0.1.0-unstable-2026-11-13";
+        version = "0.1.0-unstable-2026-11-15";
         src = pkgs.fetchFromGitHub {
           owner = "sg-qwt";
           repo = "emacs-term-sessions";
-          rev = "31e32c736ac36b1eef2b9c93bf82427e7319edf7";
-          hash = "sha256-97nnZRzhrTXvX46CSRYzwzxtUginbt54BA+9eNXuVU4=";
+          rev = "b30a3e54882c27fdeefec3ee1fd5ca4e494af471";
+          hash = "sha256-cSzD3vQEGFWdbvOF02KljUDgxG5HO37DhukFon9k6Js=";
         };
       };
       ghostel = final.callPackage ../ghostel { emacsPackages = final; };
