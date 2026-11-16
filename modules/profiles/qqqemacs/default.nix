@@ -21,7 +21,7 @@ lib.mkProfile s "qqqemacs" {
 
     programs.bash.initExtra = ''
       if [[ "''${INSIDE_EMACS%%,*}" = 'ghostel' ]]; then
-        source "${pkgs.my.ghostel}/etc/shell/ghostel.bash"
+        source "${pkgs.my.ghostel}/share/ghostel/shell/ghostel.bash"
       fi
     '';
   };
