@@ -42,6 +42,6 @@
     android.enable = true;
     gaming.enable = true;
     aitooling.enable = true;
-    printing.enable = true;
+    printing.enable = false;
   };
 }
