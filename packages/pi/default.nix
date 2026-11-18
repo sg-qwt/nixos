@@ -34,6 +34,7 @@ symlinkJoin {
   ];
   nativeBuildInputs = [ makeWrapper ];
   postBuild = ''
+    ln -s ${pi}/bin/pi "$out/bin/pi-clean"
     wrapProgram $out/bin/pi ${lib.concatStringsSep " " wrapperFlags}
   '';
   meta = (pi.meta or { }) // {
