@@ -33,6 +33,16 @@ let
 
   pi = pkgs.my.pi;
 
+  nixGrammarOverride = {
+    version = "0.5.0-unstable-2026-10-08";
+    src = pkgs.fetchFromGitHub {
+      owner = "numtide";
+      repo = "tree-sitter-nix";
+      rev = "381ec8d119d9d24fd345174e2dc7b2e90f5d2b05";
+      hash = "sha256-EwFDD2WRGoyDyMW3lUBAsnt1aWjcQaDqfQ8rdceb7h8=";
+    };
+  };
+
   markdownGrammarOverride = rec {
     version = "0.5.4";
     src = pkgs.fetchFromGitHub {
@@ -43,11 +53,24 @@ let
     };
   };
 
+  clojureGrammarOverride = {
+    version = "unstable-20250526";
+    src = pkgs.fetchFromGitHub {
+      owner = "sogaiu";
+      repo = "tree-sitter-clojure";
+      rev = "69070d2e4563f8f58c7f57b0c8e093a08d7a5814";
+      hash = "sha256-+Miraf8kI8rZg7SYdfNM+mb78k9xNDUKYg3VTFzUHMo=";
+    };
+  };
+
   ts-grammers =
     epkgs:
     (epkgs.treesit-grammars.with-grammars (
       grammars: with grammars; [
-        tree-sitter-nix
+        (tree-sitter-nix.override nixGrammarOverride)
+        (tree-sitter-markdown.override markdownGrammarOverride)
+        (tree-sitter-markdown-inline.override markdownGrammarOverride)
+        (tree-sitter-clojure.override clojureGrammarOverride)
         tree-sitter-yaml
         tree-sitter-typescript
         tree-sitter-json
@@ -76,22 +99,7 @@ let
         tree-sitter-gomod
         tree-sitter-php
         tree-sitter-scala
-
-        (tree-sitter-markdown.override markdownGrammarOverride)
-        (tree-sitter-markdown-inline.override markdownGrammarOverride)
-
         tree-sitter-regex
-
-        (pkgs.tree-sitter.buildGrammar {
-          language = "clojure";
-          version = "unstable-20250526";
-          src = pkgs.fetchFromGitHub {
-            owner = "sogaiu";
-            repo = "tree-sitter-clojure";
-            rev = "69070d2e4563f8f58c7f57b0c8e093a08d7a5814";
-            sha256 = "sha256-+Miraf8kI8rZg7SYdfNM+mb78k9xNDUKYg3VTFzUHMo=";
-          };
-        })
       ]
     ));
 
