@@ -430,8 +430,8 @@ If the buffer doesn't exist, create it first."
   :config
   (vertico-mode 1))
 
-(use-package nix-mode
-  :mode "\\.nix\\'")
+(use-package nix-ts-mode
+ :mode "\\.nix\\'")
 
 (use-package hcl-mode
   :mode "\\.tf\\'")
@@ -989,16 +989,12 @@ the focus."
   (eglot-autoshutdown t)
   (eglot-confirm-server-initiated-edits nil)
   ;; https://github.com/joaotavora/eglot/issues/1275
-  (eglot-extend-to-xref nil))
-
-(use-package eglot-nix-config
-  :no-require t
-  :after (eglot nix-mode)
-  :hook
-  (nix-mode . eglot-ensure)
+  (eglot-extend-to-xref nil)
   :config
-  (add-to-list 'eglot-server-programs '((nix-mode) "nil")))
-
+  (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nil")))
+  (setq-default
+   eglot-workspace-configuration
+   '(:nil (:nix (:flake (:autoArchive t))))))
 
 
 (use-package eglot-clojure-config

@@ -47,6 +47,7 @@ let
     epkgs:
     (epkgs.treesit-grammars.with-grammars (
       grammars: with grammars; [
+        tree-sitter-nix
         tree-sitter-yaml
         tree-sitter-typescript
         tree-sitter-json
@@ -133,7 +134,7 @@ let
 
         magit
 
-        nix-mode
+        nix-ts-mode
         hcl-mode
         clojure-ts-mode # only used for pi
 
