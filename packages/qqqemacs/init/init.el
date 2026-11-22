@@ -120,6 +120,7 @@ If the buffer doesn't exist, create it first."
   (setq qqq/garden-dir (substitute-in-file-name "${HOME}/garden"))
   :custom
   (ring-bell-function #'ignore)
+
   (custom-file (concat user-emacs-directory "custom.el"))
 
   (backup-directory-alist `((".*" . ,temporary-file-directory)))
@@ -131,9 +132,13 @@ If the buffer doesn't exist, create it first."
   (use-dialog-box nil)
 
   (enable-recursive-minibuffers t)
+
   (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
 
   (use-short-answers t)
+
+  (delete-by-moving-to-trash t)
+
   :config
   (load custom-file t) ;; write customizations to a separate file
   (recentf-mode 1)
