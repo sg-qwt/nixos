@@ -31,8 +31,6 @@ let
   );
   emacsWithPackages = emacsPackages.emacsWithPackages;
 
-  pi = pkgs.my.pi;
-
   nixGrammarOverride = {
     version = "0.5.0-unstable-2026-10-08";
     src = pkgs.fetchFromGitHub {
@@ -185,7 +183,7 @@ let
   deps = with pkgs; [
     ripgrep # consult-ripgrep
     discount # markdown-mode
-    unzip # nov.el
+    unzip # nov.el,arc-mode
     zmx # term-sessions
     (hunspell.withDicts (di: [ di.en-us ]))
 
@@ -196,7 +194,7 @@ let
     # rage with yubikey plugin
     my.rage
 
-    pi
+    my.pi
 
     # lsp
     nil
