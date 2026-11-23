@@ -75,11 +75,7 @@ lib.mkProfile s "desktop-apps" {
       SiteSearchSettings = [
         (search-code "nc" "Nix")
         (search-code "ec" "Emacs+Lisp")
-        {
-          name = "Clojure Code";
-          shortcut = "cc";
-          url = "https://github.com/search?q={searchTerms}+NOT+is%3Afork+language%3AClojure+OR+language%3Aedn&type=code";
-        }
+        (search-code "cc" "Clojure")
         {
           name = "NixOS Packages";
           shortcut = "np";

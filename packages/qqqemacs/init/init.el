@@ -534,14 +534,14 @@ If the buffer doesn't exist, create it first."
 ;; display line numbers ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package display-line-numbers
+  :custom
+  (display-line-numbers-type 'relative)
   :config
-  (setq display-line-numbers-type 'relative)
   (defcustom display-line-numbers-exempt-modes
     '(nov-mode
       pdf-view-mode
-      eat-mode
       pilish-chat-mode
-      )
+      ghostel-mode)
     "Major modes on which to disable line numbers."
     :group 'display-line-numbers
     :type 'list
