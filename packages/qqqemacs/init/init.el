@@ -21,16 +21,29 @@
 	   (bname (concat "*nix-fmt* " default-directory))
 	   (cmd "nix fmt"))
       (async-shell-command cmd bname)))
+
+  (defun qqq/system.rebuild ()
+    "Rebuild and switch the current nixos system."
+    (interactive)
+    (async-shell-command "bash -ic 'rebuild'" "*nixos-build*"))
+
   (defun qqq/system.build (host)
-    "Selec nixos to build and deploy."
+    "Build the nixos configuration for host."
     (interactive
      (list
       (completing-read
        "Select host: "
-       (split-string (shell-command-to-string "deploy -l"))
+       (split-string (shell-command-to-string "bento deploy -l"))
        nil nil nil)))
-    (let ((bname "*nixos-build*"))
-      (async-shell-command (concat "deploy --host " host) bname)))
+    (let ((flake (getenv "MYOS_FLAKE")))
+      (unless (and flake (not (equal flake "")))
+        (user-error "MYOS_FLAKE is not set"))
+      (let ((default-directory (file-name-as-directory (expand-file-name flake))))
+        (async-shell-command
+         (concat "nix build --print-build-logs --print-out-paths "
+                 (shell-quote-argument
+                  (format ".#nixosConfigurations.%s.config.system.build.toplevel" host)))
+         "*nixos-build*"))))
 
   (defun qqq/return-t (orig-fun &rest args) t)
 
@@ -291,10 +304,8 @@ If the buffer doesn't exist, create it first."
   (qqq/leader
     :infix "m"
     "" '(:ignore t :wk "misc")
-    "b" #'(lambda ()
-	    "Build current host"
-	    (interactive) (qqq/system.build (system-name)))
-    "B" #'qqq/system.build
+    "b" #'qqq/system.build
+    "r" #'qqq/system.rebuild
     "f" #'qqq/flake.format
     "u" #'qqq/garden-upload)
 
@@ -1205,6 +1216,9 @@ the focus."
 
 (use-package consult-ghostel
   :hook (after-init . consult-ghostel-mode))
+
+(use-package ghostel-shell-command
+  :hook (after-init . ghostel-shell-command-global-mode))
 
 (use-package term-sessions
   :after general
