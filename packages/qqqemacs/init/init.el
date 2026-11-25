@@ -342,21 +342,20 @@ If the buffer doesn't exist, create it first."
   )
 
 (use-package with-editor
-  :preface
-  (defun qqq/which-key-with-editor-replacements ()
-    (setq-local which-key-replacement-alist
-		(append
-		 '((("\\`, c\\'") nil . "finish")
-		   (("\\`, k\\'") nil . "cancel"))
-		 which-key-replacement-alist)))
-  :hook
-  (with-editor-mode . qqq/which-key-with-editor-replacements)
+  :hook (with-editor-mode . evil-normalize-keymaps)
   :general
   (qqq/local-leader
     with-editor-mode-map
-    "c" #'with-editor-finish
-    "k" #'with-editor-cancel))
+    "c" '(with-editor-finish :wk "finish")
+    "k" '(with-editor-cancel :wk "cancel")))
 
+(use-package string-edit
+  :hook (string-edit-minor-mode . evil-normalize-keymaps)
+  :general
+  (qqq/local-leader
+    string-edit-minor-mode-map
+    "c" '(string-edit-done :wk "finish")
+    "k" '(string-edit-abort :wk "cancel")))
 
 (use-package avy
   :demand t
@@ -1197,13 +1196,26 @@ the focus."
 
 (use-package evil-ghostel
   :after (ghostel evil)
-  :hook (ghostel-mode . evil-ghostel-mode))
+  :hook (ghostel-mode . evil-ghostel-mode)
+  :general-config
+  (qqq/local-leader
+    :states '(normal)
+    :keymaps 'evil-ghostel-mode-map
+    "c" '(qqq/ghostel-compose :wk "compose")))
 
 (use-package consult-ghostel
   :hook (after-init . consult-ghostel-mode))
 
 (use-package term-sessions
   :after general
+  :preface
+  (defun qqq/ghostel-compose ()
+    (interactive)
+    (let ((buf (current-buffer)))
+      (string-edit "Ghostel input" ""
+		   (lambda (s)
+		     (with-current-buffer buf
+		       (ghostel-paste-string s))))))
   :custom
   (term-sessions-preferred-frontend 'ghostel)
   (term-sessions-list-show-details nil)
