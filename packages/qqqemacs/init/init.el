@@ -139,6 +139,8 @@ If the buffer doesn't exist, create it first."
 
   (delete-by-moving-to-trash t)
 
+  (text-mode-ispell-word-completion nil)
+
   :config
   (load custom-file t) ;; write customizations to a separate file
   (recentf-mode 1)
