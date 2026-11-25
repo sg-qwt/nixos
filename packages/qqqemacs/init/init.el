@@ -853,12 +853,12 @@ the focus."
     "C-l" #'cider-repl-clear-buffer)
  (qqq/local-leader
     clojure-ts-mode-map
-    "r" '(:keymap clojure-ts-refactor-map :wk "refactor"))
+    "r" '(:keymap clojure-ts-refactor-map :wk "refactor" :major-modes t))
 
   (qqq/local-leader
     clojure-ts-mode-map
     :infix "o"
-    "" '(:ignore t :wk "other")
+    "" '(:ignore t :wk "other" :major-modes t)
     "p o" #'portal.api/open
     "p c" #'portal.api/close
     "p k" #'portal.api/clear
@@ -869,7 +869,7 @@ the focus."
   (qqq/local-leader
     clojure-ts-mode-map
     :infix "e"
-    "" '(:ignore t :wk "eval")
+    "" '(:ignore t :wk "eval" :major-modes t)
     "b" #'cider-eval-buffer
     "r" #'cider-eval-region
     "e" #'cider-eval-sexp-at-point
@@ -890,7 +890,7 @@ the focus."
   (qqq/local-leader
     clojure-ts-mode-map
     :infix "s"
-    "" '(:ignore t :wk "send")
+    "" '(:ignore t :wk "send" :major-modes t)
     "b" #'cider-load-buffer
     "n" #'qqq/cider-send-ns-form-to-repl
     "N" #'qqq/cider-send-ns-form-to-repl-focus
@@ -904,7 +904,7 @@ the focus."
   (qqq/local-leader
     clojure-ts-mode-map
     :infix "h"
-    "" '(:ignore t :wk "help")
+    "" '(:ignore t :wk "help" :major-modes t)
     "n" #'cider-find-ns
     "a" #'cider-apropos
     "c" #'cider-clojuredocs
@@ -915,7 +915,7 @@ the focus."
   (qqq/local-leader
     clojure-ts-mode-map
     :infix "c"
-    "" '(:ignore t :wk "connect")
+    "" '(:ignore t :wk "connect" :major-modes t)
     "c" #'cider-connect-clj
     "b" #'qqq/cider-connect-bb
     "r" #'cider-restart
@@ -924,7 +924,7 @@ the focus."
   (qqq/local-leader
     clojure-ts-mode-map
     :infix "="
-    "" '(:ignore t :wk "format")
+    "" '(:ignore t :wk "format" :major-modes t)
     "=" #'cider-format-buffer
     "f" #'cider-format-defun
     "r" #'cider-format-region
