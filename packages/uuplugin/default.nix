@@ -2,6 +2,7 @@
   lib,
   stdenvNoCC,
   fetchurl,
+  patchelfUnstable,
   ...
 }:
 
@@ -15,6 +16,7 @@ stdenvNoCC.mkDerivation rec {
   };
 
   sourceRoot = ".";
+  nativeBuildInputs = [ patchelfUnstable ];
   dontConfigure = true;
   dontBuild = true;
   dontStrip = true;
@@ -23,6 +25,9 @@ stdenvNoCC.mkDerivation rec {
     runHook preInstall
 
     install -Dm755 uuplugin $out/bin/uuplugin
+
+    ${lib.getExe patchelfUnstable} --clear-execstack "$out/bin/uuplugin"
+
     # uuplugin resolves ./xuplugin-guardian beside /proc/self/exe, not the cwd.
     install -Dm755 xuplugin-guardian $out/bin/xuplugin-guardian
     install -Dm644 uu.conf $out/share/uuplugin/uu.conf
